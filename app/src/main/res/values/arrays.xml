@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="help_prompts">
+        <item>Falla mecánica</item>
+        <item>Condición climática</item>
+        <item>Choque</item>
+        <item>Asalto</item>
+        <item>Riesgo laboral</item>
+        <item>Recarga de unidad</item>
+        <item>Herramienta no adecuada</item>
+    </string-array>
+
+</resources>

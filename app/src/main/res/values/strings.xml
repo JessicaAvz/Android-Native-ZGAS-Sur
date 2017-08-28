@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">MyZuite</string>
+
+    <!-- hints -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Contraseña</string>
+
+    <!-- Actvity Login -->
+    <string name="login">Ingresar</string>
+
+    <!-- Activity Main -->
+    <string name="prompt_main_fragment">Mis pedidos</string>
+    <string name="prompt_help_fragment">Ayuda</string>
+    <string name="prompt_order_fragment">Pedido extra</string>
+    <string name="btn_make_order">Realizar reporte</string>
+
+    <!-- Fragment order -->
+    <string name="prompt_order">Ingresa los datos del pedido</string>
+    <string name="prompt_username">Nombre de la persona</string>
+    <string name="prompt_phone">Teléfonpo de contacto</string>
+
+    <!-- Fragment help -->
+    <string name="prompt_help">¿Tuviste algún problema?</string>
+    <string name="prompt_spinner">Selecciona un problema...</string>
+
+    <!-- Activities titles -->
+    <string name="title_activity_main">MainActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
