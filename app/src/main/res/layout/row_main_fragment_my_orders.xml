@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:padding="8dp"
+    app:cardCornerRadius="5dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/row_main_fragment_tv_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/icon_gas_cylinder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/blue_700"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/grey_800"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/row_main_fragment_tv_order_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/icon_clock_in"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/blue_700"
+            android:gravity="center"
+            android:text="@string/prompt_order_making"
+            android:textColor="@color/grey_800"
+            app:layout_constraintHorizontal_bias="0.005"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_id" />
+
+        <TextView
+            android:id="@+id/row_main_fragment_tv_order_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/icon_address"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/blue_700"
+            android:gravity="center|left"
+            android:maxLines="4"
+            android:text="TextView"
+            android:textColor="@color/grey_800"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_in" />
+
+        <TextView
+            android:id="@+id/row_main_fragment_prompt_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/icon_timer_sand"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/blue_700"
+            android:gravity="center"
+            android:text="@string/prompt_order_status"
+            android:textColor="@color/grey_800"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_address"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/row_main_fragment_tv_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="TextView"
+            android:textColor="@color/grey_800"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/row_main_fragment_prompt_order_status"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_address"
+            app:layout_constraintVertical_bias="0.0" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

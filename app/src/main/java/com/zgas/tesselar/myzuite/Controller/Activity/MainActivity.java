@@ -1,12 +1,16 @@
 package com.zgas.tesselar.myzuite.Controller.Activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -20,6 +24,17 @@ import com.zgas.tesselar.myzuite.R;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "MainActivity";
+    public static final String EXTRA_CASE_ID = "CaseId";
+    public static final String EXTRA_CASE_TIME_IN = "CaseTimeIn";
+    public static final String EXTRA_CASE_TIME_SEEN = "CaseTimeSeen";
+    public static final String EXTRA_CASE_TIME_ARRIVAL = "CaseTimeArrival";
+    public static final String EXTRA_CASE_STATUS = "CaseStatus";
+    public static final String EXTRA_CASE_PRIORITY = "CasePriority";
+    public static final String EXTRA_CASE_USER_NAME = "CaseUserName";
+    public static final String EXTRA_CASE_USER_LASTNAME = "CaseUserLastname";
+    public static final String EXTRA_CASE_USER_ID = "CaseUserId";
+    public static final String EXTRA_CASE_ADDRESS = "CaseAddress";
+    public static final String EXTRA_CASE_TYPE = "CaseType";
 
     private AHBottomNavigation mAhBottomNavigation;
     private CustomViewPager mViewPager;
@@ -40,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initUi() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.prompt_main_fragment);
 
         mViewPager = (CustomViewPager) findViewById(R.id.activity_main_cv_view_pager);
         mViewPager.setPagingEnabled(false);
@@ -62,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initBottomNavigation() {
         mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_fragment), R.drawable.icon_check, R.color.pink_50);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder, R.color.pink_50);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder_menu, R.color.pink_50);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_50);
 
         mAhBottomNavigation.addItem(item1);
@@ -72,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAhBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
         mAhBottomNavigation.setBehaviorTranslationEnabled(false);
         mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink));
+        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_700));
         mAhBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
         mAhBottomNavigation.setForceTint(true);
         mAhBottomNavigation.setTranslucentNavigationEnabled(true);
@@ -111,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onTabSelected(int position, boolean wasSelected) {
                 if (position == 0) {
                     mViewPager.setCurrentItem(0);
-                    Log.d(DEBUG_TAG, "Hello my orders fragment");
+                    Log.d(DEBUG_TAG, "Hello orders fragment");
                 } else if (position == 1) {
                     mViewPager.setCurrentItem(1);
                     Log.d(DEBUG_TAG, "Hello main fragment");
@@ -151,7 +167,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_main_fab_call:
-                Toast.makeText(this, "Click de llamada", Toast.LENGTH_SHORT).show();
+                Log.d(DEBUG_TAG, "Llamada");
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:6241370525"));
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                startActivity(callIntent);
                 break;
         }
     }

@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#1E72B8</color>
-    <color name="colorPrimaryDark">#17578C</color>
+    <color name="colorPrimaryDark">#185b93</color>
     <color name="colorAccent">#E4087E</color>
 
+    <!-- Extra colors -->
     <color name="light_green">#8BC34A</color>
+    <color name="red">#F44336</color>
+    <color name="amber">#FFC107</color>
 
+    <!-- Black & white -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="grey_500">#9E9E9E</color>
-    <color name="grey_800">#424242</color>
+
+    <!-- Blue palette -->
+    <color name="blue_50">#8eb8db</color>
+    <color name="blue_100">#78aad4</color>
+    <color name="blue_200">#619ccd</color>
+    <color name="blue_300">#4a8ec6</color>
+    <color name="blue_400">#3480bf</color>
+    <color name="blue_500">#1E72B8</color>
+    <color name="blue_600">#1b66a5</color>
+    <color name="blue_700">#185b93</color>
+    <color name="blue_800">#154f80</color>
+    <color name="blue_900">#12446e</color>
 
     <!-- Pink palette -->
-    <color name="pink">#E4087E</color>
-    <color name="pink_50">#fb9bcf</color>
+    <color name="pink_50">#f183be</color>
+    <color name="pink_100">#ee6ab1</color>
+    <color name="pink_200">#ec52a4</color>
+    <color name="pink_300">#e93997</color>
+    <color name="pink_400">#e6208a</color>
+    <color name="pink_500">#E4087E</color>
+    <color name="pink_600">#cd0771</color>
+    <color name="pink_700">#b60664</color>
+    <color name="pink_800">#9f0558</color>
+    <color name="pink_900">#88044b</color>
+
+    <!-- Grey palette -->
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+
 </resources>

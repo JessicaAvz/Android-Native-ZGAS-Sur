@@ -9,23 +9,29 @@
     <string name="login">Ingresar</string>
 
     <!-- Activity Main -->
-    <string name="prompt_main_fragment">Mis pedidos</string>
-    <string name="prompt_help_fragment">Ayuda</string>
-    <string name="prompt_order_fragment">Pedido extra</string>
+    <string name="prompt_main_fragment">MIS PEDIDOS</string>
+    <string name="prompt_help_fragment">AYUDA</string>
+    <string name="prompt_order_fragment">PEDIDO EXTRA</string>
     <string name="btn_make_order">Realizar reporte</string>
 
-    <!-- Fragment order -->
+    <!-- Fragment main -->
+    <string name="prompt_order_making">Hora del pedido:</string>
+    <string name="prompt_order_status">Estatus:</string>
+
+    <!-- Fragment aCase -->
     <string name="prompt_order">Ingresa los datos del pedido</string>
     <string name="prompt_username">Nombre de la persona</string>
-    <string name="prompt_phone">Teléfonpo de contacto</string>
+    <string name="prompt_phone">Teléfono de contacto</string>
 
     <!-- Fragment help -->
     <string name="prompt_help">¿Tuviste algún problema?</string>
     <string name="prompt_spinner">Selecciona un problema...</string>
+    <string name="btn_help">Reportar problema</string>
 
     <!-- Activities titles -->
     <string name="title_activity_main">MainActivity</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>
