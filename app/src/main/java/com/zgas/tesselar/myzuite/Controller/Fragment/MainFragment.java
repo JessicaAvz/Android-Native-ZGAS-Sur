@@ -43,7 +43,7 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
-        userPreferences.getUserID();
+        //userPreferences.getUserID();
         initUi(mRootView);
         return mRootView;
     }
