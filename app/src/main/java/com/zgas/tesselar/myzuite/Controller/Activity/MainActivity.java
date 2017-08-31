@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String EXTRA_CASE_TIME_IN = "CaseTimeIn";
     public static final String EXTRA_CASE_TIME_SEEN = "CaseTimeSeen";
     public static final String EXTRA_CASE_TIME_ARRIVAL = "CaseTimeArrival";
+    public static final String EXTRA_CASE_TIME_PROGRAMMED = "CaseTimeProgrammed";
     public static final String EXTRA_CASE_STATUS = "CaseStatus";
     public static final String EXTRA_CASE_PRIORITY = "CasePriority";
     public static final String EXTRA_CASE_USER_NAME = "CaseUserName";
@@ -77,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initBottomNavigation() {
         mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_fragment), R.drawable.icon_check, R.color.pink_50);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder_menu, R.color.pink_50);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_50);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_fragment), R.drawable.icon_check, R.color.pink_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
 
         mAhBottomNavigation.addItem(item1);
         mAhBottomNavigation.addItem(item2);
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAhBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
         mAhBottomNavigation.setBehaviorTranslationEnabled(false);
         mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_700));
+        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
         mAhBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
         mAhBottomNavigation.setForceTint(true);
         mAhBottomNavigation.setTranslucentNavigationEnabled(true);

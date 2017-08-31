@@ -14,6 +14,16 @@
     <string name="prompt_order_fragment">PEDIDO EXTRA</string>
     <string name="btn_make_order">Realizar reporte</string>
 
+    <!-- Activity detail -->
+    <string name="prompt_client_id">Número de cliente</string>
+    <string name="prompt_client_name">Nombre del cliente</string>
+    <string name="prompt_address">Dirección de la entrega</string>
+    <string name="prompt_hour_set">Hora programada para la entrega</string>
+    <string name="prompt_hour_seen">Hora de visualización del pedido</string>
+    <string name="prompt_hour_made">Hora del pedido</string>
+    <string name="prompt_hour_arrived">Hora de entrega</string>
+    <string name="prompt_status">Estatus del pedido</string>
+
     <!-- Fragment main -->
     <string name="prompt_order_making">Hora del pedido:</string>
     <string name="prompt_order_status">Estatus:</string>

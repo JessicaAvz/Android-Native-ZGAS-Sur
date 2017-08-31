@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1E72B8</color>
-    <color name="colorPrimaryDark">#185b93</color>
-    <color name="colorAccent">#E4087E</color>
+    <color name="colorPrimary">@color/dark_grey_500</color>
+    <color name="colorPrimaryDark">@color/dark_grey_700</color>
+    <color name="colorAccent">@color/pink_500</color>
 
     <!-- Extra colors -->
     <color name="light_green">#8BC34A</color>
     <color name="red">#F44336</color>
     <color name="amber">#FFC107</color>
+    <color name="corn_flower_blue">#619ccd</color>
 
     <!-- Black & white -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <!-- Blue palette -->
-    <color name="blue_50">#8eb8db</color>
-    <color name="blue_100">#78aad4</color>
-    <color name="blue_200">#619ccd</color>
-    <color name="blue_300">#4a8ec6</color>
-    <color name="blue_400">#3480bf</color>
-    <color name="blue_500">#1E72B8</color>
-    <color name="blue_600">#1b66a5</color>
-    <color name="blue_700">#185b93</color>
-    <color name="blue_800">#154f80</color>
-    <color name="blue_900">#12446e</color>
+    <!-- Dark grey palette -->
+    <color name="dark_grey_50">#9a9fa7</color>
+    <color name="dark_grey_100">#868b96</color>
+    <color name="dark_grey_200">#727884</color>
+    <color name="dark_grey_300">#5e6572</color>
+    <color name="dark_grey_400">#4a5261</color>
+    <color name="dark_grey_500">#363f50</color>
+    <color name="dark_grey_600">#303848</color>
+    <color name="dark_grey_700">#2b3240</color>
+    <color name="dark_grey_800">#252c38</color>
+    <color name="dark_grey_900">#202530</color>
 
     <!-- Pink palette -->
     <color name="pink_50">#f183be</color>

@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +26,7 @@ public class MainFragment extends Fragment {
 
     private final ArrayList<Case> mCaseList = new ArrayList();
 
+    private UserPreferences userPreferences = new UserPreferences();
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
@@ -42,6 +43,7 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
+        userPreferences.getUserID();
         initUi(mRootView);
         return mRootView;
     }
@@ -57,18 +59,7 @@ public class MainFragment extends Fragment {
         mRecyclerOrders.setLayoutManager(layoutManager);
         mRecyclerOrders.setAdapter(mOrderAdapter);
 
-        /*    private int caseId;
-    private int caseUserId;
-    private Time caseTimeIn;
-    private Time caseTimeSeen;
-    private Time caseTimeArrival;
-    private String caseStatus;
-    private String casePriority;
-    private String caseUserName;
-    private String caseAddress;
-    private caseTypes caseType;*/
-
-        for (int x = 0; x < 100; x++) {
+        for (int x = 0; x < 15; x++) {
             mCase = new Case();
             mCase.setCaseId(x);
             mCase.setCaseAddress("Av. Patria #123");
@@ -77,7 +68,8 @@ public class MainFragment extends Fragment {
             mCase.setCaseTimeIn(null);
             mCase.setCaseTimeSeen(null);
             mCase.setCaseTimeArrival(null);
-            mCase.setCasePriority("ALTA");
+            mCase.setCaseTimeProgrammed(null);
+            mCase.setCasePriority(Case.casePriority.HIGH);
             mCase.setCaseUserName("Jessiquita");
             mCase.setCaseUserId(1234);
             mCase.setCaseUserLastName("Arvizitu");

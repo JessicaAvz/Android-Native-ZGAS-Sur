@@ -62,7 +62,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView status = holder.mOrderStatus;
         if (orderStatus == Case.caseStatus.CANCELLED) {
             status.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (orderStatus == Case.caseStatus.FINALIZED) {
+        } else if (orderStatus == Case.caseStatus.FINISHED) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
         } else if (orderStatus == Case.caseStatus.INPROGRESS) {
             status.setTextColor(context.getResources().getColor(R.color.amber));
@@ -105,17 +105,20 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();
-                    int id = mCaseList.get(requestCode).getCaseId();
-                    String address = mCaseList.get(requestCode).getCaseAddress();
-                    Case.caseStatus status = mCaseList.get(requestCode).getCaseStatus();
-                    Case.caseTypes type = mCaseList.get(requestCode).getCaseType();
-                    Calendar timeIn = mCaseList.get(requestCode).getCaseTimeIn();
-                    Calendar timeSeen = mCaseList.get(requestCode).getCaseTimeSeen();
-                    Calendar timeArrival = mCaseList.get(requestCode).getCaseTimeArrival();
-                    String priority = mCaseList.get(requestCode).getCasePriority();
-                    String userName = mCaseList.get(requestCode).getCaseUserName();
-                    String userLastname = mCaseList.get(requestCode).getCaseUserLastName();
-                    int userId = mCaseList.get(requestCode).getCaseUserId();
+                    Case mCase = mCaseList.get(requestCode);
+
+                    int id = mCase.getCaseId();
+                    String address = mCase.getCaseAddress();
+                    Case.caseStatus status = mCase.getCaseStatus();
+                    Case.caseTypes type = mCase.getCaseType();
+                    Calendar timeIn = mCase.getCaseTimeIn();
+                    Calendar timeSeen = mCase.getCaseTimeSeen();
+                    Calendar timeArrival = mCase.getCaseTimeArrival();
+                    Calendar timeProgrammed = mCase.getCaseTimeProgrammed();
+                    Case.casePriority priority = mCase.getCasePriority();
+                    String userName = mCase.getCaseUserName();
+                    String userLastname = mCase.getCaseUserLastName();
+                    int userId = mCase.getCaseUserId();
 
                     Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
 
@@ -127,22 +130,24 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     bundle.putSerializable(MainActivity.EXTRA_CASE_TIME_IN, timeIn);
                     bundle.putSerializable(MainActivity.EXTRA_CASE_TIME_SEEN, timeSeen);
                     bundle.putSerializable(MainActivity.EXTRA_CASE_TIME_ARRIVAL, timeArrival);
-                    bundle.putString(MainActivity.EXTRA_CASE_PRIORITY, priority);
+                    bundle.putSerializable(MainActivity.EXTRA_CASE_TIME_PROGRAMMED, timeProgrammed);
+                    bundle.putString(MainActivity.EXTRA_CASE_PRIORITY, priority.toString());
                     bundle.putInt(MainActivity.EXTRA_CASE_USER_ID, userId);
                     bundle.putString(MainActivity.EXTRA_CASE_USER_NAME, userName);
                     bundle.putString(MainActivity.EXTRA_CASE_USER_LASTNAME, userLastname);
 
-                    Log.d(DEBUG_TAG, String.valueOf(id));
-                    Log.d(DEBUG_TAG, address);
-                    Log.d(DEBUG_TAG, String.valueOf(status));
-                    Log.d(DEBUG_TAG, String.valueOf(type));
-                    Log.d(DEBUG_TAG, String.valueOf(timeIn));
-                    Log.d(DEBUG_TAG, String.valueOf(timeSeen));
-                    Log.d(DEBUG_TAG, String.valueOf(timeArrival));
-                    Log.d(DEBUG_TAG, priority);
-                    Log.d(DEBUG_TAG, String.valueOf(userId));
-                    Log.d(DEBUG_TAG, userName);
-                    Log.d(DEBUG_TAG, userLastname);
+                    Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(id));
+                    Log.d(DEBUG_TAG, "Dirección del pedido: " + address);
+                    Log.d(DEBUG_TAG, "Estatus del pedido: " + String.valueOf(status));
+                    Log.d(DEBUG_TAG, "Tipo de pedido: " + String.valueOf(type));
+                    Log.d(DEBUG_TAG, "Hora de pedido: " + String.valueOf(timeIn));
+                    Log.d(DEBUG_TAG, "Hora de visualización de pedido: " + String.valueOf(timeSeen));
+                    Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + String.valueOf(timeArrival));
+                    Log.d(DEBUG_TAG, "Hora programada del pedido: " + String.valueOf(timeProgrammed));
+                    Log.d(DEBUG_TAG, "Prioridad del pedido: " + String.valueOf(priority));
+                    Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(userId));
+                    Log.d(DEBUG_TAG, "Nombre del cliente: " + userName);
+                    Log.d(DEBUG_TAG, "Apellido del cliente:" + userLastname);
 
                     Intent intent = new Intent(context, DetailActivity.class);
                     intent.putExtras(bundle);

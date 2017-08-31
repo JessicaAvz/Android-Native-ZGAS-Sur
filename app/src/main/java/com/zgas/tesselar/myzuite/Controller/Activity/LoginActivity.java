@@ -9,11 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
 
+    private UserPreferences userPreferences;
     private EditText mEmail;
     private EditText mPassword;
     private Button mLogin;
@@ -38,6 +40,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
+                userPreferences = new UserPreferences();
+                userPreferences.setUserID(getApplicationContext(), 1);
                 Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 this.finish();

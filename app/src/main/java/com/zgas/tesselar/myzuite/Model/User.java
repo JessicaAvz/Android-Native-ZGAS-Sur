@@ -6,14 +6,35 @@ package com.zgas.tesselar.myzuite.Model;
 
 public class User {
     private int userId;
-    private int userType;
+    private userType userType;
     private String userName;
     private String userLastname;
     private String userEmail;
     private String userPassword;
     private String userRoute;
     private String userZone;
-    private userType userstatus;
+    private userStatus userstatus;
+
+    public enum userStatus{
+        ACTIVE("Activo"),
+        NOTACTIVE("No activo"),
+        VACATION("Vacaciones");
+
+        private final String name;
+
+        private userStatus(String s) {
+            name = s;
+        }
+
+        public boolean equalsName(String otherName) {
+            return name.equals(otherName);
+        }
+
+        public String toString() {
+            return this.name;
+        }
+
+    }
 
     public enum userType{
         OPERATOR("Operador"),
@@ -39,7 +60,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, int userType, String userName, String userLastname, String userEmail, String userPassword, String userRoute, String userZone, User.userType userstatus) {
+    public User(int userId, User.userType userType, String userName, String userLastname, String userEmail, String userPassword, String userRoute, String userZone, userStatus userstatus) {
         this.userId = userId;
         this.userType = userType;
         this.userName = userName;
@@ -59,11 +80,11 @@ public class User {
         this.userId = userId;
     }
 
-    public int getUserType() {
+    public User.userType getUserType() {
         return userType;
     }
 
-    public void setUserType(int userType) {
+    public void setUserType(User.userType userType) {
         this.userType = userType;
     }
 
@@ -115,11 +136,11 @@ public class User {
         this.userZone = userZone;
     }
 
-    public User.userType getUserstatus() {
+    public userStatus getUserstatus() {
         return userstatus;
     }
 
-    public void setUserstatus(User.userType userstatus) {
+    public void setUserstatus(userStatus userstatus) {
         this.userstatus = userstatus;
     }
 }

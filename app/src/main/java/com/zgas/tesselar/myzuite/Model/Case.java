@@ -12,17 +12,38 @@ public class Case {
     private Calendar caseTimeIn;
     private Calendar caseTimeSeen;
     private Calendar caseTimeArrival;
+    private Calendar caseTimeProgrammed;
     private caseStatus caseStatus;
-    private String casePriority;
+    private casePriority casePriority;
     private String caseUserName;
     private String caseUserLastName;
     private String caseAddress;
     private caseTypes caseType;
 
+    public enum casePriority {
+        HIGH("Alta"),
+        MEDIUM("Media"),
+        LOW("Baja");
+
+        private final String name;
+
+        private casePriority(String s) {
+            name = s;
+        }
+
+        public boolean equalsName(String otherName) {
+            return name.equals(otherName);
+        }
+
+        public String toString() {
+            return this.name;
+        }
+    }
+
     public enum caseStatus {
         CANCELLED("Cancelado"),
         INPROGRESS("En curso"),
-        FINALIZED("Finalizado");
+        FINISHED("Finalizado");
 
         private final String name;
 
@@ -38,7 +59,6 @@ public class Case {
             return this.name;
         }
     }
-
 
     public enum caseTypes {
         CANCELLATION("Cancelación"),
@@ -65,12 +85,13 @@ public class Case {
     public Case() {
     }
 
-    public Case(int caseId, int caseUserId, Calendar caseTimeIn, Calendar caseTimeSeen, Calendar caseTimeArrival, Case.caseStatus caseStatus, String casePriority, String caseUserName, String caseUserLastName, String caseAddress, caseTypes caseType) {
+    public Case(int caseId, int caseUserId, Calendar caseTimeIn, Calendar caseTimeSeen, Calendar caseTimeArrival, Calendar caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseUserName, String caseUserLastName, String caseAddress, caseTypes caseType) {
         this.caseId = caseId;
         this.caseUserId = caseUserId;
         this.caseTimeIn = caseTimeIn;
         this.caseTimeSeen = caseTimeSeen;
         this.caseTimeArrival = caseTimeArrival;
+        this.caseTimeProgrammed = caseTimeProgrammed;
         this.caseStatus = caseStatus;
         this.casePriority = casePriority;
         this.caseUserName = caseUserName;
@@ -127,11 +148,11 @@ public class Case {
         this.caseStatus = caseStatus;
     }
 
-    public String getCasePriority() {
+    public casePriority getCasePriority() {
         return casePriority;
     }
 
-    public void setCasePriority(String casePriority) {
+    public void setCasePriority(casePriority casePriority) {
         this.casePriority = casePriority;
     }
 
@@ -165,5 +186,13 @@ public class Case {
 
     public void setCaseUserLastName(String caseUserLastName) {
         this.caseUserLastName = caseUserLastName;
+    }
+
+    public Calendar getCaseTimeProgrammed() {
+        return caseTimeProgrammed;
+    }
+
+    public void setCaseTimeProgrammed(Calendar caseTimeProgrammed) {
+        this.caseTimeProgrammed = caseTimeProgrammed;
     }
 }
