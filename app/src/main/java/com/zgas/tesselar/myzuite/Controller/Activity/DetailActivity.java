@@ -1,10 +1,12 @@
 package com.zgas.tesselar.myzuite.Controller.Activity;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.zgas.tesselar.myzuite.Model.Case;
@@ -12,7 +14,7 @@ import com.zgas.tesselar.myzuite.R;
 
 import java.util.Calendar;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivity";
     private Bundle mBundle;
@@ -38,6 +40,9 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mCaseTimeSeen;
     private TextView mCaseTimeArrived;
     private TextView mCaseTimeProgrammed;
+    private FloatingActionButton mFabInProgress;
+    private FloatingActionButton mFabFinished;
+    private FloatingActionButton mFabCanceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +103,25 @@ public class DetailActivity extends AppCompatActivity {
         mCaseTimeArrived.setText(String.valueOf(mCldCaseTimeArrived));
         mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_tv_time_programmed);
         mCaseTimeProgrammed.setText(String.valueOf(mCldCaseTimeProgrammed));
+        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_fab_in_progress);
+        mFabInProgress.setOnClickListener(this);
+        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_fab_finished);
+        mFabFinished.setOnClickListener(this);
+        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_fab_cancel);
+        mFabCanceled.setOnClickListener(this);
 
         if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
         } else if (mStrCaseStatus.equals(Case.caseStatus.FINISHED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
         } else if (mStrCaseStatus.equals(Case.caseStatus.CANCELLED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.red));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
         }
     }
 
@@ -125,5 +142,17 @@ public class DetailActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.activity_detail_fab_in_progress:
+                break;
+            case R.id.activity_detail_fab_finished:
+                break;
+            case R.id.activity_detail_fab_cancel:
+                break;
+        }
     }
 }
