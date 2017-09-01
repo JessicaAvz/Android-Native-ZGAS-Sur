@@ -5,7 +5,7 @@
     <color name="colorAccent">@color/pink_500</color>
 
     <!-- Extra colors -->
-    <color name="light_green">#8BC34A</color>
+    <color name="light_green">#8bc34a</color>
     <color name="red">#F44336</color>
     <color name="amber">#FFC107</color>
     <color name="corn_flower_blue">#619ccd</color>

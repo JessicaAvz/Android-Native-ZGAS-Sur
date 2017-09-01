@@ -42,8 +42,8 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="70dp"
         android:layout_marginRight="16dp"
-        android:foregroundGravity="center"
-        app:backgroundTint="@color/light_green"
-        android:src="@drawable/icon_call" />
+        android:background="@null"
+        android:src="@drawable/icon_call"
+        app:backgroundTint="@color/light_green" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,8 @@
 package com.zgas.tesselar.myzuite.Controller.Fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zgas.tesselar.myzuite.Controller.Activity.LoginActivity;
 import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -25,12 +27,11 @@ public class MainFragment extends Fragment {
     private static final String DEBUG_TAG = "MainFragment";
 
     private final ArrayList<Case> mCaseList = new ArrayList();
-
-    private UserPreferences userPreferences = new UserPreferences();
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private Case mCase;
+    private SharedPreferences sharedPreferences;
 
     public MainFragment() {
         // Required empty public constructor
@@ -43,8 +44,18 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
-        //userPreferences.getUserID();
         initUi(mRootView);
+        sharedPreferences = this.getContext().getSharedPreferences(LoginActivity.MY_PREFERENCES, Context.MODE_PRIVATE);
+            /*Log.d(DEBUG_TAG, String.valueOf(sharedPreferences.getInt(LoginActivity.USER_ID, 0)));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_EMAIL, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_PASS, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_NAME, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_LASTNAME, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_ROUTE, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_ZONE, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_TYPE, null));
+            Log.d(DEBUG_TAG, sharedPreferences.getString(LoginActivity.USER_STATUS, null));*/
+
         return mRootView;
     }
 
@@ -70,9 +81,9 @@ public class MainFragment extends Fragment {
             mCase.setCaseTimeArrival(null);
             mCase.setCaseTimeProgrammed(null);
             mCase.setCasePriority(Case.casePriority.HIGH);
-            mCase.setCaseUserName("Jessiquita");
+            mCase.setCaseClientName("Oscar");
             mCase.setCaseUserId(1234);
-            mCase.setCaseUserLastName("Arvizitu");
+            mCase.setCaseClientLastname("Arvizu");
             mCaseList.add(mCase);
         }
     }

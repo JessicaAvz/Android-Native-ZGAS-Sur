@@ -10,18 +10,18 @@
         android:id="@+id/activity_login_img_logo"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="80dp"
         android:background="@null"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/myzuite_logo"
-        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintHorizontal_bias="0.498" />
+        app:srcCompat="@drawable/myzuite_logo" />
 
     <!-- Email Label -->
     <android.support.design.widget.TextInputLayout
@@ -29,16 +29,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_img_logo"
-        android:layout_marginRight="30dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="30dp"
         android:layout_marginLeft="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_img_logo">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/activity_login_et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,21 +53,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_til_email"
-        android:layout_marginRight="30dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="30dp"
         android:layout_marginLeft="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_til_email">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/activity_login_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
-            android:inputType="textEmailAddress" />
+            android:inputType="textPassword" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -76,16 +76,17 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="15dp"
         android:background="@color/colorAccent"
+        android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/login"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_til_password"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_til_password" />
 
 </android.support.constraint.ConstraintLayout>

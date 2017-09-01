@@ -2,6 +2,7 @@ package com.zgas.tesselar.myzuite.Controller.Activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MainFragment mMainFragment;
     private OrderFragment mOrderFragment;
     private PagerAdapter mPagerAdapter;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Log.d(DEBUG_TAG, "OnCreate");
         initUi();
+
     }
 
     private void initUi() {

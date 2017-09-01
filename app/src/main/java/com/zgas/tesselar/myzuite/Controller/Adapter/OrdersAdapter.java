@@ -116,8 +116,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     Calendar timeArrival = mCase.getCaseTimeArrival();
                     Calendar timeProgrammed = mCase.getCaseTimeProgrammed();
                     Case.casePriority priority = mCase.getCasePriority();
-                    String userName = mCase.getCaseUserName();
-                    String userLastname = mCase.getCaseUserLastName();
+                    String userName = mCase.getCaseClientName();
+                    String userLastname = mCase.getCaseClientLastname();
                     int userId = mCase.getCaseUserId();
 
                     Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);

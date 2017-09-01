@@ -15,8 +15,8 @@ public class Case {
     private Calendar caseTimeProgrammed;
     private caseStatus caseStatus;
     private casePriority casePriority;
-    private String caseUserName;
-    private String caseUserLastName;
+    private String caseClientName;
+    private String caseClientLastname;
     private String caseAddress;
     private caseTypes caseType;
 
@@ -85,7 +85,7 @@ public class Case {
     public Case() {
     }
 
-    public Case(int caseId, int caseUserId, Calendar caseTimeIn, Calendar caseTimeSeen, Calendar caseTimeArrival, Calendar caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseUserName, String caseUserLastName, String caseAddress, caseTypes caseType) {
+    public Case(int caseId, int caseUserId, Calendar caseTimeIn, Calendar caseTimeSeen, Calendar caseTimeArrival, Calendar caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseClientName, String caseClientLastname, String caseAddress, caseTypes caseType) {
         this.caseId = caseId;
         this.caseUserId = caseUserId;
         this.caseTimeIn = caseTimeIn;
@@ -94,8 +94,8 @@ public class Case {
         this.caseTimeProgrammed = caseTimeProgrammed;
         this.caseStatus = caseStatus;
         this.casePriority = casePriority;
-        this.caseUserName = caseUserName;
-        this.caseUserLastName = caseUserLastName;
+        this.caseClientName = caseClientName;
+        this.caseClientLastname = caseClientLastname;
         this.caseAddress = caseAddress;
         this.caseType = caseType;
     }
@@ -156,12 +156,12 @@ public class Case {
         this.casePriority = casePriority;
     }
 
-    public String getCaseUserName() {
-        return caseUserName;
+    public String getCaseClientName() {
+        return caseClientName;
     }
 
-    public void setCaseUserName(String caseUserName) {
-        this.caseUserName = caseUserName;
+    public void setCaseClientName(String caseClientName) {
+        this.caseClientName = caseClientName;
     }
 
     public String getCaseAddress() {
@@ -180,12 +180,12 @@ public class Case {
         this.caseType = caseType;
     }
 
-    public String getCaseUserLastName() {
-        return caseUserLastName;
+    public String getCaseClientLastname() {
+        return caseClientLastname;
     }
 
-    public void setCaseUserLastName(String caseUserLastName) {
-        this.caseUserLastName = caseUserLastName;
+    public void setCaseClientLastname(String caseClientLastname) {
+        this.caseClientLastname = caseClientLastname;
     }
 
     public Calendar getCaseTimeProgrammed() {
