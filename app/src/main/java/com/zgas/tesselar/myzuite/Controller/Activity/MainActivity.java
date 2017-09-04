@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = new User();
-        mUser.setUserType(User.userType.SUPERVISOR);
+        mUser.setUserType(User.userType.SERVICE);
 
         if (mUser.getUserType() == User.userType.SUPERVISOR) {
             setContentView(R.layout.activity_supervisor);
