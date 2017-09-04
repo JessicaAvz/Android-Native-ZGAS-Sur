@@ -15,21 +15,21 @@ import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by jarvizu on 29/08/2017.
  */
 
-public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
+public class OrdersOperatorAdapter extends RecyclerView.Adapter<OrdersOperatorAdapter.OrderViewHolder> {
 
-    private static final String DEBUG_TAG = "OrdersAdapter";
+    private static final String DEBUG_TAG = "OrdersOperatorAdapter";
 
     private Context context;
     private ArrayList<Case> mCaseList;
 
-    public OrdersAdapter(Context context, ArrayList<Case> mCaseList) {
+    public OrdersOperatorAdapter(Context context, ArrayList<Case> mCaseList) {
         this.context = context;
         this.mCaseList = mCaseList;
     }
@@ -37,18 +37,18 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     @Override
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
-        View v = li.inflate(R.layout.row_main_fragment_my_orders, parent, false);
-        return new OrdersAdapter.OrderViewHolder(v);
+        View v = li.inflate(R.layout.row_main_fragment_operator_my_orders, parent, false);
+        return new OrdersOperatorAdapter.OrderViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(OrdersAdapter.OrderViewHolder holder, int position) {
+    public void onBindViewHolder(OrdersOperatorAdapter.OrderViewHolder holder, int position) {
         Case mCase = mCaseList.get(position);
         int orderId = mCase.getCaseId();
         String orderAddress = mCase.getCaseAddress();
         Case.caseStatus orderStatus = mCase.getCaseStatus();
 
-        Calendar orderHourIn = mCase.getCaseTimeIn();
+        Time orderHourIn = mCase.getCaseTimeIn();
 
         TextView id = holder.mOrderId;
         id.setText("Pedido número: " + String.valueOf(orderId));
@@ -57,7 +57,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         address.setText("Dirección: " + orderAddress);
 
         TextView hourIn = holder.mOrderTimeIn;
-        //hourIn.setText(orderType.toString());
+        hourIn.setText("Hora del pedido: " + orderHourIn.toString());
 
         TextView status = holder.mOrderStatus;
         if (orderStatus == Case.caseStatus.CANCELLED) {
@@ -111,16 +111,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     String address = mCase.getCaseAddress();
                     Case.caseStatus status = mCase.getCaseStatus();
                     Case.caseTypes type = mCase.getCaseType();
-                    Calendar timeIn = mCase.getCaseTimeIn();
-                    Calendar timeSeen = mCase.getCaseTimeSeen();
-                    Calendar timeArrival = mCase.getCaseTimeArrival();
-                    Calendar timeProgrammed = mCase.getCaseTimeProgrammed();
+                    Time timeIn = mCase.getCaseTimeIn();
+                    Time timeSeen = mCase.getCaseTimeSeen();
+                    Time timeArrival = mCase.getCaseTimeArrival();
+                    Time timeProgrammed = mCase.getCaseTimeProgrammed();
                     Case.casePriority priority = mCase.getCasePriority();
                     String userName = mCase.getCaseClientName();
                     String userLastname = mCase.getCaseClientLastname();
                     int userId = mCase.getCaseUserId();
 
-                    Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
+                    Log.d(DEBUG_TAG, "OrdersOperatorAdapter itemView listener for adapter position: " + requestCode);
 
                     Bundle bundle = new Bundle();
                     bundle.putInt(MainActivity.EXTRA_CASE_ID, id);

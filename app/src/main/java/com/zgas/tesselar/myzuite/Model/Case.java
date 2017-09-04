@@ -1,6 +1,6 @@
 package com.zgas.tesselar.myzuite.Model;
 
-import java.util.Calendar;
+import java.sql.Time;
 
 /**
  * Created by jarvizu on 28/08/2017.
@@ -9,10 +9,10 @@ import java.util.Calendar;
 public class Case {
     private int caseId;
     private int caseUserId;
-    private Calendar caseTimeIn;
-    private Calendar caseTimeSeen;
-    private Calendar caseTimeArrival;
-    private Calendar caseTimeProgrammed;
+    private Time caseTimeIn;
+    private Time caseTimeSeen;
+    private Time caseTimeArrival;
+    private Time caseTimeProgrammed;
     private caseStatus caseStatus;
     private casePriority casePriority;
     private String caseClientName;
@@ -85,7 +85,7 @@ public class Case {
     public Case() {
     }
 
-    public Case(int caseId, int caseUserId, Calendar caseTimeIn, Calendar caseTimeSeen, Calendar caseTimeArrival, Calendar caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseClientName, String caseClientLastname, String caseAddress, caseTypes caseType) {
+    public Case(int caseId, int caseUserId, Time caseTimeIn, Time caseTimeSeen, Time caseTimeArrival, Time caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseClientName, String caseClientLastname, String caseAddress, caseTypes caseType) {
         this.caseId = caseId;
         this.caseUserId = caseUserId;
         this.caseTimeIn = caseTimeIn;
@@ -116,27 +116,27 @@ public class Case {
         this.caseUserId = caseUserId;
     }
 
-    public Calendar getCaseTimeIn() {
+    public Time getCaseTimeIn() {
         return caseTimeIn;
     }
 
-    public void setCaseTimeIn(Calendar caseTimeIn) {
+    public void setCaseTimeIn(Time caseTimeIn) {
         this.caseTimeIn = caseTimeIn;
     }
 
-    public Calendar getCaseTimeSeen() {
+    public Time getCaseTimeSeen() {
         return caseTimeSeen;
     }
 
-    public void setCaseTimeSeen(Calendar caseTimeSeen) {
+    public void setCaseTimeSeen(Time caseTimeSeen) {
         this.caseTimeSeen = caseTimeSeen;
     }
 
-    public Calendar getCaseTimeArrival() {
+    public Time getCaseTimeArrival() {
         return caseTimeArrival;
     }
 
-    public void setCaseTimeArrival(Calendar caseTimeArrival) {
+    public void setCaseTimeArrival(Time caseTimeArrival) {
         this.caseTimeArrival = caseTimeArrival;
     }
 
@@ -188,11 +188,11 @@ public class Case {
         this.caseClientLastname = caseClientLastname;
     }
 
-    public Calendar getCaseTimeProgrammed() {
+    public Time getCaseTimeProgrammed() {
         return caseTimeProgrammed;
     }
 
-    public void setCaseTimeProgrammed(Calendar caseTimeProgrammed) {
+    public void setCaseTimeProgrammed(Time caseTimeProgrammed) {
         this.caseTimeProgrammed = caseTimeProgrammed;
     }
 }

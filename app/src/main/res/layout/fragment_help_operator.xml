@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zgas.tesselar.myzuite.Controller.Fragment.HelpFragment">
+    tools:context="com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.HelpFragmentOperator">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/fragment_order_prompt"
+        android:id="@+id/fragment_order_operator_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/fragment_help_sp_options"
+        android:id="@+id/fragment_help_operator_sp_options"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginLeft="30dp"
@@ -35,13 +35,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_order_prompt"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_order_operator_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/fragment_help_btn_send_problem"
+        android:id="@+id/fragment_help_operator_btn_send_problem"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

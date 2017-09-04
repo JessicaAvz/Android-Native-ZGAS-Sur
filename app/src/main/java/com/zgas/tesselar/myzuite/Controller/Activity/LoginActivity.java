@@ -52,28 +52,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
-                /*int id = 1;
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
-                String userName = "Jessica";
-                String userLastname = "Arvizu";
-                String userRoute = "Ruta 1";
-                String userZone = "Zona 1";
-                String userStatus = User.userStatus.ACTIVE.toString();
-                String userType = User.userType.OPERATOR.toString();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt(USER_ID, id);
-                editor.putString(USER_EMAIL, email);
-                editor.putString(USER_PASS, password);
-                editor.putString(USER_NAME, userName);
-                editor.putString(USER_LASTNAME, userLastname);
-                editor.putString(USER_ROUTE, userRoute);
-                editor.putString(USER_ZONE, userZone);
-                editor.putString(USER_STATUS, userStatus);
-                editor.putString(USER_TYPE, userType);
-                editor.commit();*/
-
                 Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 this.finish();

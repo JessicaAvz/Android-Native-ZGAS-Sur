@@ -24,6 +24,28 @@
     <string name="prompt_hour_arrived">Hora de entrega</string>
     <string name="prompt_status">Estatus del pedido</string>
 
+    <!-- Activity supervisor  -->
+    <string name="prompt_supervised">MIS SUPERVISADOS</string>
+    <string name="prompt_supervised_name">Nombre del supervisado</string>
+    <string name="prompt_supervised_status">Estatus del supervisado </string>
+
+    <!-- Finish button -->
+    <string name="dialog_finish_title">Finalizar pedido</string>
+    <string name="dialog_finish_body">¿Está seguro de que desea finalizar el pedido?</string>
+    <string name="dialog_finish_accept">Aceptar</string>
+    <string name="dialog_finish_cancel">Cancelar</string>
+
+    <!-- Cancel button -->
+    <string name="dialog_cancel_title">Cancelar pedido</string>
+    <string name="dialog_cancel_body">¿Está seguro de que desea cancelar el pedido?</string>
+    <string name="dialog_cancel_accept">Aceptar</string>
+    <string name="dialog_cancel_cancel">Cancelar</string>
+
+    <!-- Progress button -->
+    <string name="dialog_in_progress_title">Pedido en curso</string>
+    <string name="dialog_in_progress_body">El pedido se encuentra en curso</string>
+    <string name="dialog_in_progress_accept">Aceptar</string>
+
     <!-- Fragment main -->
     <string name="prompt_order_making">Hora del pedido:</string>
     <string name="prompt_order_status">Estatus:</string>
@@ -43,5 +65,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_supervisor">ActivitySupervisor</string>
 
 </resources>

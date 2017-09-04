@@ -1,11 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zgas.tesselar.myzuite.Controller.Fragment.MainFragment">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.zgas.tesselar.myzuite.Controller.Activity.MainActivity"
+    tools:showIn="@layout/activity_supervisor">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_main_recycler_view"
+        android:id="@+id/activity_supervisor_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -14,4 +18,5 @@
         android:layout_marginTop="60dp"
         android:overScrollMode="never"
         android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
