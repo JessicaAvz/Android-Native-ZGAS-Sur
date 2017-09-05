@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Controller.Activity.DetailActivity;
+import com.zgas.tesselar.myzuite.Controller.Activity.UserOperator.DetailActivityOperator;
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
@@ -149,7 +149,7 @@ public class OrdersOperatorAdapter extends RecyclerView.Adapter<OrdersOperatorAd
                     Log.d(DEBUG_TAG, "Nombre del cliente: " + userName);
                     Log.d(DEBUG_TAG, "Apellido del cliente:" + userLastname);
 
-                    Intent intent = new Intent(context, DetailActivity.class);
+                    Intent intent = new Intent(context, DetailActivityOperator.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }

@@ -1,5 +1,6 @@
-package com.zgas.tesselar.myzuite.Controller.Activity;
+package com.zgas.tesselar.myzuite.Controller.Activity.UserOperator;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,16 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
 import java.sql.Time;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String DEBUG_TAG = "DetailActivity";
+    private static final String DEBUG_TAG = "DetailActivityOperator";
     private Bundle mBundle;
     private int mIntCaseId;
     private int mIntCaseUserId;
@@ -164,25 +168,37 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void finishDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.dialog_finish_title))
-                .setMessage(getResources().getString(R.string.dialog_finish_body))
-                .setIcon(R.drawable.icon_dialog_finish)
-                .setPositiveButton(getResources().getString(R.string.dialog_finish_accept), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        dialogInterface.dismiss();
-                    }
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_finish_case_operator);
+        Log.d(DEBUG_TAG, "OnCreate");
+        dialog.setCancelable(false);
 
-                })
-                .setNegativeButton(getResources().getString(R.string.dialog_finish_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setCancelable(false)
-                .show();
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
+        mBtnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String quantity = ((EditText) dialog.findViewById(R.id.dialog_finish_case_tv_quantity)).getText().toString();
+                final String ticket = ((EditText) dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number)).getText().toString();
+                final String total = ((EditText) dialog.findViewById(R.id.dialog_finish_case_tv_total)).getText().toString();
+
+                Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
+                Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
+                Log.d(DEBUG_TAG, "Total " + total);
+
+                dialog.dismiss();
+            }
+        });
+
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_btn_cancel);
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private void cancelDialog() {

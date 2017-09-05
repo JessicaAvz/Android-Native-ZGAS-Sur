@@ -23,6 +23,9 @@
     <string name="prompt_hour_made">Hora del pedido</string>
     <string name="prompt_hour_arrived">Hora de entrega</string>
     <string name="prompt_status">Estatus del pedido</string>
+    <string name="prompt_tank">Cantidad de litros</string>
+    <string name="prompt_ticket">Folio del ticket</string>
+    <string name="prompt_total">Total</string>
 
     <!-- Activity supervisor  -->
     <string name="prompt_supervised">MIS SUPERVISADOS</string>
@@ -68,3 +71,4 @@
     <string name="title_activity_supervisor">ActivitySupervisor</string>
 
 </resources>
+

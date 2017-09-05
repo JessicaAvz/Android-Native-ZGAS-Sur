@@ -2,7 +2,6 @@ package com.zgas.tesselar.myzuite.Controller.Activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private HelpFragmentService mHelpFragmentService;
     private PagerAdapter mPagerAdapter;
     private SupervisedSupervisorAdapter mSupervisedSupervisorAdapter;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     private User mUser;
     private RecyclerView mRecyclerViewSupervised;

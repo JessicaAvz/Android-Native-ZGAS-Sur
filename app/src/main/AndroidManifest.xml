@@ -36,7 +36,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Controller.Activity.DetailActivity"
+            android:name=".Controller.Activity.UserOperator.DetailActivityOperator"
             android:label="@string/title_activity_detail"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
