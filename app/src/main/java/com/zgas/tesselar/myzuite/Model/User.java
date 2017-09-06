@@ -15,10 +15,9 @@ public class User {
     private String userZone;
     private userStatus userstatus;
 
-    public enum userStatus{
+    public enum userStatus {
         ACTIVE("Activo"),
-        NOTACTIVE("No activo"),
-        VACATION("Vacaciones");
+        NOTACTIVE("No activo");
 
         private final String name;
 
@@ -36,7 +35,7 @@ public class User {
 
     }
 
-    public enum userType{
+    public enum userType {
         OPERATOR("Operador"),
         SERVICE("Servicio medido"),
         SUPERVISOR("Supervisor"),

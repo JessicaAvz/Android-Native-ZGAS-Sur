@@ -14,7 +14,7 @@
     <string name="prompt_order_fragment">PEDIDO EXTRA</string>
     <string name="btn_make_order">Realizar reporte</string>
 
-    <!-- Activity detail -->
+    <!-- Activity detail case-->
     <string name="prompt_client_id">Número de cliente</string>
     <string name="prompt_client_name">Nombre del cliente</string>
     <string name="prompt_address">Dirección de la entrega</string>
@@ -26,6 +26,15 @@
     <string name="prompt_tank">Cantidad de litros</string>
     <string name="prompt_ticket">Folio del ticket</string>
     <string name="prompt_total">Total</string>
+
+    <!-- Activity detail user -->
+    <string name="prompt_detail_user_id">Identificador del usuario</string>
+    <string name="prompt_detail_username">Nombre del usuario</string>
+    <string name="prompt_detail_email">Correo del usuario</string>
+    <string name="prompt_detail_route">Ruta del usuario</string>
+    <string name="prompt_detail_zone">Zona del usuario</string>
+    <string name="prompt_detail_user_type">Tipo de usuario</string>
+    <string name="prompt_detail_user_status">Estatus del usuario</string>
 
     <!-- Activity supervisor  -->
     <string name="prompt_supervised">MIS SUPERVISADOS</string>
@@ -69,6 +78,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_supervisor">ActivitySupervisor</string>
+    <string name="title_activity_detail_supervisor">DetailActivitySupervisor</string>
 
 </resources>
 

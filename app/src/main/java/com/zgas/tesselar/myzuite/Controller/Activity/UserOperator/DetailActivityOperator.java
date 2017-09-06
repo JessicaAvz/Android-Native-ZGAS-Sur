@@ -55,7 +55,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail_operator);
         Log.d(DEBUG_TAG, "OnCreate");
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
 

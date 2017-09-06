@@ -45,6 +45,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String EXTRA_CASE_ADDRESS = "CaseAddress";
     public static final String EXTRA_CASE_TYPE = "CaseType";
 
+    public static final String EXTRA_USER_ID = "UserId";
+    public static final String EXTRA_USER_NAME = "UserName";
+    public static final String EXTRA_USER_LASTNAME = "UserLastname";
+    public static final String EXTRA_USER_EMAIL = "UserEmail";
+    public static final String EXTRA_USER_TYPE = "UserType";
+    public static final String EXTRA_USER_STATUS = "UserStatus";
+    public static final String EXTRA_USER_ROUTE = "UserRoute";
+    public static final String EXTRA_USER_ZONE = "UserZone";
+
     private final ArrayList<User> mUserList = new ArrayList();
 
     private AHBottomNavigation mAhBottomNavigation;
@@ -67,11 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = new User();
-        mUser.setUserType(User.userType.SERVICE);
+        mUser.setUserType(User.userType.SUPERVISOR);
 
         if (mUser.getUserType() == User.userType.SUPERVISOR) {
+            Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
         } else {
+            Log.d(DEBUG_TAG, "OnCreate normales");
             setContentView(R.layout.activity_main);
         }
 
@@ -139,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFabCallSupervisor = (FloatingActionButton) findViewById(R.id.ativity_supervisor_fab_call);
         mFabCallSupervisor.setOnClickListener(this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        mSupervisedSupervisorAdapter = new SupervisedSupervisorAdapter(getApplicationContext(), mUserList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mSupervisedSupervisorAdapter = new SupervisedSupervisorAdapter(this, mUserList);
 
         mRecyclerViewSupervised = (RecyclerView) findViewById(R.id.activity_supervisor_recycler_view);
         mRecyclerViewSupervised.setHasFixedSize(true);
@@ -154,6 +165,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mUser.setUserId(x);
             mUser.setUserName("Juan");
             mUser.setUserLastname("López");
+            mUser.setUserEmail("jlopez@test.com");
+            mUser.setUserRoute("Ruta 4");
+            mUser.setUserZone("Cancún");
+            mUser.setUserType(User.userType.OPERATOR);
             mUser.setUserstatus(User.userStatus.ACTIVE);
             mUserList.add(mUser);
         }
