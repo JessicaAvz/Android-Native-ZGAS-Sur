@@ -1,7 +1,6 @@
-package com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator;
+package com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,18 +20,17 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragmentOperator extends Fragment {
+public class MainFragmentLeak extends Fragment {
 
-    private static final String DEBUG_TAG = "MainFragmentOperator";
+    private static final String DEBUG_TAG = "MainFragmentLeak";
 
     private final ArrayList<Case> mCaseList = new ArrayList();
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private Case mCase;
-    private SharedPreferences sharedPreferences;
 
-    public MainFragmentOperator() {
+    public MainFragmentLeak() {
         // Required empty public constructor
     }
 
@@ -41,7 +39,7 @@ public class MainFragmentOperator extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_main_leak, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
         initUi(mRootView);
         return mRootView;
@@ -51,7 +49,7 @@ public class MainFragmentOperator extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList);
 
-        mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_operator_recycler_view);
+        mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_leak_recycler_view);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);
@@ -63,7 +61,7 @@ public class MainFragmentOperator extends Fragment {
             mCase.setCaseId(x);
             mCase.setCaseAddress("Av. Patria #123");
             mCase.setCaseStatus(Case.caseStatus.INPROGRESS);
-            mCase.setCaseType(Case.caseTypes.ORDER);
+            mCase.setCaseType(Case.caseTypes.LEAKAGE);
             mCase.setCaseTimeIn(new Time(4, 40, 0));
             mCase.setCaseTimeSeen(new Time(System.currentTimeMillis()));
             mCase.setCaseTimeArrival(new Time(7, 30, 0));
@@ -75,4 +73,5 @@ public class MainFragmentOperator extends Fragment {
             mCaseList.add(mCase);
         }
     }
+
 }

@@ -44,6 +44,10 @@
         <activity
             android:name=".Controller.Activity.UserSupervisor.DetailActivitySupervisor"
             android:label="@string/title_activity_detail_supervisor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.Activity.UserLeakage.DetailActivityLeakage"
+            android:label="@string/title_activity_detail_leakage"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

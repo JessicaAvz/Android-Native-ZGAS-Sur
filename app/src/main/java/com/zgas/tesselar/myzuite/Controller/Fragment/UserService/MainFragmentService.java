@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersOperatorAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
@@ -27,7 +27,7 @@ public class MainFragmentService extends Fragment {
 
     private final ArrayList<Case> mCaseList = new ArrayList();
     private RecyclerView mRecyclerOrders;
-    private OrdersOperatorAdapter mOrderAdapter;
+    private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private Case mCase;
     private SharedPreferences sharedPreferences;
@@ -49,7 +49,7 @@ public class MainFragmentService extends Fragment {
 
     private void initUi(View pRootview) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mOrderAdapter = new OrdersOperatorAdapter(getActivity(), mCaseList);
+        mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList);
 
         mRecyclerOrders = pRootview.findViewById(R.id.fragment_main_service_recycler_view);
         mRecyclerOrders.setHasFixedSize(true);

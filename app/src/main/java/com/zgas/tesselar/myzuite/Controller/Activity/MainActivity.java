@@ -18,6 +18,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
 import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisedSupervisorAdapter;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.HelpFragmentLeak;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.MainFragmentLeak;
 import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.HelpFragmentOperator;
 import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.MainFragmentOperator;
 import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.OrderFragmentOperator;
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private OrderFragmentOperator mOrderFragmentOperator;
     private MainFragmentService mMainFragmentService;
     private HelpFragmentService mHelpFragmentService;
+    private HelpFragmentLeak mHelpFragmentLeak;
+    private MainFragmentLeak mMainFragmentLeak;
     private PagerAdapter mPagerAdapter;
     private SupervisedSupervisorAdapter mSupervisedSupervisorAdapter;
 
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = new User();
-        mUser.setUserType(User.userType.SUPERVISOR);
+        mUser.setUserType(User.userType.LEAKAGE);
 
         if (mUser.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initUiSupervisor();
         } else if (mUser.getUserType() == User.userType.LEAKAGE) {
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
-
+            initUiLeakage();
         }
     }
 
@@ -172,6 +176,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mUser.setUserstatus(User.userStatus.ACTIVE);
             mUserList.add(mUser);
         }
+    }
+
+    private void initUiLeakage() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.prompt_order_leak);
+
+        mViewPager = (CustomViewPager) findViewById(R.id.activity_main_cv_view_pager);
+        mViewPager.setPagingEnabled(false);
+        mFabCall = (FloatingActionButton) findViewById(R.id.activity_main_fab_call);
+        mFabCall.setOnClickListener(this);
+
+        mMainFragmentLeak = new MainFragmentLeak();
+        mHelpFragmentLeak = new HelpFragmentLeak();
+
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mPagerAdapter.addFragment(mMainFragmentLeak);
+        mPagerAdapter.addFragment(mHelpFragmentLeak);
+        mViewPager.setAdapter(mPagerAdapter);
+        initBottomNavigationLeakage();
     }
 
     private void initBottomNavigationOperator() {
@@ -271,6 +295,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (position) {
                     case 0:
                         getSupportActionBar().setTitle(R.string.prompt_main_fragment);
+                        break;
+                    case 1:
+                        getSupportActionBar().setTitle(R.string.prompt_help_fragment);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        mAhBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                if (position == 0) {
+                    mViewPager.setCurrentItem(0);
+                } else if (position == 1) {
+                    mViewPager.setCurrentItem(1);
+                }
+                return true;
+            }
+        });
+        mAhBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+            @Override
+            public void onPositionChange(int y) {
+                Log.d(DEBUG_TAG, "BottomNavigation Position: " + y);
+            }
+        });
+    }
+
+    private void initBottomNavigationLeakage() {
+        mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_leak), R.drawable.icon_truck_fast, R.color.pink_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
+
+        mAhBottomNavigation.addItem(item1);
+        mAhBottomNavigation.addItem(item2);
+
+        mAhBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
+        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
+        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
+        mAhBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        mAhBottomNavigation.setForceTint(true);
+        mAhBottomNavigation.setTranslucentNavigationEnabled(true);
+        mAhBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+        mAhBottomNavigation.setCurrentItem(0);
+        mViewPager.setCurrentItem(0);
+        mViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                animateFab(position);
+                switch (position) {
+                    case 0:
+                        getSupportActionBar().setTitle(R.string.prompt_order_leak);
                         break;
                     case 1:
                         getSupportActionBar().setTitle(R.string.prompt_help_fragment);

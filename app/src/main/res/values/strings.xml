@@ -12,6 +12,7 @@
     <string name="prompt_main_fragment">MIS PEDIDOS</string>
     <string name="prompt_help_fragment">AYUDA</string>
     <string name="prompt_order_fragment">PEDIDO EXTRA</string>
+    <string name="prompt_order_leak">MIS FUGAS</string>
     <string name="btn_make_order">Realizar reporte</string>
 
     <!-- Activity detail case-->
@@ -72,6 +73,9 @@
     <string name="prompt_spinner">Selecciona un problema...</string>
     <string name="btn_help">Reportar problema</string>
 
+    <!-- Fragment Leaks -->
+
+
     <!-- Activities titles -->
     <string name="title_activity_main">MainActivity</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -79,6 +83,7 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_supervisor">ActivitySupervisor</string>
     <string name="title_activity_detail_supervisor">DetailActivitySupervisor</string>
+    <string name="title_activity_detail_leakage">DetailActivityLeakage</string>
 
 </resources>
 

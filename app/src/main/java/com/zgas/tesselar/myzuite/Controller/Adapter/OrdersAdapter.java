@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Controller.Activity.UserOperator.DetailActivityOperator;
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Activity.UserLeakage.DetailActivityLeakage;
+import com.zgas.tesselar.myzuite.Controller.Activity.UserOperator.DetailActivityOperator;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
@@ -22,14 +23,16 @@ import java.util.ArrayList;
  * Created by jarvizu on 29/08/2017.
  */
 
-public class OrdersOperatorAdapter extends RecyclerView.Adapter<OrdersOperatorAdapter.OrderViewHolder> {
+public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
-    private static final String DEBUG_TAG = "OrdersOperatorAdapter";
+    private static final String DEBUG_TAG = "OrdersAdapter";
 
     private Context context;
     private ArrayList<Case> mCaseList;
+    private Case.caseTypes mCaseType;
+    private Intent intent;
 
-    public OrdersOperatorAdapter(Context context, ArrayList<Case> mCaseList) {
+    public OrdersAdapter(Context context, ArrayList<Case> mCaseList) {
         this.context = context;
         this.mCaseList = mCaseList;
     }
@@ -38,26 +41,35 @@ public class OrdersOperatorAdapter extends RecyclerView.Adapter<OrdersOperatorAd
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         View v = li.inflate(R.layout.row_main_fragment_operator_my_orders, parent, false);
-        return new OrdersOperatorAdapter.OrderViewHolder(v);
+        return new OrdersAdapter.OrderViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(OrdersOperatorAdapter.OrderViewHolder holder, int position) {
+    public void onBindViewHolder(OrdersAdapter.OrderViewHolder holder, int position) {
         Case mCase = mCaseList.get(position);
         int orderId = mCase.getCaseId();
         String orderAddress = mCase.getCaseAddress();
         Case.caseStatus orderStatus = mCase.getCaseStatus();
+        Case.caseTypes orderType = mCase.getCaseType();
 
         Time orderHourIn = mCase.getCaseTimeIn();
 
         TextView id = holder.mOrderId;
-        id.setText("Pedido número: " + String.valueOf(orderId));
-
         TextView address = holder.mOrderAddress;
-        address.setText("Dirección: " + orderAddress);
-
         TextView hourIn = holder.mOrderTimeIn;
-        hourIn.setText("Hora del pedido: " + orderHourIn.toString());
+
+        if (orderType.equals(Case.caseTypes.ORDER)) {
+            id.setText("Pedido número: " + String.valueOf(orderId));
+            address.setText("Dirección: " + orderAddress);
+            hourIn.setText("Hora del pedido: " + orderHourIn.toString());
+        } else if (orderType.equals(Case.caseTypes.LEAKAGE)) {
+            id.setText("Fuga número: " + String.valueOf(orderId));
+            address.setText("Dirección: " + orderAddress);
+            hourIn.setText("Hora del reporte: " + orderHourIn.toString());
+        } else if (orderType.equals(Case.caseTypes.CANCELLATION)) {
+        } else if (orderType.equals(Case.caseTypes.CUT)) {
+        } else if (orderType.equals(Case.caseTypes.RECONNECTION)) {
+        }
 
         TextView status = holder.mOrderStatus;
         if (orderStatus == Case.caseStatus.CANCELLED) {
@@ -120,7 +132,7 @@ public class OrdersOperatorAdapter extends RecyclerView.Adapter<OrdersOperatorAd
                     String userLastname = mCase.getCaseClientLastname();
                     int userId = mCase.getCaseUserId();
 
-                    Log.d(DEBUG_TAG, "OrdersOperatorAdapter itemView listener for adapter position: " + requestCode);
+                    Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
 
                     Bundle bundle = new Bundle();
                     bundle.putInt(MainActivity.EXTRA_CASE_ID, id);
@@ -149,9 +161,20 @@ public class OrdersOperatorAdapter extends RecyclerView.Adapter<OrdersOperatorAd
                     Log.d(DEBUG_TAG, "Nombre del cliente: " + userName);
                     Log.d(DEBUG_TAG, "Apellido del cliente:" + userLastname);
 
-                    Intent intent = new Intent(context, DetailActivityOperator.class);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
+                    intent = new Intent();
+
+                    if (type.equals(Case.caseTypes.ORDER)) {
+                        intent = new Intent(context, DetailActivityOperator.class);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    } else if (type.equals(Case.caseTypes.LEAKAGE)) {
+                        intent = new Intent(context, DetailActivityLeakage.class);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    } else if (type.equals(Case.caseTypes.CANCELLATION)) {
+                    } else if (type.equals(Case.caseTypes.CUT)) {
+                    } else if (type.equals(Case.caseTypes.RECONNECTION)) {
+                    }
                 }
             });
         }
