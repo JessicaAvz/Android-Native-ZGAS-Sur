@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
         } else {
-            Log.d(DEBUG_TAG, "OnCreate normales");
+            Log.d(DEBUG_TAG, "OnCreate Normales");
             setContentView(R.layout.activity_main);
         }
 
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
-                animateFab(position);
+                animateFabOperator(position);
                 switch (position) {
                     case 0:
                         getSupportActionBar().setTitle(R.string.prompt_order_fragment);
@@ -395,6 +395,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 1:
                 mFabCall.hide();
+                break;
+            default:
+                mFabCall.hide();
+                break;
+        }
+    }
+
+    private void animateFabOperator(int pPosition) {
+        switch (pPosition) {
+            case 0:
+                mFabCall.hide();
+                break;
+            case 1:
+                mFabCall.show();
                 break;
             default:
                 mFabCall.hide();
