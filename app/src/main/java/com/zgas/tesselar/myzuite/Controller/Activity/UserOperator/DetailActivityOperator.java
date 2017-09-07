@@ -41,7 +41,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private TextView mUserName;
     private TextView mCaseAddress;
     private TextView mCaseStatus;
-    private TextView mCaseType;
     private TextView mCaseTimeIn;
     private TextView mCaseTimeSeen;
     private TextView mCaseTimeArrived;
@@ -95,27 +94,28 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle del pedido " + mIntCaseId);
 
-        mUserId = (TextView) findViewById(R.id.activity_detail_tv_client_id);
+
+        mUserId = (TextView) findViewById(R.id.activity_detai_operator_tv_client_id);
         mUserId.setText(String.valueOf(mIntCaseUserId));
-        mUserName = (TextView) findViewById(R.id.activity_detail_tv_client_name);
+        mUserName = (TextView) findViewById(R.id.activity_detail_operator_tv_client_name);
         mUserName.setText(mStrCaseUserName + " " + mStrCaseUserLastname);
-        mCaseAddress = (TextView) findViewById(R.id.activity_detail_tv_case_address);
+        mCaseAddress = (TextView) findViewById(R.id.activity_detail_operator_tv_case_address);
         mCaseAddress.setText(mStrCaseAddress);
-        mCaseStatus = (TextView) findViewById(R.id.activity_detail_tv_status);
+        mCaseStatus = (TextView) findViewById(R.id.activity_detail_operator_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
-        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_tv_time_in);
+        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_operator_tv_time_in);
         mCaseTimeIn.setText(String.valueOf(mCldCaseTimeIn));
-        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_tv_time_seen);
+        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_operator_tv_time_seen);
         mCaseTimeSeen.setText(String.valueOf(mCldCaseTimeSeen));
-        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_tv_arrived);
+        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_operator_tv_arrived);
         mCaseTimeArrived.setText(String.valueOf(mCldCaseTimeArrived));
-        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_tv_time_programmed);
+        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_operator_tv_time_programmed);
         mCaseTimeProgrammed.setText(String.valueOf(mCldCaseTimeProgrammed));
-        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_fab_in_progress);
+        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
-        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_fab_finished);
+        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_finished);
         mFabFinished.setOnClickListener(this);
-        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_fab_cancel);
+        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_cancel);
         mFabCanceled.setOnClickListener(this);
 
         if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
@@ -155,13 +155,13 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.activity_detail_fab_in_progress:
+            case R.id.activity_detail_operator_fab_in_progress:
                 inProgressDialog();
                 break;
-            case R.id.activity_detail_fab_finished:
+            case R.id.activity_detail_operator_fab_finished:
                 finishDialog();
                 break;
-            case R.id.activity_detail_fab_cancel:
+            case R.id.activity_detail_operator_fab_cancel:
                 cancelDialog();
                 break;
         }

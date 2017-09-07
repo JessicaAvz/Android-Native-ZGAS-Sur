@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = new User();
-        mUser.setUserType(User.userType.LEAKAGE);
+        mUser.setUserType(User.userType.OPERATOR);
 
         if (mUser.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");

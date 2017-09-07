@@ -16,26 +16,39 @@
     <string name="btn_make_order">Realizar reporte</string>
 
     <!-- Activity detail case-->
-    <string name="prompt_client_id">Número de cliente</string>
-    <string name="prompt_client_name">Nombre del cliente</string>
-    <string name="prompt_address">Dirección de la entrega</string>
-    <string name="prompt_hour_set">Hora programada para la entrega</string>
-    <string name="prompt_hour_seen">Hora de visualización del pedido</string>
-    <string name="prompt_hour_made">Hora del pedido</string>
-    <string name="prompt_hour_arrived">Hora de entrega</string>
-    <string name="prompt_status">Estatus del pedido</string>
-    <string name="prompt_tank">Cantidad de litros</string>
-    <string name="prompt_ticket">Folio del ticket</string>
-    <string name="prompt_total">Total</string>
+    <string name="prompt_detail_operator_client_id">Número de cliente</string>
+    <string name="prompt_detail_operator_client_name">Nombre del cliente</string>
+    <string name="prompt_detail_operator_address">Dirección de la entrega</string>
+    <string name="prompt_detail_operator_hour_set">Hora programada para la entrega</string>
+    <string name="prompt_detail_operator_hour_seen">Hora de visualización del pedido</string>
+    <string name="prompt_detail_operator_hour_made">Hora del pedido</string>
+    <string name="prompt_detail_operator_hour_arrived">Hora de entrega</string>
+    <string name="prompt_detail_operator_status">Estatus del pedido</string>
+    <string name="prompt_detail_operator_tank">Cantidad de litros</string>
+    <string name="prompt_detail_operator_ticket">Folio del ticket</string>
+    <string name="prompt_detail_operator_total">Total</string>
+
+    <!-- Activity detail leakage -->
+    <string name="prompt_detail_leakage_client_id">Número de cliente</string>
+    <string name="prompt_detail_leakage_client_name">Nombre del cliente</string>
+    <string name="prompt_detail_leakage_address">Dirección del reporte</string>
+    <string name="prompt_detail_leakage_hour_set">Hora programada para el reporte</string>
+    <string name="prompt_detail_leakage_hour_seen">Hora de visualización del reporte</string>
+    <string name="prompt_detail_leakage_hour_made">Hora del reporte</string>
+    <string name="prompt_detail_leakage_hour_arrived">Hora de entrega</string>
+    <string name="prompt_detail_leakage_status">Estatus del reporte</string>
+    <string name="prompt_detail_leakage_tank">Cantidad de litros</string>
+    <string name="prompt_detail_leakage_ticket">Folio del ticket</string>
+    <string name="prompt_detail_leakage_total">Total</string>
 
     <!-- Activity detail user -->
-    <string name="prompt_detail_user_id">Identificador del usuario</string>
-    <string name="prompt_detail_username">Nombre del usuario</string>
-    <string name="prompt_detail_email">Correo del usuario</string>
-    <string name="prompt_detail_route">Ruta del usuario</string>
-    <string name="prompt_detail_zone">Zona del usuario</string>
-    <string name="prompt_detail_user_type">Tipo de usuario</string>
-    <string name="prompt_detail_user_status">Estatus del usuario</string>
+    <string name="prompt_detail_supervisor_user_id">Identificador del usuario</string>
+    <string name="prompt_detail_supervisor_username">Nombre del usuario</string>
+    <string name="prompt_detail_supervisor_email">Correo del usuario</string>
+    <string name="prompt_detail_supervisor_route">Ruta del usuario</string>
+    <string name="prompt_detail_supervisor_zone">Zona del usuario</string>
+    <string name="prompt_detail_supervisor_user_type">Tipo de usuario</string>
+    <string name="prompt_detail_supervisor_user_status">Estatus del usuario</string>
 
     <!-- Activity supervisor  -->
     <string name="prompt_supervised">MIS SUPERVISADOS</string>

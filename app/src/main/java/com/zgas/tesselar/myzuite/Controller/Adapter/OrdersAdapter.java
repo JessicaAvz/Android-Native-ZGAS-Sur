@@ -47,39 +47,46 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     @Override
     public void onBindViewHolder(OrdersAdapter.OrderViewHolder holder, int position) {
         Case mCase = mCaseList.get(position);
-        int orderId = mCase.getCaseId();
-        String orderAddress = mCase.getCaseAddress();
-        Case.caseStatus orderStatus = mCase.getCaseStatus();
-        Case.caseTypes orderType = mCase.getCaseType();
-
+        int caseId = mCase.getCaseId();
+        String caseAddress = mCase.getCaseAddress();
+        Case.caseStatus caseStatus = mCase.getCaseStatus();
+        Case.caseTypes caseType = mCase.getCaseType();
         Time orderHourIn = mCase.getCaseTimeIn();
 
         TextView id = holder.mOrderId;
         TextView address = holder.mOrderAddress;
         TextView hourIn = holder.mOrderTimeIn;
 
-        if (orderType.equals(Case.caseTypes.ORDER)) {
-            id.setText("Pedido número: " + String.valueOf(orderId));
-            address.setText("Dirección: " + orderAddress);
-            hourIn.setText("Hora del pedido: " + orderHourIn.toString());
-        } else if (orderType.equals(Case.caseTypes.LEAKAGE)) {
-            id.setText("Fuga número: " + String.valueOf(orderId));
-            address.setText("Dirección: " + orderAddress);
+        if (caseType.equals(Case.caseTypes.LEAKAGE)) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.LEAKAGE));
+            id.setText("Reporte número: " + String.valueOf(caseId));
+            address.setText("Dirección: " + caseAddress);
             hourIn.setText("Hora del reporte: " + orderHourIn.toString());
-        } else if (orderType.equals(Case.caseTypes.CANCELLATION)) {
-        } else if (orderType.equals(Case.caseTypes.CUT)) {
-        } else if (orderType.equals(Case.caseTypes.RECONNECTION)) {
+        } else if (caseType.equals(Case.caseTypes.ORDER)) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
+            id.setText("Pedido número: " + String.valueOf(caseId));
+            address.setText("Dirección: " + caseAddress);
+            hourIn.setText("Hora del pedido: " + orderHourIn.toString());
+        } else if (caseType.equals(Case.caseTypes.CUT)) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.CUT));
+        } else if (caseType.equals(Case.caseTypes.CANCELLATION)) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.CANCELLATION));
+        } else if (caseType.equals(Case.caseTypes.RECONNECTION)) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.RECONNECTION));
         }
 
         TextView status = holder.mOrderStatus;
-        if (orderStatus == Case.caseStatus.CANCELLED) {
+        if (caseStatus == Case.caseStatus.CANCELLED) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.CANCELLED));
             status.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (orderStatus == Case.caseStatus.FINISHED) {
+        } else if (caseStatus == Case.caseStatus.FINISHED) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.FINISHED));
             status.setTextColor(context.getResources().getColor(R.color.light_green));
-        } else if (orderStatus == Case.caseStatus.INPROGRESS) {
+        } else if (caseStatus == Case.caseStatus.INPROGRESS) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.INPROGRESS));
             status.setTextColor(context.getResources().getColor(R.color.amber));
         }
-        status.setText(orderStatus.toString());
+        status.setText(caseStatus.toString());
 
         holder.itemView.setTag(mCaseList.get(position));
     }
@@ -162,7 +169,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     Log.d(DEBUG_TAG, "Apellido del cliente:" + userLastname);
 
                     intent = new Intent();
-
                     if (type.equals(Case.caseTypes.ORDER)) {
                         intent = new Intent(context, DetailActivityOperator.class);
                         intent.putExtras(bundle);
