@@ -65,6 +65,7 @@ public class Case {
         LEAKAGE("Fuga"),
         CUT("Corte"),
         ORDER("Pedido"),
+        SERVICE("Servicio medido"),
         RECONNECTION("Reconexión");
 
         private final String name;

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.R;
@@ -56,6 +57,7 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fragment_help_operator_btn_send_problem:
+                Toast.makeText(getContext(), "Prueba de click", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

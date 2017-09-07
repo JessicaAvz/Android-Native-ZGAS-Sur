@@ -14,6 +14,7 @@
     <string name="prompt_order_fragment">PEDIDO EXTRA</string>
     <string name="prompt_order_leak">MIS FUGAS</string>
     <string name="btn_make_order">Realizar reporte</string>
+    <string name="prompt_main_fragment_service">MIS SERVICIOS</string>
 
     <!-- Activity detail case-->
     <string name="prompt_detail_operator_client_id">Número de cliente</string>

@@ -61,7 +61,7 @@ public class MainFragmentOperator extends Fragment {
         for (int x = 0; x < 15; x++) {
             mCase = new Case();
             mCase.setCaseId(x);
-            mCase.setCaseAddress("Av. Patria #123");
+            mCase.setCaseAddress("Leon Tolstoi #4964");
             mCase.setCaseStatus(Case.caseStatus.INPROGRESS);
             mCase.setCaseType(Case.caseTypes.ORDER);
             mCase.setCaseTimeIn(new Time(4, 40, 0));

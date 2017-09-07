@@ -19,7 +19,7 @@ import com.zgas.tesselar.myzuite.R;
  */
 public class HelpFragmentLeak extends Fragment implements View.OnClickListener {
 
-    private static final String DEBUG_TAG = "HelpFragmentLeak";
+    private static final String DEBUG_TAG = "HelpFragmentOperator";
     private Spinner mOptions;
     private Button mSendProblem;
     private View mRootView;

@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initUiService() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.prompt_main_fragment);
+        getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
 
         mViewPager = (CustomViewPager) findViewById(R.id.activity_main_cv_view_pager);
         mViewPager.setPagingEnabled(false);
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initBottomNavigationService() {
         mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment_service), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
 
         mAhBottomNavigation.addItem(item1);
@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 animateFab(position);
                 switch (position) {
                     case 0:
-                        getSupportActionBar().setTitle(R.string.prompt_main_fragment);
+                        getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
                         break;
                     case 1:
                         getSupportActionBar().setTitle(R.string.prompt_help_fragment);

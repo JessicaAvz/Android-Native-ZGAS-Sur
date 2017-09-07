@@ -49,7 +49,7 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fragment_order_operator_btn_make_order:
-                Toast.makeText(getContext(), "Si funciona el onclick", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Prueba de click", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
