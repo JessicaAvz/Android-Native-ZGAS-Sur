@@ -10,8 +10,8 @@
 
     <!-- Activity Main -->
     <string name="prompt_main_fragment">MIS PEDIDOS</string>
-    <string name="prompt_help_fragment">AYUDA</string>
-    <string name="prompt_order_fragment">PEDIDO EXTRA</string>
+    <string name="prompt_help_fragment">INCIDENCIAS</string>
+    <string name="prompt_order_fragment">ALTA PEDIDO</string>
     <string name="prompt_order_leak">MIS FUGAS</string>
     <string name="btn_make_order">Realizar reporte</string>
     <string name="prompt_main_fragment_service">MIS SERVICIOS</string>
@@ -64,7 +64,8 @@
 
     <!-- Cancel button -->
     <string name="dialog_cancel_title">Cancelar pedido</string>
-    <string name="dialog_cancel_body">¿Está seguro de que desea cancelar el pedido?</string>
+    <string name="dialog_cancel_body">¿Por qué desea cancelar el pedido?</string>
+    <string name="dialog_cancel_hint">Descrición...</string>
     <string name="dialog_cancel_accept">Aceptar</string>
     <string name="dialog_cancel_cancel">Cancelar</string>
 
@@ -83,9 +84,9 @@
     <string name="prompt_phone">Teléfono de contacto</string>
 
     <!-- Fragment help -->
-    <string name="prompt_help">¿Tuviste algún problema?</string>
-    <string name="prompt_spinner">Selecciona un problema...</string>
-    <string name="btn_help">Reportar problema</string>
+    <string name="prompt_help">¿Tuviste alguna incidencia?</string>
+    <string name="prompt_spinner">Selecciona una opción...</string>
+    <string name="btn_help">Reportar incidencia</string>
 
     <!-- Fragment Leaks -->
 

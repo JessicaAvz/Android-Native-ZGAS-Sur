@@ -87,7 +87,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             status.setTextColor(context.getResources().getColor(R.color.amber));
         }
         status.setText(caseStatus.toString());
-
         holder.itemView.setTag(mCaseList.get(position));
     }
 

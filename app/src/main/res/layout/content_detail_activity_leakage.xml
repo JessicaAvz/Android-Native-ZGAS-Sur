@@ -346,4 +346,20 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_tv_status"
         app:srcCompat="@drawable/icon_close" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/activity_detail_leakage_fab_waze"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="126dp"
+        android:clickable="true"
+        app:backgroundTint="@color/sky_blue"
+        app:fabSize="mini"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/activity_detail_leakage_prompt_case_address"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_waze" />
+
 </android.support.constraint.ConstraintLayout>

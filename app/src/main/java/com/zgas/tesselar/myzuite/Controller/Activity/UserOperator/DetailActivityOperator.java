@@ -12,11 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
@@ -34,10 +37,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private Time mCldCaseTimeIn;
-    private Time mCldCaseTimeSeen;
-    private Time mCldCaseTimeArrived;
-    private Time mCldCaseTimeProgrammed;
+    private Time mTmCaseTimeIn;
+    private Time mTmCaseTimeSeen;
+    private Time mTmCaseTimeArrived;
+    private Time mTmCaseTimeProgrammed;
 
     private TextView mUserId;
     private TextView mUserName;
@@ -74,10 +77,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCaseStatus = mBundle.getString(MainActivity.EXTRA_CASE_STATUS);
         mStrCaseType = mBundle.getString(MainActivity.EXTRA_CASE_TYPE);
         mStrCasePriority = mBundle.getString(MainActivity.EXTRA_CASE_PRIORITY);
-        mCldCaseTimeIn = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_IN);
-        mCldCaseTimeSeen = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_SEEN);
-        mCldCaseTimeArrived = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
+        mTmCaseTimeIn = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_IN);
+        mTmCaseTimeSeen = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_SEEN);
+        mTmCaseTimeArrived = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
+        mTmCaseTimeProgrammed = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
 
         Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mIntCaseId));
         Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -87,16 +90,15 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus.toString());
         Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType.toString());
         Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority.toString());
-        Log.d(DEBUG_TAG, "Hora de pedido: " + String.valueOf(mCldCaseTimeIn));
-        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + String.valueOf(mCldCaseTimeSeen));
-        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + String.valueOf(mCldCaseTimeArrived));
+        Log.d(DEBUG_TAG, "Hora de pedido: " + String.valueOf(mTmCaseTimeIn));
+        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + String.valueOf(mTmCaseTimeSeen));
+        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + String.valueOf(mTmCaseTimeArrived));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle del pedido " + mIntCaseId);
-
 
         mUserId = (TextView) findViewById(R.id.activity_detai_operator_tv_client_id);
         mUserId.setText(String.valueOf(mIntCaseUserId));
@@ -107,13 +109,29 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mCaseStatus = (TextView) findViewById(R.id.activity_detail_operator_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
         mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_operator_tv_time_in);
-        mCaseTimeIn.setText(String.valueOf(mCldCaseTimeIn));
+        if (mTmCaseTimeIn == null) {
+            mCaseTimeIn.setText("Sin datos.");
+        } else {
+            mCaseTimeIn.setText(String.valueOf(mTmCaseTimeIn));
+        }
         mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_operator_tv_time_seen);
-        mCaseTimeSeen.setText(String.valueOf(mCldCaseTimeSeen));
+        if (mTmCaseTimeSeen == null) {
+            mCaseTimeSeen.setText("Sin datos.");
+        } else {
+            mCaseTimeSeen.setText(String.valueOf(mTmCaseTimeSeen));
+        }
         mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_operator_tv_arrived);
-        mCaseTimeArrived.setText(String.valueOf(mCldCaseTimeArrived));
+        if (mTmCaseTimeArrived == null) {
+            mCaseTimeArrived.setText("Sin datos.");
+        } else {
+            mCaseTimeArrived.setText(String.valueOf(mTmCaseTimeArrived));
+        }
         mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_operator_tv_time_programmed);
-        mCaseTimeProgrammed.setText(String.valueOf(mCldCaseTimeProgrammed));
+        if (mTmCaseTimeProgrammed == null) {
+            mCaseTimeProgrammed.setText("Sin datos.");
+        } else {
+            mCaseTimeProgrammed.setText(String.valueOf(mTmCaseTimeProgrammed));
+        }
         mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
         mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_finished);
@@ -212,25 +230,32 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     private void cancelDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.dialog_cancel_title))
-                .setMessage(getResources().getString(R.string.dialog_cancel_body))
-                .setIcon(R.drawable.icon_dialog_cancel)
-                .setPositiveButton(getResources().getString(R.string.dialog_cancel_accept), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        finish();
-                    }
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_cancel_case_operator);
+        Log.d(DEBUG_TAG, "OnCreate");
+        dialog.setCancelable(false);
 
-                })
-                .setNegativeButton(getResources().getString(R.string.dialog_cancel_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setCancelable(false)
-                .show();
+        Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_cancel_case_btn_accept);
+        mBtnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_cancel_case_btn_cancel);
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void inProgressDialog() {

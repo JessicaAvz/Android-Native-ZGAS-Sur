@@ -82,24 +82,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mUser = new User();
         mUser.setUserType(User.userType.OPERATOR);
 
-        if (mUser.getUserType() == User.userType.SUPERVISOR) {
-            Log.d(DEBUG_TAG, "OnCreate Supervisor");
-            setContentView(R.layout.activity_supervisor);
-        } else {
-            Log.d(DEBUG_TAG, "OnCreate Normales");
-            setContentView(R.layout.activity_main);
-        }
-
         if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
+            setContentView(R.layout.activity_main);
             initUiOperator();
         } else if (mUser.getUserType() == User.userType.SERVICE) {
             Log.d(DEBUG_TAG, "OnCreate Servicio medido");
+            setContentView(R.layout.activity_main);
             initUiService();
         } else if (mUser.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
+            setContentView(R.layout.activity_supervisor);
             initUiSupervisor();
         } else if (mUser.getUserType() == User.userType.LEAKAGE) {
+            setContentView(R.layout.activity_main);
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
         }

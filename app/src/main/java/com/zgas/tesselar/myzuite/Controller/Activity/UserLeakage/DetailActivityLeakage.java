@@ -1,5 +1,7 @@
 package com.zgas.tesselar.myzuite.Controller.Activity.UserLeakage;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +45,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
+    private FloatingActionButton mFabWaze;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mFabFinished.setOnClickListener(this);
         mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_cancel);
         mFabCanceled.setOnClickListener(this);
+        mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_waze);
+        mFabWaze.setOnClickListener(this);
 
         if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
@@ -152,6 +157,11 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
             case R.id.activity_detail_leakage_fab_in_progress:
                 break;
             case R.id.activity_detail_leakage_fab_cancel:
+                break;
+            case R.id.activity_detail_leakage_fab_waze:
+                final String url = "waze://?q=" + mStrCaseAddress;
+                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
                 break;
         }
     }
