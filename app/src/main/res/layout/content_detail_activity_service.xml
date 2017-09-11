@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_detail_operator">
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_prompt_id"
+        android:id="@+id/activity_detail_service_tv_prompt_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -21,7 +21,7 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_client_id"
+        android:text="@string/prompt_detail_service_client_id"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintHorizontal_bias="0.026"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/activity_detai_operator_tv_client_id"
+        android:id="@+id/activity_detai_service_tv_client_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -44,10 +44,10 @@
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_prompt_id" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_prompt_id" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_prompt_username"
+        android:id="@+id/activity_detail_service_prompt_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -59,16 +59,16 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_client_name"
+        android:text="@string/prompt_detail_service_client_name"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detai_operator_tv_client_id" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detai_service_tv_client_id" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_client_name"
+        android:id="@+id/activity_detail_service_tv_client_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -82,10 +82,10 @@
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_prompt_username" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_username" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_prompt_case_address"
+        android:id="@+id/activity_detail_service_prompt_case_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -97,16 +97,16 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_address"
+        android:text="@string/prompt_detail_service_address"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_client_name" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_client_name" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_case_address"
+        android:id="@+id/activity_detail_service_tv_case_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -121,10 +121,10 @@
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_prompt_case_address" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_case_address" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_case_programmed_time"
+        android:id="@+id/activity_detail_service_case_programmed_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -136,16 +136,16 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_hour_set"
+        android:text="@string/prompt_detail_service_hour_set"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_case_address" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_case_address" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_time_programmed"
+        android:id="@+id/activity_detail_service_tv_time_programmed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -159,10 +159,10 @@
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_case_programmed_time" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_case_programmed_time" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_prompt_seen_time"
+        android:id="@+id/activity_detail_service_prompt_seen_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -174,16 +174,16 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_hour_seen"
+        android:text="@string/prompt_detail_service_hour_seen"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_time_programmed" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_time_programmed" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_time_seen"
+        android:id="@+id/activity_detail_service_tv_time_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -197,10 +197,10 @@
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_prompt_seen_time" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_seen_time" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_prompt_time_in"
+        android:id="@+id/activity_detail_service_prompt_time_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
@@ -210,14 +210,14 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_hour_made"
+        android:text="@string/prompt_detail_service_hour_made"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_time_seen" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_time_seen" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_prompt_arrival_time"
+        android:id="@+id/activity_detail_service_prompt_arrival_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -229,15 +229,15 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_hour_arrived"
+        android:text="@string/prompt_detail_service_hour_arrived"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
-        app:layout_constraintLeft_toRightOf="@+id/activity_detail_operator_prompt_time_in"
+        app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_prompt_time_in"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_time_seen" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_time_seen" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_time_in"
+        android:id="@+id/activity_detail_service_tv_time_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="68dp"
@@ -247,10 +247,10 @@
         android:textColor="@color/dark_grey_800"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_prompt_time_in" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_time_in" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_arrived"
+        android:id="@+id/activity_detail_service_tv_arrived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -261,12 +261,12 @@
         android:text="TextView"
         android:textColor="@color/dark_grey_800"
         app:layout_constraintHorizontal_bias="0.136"
-        app:layout_constraintLeft_toRightOf="@+id/activity_detail_operator_tv_time_in"
+        app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_tv_time_in"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_prompt_arrival_time" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_arrival_time" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_prompt_status"
+        android:id="@+id/activity_detail_service_prompt_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -278,16 +278,16 @@
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
         android:gravity="center"
-        android:text="@string/prompt_detail_operator_status"
+        android:text="@string/prompt_detail_service_status"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
         app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_time_in" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_time_in" />
 
     <TextView
-        android:id="@+id/activity_detail_operator_tv_status"
+        android:id="@+id/activity_detail_service_tv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -302,10 +302,10 @@
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_prompt_status" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_status" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_detail_operator_fab_finished"
+        android:id="@+id/activity_detail_service_fab_finished"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="15dp"
@@ -315,12 +315,12 @@
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/activity_detail_operator_fab_in_progress"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_status"
+        app:layout_constraintRight_toLeftOf="@+id/activity_detail_service_fab_in_progress"
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_status"
         app:srcCompat="@drawable/icon_end" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_detail_operator_fab_in_progress"
+        android:id="@+id/activity_detail_service_fab_in_progress"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="15dp"
@@ -330,13 +330,13 @@
         app:backgroundTint="@color/amber"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/activity_detail_operator_fab_finished"
-        app:layout_constraintRight_toLeftOf="@+id/activity_detail_operator_fab_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_status"
+        app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_fab_finished"
+        app:layout_constraintRight_toLeftOf="@+id/activity_detail_service_fab_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_status"
         app:srcCompat="@drawable/icon_gas_tank" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_detail_operator_fab_cancel"
+        android:id="@+id/activity_detail_service_fab_cancel"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="15dp"
@@ -345,13 +345,13 @@
         app:backgroundTint="@color/red"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/activity_detail_operator_fab_in_progress"
+        app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_fab_in_progress"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_operator_tv_status"
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_status"
         app:srcCompat="@drawable/icon_close" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_detail_operator_fab_waze"
+        android:id="@+id/activity_detail_service_fab_waze"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginLeft="103dp"
@@ -360,7 +360,7 @@
         android:clickable="true"
         app:backgroundTint="@color/sky_blue"
         app:fabSize="mini"
-        app:layout_constraintLeft_toRightOf="@+id/activity_detail_operator_prompt_case_address"
+        app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_prompt_case_address"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_waze" />

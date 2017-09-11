@@ -1,17 +1,24 @@
 package com.zgas.tesselar.myzuite.Controller.Activity.UserLeakage;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
@@ -153,16 +160,98 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_detail_leakage_fab_finished:
+                finishDialog();
                 break;
             case R.id.activity_detail_leakage_fab_in_progress:
+                inProgressDialog();
                 break;
             case R.id.activity_detail_leakage_fab_cancel:
+                cancelDialog();
                 break;
             case R.id.activity_detail_leakage_fab_waze:
-                final String url = "waze://?q=" + mStrCaseAddress;
-                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+                wazeIntent(mStrCaseAddress);
                 break;
         }
+    }
+
+    private void wazeIntent(String address) {
+        final String url = "waze://?q=" + address;
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
+    private void inProgressDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.dialog_in_progress_title))
+                .setMessage(getResources().getString(R.string.dialog_in_progress_body))
+                .setIcon(R.drawable.icon_dialog_progress)
+                .setPositiveButton(getResources().getString(R.string.dialog_in_progress_accept), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    private void finishDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_finish_case_leakage);
+        Log.d(DEBUG_TAG, "OnCreate");
+        dialog.setCancelable(false);
+
+        Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leakage_prompts, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_leakage_btn_accept);
+        mBtnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_leakage_btn_cancel);
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+    private void cancelDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_cancel_case_leakage);
+        Log.d(DEBUG_TAG, "OnCreate");
+        dialog.setCancelable(false);
+
+        Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_leakage_sp_option);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_cancel_case_leakage_btn_accept);
+        mBtnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_cancel_case_leakage_btn_cancel);
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

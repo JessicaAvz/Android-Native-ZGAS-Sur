@@ -43,13 +43,24 @@
     <string name="prompt_detail_leakage_total">Total</string>
 
     <!-- Activity detail user -->
-    <string name="prompt_detail_supervisor_user_id">Identificador del usuario</string>
+    <string name="prompt_detail_supervisor_user_id">Número de usuario</string>
     <string name="prompt_detail_supervisor_username">Nombre del usuario</string>
     <string name="prompt_detail_supervisor_email">Correo del usuario</string>
     <string name="prompt_detail_supervisor_route">Ruta del usuario</string>
     <string name="prompt_detail_supervisor_zone">Zona del usuario</string>
     <string name="prompt_detail_supervisor_user_type">Tipo de usuario</string>
     <string name="prompt_detail_supervisor_user_status">Estatus del usuario</string>
+
+    <!-- Activity detail service -->
+    <string name="prompt_detail_service_client_id">Número de cliente</string>
+    <string name="prompt_detail_service_client_name">Nombre del cliente</string>
+    <string name="prompt_detail_service_address">Dirección del servicio</string>
+    <string name="prompt_detail_service_hour_set">Hora programada para el servicio</string>
+    <string name="prompt_detail_service_hour_seen">Hora de visualización del servicio</string>
+    <string name="prompt_detail_service_hour_made">Hora del servicio</string>
+    <string name="prompt_detail_service_hour_arrived">Hora de entrega</string>
+    <string name="prompt_detail_service_status">Estatus del servicio</string>
+
 
     <!-- Activity supervisor  -->
     <string name="prompt_supervised">MIS SUPERVISADOS</string>
@@ -61,6 +72,8 @@
     <string name="dialog_finish_body">¿Está seguro de que desea finalizar el pedido?</string>
     <string name="dialog_finish_accept">Aceptar</string>
     <string name="dialog_finish_cancel">Cancelar</string>
+    <string name="dialog_finish_title_leak">Finalizar reporte</string>
+    <string name="dialog_finish_body_leak">¿Cuál fue la conclusión del reporte?</string>
 
     <!-- Cancel button -->
     <string name="dialog_cancel_title">Cancelar pedido</string>
@@ -99,6 +112,7 @@
     <string name="title_activity_supervisor">ActivitySupervisor</string>
     <string name="title_activity_detail_supervisor">DetailActivitySupervisor</string>
     <string name="title_activity_detail_leakage">DetailActivityLeakage</string>
+    <string name="title_activity_detail_service">DetailActivityService</string>
 
 </resources>
 

@@ -63,7 +63,7 @@ public class MainFragmentService extends Fragment {
             mCase.setCaseId(x);
             mCase.setCaseAddress("Av. Patria #123");
             mCase.setCaseStatus(Case.caseStatus.INPROGRESS);
-            mCase.setCaseType(Case.caseTypes.ORDER);
+            mCase.setCaseType(Case.caseTypes.CUSTOM_SERVICE);
             mCase.setCaseTimeIn(new Time(4, 40, 0));
             mCase.setCaseTimeSeen(new Time(System.currentTimeMillis()));
             mCase.setCaseTimeArrival(new Time(7, 30, 0));

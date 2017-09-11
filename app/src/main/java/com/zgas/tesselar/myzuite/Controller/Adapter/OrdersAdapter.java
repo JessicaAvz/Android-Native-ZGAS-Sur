@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Controller.Activity.UserLeakage.DetailActivityLeakage;
 import com.zgas.tesselar.myzuite.Controller.Activity.UserOperator.DetailActivityOperator;
+import com.zgas.tesselar.myzuite.Controller.Activity.UserService.DetailActivityService;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
@@ -67,6 +68,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             id.setText("Pedido número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
             hourIn.setText("Hora del pedido: " + orderHourIn.toString());
+        } else if (caseType.equals(Case.caseTypes.CUSTOM_SERVICE)) {
+            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
+            id.setText("Servicio número: " + String.valueOf(caseId));
+            address.setText("Dirección: " + caseAddress);
+            hourIn.setText("Hora del servicio: " + orderHourIn.toString());
         } else if (caseType.equals(Case.caseTypes.CUT)) {
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.CUT));
         } else if (caseType.equals(Case.caseTypes.CANCELLATION)) {
@@ -174,6 +180,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                         context.startActivity(intent);
                     } else if (type.equals(Case.caseTypes.LEAKAGE)) {
                         intent = new Intent(context, DetailActivityLeakage.class);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    } else if (type.equals(Case.caseTypes.CUSTOM_SERVICE)) {
+                        intent = new Intent(context, DetailActivityService.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                     } else if (type.equals(Case.caseTypes.CANCELLATION)) {

@@ -29,8 +29,6 @@ public class MainFragmentOperator extends Fragment {
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
-    private Case mCase;
-    private SharedPreferences sharedPreferences;
 
     public MainFragmentOperator() {
         // Required empty public constructor

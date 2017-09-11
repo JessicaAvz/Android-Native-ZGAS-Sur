@@ -106,6 +106,7 @@
             android:padding="3dp"
             android:text="TextView"
             android:textColor="@color/grey_800"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/row_main_fragment_prompt_order_status"
