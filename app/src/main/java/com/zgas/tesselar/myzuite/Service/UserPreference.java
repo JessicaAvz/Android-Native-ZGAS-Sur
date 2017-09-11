@@ -25,11 +25,6 @@ public class UserPreference {
         this.context = context;
     }
 
-    /**
-     * Save all user data
-     *
-     * @param user
-     */
     public void setUserData(User user) {
         if (user != null) {
             Gson gson = new Gson();
@@ -40,58 +35,15 @@ public class UserPreference {
             editor.putString(USER_DATA, userString);
             editor.apply();
 
-            Log.d(DEBUG_TAG, "Object usuario ha sido guardado.");
+            Log.d("SetUserData", "Object LoginModel has been saved successfully");
         } else {
-            Log.d(DEBUG_TAG, "Objeto User es null.");
+            Log.d("SetUserData", "Object LoginModel is null");
         }
     }
 
-    /**
-     * @return User data
-     */
     public String getUserData() {
         sharedPreferences = context.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+
         return sharedPreferences.getString(USER_DATA, null);
-    }
-
-    /**
-     * @return User object
-     */
-    public User getUserObject() {
-        Gson gson = new Gson();
-        User user = gson.fromJson(getUserData(), User.class);
-        return user;
-    }
-
-
-    /**
-     * This value is to keep the session
-     *
-     * @return boolean is authenticated on the app
-     */
-    public boolean isAuthenticated() {
-        sharedPreferences = context.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(AUTHENTICATED, false);
-    }
-
-    /**
-     * Save the value to keep session
-     *
-     * @param authenticated
-     */
-    public void setAuthenticated(boolean authenticated) {
-        sharedPreferences = context.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(AUTHENTICATED, authenticated);
-        editor.apply();
-    }
-
-    /**
-     * Clear all data in sharedPreferences
-     */
-    public void closeSession() {
-        context.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE)
-                .edit().clear().apply();
-
     }
 }

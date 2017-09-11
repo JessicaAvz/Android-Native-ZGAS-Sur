@@ -129,11 +129,13 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
         } else if (mStrCaseStatus.equals(Case.caseStatus.CANCELLED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
         }
     }
 

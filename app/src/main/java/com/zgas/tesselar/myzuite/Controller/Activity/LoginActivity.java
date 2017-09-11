@@ -1,16 +1,17 @@
 package com.zgas.tesselar.myzuite.Controller.Activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreference;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +30,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
     private Button mLogin;
-    private SharedPreferences sharedPreferences;
+    private UserPreference usersPreferences;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         Log.d(DEBUG_TAG, "OnCreate");
         initUi();
-        sharedPreferences = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     private void initUi() {
@@ -52,10 +53,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
-                Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                this.finish();
+                login();
                 break;
         }
+    }
+
+    private void login() {
+        /*if (isEmpty(mEmail) || isEmpty(mPassword)) {
+            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
+        } else {*/
+        user = new User();
+        user.setUserEmail(mEmail.toString());
+        usersPreferences = new UserPreference(this);
+        usersPreferences.setUserData(user);
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        this.finish();
+        //}
+    }
+
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
     }
 }

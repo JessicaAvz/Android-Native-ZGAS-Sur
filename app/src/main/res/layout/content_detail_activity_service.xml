@@ -118,7 +118,6 @@
         android:text="TextView"
         android:textColor="@color/grey_800"
         android:textSize="15sp"
-        app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_prompt_case_address" />

@@ -1,20 +1,19 @@
 <resources>
     <string name="app_name">MyZuite</string>
 
-    <!-- hints -->
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Contraseña</string>
-
     <!-- Actvity Login -->
     <string name="login">Ingresar</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Contraseña</string>
 
     <!-- Activity Main -->
     <string name="prompt_main_fragment">MIS PEDIDOS</string>
     <string name="prompt_help_fragment">INCIDENCIAS</string>
     <string name="prompt_order_fragment">ALTA PEDIDO</string>
     <string name="prompt_order_leak">MIS FUGAS</string>
-    <string name="btn_make_order">Realizar reporte</string>
+    <string name="prompt_supervised">MIS SUPERVISADOS</string>
     <string name="prompt_main_fragment_service">MIS SERVICIOS</string>
+    <string name="btn_make_order">Realizar reporte</string>
 
     <!-- Activity detail case-->
     <string name="prompt_detail_operator_client_id">Número de cliente</string>
@@ -61,13 +60,11 @@
     <string name="prompt_detail_service_hour_arrived">Hora de entrega</string>
     <string name="prompt_detail_service_status">Estatus del servicio</string>
 
-
     <!-- Activity supervisor  -->
-    <string name="prompt_supervised">MIS SUPERVISADOS</string>
     <string name="prompt_supervised_name">Nombre del supervisado</string>
     <string name="prompt_supervised_status">Estatus del supervisado </string>
 
-    <!-- Finish button -->
+    <!-- Finish dialog -->
     <string name="dialog_finish_title">Finalizar pedido</string>
     <string name="dialog_finish_body">¿Está seguro de que desea finalizar el pedido?</string>
     <string name="dialog_finish_accept">Aceptar</string>
@@ -75,23 +72,23 @@
     <string name="dialog_finish_title_leak">Finalizar reporte</string>
     <string name="dialog_finish_body_leak">¿Cuál fue la conclusión del reporte?</string>
 
-    <!-- Cancel button -->
+    <!-- Cancel dialog -->
     <string name="dialog_cancel_title">Cancelar pedido</string>
     <string name="dialog_cancel_body">¿Por qué desea cancelar el pedido?</string>
     <string name="dialog_cancel_hint">Descrición...</string>
     <string name="dialog_cancel_accept">Aceptar</string>
     <string name="dialog_cancel_cancel">Cancelar</string>
 
-    <!-- Progress button -->
+    <!-- Progress dialog -->
     <string name="dialog_in_progress_title">Pedido en curso</string>
     <string name="dialog_in_progress_body">El pedido se encuentra en curso</string>
     <string name="dialog_in_progress_accept">Aceptar</string>
 
-    <!-- Fragment main -->
+    <!-- Fragment main row -->
     <string name="prompt_order_making">Hora del pedido:</string>
     <string name="prompt_order_status">Estatus:</string>
 
-    <!-- Fragment aCase -->
+    <!-- Fragment main -->
     <string name="prompt_order">Ingresa los datos del pedido</string>
     <string name="prompt_username">Nombre de la persona</string>
     <string name="prompt_phone">Teléfono de contacto</string>
@@ -101,12 +98,8 @@
     <string name="prompt_spinner">Selecciona una opción...</string>
     <string name="btn_help">Reportar incidencia</string>
 
-    <!-- Fragment Leaks -->
-
-
     <!-- Activities titles -->
     <string name="title_activity_main">MainActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_supervisor">ActivitySupervisor</string>

@@ -148,11 +148,13 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
         } else if (mStrCaseStatus.equals(Case.caseStatus.CANCELLED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
         }
     }
 
