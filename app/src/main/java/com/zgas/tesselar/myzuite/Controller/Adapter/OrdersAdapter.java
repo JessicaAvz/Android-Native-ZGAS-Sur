@@ -30,12 +30,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     private Context context;
     private ArrayList<Case> mCaseList;
-    private Case.caseTypes mCaseType;
+    private Case.caseStatus mCaseStatus;
     private Intent intent;
 
-    public OrdersAdapter(Context context, ArrayList<Case> mCaseList) {
+    public OrdersAdapter(Context context, ArrayList<Case> mCaseList, Case.caseStatus caseStatus) {
         this.context = context;
         this.mCaseList = mCaseList;
+        this.mCaseStatus = caseStatus;
     }
 
     @Override

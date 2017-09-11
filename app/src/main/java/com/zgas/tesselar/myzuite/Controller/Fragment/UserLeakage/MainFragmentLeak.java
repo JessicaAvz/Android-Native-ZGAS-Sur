@@ -47,7 +47,7 @@ public class MainFragmentLeak extends Fragment {
 
     private void initUi(View pRootView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList);
+        mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList, Case.caseStatus.INPROGRESS);
 
         mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_leak_recycler_view);
         mRecyclerOrders.setHasFixedSize(true);
