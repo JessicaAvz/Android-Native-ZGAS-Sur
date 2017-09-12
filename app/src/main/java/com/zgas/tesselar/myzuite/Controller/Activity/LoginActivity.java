@@ -8,11 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Service.UserPreference;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,6 +22,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button mLogin;
     private User userToJson;
     private Intent mainIntent;
+    private UserPreferences userPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,47 +50,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login() {
-        if (isEmpty(mEmail) || isEmpty(mPassword)) {
-            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
+        //if (isEmpty(mEmail) || isEmpty(mPassword)) {
+        //    Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
+        //} else {
+        userToJson = new User();
+        userToJson.setUserId(1001);
+        userToJson.setUserType(User.userType.OPERATOR);
+        userToJson.setUserName("Mario");
+        userToJson.setUserLastname("Pérez");
+        userToJson.setUserEmail("j.arvizutr@gmail.com");
+        userToJson.setUserPassword("j789");
+        userToJson.setUserRoute("Ruta 1");
+        userToJson.setUserZone("Zona 1");
+        userToJson.setUserstatus(User.userStatus.ACTIVE);
+        String json = userToJson.toJson();
+        Log.d(DEBUG_TAG, json);
+
+        User userFromJson = User.fromJson(json);
+        Log.d(DEBUG_TAG, "userid: " + userFromJson.getUserId() + " - userType: " + userFromJson.getUserType()
+                + " - userName: " + userFromJson.getUserName() + " - userLastname: " + userFromJson.getUserLastname()
+                + " - userEmail: " + userFromJson.getUserEmail() + " - userPassword: " + userFromJson.getUserPassword()
+                + " - userRoute: " + userFromJson.getUserRoute() + " - userZone:" + userFromJson.getUserZone()
+                + " - userStatus: " + userFromJson.getUserstatus());
+
+        userPreferences = new UserPreferences(this);
+        userPreferences.saveUser(userFromJson);
+        if (userPreferences.getUser() != null) {
+            Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
         } else {
-            userToJson = new User();
-            userToJson.setUserId(1001);
-            userToJson.setUserType(User.userType.OPERATOR);
-            userToJson.setUserName("Mario");
-            userToJson.setUserLastname("López");
-            userToJson.setUserEmail("j.arvizutr@gmail.com");
-            userToJson.setUserPassword("j789");
-            userToJson.setUserRoute("Ruta 1");
-            userToJson.setUserZone("Zona 1");
-            userToJson.setUserstatus(User.userStatus.ACTIVE);
-            String json = userToJson.toJson();
-            Log.d(DEBUG_TAG, json);
-
-            User userFromJson = User.fromJson(json);
-            Log.d(DEBUG_TAG, "userid: " + userFromJson.getUserId() + " - userType: " + userFromJson.getUserType()
-                    + " - userName: " + userFromJson.getUserName() + " - userLastname: " + userFromJson.getUserLastname()
-                    + " - userEmail: " + userFromJson.getUserEmail() + " - userPassword: " + userFromJson.getUserPassword()
-                    + " - userRoute: " + userFromJson.getUserRoute() + " - userZone:" + userFromJson.getUserZone()
-                    + " - userStatus: " + userFromJson.getUserstatus());
-
-            mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(mainIntent);
-            this.finish();
-
-            UserPreference prefs = new UserPreference(this);
-            if (prefs.getUser() != null) {
-                Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
-            } else {
-                Log.d(DEBUG_TAG, "El usuario fue nulo. ");
-            }
-
-            prefs.saveUser(userFromJson);
-            if (prefs.getUser() != null) {
-                Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
-            } else {
-                Log.d(DEBUG_TAG, "El usuario fue nulo. ");
-            }
+            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
         }
+
+        if (userPreferences.getUser() != null) {
+            Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
+        } else {
+            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
+        }
+
+
+        mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        this.finish();
+        //}
     }
 
     private boolean isEmpty(EditText etText) {

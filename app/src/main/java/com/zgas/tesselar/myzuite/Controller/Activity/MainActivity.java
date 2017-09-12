@@ -28,6 +28,7 @@ import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.MainFragmentSer
 import com.zgas.tesselar.myzuite.CustomViewPager;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private User mUser;
     private RecyclerView mRecyclerViewSupervised;
     private Toolbar toolbar;
+    private UserPreferences mUserPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
