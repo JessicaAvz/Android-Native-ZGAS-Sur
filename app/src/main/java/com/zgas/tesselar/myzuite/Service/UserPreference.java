@@ -2,7 +2,6 @@ package com.zgas.tesselar.myzuite.Service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Model.User;
@@ -13,37 +12,26 @@ import com.zgas.tesselar.myzuite.Model.User;
 
 public class UserPreference {
 
-    private static final String DEBUG_TAG = "UserPreference";
-    private static final String MY_PREFERENCES = "MyPrefs";
-    private static final String USER_DATA = "userData";
-    private static final String AUTHENTICATED = "Authenticated";
-
-    private Context context;
+    private static final String USER = "USER_INFO";
     private SharedPreferences sharedPreferences;
+    private Context context;
 
+    /**
+     * @param context
+     */
     public UserPreference(Context context) {
         this.context = context;
+        sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
     }
 
-    public void setUserData(User user) {
-        if (user != null) {
-            Gson gson = new Gson();
-            String userString = gson.toJson(user);
-
-            sharedPreferences = context.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(USER_DATA, userString);
-            editor.apply();
-
-            Log.d("SetUserData", "Object LoginModel has been saved successfully");
-        } else {
-            Log.d("SetUserData", "Object LoginModel is null");
-        }
+    public User getUser() {
+        Gson gson = new Gson();
+        return gson.fromJson(sharedPreferences.getString(USER, "null"), User.class);
     }
 
-    public String getUserData() {
-        sharedPreferences = context.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-
-        return sharedPreferences.getString(USER_DATA, null);
+    public void saveUser(User user) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER, user.toJson());
+        editor.apply();
     }
 }
