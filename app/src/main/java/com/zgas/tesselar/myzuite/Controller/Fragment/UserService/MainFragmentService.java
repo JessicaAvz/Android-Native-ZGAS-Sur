@@ -54,7 +54,7 @@ public class MainFragmentService extends Fragment {
 
     private void initUi(View pRootview) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList, Case.caseStatus.INPROGRESS);
+        mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList);
 
         mRecyclerOrders = pRootview.findViewById(R.id.fragment_main_service_recycler_view);
         mRecyclerOrders.setHasFixedSize(true);

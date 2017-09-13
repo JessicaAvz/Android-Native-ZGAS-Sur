@@ -22,15 +22,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button mLogin;
     private User userToJson;
     private Intent mainIntent;
-    private UserPreferences userPreferences;
+    private UserPreferences mUserPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Log.d(DEBUG_TAG, "OnCreate");
-        userPreferences = new UserPreferences(this);
-        initUi();
+        mUserPreferences = new UserPreferences(this);
+        if (mUserPreferences.isLoggedIn()) {
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            startActivity(mainIntent);
+        } else {
+            setContentView(R.layout.activity_login);
+            Log.d(DEBUG_TAG, "OnCreate");
+            initUi();
+        }
     }
 
     private void initUi() {
@@ -56,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //} else {
         userToJson = new User();
         userToJson.setUserId(1001);
-        userToJson.setUserType(User.userType.SUPERVISOR);
+        userToJson.setUserType(User.userType.OPERATOR);
         userToJson.setUserName("Mario");
         userToJson.setUserLastname("Pérez");
         userToJson.setUserEmail("jarvizu@tesselar.mx");
@@ -74,23 +79,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 + " - userRoute: " + userFromJson.getUserRoute() + " - userZone:" + userFromJson.getUserZone()
                 + " - userStatus: " + userFromJson.getUserstatus());
 
-        userPreferences = new UserPreferences(this);
-        userPreferences.saveUser(userFromJson);
-        if (userPreferences.getUser() != null) {
+        mUserPreferences = new UserPreferences(this);
+        mUserPreferences.saveUser(userFromJson);
+
+        if (mUserPreferences.getUser() != null) {
             Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
         } else {
             Log.d(DEBUG_TAG, "El usuario fue nulo. ");
         }
 
-        if (userPreferences.getUser() != null) {
-            Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
+        if (mUserPreferences.getUser() != null) {
+            Log.d(DEBUG_TAG, "El usuario no fue nulo.");
         } else {
             Log.d(DEBUG_TAG, "El usuario fue nulo. ");
         }
 
-        userPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
-        Log.d(DEBUG_TAG, "emaiiiiiiiiiiiil: " + userToJson.getUserEmail() + "contraaaaaaaaaaaaa: " + userToJson.getUserPassword());
-
+        mUserPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
         mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
         this.finish();
