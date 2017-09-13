@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,8 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
     private Spinner mOptions;
     private Button mSendProblem;
     private View mRootView;
+    private UserPreferences mUserPreferences;
+    private User mUser;
 
     public HelpFragmentService() {
         // Required empty public constructor
@@ -35,6 +39,9 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_help_service, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
+        mUserPreferences = new UserPreferences(getContext());
+        mUser = mUserPreferences.getUser();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

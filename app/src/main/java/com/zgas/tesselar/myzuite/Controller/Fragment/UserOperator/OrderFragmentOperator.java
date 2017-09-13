@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,8 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
     private EditText mEmail;
     private EditText mPhoneNumber;
     private Button mMakeOrder;
+    private UserPreferences mUserPreferences;
+    private User mUser;
 
     public OrderFragmentOperator() {
         // Required empty public constructor
@@ -34,6 +38,9 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_order_operator, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
+        mUserPreferences = new UserPreferences(getContext());
+        mUser = mUserPreferences.getUser();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

@@ -14,29 +14,48 @@ import com.zgas.tesselar.myzuite.Model.User;
 
 public class UserPreferences {
 
-    private static final String USER = "USER_INFO";
-    private static final String IS_LOGGED = "IsLogged";
+    private static final String EXTRA_USER = "UserInfo";
+    private static final String IS_LOGGED = "IsLoggedIn";
+    private static final String KEY_EMAIL = "Email";
+    private static final String KEY_PASS = "Password";
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private Context context;
 
-    /**
-     * @param context
-     */
     public UserPreferences(Context context) {
         this.context = context;
-        mSharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+        mSharedPreferences = context.getSharedPreferences(EXTRA_USER, Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
     }
 
     public User getUser() {
         Gson gson = new Gson();
-        return gson.fromJson(mSharedPreferences.getString(USER, "Null"), User.class);
+        return gson.fromJson(mSharedPreferences.getString(EXTRA_USER, "Null"), User.class);
     }
 
     public void saveUser(User user) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(USER, user.toJson());
+        editor.putString(EXTRA_USER, user.toJson());
         editor.apply();
+    }
+
+    public void createLoginSession(String email, String pass) {
+        editor.putBoolean(IS_LOGGED, true);
+        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_PASS, pass);
+        editor.commit();
+    }
+
+    public void checkLogin() {
+        if (!this.isLoggedIn()) {
+            Intent i = new Intent(context, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }
+    }
+
+    public boolean isLoggedIn() {
+        return mSharedPreferences.getBoolean(IS_LOGGED, false);
     }
 }

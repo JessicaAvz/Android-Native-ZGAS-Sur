@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Log.d(DEBUG_TAG, "OnCreate");
+        userPreferences = new UserPreferences(this);
         initUi();
     }
 
@@ -55,10 +56,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //} else {
         userToJson = new User();
         userToJson.setUserId(1001);
-        userToJson.setUserType(User.userType.OPERATOR);
+        userToJson.setUserType(User.userType.SUPERVISOR);
         userToJson.setUserName("Mario");
         userToJson.setUserLastname("Pérez");
-        userToJson.setUserEmail("j.arvizutr@gmail.com");
+        userToJson.setUserEmail("jarvizu@tesselar.mx");
         userToJson.setUserPassword("j789");
         userToJson.setUserRoute("Ruta 1");
         userToJson.setUserZone("Zona 1");
@@ -87,6 +88,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d(DEBUG_TAG, "El usuario fue nulo. ");
         }
 
+        userPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
+        Log.d(DEBUG_TAG, "emaiiiiiiiiiiiil: " + userToJson.getUserEmail() + "contraaaaaaaaaaaaa: " + userToJson.getUserPassword());
 
         mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);

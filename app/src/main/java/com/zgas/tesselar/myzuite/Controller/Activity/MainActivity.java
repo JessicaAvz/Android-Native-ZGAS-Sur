@@ -2,6 +2,7 @@ package com.zgas.tesselar.myzuite.Controller.Activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -81,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUser = new User();
-        mUser.setUserType(User.userType.OPERATOR);
+        mUserPreferences = new UserPreferences(getApplicationContext());
+        mUser = mUserPreferences.getUser();
 
         if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
@@ -101,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
         }
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + mUserPreferences.isLoggedIn(), Toast.LENGTH_LONG).show();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
     }
 
     private void initUiOperator() {
@@ -419,22 +424,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.activity_main_fab_call:
                 Log.d(DEBUG_TAG, "Llamada");
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:6241370525"));
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                startActivity(callIntent);
+                callIntent();
                 break;
             case R.id.ativity_supervisor_fab_call:
                 Log.d(DEBUG_TAG, "Llamada");
-                Intent callIntentSupervisor = new Intent(Intent.ACTION_CALL);
-                callIntentSupervisor.setData(Uri.parse("tel:6241370525"));
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                startActivity(callIntentSupervisor);
+                callIntent();
                 break;
         }
+    }
+
+    private void callIntent() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:6241370525"));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(callIntent);
     }
 }

@@ -1,7 +1,6 @@
 package com.zgas.tesselar.myzuite.Controller.Fragment.UserService;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +12,9 @@ import android.view.ViewGroup;
 
 import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -30,7 +31,8 @@ public class MainFragmentService extends Fragment {
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private Case mCase;
-    private SharedPreferences sharedPreferences;
+    private UserPreferences mUserPreferences;
+    private User mUser;
 
     public MainFragmentService() {
         // Required empty public constructor
@@ -43,6 +45,9 @@ public class MainFragmentService extends Fragment {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main_service, container, false);
         Log.d(DEBUG_TAG, "OnCreate");
+        mUserPreferences = new UserPreferences(getContext());
+        mUser = mUserPreferences.getUser();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

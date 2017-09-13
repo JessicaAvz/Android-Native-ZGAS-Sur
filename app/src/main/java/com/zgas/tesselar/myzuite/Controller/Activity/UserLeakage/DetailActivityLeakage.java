@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 import java.sql.Time;
 
@@ -53,6 +55,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
     private FloatingActionButton mFabWaze;
+    private UserPreferences mUserPreferences;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,9 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_detail_leakage);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, "OnCreate");
+        mUserPreferences = new UserPreferences(getApplicationContext());
+        mUser = mUserPreferences.getUser();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
         initUi();
     }
 
