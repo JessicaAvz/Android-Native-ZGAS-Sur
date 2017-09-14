@@ -55,6 +55,15 @@ public class UserPreferences {
         }
     }
 
+    public void logoutUser() {
+        editor.clear();
+        editor.commit();
+        Intent i = new Intent(context, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+
     public boolean isLoggedIn() {
         return mSharedPreferences.getBoolean(IS_LOGGED, false);
     }

@@ -5,6 +5,7 @@
     <string name="login">Ingresar</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Contraseña</string>
+    <string name="action_logout">Cerrar sesión</string>
 
     <!-- Activity Main -->
     <string name="prompt_main_fragment">MIS PEDIDOS</string>
