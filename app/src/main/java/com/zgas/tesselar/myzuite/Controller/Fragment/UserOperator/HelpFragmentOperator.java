@@ -75,7 +75,7 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
             Toast.makeText(getContext(), "Por favor, seleccione una opción para reportar una incidencia.", Toast.LENGTH_LONG).show();
         } else {
             Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
-
+            mSpinnerOptions.setSelection(0);
             new AlertDialog.Builder(getContext())
                     .setTitle(getResources().getString(R.string.dialog_help_order_title))
                     .setMessage(getResources().getString(R.string.dialog_help_order_body))
