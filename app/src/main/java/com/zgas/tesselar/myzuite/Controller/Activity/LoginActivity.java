@@ -27,8 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Log.d(DEBUG_TAG, "OnCreate");
         mUserPreferences = new UserPreferences(this);
         if (mUserPreferences.isLoggedIn()) {
             Intent mainIntent = new Intent(this, MainActivity.class);
@@ -36,8 +34,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             setContentView(R.layout.activity_login);
             Log.d(DEBUG_TAG, "OnCreate");
-            initUi();
-
             initUi();
         }
     }
@@ -85,21 +81,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mUserPreferences = new UserPreferences(this);
         mUserPreferences.saveUser(userFromJson);
-        if (mUserPreferences.getUser() != null) {
-            Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
-        } else {
-            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
-        }
 
         if (mUserPreferences.getUser() != null) {
             Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
+            Log.d(DEBUG_TAG, "El usuario no fue nulo.");
         } else {
             Log.d(DEBUG_TAG, "El usuario fue nulo. ");
         }
 
         mUserPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
-        Log.d(DEBUG_TAG, "emaiiiiiiiiiiiil: " + userToJson.getUserEmail() + "contraaaaaaaaaaaaa: " + userToJson.getUserPassword());
-
         mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
         this.finish();

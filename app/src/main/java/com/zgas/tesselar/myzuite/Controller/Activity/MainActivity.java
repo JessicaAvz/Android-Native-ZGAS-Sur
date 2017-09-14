@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -87,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mUserPreferences = new UserPreferences(getApplicationContext());
         mUser = mUserPreferences.getUser();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
 
         if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
         }
-
-        Toast.makeText(getApplicationContext(), "User Login Status: " + mUserPreferences.isLoggedIn(), Toast.LENGTH_LONG).show();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
     }
 
     private void initUiOperator() {

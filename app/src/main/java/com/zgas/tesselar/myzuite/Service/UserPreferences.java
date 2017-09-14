@@ -14,10 +14,10 @@ import com.zgas.tesselar.myzuite.Model.User;
 
 public class UserPreferences {
 
-    private static final String EXTRA_USER = "UserInfo";
-    private static final String IS_LOGGED = "IsLoggedIn";
-    private static final String KEY_EMAIL = "Email";
-    private static final String KEY_PASS = "Password";
+    public static final String EXTRA_USER = "UserInfo";
+    public static final String IS_LOGGED = "IsLoggedIn";
+    public static final String KEY_EMAIL = "Email";
+    public static final String KEY_PASS = "Password";
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private Context context;
@@ -45,6 +45,7 @@ public class UserPreferences {
         editor.putString(KEY_PASS, pass);
         editor.commit();
     }
+
 
     public void checkLogin() {
         if (!this.isLoggedIn()) {
