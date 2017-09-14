@@ -20,7 +20,7 @@ import android.view.View;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
-import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisedSupervisorAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisorAdapter;
 import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.HelpFragmentLeak;
 import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.MainFragmentLeak;
 import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.HelpFragmentOperator;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private HelpFragmentLeak mHelpFragmentLeak;
     private MainFragmentLeak mMainFragmentLeak;
     private PagerAdapter mPagerAdapter;
-    private SupervisedSupervisorAdapter mSupervisedSupervisorAdapter;
+    private SupervisorAdapter mSupervisorAdapter;
 
     private User mUser;
     private RecyclerView mRecyclerViewSupervised;
@@ -104,6 +104,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setContentView(R.layout.activity_main);
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.activity_main_fab_call:
+                Log.d(DEBUG_TAG, "Llamada");
+                callIntent();
+                break;
+            case R.id.ativity_supervisor_fab_call:
+                Log.d(DEBUG_TAG, "Llamada");
+                callIntent();
+                break;
         }
     }
 
@@ -157,14 +171,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFabCallSupervisor.setOnClickListener(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mSupervisedSupervisorAdapter = new SupervisedSupervisorAdapter(this, mUserList);
+        mSupervisorAdapter = new SupervisorAdapter(this, mUserList);
 
         mRecyclerViewSupervised = (RecyclerView) findViewById(R.id.activity_supervisor_recycler_view);
         mRecyclerViewSupervised.setHasFixedSize(true);
         mRecyclerViewSupervised.setItemViewCacheSize(20);
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
         mRecyclerViewSupervised.setLayoutManager(layoutManager);
-        mRecyclerViewSupervised.setAdapter(mSupervisedSupervisorAdapter);
+        mRecyclerViewSupervised.setAdapter(mSupervisorAdapter);
 
         for (int x = 0; x < 15; x++) {
             mUser = new User();
@@ -414,20 +428,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             default:
                 mFabCall.hide();
-                break;
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_main_fab_call:
-                Log.d(DEBUG_TAG, "Llamada");
-                callIntent();
-                break;
-            case R.id.ativity_supervisor_fab_call:
-                Log.d(DEBUG_TAG, "Llamada");
-                callIntent();
                 break;
         }
     }

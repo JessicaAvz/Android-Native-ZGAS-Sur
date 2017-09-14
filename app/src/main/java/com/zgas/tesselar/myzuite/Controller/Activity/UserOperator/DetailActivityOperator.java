@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
@@ -71,6 +72,24 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mUser = mUserPreferences.getUser();
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
         initUi();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.activity_detail_operator_fab_in_progress:
+                inProgressDialog();
+                break;
+            case R.id.activity_detail_operator_fab_finished:
+                finishDialog();
+                break;
+            case R.id.activity_detail_operator_fab_cancel:
+                cancelDialog();
+                break;
+            case R.id.activity_detail_operator_fab_waze:
+                wazeIntent(mStrCaseAddress);
+                break;
+        }
     }
 
     private void initUi() {
@@ -183,24 +202,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_detail_operator_fab_in_progress:
-                inProgressDialog();
-                break;
-            case R.id.activity_detail_operator_fab_finished:
-                finishDialog();
-                break;
-            case R.id.activity_detail_operator_fab_cancel:
-                cancelDialog();
-                break;
-            case R.id.activity_detail_operator_fab_waze:
-                wazeIntent(mStrCaseAddress);
-                break;
-        }
-    }
-
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -213,20 +214,30 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
+        final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
+        final EditText etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
+        final EditText etTotal = dialog.findViewById(R.id.dialog_finish_case_tv_total);
+
         Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isEmpty(etQuantity) || isEmpty(etTicket) || isEmpty(etTotal)) {
+                    Toast.makeText(getApplicationContext(), "Por favor, llene todos los campos para finalizar el pedido.", Toast.LENGTH_LONG).show();
+                } else {
 
-                final String quantity = ((EditText) dialog.findViewById(R.id.dialog_finish_case_tv_quantity)).getText().toString();
-                final String ticket = ((EditText) dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number)).getText().toString();
-                final String total = ((EditText) dialog.findViewById(R.id.dialog_finish_case_tv_total)).getText().toString();
-
-                Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
-                Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
-                Log.d(DEBUG_TAG, "Total " + total);
-
-                dialog.dismiss();
+                    final String quantity = etQuantity.getText().toString();
+                    final String ticket = etTicket.getText().toString();
+                    final String total = etTotal.getText().toString();
+                    Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
+                    Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
+                    Log.d(DEBUG_TAG, "Total " + total);
+                    etQuantity.getText().clear();
+                    etTicket.getText().clear();
+                    etTotal.getText().clear();
+                    Toast.makeText(getApplicationContext(), "Pedido finalizado correctamente.", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
             }
         });
 
@@ -247,22 +258,30 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
-        final Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
+        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_cancel_case_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(DEBUG_TAG, mSpinnerOption.getSelectedItem().toString());
-                dialog.dismiss();
+                if (mSpinnerOptions.getSelectedItem() == null) {
+                    Toast.makeText(getApplicationContext(), "Por favor, seleccione una opción para reportar una incidencia.", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
+                    mSpinnerOptions.setSelection(0);
+                    Toast.makeText(getApplicationContext(), "Pedido cancelado correctamente.", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
             }
         });
 
         Button mBtnCancel = dialog.findViewById(R.id.dialog_cancel_case_btn_cancel);
-        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+        mBtnCancel.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -285,5 +304,9 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 })
                 .setCancelable(false)
                 .show();
+    }
+
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
     }
 }

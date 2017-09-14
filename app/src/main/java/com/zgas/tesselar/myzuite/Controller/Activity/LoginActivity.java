@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //} else {
         userToJson = new User();
         userToJson.setUserId(1001);
-        userToJson.setUserType(User.userType.OPERATOR);
+        userToJson.setUserType(User.userType.LEAKAGE);
         userToJson.setUserName("Mario");
         userToJson.setUserLastname("Pérez");
         userToJson.setUserEmail("mperez@gmail.com");

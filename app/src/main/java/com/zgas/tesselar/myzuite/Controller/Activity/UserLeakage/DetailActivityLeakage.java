@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
@@ -211,17 +212,23 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
-        final Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
+        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leakage_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_leakage_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(DEBUG_TAG, mSpinnerOption.getSelectedItem().toString());
-                dialog.dismiss();
+                if (mSpinnerOptions.getSelectedItem() == null) {
+                    Toast.makeText(getApplicationContext(), "Por favor, seleccione una opción para finalizar el reporte.", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
+                    mSpinnerOptions.setSelection(0);
+                    Toast.makeText(getApplicationContext(), "Pedido finalizado correctamente.", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
             }
         });
 
@@ -242,17 +249,23 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
-        final Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_leakage_sp_option);
+        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_cancel_case_leakage_sp_option);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_cancel_case_leakage_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(DEBUG_TAG, mSpinnerOption.getSelectedItem().toString());
-                dialog.dismiss();
+                if (mSpinnerOptions.getSelectedItem() == null) {
+                    Toast.makeText(getApplicationContext(), "Por favor, seleccione una opción para reportar una incidencia.", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
+                    mSpinnerOptions.setSelection(0);
+                    Toast.makeText(getApplicationContext(), "Pedido cancelado correctamente.", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
             }
         });
 

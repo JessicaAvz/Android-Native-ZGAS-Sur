@@ -21,13 +21,13 @@ import java.util.ArrayList;
  * Created by jarvizu on 04/09/2017.
  */
 
-public class SupervisedSupervisorAdapter extends RecyclerView.Adapter<SupervisedSupervisorAdapter.SupervisedViewHolder> {
+public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.SupervisedViewHolder> {
 
     private static final String DEBUG_TAG = "SupervisorAdapter";
     private Context context;
     private ArrayList<User> mSupervisedList;
 
-    public SupervisedSupervisorAdapter(Context context, ArrayList<User> mSupervisedList) {
+    public SupervisorAdapter(Context context, ArrayList<User> mSupervisedList) {
         this.context = context;
         this.mSupervisedList = mSupervisedList;
     }
@@ -36,7 +36,7 @@ public class SupervisedSupervisorAdapter extends RecyclerView.Adapter<Supervised
     public SupervisedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         View v = li.inflate(R.layout.row_activity_supervisors_my_supervised, parent, false);
-        return new SupervisedSupervisorAdapter.SupervisedViewHolder(v);
+        return new SupervisorAdapter.SupervisedViewHolder(v);
     }
 
     @Override
