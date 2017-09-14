@@ -455,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout_menu:
-                Toast.makeText(this, "HOLA", Toast.LENGTH_SHORT).show();
+                mUserPreferences.logoutUser();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
