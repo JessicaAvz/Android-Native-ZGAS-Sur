@@ -213,6 +213,9 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         dialog.setCancelable(false);
 
         final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
+        final Spinner mSpinnerSecondOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_second_option);
+        final Spinner mSpinnerThirdOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_third_option);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leakage_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
