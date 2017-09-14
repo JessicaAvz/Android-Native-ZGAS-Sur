@@ -1,8 +1,10 @@
 package com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,7 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
 
     private static final String DEBUG_TAG = "HelpFragmentOperator";
 
-    private Spinner mOptions;
+    private Spinner mSpinnerOptions;
     private Button mSendProblem;
     private View mRootView;
     private UserPreferences mUserPreferences;
@@ -49,22 +51,44 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
         return mRootView;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fragment_help_operator_btn_send_problem:
+                selectOption();
+                break;
+        }
+    }
+
     public void initUi(View pRootView) {
-        mOptions = pRootView.findViewById(R.id.fragment_help_operator_sp_options);
+        mSpinnerOptions = pRootView.findViewById(R.id.fragment_help_operator_sp_options);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
+        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
 
         mSendProblem = pRootView.findViewById(R.id.fragment_help_operator_btn_send_problem);
         mSendProblem.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_help_operator_btn_send_problem:
-                Toast.makeText(getContext(), "Prueba de click", Toast.LENGTH_SHORT).show();
-                break;
+    private void selectOption() {
+        if (mSpinnerOptions.getSelectedItem() == null) {
+            Toast.makeText(getContext(), "Por favor, seleccione una opción para reportar una incidencia.", Toast.LENGTH_LONG).show();
+        } else {
+            Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle(getResources().getString(R.string.dialog_help_order_title))
+                    .setMessage(getResources().getString(R.string.dialog_help_order_body))
+                    .setIcon(R.drawable.icon_dialog_finish)
+                    .setPositiveButton(getResources().getString(R.string.dialog_help_order_accept), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            dialogInterface.dismiss();
+                        }
+
+                    })
+                    .setCancelable(false)
+                    .show();
         }
     }
 }

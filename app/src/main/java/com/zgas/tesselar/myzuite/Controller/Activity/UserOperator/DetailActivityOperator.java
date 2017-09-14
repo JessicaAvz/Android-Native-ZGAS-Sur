@@ -247,7 +247,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
-        Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
+        final Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
@@ -256,6 +256,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(DEBUG_TAG, mSpinnerOption.getSelectedItem().toString());
                 dialog.dismiss();
             }
         });

@@ -85,6 +85,16 @@
     <string name="dialog_in_progress_body">El pedido se encuentra en curso</string>
     <string name="dialog_in_progress_accept">Aceptar</string>
 
+    <!-- Extra order dialog -->
+    <string name="dialog_extra_title">Pedido realizado</string>
+    <string name="dialog_extra_body">El pedido ha sido realizado correctamente.</string>
+    <string name="dialog_extra_accept">Aceptar</string>
+
+    <!-- HelpOder dialog -->
+    <string name="dialog_help_order_title">Incidencia reportada</string>
+    <string name="dialog_help_order_body">La incidencia ha sido reportada correctamente.</string>
+    <string name="dialog_help_order_accept">Aceptar</string>
+
     <!-- Fragment main row -->
     <string name="prompt_order_making">Hora del pedido:</string>
     <string name="prompt_order_status">Estatus:</string>

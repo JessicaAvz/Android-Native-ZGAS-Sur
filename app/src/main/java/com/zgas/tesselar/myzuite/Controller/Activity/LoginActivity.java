@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userToJson.setUserType(User.userType.OPERATOR);
         userToJson.setUserName("Mario");
         userToJson.setUserLastname("Pérez");
-        userToJson.setUserEmail("jarvizu@tesselar.mx");
+        userToJson.setUserEmail("mperez@gmail.com");
         userToJson.setUserPassword("j789");
         userToJson.setUserRoute("Ruta 1");
         userToJson.setUserZone("Zona 1");
@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mUserPreferences.saveUser(userFromJson);
 
         if (mUserPreferences.getUser() != null) {
-            Log.d(DEBUG_TAG, "El usuario no fue nulo. ");
             Log.d(DEBUG_TAG, "El usuario no fue nulo.");
         } else {
             Log.d(DEBUG_TAG, "El usuario fue nulo. ");

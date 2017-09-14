@@ -307,7 +307,7 @@
         android:id="@+id/activity_detail_service_fab_finished"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginTop="40dp"
         android:clickable="true"
         app:backgroundTint="@color/light_green"
@@ -316,14 +316,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/activity_detail_service_fab_in_progress"
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_status"
-        app:layout_constraintVertical_bias="0.471"
+        app:layout_constraintVertical_bias="0.65999997"
         app:srcCompat="@drawable/icon_end" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/activity_detail_service_fab_in_progress"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginTop="40dp"
         android:clickable="true"
         android:tint="@color/white"
@@ -333,14 +333,14 @@
         app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_fab_finished"
         app:layout_constraintRight_toLeftOf="@+id/activity_detail_service_fab_cancel"
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_status"
-        app:layout_constraintVertical_bias="0.479"
+        app:layout_constraintVertical_bias="0.65999997"
         app:srcCompat="@drawable/icon_gas_tank" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/activity_detail_service_fab_cancel"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginTop="40dp"
         android:clickable="true"
         app:backgroundTint="@color/red"
@@ -349,7 +349,7 @@
         app:layout_constraintLeft_toRightOf="@+id/activity_detail_service_fab_in_progress"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_service_tv_status"
-        app:layout_constraintVertical_bias="0.528"
+        app:layout_constraintVertical_bias="0.65999997"
         app:srcCompat="@drawable/icon_close" />
 
     <android.support.design.widget.FloatingActionButton

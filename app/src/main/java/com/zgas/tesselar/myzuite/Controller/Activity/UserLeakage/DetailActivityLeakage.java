@@ -211,7 +211,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
-        Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
+        final Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leakage_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
@@ -220,6 +220,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(DEBUG_TAG, mSpinnerOption.getSelectedItem().toString());
                 dialog.dismiss();
             }
         });
@@ -241,7 +242,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, "OnCreate");
         dialog.setCancelable(false);
 
-        Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_leakage_sp_option);
+        final Spinner mSpinnerOption = dialog.findViewById(R.id.dialog_cancel_case_leakage_sp_option);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
@@ -250,6 +251,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(DEBUG_TAG, mSpinnerOption.getSelectedItem().toString());
                 dialog.dismiss();
             }
         });
