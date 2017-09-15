@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -214,17 +215,99 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
 
         final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
         final Spinner mSpinnerSecondOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_second_option);
+        mSpinnerSecondOption.setVisibility(View.GONE);
         final Spinner mSpinnerThirdOption = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_third_option);
+        mSpinnerThirdOption.setVisibility(View.GONE);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leakage_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
+        mSpinnerOptions.setOnItemSelectedListener((new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mSpinnerOptions.getSelectedItemPosition() == 1 || mSpinnerOptions.getSelectedItemPosition() == 2 ||
+                        mSpinnerOptions.getSelectedItemPosition() == 3 || mSpinnerOptions.getSelectedItemPosition() == 4) {
+
+                    mSpinnerSecondOption.setVisibility(View.VISIBLE);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_state, android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mSpinnerSecondOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+
+                    mSpinnerSecondOption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            if (mSpinnerOptions.getSelectedItemPosition() == 1 && mSpinnerSecondOption.getSelectedItemPosition() == 1) {
+                                //Fuga cilindro con gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_cilynder_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 1 && mSpinnerSecondOption.getSelectedItemPosition() == 2) {
+                                //Fuga cilindro sin gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_cilynder_no_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 2 && mSpinnerSecondOption.getSelectedItemPosition() == 1) {
+                                //Fuga estacionario con gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 2 && mSpinnerSecondOption.getSelectedItemPosition() == 2) {
+                                //Fuga estacionario sin gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_no_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 3 && mSpinnerSecondOption.getSelectedItemPosition() == 1) {
+                                //Fuga servicio medido con gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_service_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 3 && mSpinnerSecondOption.getSelectedItemPosition() == 2) {
+                                //Fuga servicio medido sin gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_service_no_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 4 && mSpinnerSecondOption.getSelectedItemPosition() == 1) {
+                                //Fuga cliente con gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_client_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            } else if (mSpinnerOptions.getSelectedItemPosition() == 4 && mSpinnerSecondOption.getSelectedItemPosition() == 2) {
+                                //Fuga cliente sin gas
+                                mSpinnerThirdOption.setVisibility(View.VISIBLE);
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_client_no_gas, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mSpinnerThirdOption.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getApplicationContext()));
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        }));
+
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_leakage_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mSpinnerOptions.getSelectedItem() == null) {
+                if (mSpinnerOptions.getSelectedItem() == null || mSpinnerSecondOption.getSelectedItem() == null || mSpinnerThirdOption.getSelectedItem() == null) {
                     Toast.makeText(getApplicationContext(), "Por favor, seleccione una opción para finalizar el reporte.", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());

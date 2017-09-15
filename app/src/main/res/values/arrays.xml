@@ -24,6 +24,12 @@
         <item>Fuga cilindro</item>
         <item>Fuga estacionario</item>
         <item>Fuga servicio medido</item>
+        <item>Cliente</item>
+    </string-array>
+
+    <string-array name="leakage_state">
+        <item>Con gas</item>
+        <item>Sin gas</item>
     </string-array>
 
     <string-array name="leakage_prompts_cilynder_no_gas">
