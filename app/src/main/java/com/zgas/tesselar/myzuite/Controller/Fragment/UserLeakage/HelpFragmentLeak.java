@@ -40,7 +40,7 @@ public class HelpFragmentLeak extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_help_leak, container, false);
-        Log.d(DEBUG_TAG, "OnCreate");
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUser();
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
@@ -69,7 +69,7 @@ public class HelpFragmentLeak extends Fragment implements View.OnClickListener {
 
     private void selectOption() {
         if (mSpinnerOptions.getSelectedItem() == null) {
-            Toast.makeText(getContext(), "Por favor, seleccione una opción para reportar una incidencia.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
         } else {
             Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
             mSpinnerOptions.setSelection(0);

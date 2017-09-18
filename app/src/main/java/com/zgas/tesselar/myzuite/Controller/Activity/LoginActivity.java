@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(mainIntent);
         } else {
             setContentView(R.layout.activity_login);
-            Log.d(DEBUG_TAG, "OnCreate");
+            Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
             initUi();
         }
     }
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //} else {
         userToJson = new User();
         userToJson.setUserId(1001);
-        userToJson.setUserType(User.userType.LEAKAGE);
+        userToJson.setUserType(User.userType.SERVICE);
         userToJson.setUserName("Mario");
         userToJson.setUserLastname("Pérez");
         userToJson.setUserEmail("mperez@gmail.com");

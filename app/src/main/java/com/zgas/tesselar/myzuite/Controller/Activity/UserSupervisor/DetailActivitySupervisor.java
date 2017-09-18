@@ -42,7 +42,7 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_supervisor);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
-        Log.d(DEBUG_TAG, "OnCreate");
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
         mUser = mUserPreferences.getUser();
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());

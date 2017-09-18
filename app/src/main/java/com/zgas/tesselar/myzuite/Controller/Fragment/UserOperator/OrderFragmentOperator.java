@@ -39,7 +39,7 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_order_operator, container, false);
-        Log.d(DEBUG_TAG, "OnCreate");
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUser();
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
@@ -65,7 +65,7 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
 
     public void makeOrder() {
         if (isEmpty(mUserName) || isEmpty(mPhoneNumber)) {
-            Toast.makeText(getContext(), "Por favor, llene todos los campos para hacer un pedido.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.order_new_incorrect), Toast.LENGTH_LONG).show();
         } else {
             Log.d(DEBUG_TAG, "Nombre de usuario: " + mUserName.getText().toString());
             Log.d(DEBUG_TAG, "Teléfono del usuario: " + mPhoneNumber.getText().toString());

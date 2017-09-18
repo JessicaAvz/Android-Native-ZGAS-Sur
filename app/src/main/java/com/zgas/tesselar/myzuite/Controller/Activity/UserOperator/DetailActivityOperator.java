@@ -67,7 +67,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_operator);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
-        Log.d(DEBUG_TAG, "OnCreate");
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
         mUser = mUserPreferences.getUser();
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
@@ -211,7 +211,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_finish_case_operator);
-        Log.d(DEBUG_TAG, "OnCreate");
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
         final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
@@ -223,7 +223,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 if (isEmpty(etQuantity) || isEmpty(etTicket) || isEmpty(etTotal)) {
-                    Toast.makeText(getApplicationContext(), "Por favor, llene todos los campos para finalizar el pedido.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
                 } else {
 
                     final String quantity = etQuantity.getText().toString();
@@ -235,7 +235,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                     etQuantity.getText().clear();
                     etTicket.getText().clear();
                     etTotal.getText().clear();
-                    Toast.makeText(getApplicationContext(), "Pedido finalizado correctamente.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
             }
@@ -255,7 +255,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_operator);
-        Log.d(DEBUG_TAG, "OnCreate");
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
         final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
@@ -268,11 +268,11 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
             @Override
             public void onClick(View view) {
                 if (mSpinnerOptions.getSelectedItem() == null) {
-                    Toast.makeText(getApplicationContext(), "Por favor, seleccione una opción para reportar una incidencia.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
                     Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
                     mSpinnerOptions.setSelection(0);
-                    Toast.makeText(getApplicationContext(), "Pedido cancelado correctamente.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
             }
@@ -291,6 +291,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     private void inProgressDialog() {
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
                 .setMessage(getResources().getString(R.string.dialog_in_progress_body))
