@@ -2,7 +2,9 @@ package com.zgas.tesselar.myzuite.Controller.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         return new SupervisorAdapter.SupervisedViewHolder(v);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(SupervisedViewHolder holder, int position) {
         User mUser = mSupervisedList.get(position);

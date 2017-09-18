@@ -16,7 +16,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:drawableLeft="@drawable/icon_account"
         android:drawablePadding="3dp"
         android:drawableTint="@color/dark_grey_300"
@@ -24,7 +24,7 @@
         android:text="@string/prompt_detail_operator_client_id"
         android:textColor="@color/grey_500"
         android:textSize="15sp"
-        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
