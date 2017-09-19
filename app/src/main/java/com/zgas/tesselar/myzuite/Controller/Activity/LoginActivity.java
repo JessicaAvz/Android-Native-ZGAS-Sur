@@ -8,14 +8,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
+    private static final String USER_ID = "userId";
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
@@ -61,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //} else {
         userToJson = new User();
         userToJson.setUserId(1001);
-        userToJson.setUserType(User.userType.SUPERVISOR);
+        userToJson.setUserType(User.userType.OPERATOR);
         userToJson.setUserName("Mario");
         userToJson.setUserLastname("Pérez");
         userToJson.setUserEmail("mperez@gmail.com");
@@ -80,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 + " - userStatus: " + userFromJson.getUserstatus());
 
         mUserPreferences = new UserPreferences(this);
-        mUserPreferences.saveUser(userFromJson);
+        mUserPreferences.setUser(userFromJson);
 
         if (mUserPreferences.getUser() != null) {
             Log.d(DEBUG_TAG, "El usuario no fue nulo.");
@@ -97,5 +100,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
+    }
+
+    @Override
+    public void loginErrorResponse(String error) {
+        Log.d(DEBUG_TAG, error);
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void loginSuccessResponse(User user) {
+
     }
 }

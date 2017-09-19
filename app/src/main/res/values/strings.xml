@@ -134,5 +134,12 @@
     <string name="service_cancel_incorrect">Por favor, seleccione una opción para reportar una incidencia.</string>
     <string name="service_cancel_correct">Pedido cancelado correctamente.</string>
 
+    <!-- Responses -->
+    <string name="error">Error</string>
+    <string name="server_error">Error en el servidor.</string>
+    <string name="post">POST</string>
+    <string name="login_error">Error al iniciar sesión.</string>}
+    <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
+
 </resources>
 

@@ -33,7 +33,7 @@ public class UserPreferences {
         return gson.fromJson(mSharedPreferences.getString(EXTRA_USER, "Null"), User.class);
     }
 
-    public void saveUser(User user) {
+    public void setUser(User user) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(EXTRA_USER, user.toJson());
         editor.apply();
