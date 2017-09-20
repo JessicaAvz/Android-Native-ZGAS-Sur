@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,9 +23,9 @@ import java.net.URL;
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "LoginTask";
-    private static final String LOGIN_CONTROLLER = "user";
+    private static final String USER = "user";
     private static final String ERROR_JSON_OBJECT = "error";
-    private static final String USER_JSON_OBJECT = "user";
+    private static final String USER_TYPE = "userType";
 
     private static final String JSON_OBJECT_ID = "id";
     private static final String JSON_OBJECT_EMAIL = "email";
@@ -47,8 +47,8 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL(UrlHelper.getUrl(LOGIN_CONTROLLER));
-            ConnectionController connection = new ConnectionController(url, context.getResources().getString(R.string.post), params);
+            URL url = new URL("https://my-json-server.typicode.com/JessicaAvz/jsons/login_success");
+            ConnectionController connection = new ConnectionController(url, "GET", params);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
@@ -72,9 +72,24 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObjectResult) {
         super.onPostExecute(jsonObjectResult);
-
+        Gson gson = new Gson();
         User user = null;
 
+        try {
+            user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
+            String userType = jsonObjectResult.getJSONObject(USER).get(USER_TYPE).toString();
+            if (userType.equals("Operador")) {
+                user.setUserType(User.userType.OPERATOR);
+            }
+            loginTaskListener.loginSuccessResponse(user);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d(DEBUG_TAG, user.getUserName());
+
+
+
+        /*
         try {
 
             if (jsonObjectResult == null) {
@@ -105,15 +120,13 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-
         loginTaskListener.loginErrorResponse(context.getResources().getString(R.string.connection_error));
-
     }
 
     public void setLoginTaskListener(LoginTaskListener loginTaskListener) {

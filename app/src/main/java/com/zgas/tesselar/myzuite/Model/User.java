@@ -1,6 +1,7 @@
 package com.zgas.tesselar.myzuite.Model;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 
 /**
  * Created by jarvizu on 28/08/2017.
@@ -8,6 +9,7 @@ import com.google.gson.Gson;
 
 public class User {
     private int userId;
+    @Expose
     private userType userType;
     private String userName;
     private String userLastname;
@@ -15,6 +17,7 @@ public class User {
     private String userPassword;
     private String userRoute;
     private String userZone;
+    @Expose
     private userStatus userstatus;
 
     public enum userStatus {

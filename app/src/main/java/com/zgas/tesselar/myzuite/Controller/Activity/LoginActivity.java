@@ -18,7 +18,6 @@ import com.zgas.tesselar.myzuite.Service.UserPreferences;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
-    private static final String USER_ID = "userId";
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
@@ -53,7 +52,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
-                login();
+                LoginTask loginTask = new LoginTask(this, null);
+                loginTask.setLoginTaskListener(this);
+                loginTask.execute();
+                //login();
                 break;
         }
     }
@@ -62,39 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //if (isEmpty(mEmail) || isEmpty(mPassword)) {
         //    Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
         //} else {
-        userToJson = new User();
-        userToJson.setUserId(1001);
-        userToJson.setUserType(User.userType.OPERATOR);
-        userToJson.setUserName("Mario");
-        userToJson.setUserLastname("Pérez");
-        userToJson.setUserEmail("mperez@gmail.com");
-        userToJson.setUserPassword("j789");
-        userToJson.setUserRoute("Ruta 1");
-        userToJson.setUserZone("Zona 1");
-        userToJson.setUserstatus(User.userStatus.ACTIVE);
-        String json = userToJson.toJson();
-        Log.d(DEBUG_TAG, json);
 
-        User userFromJson = User.fromJson(json);
-        Log.d(DEBUG_TAG, "userid: " + userFromJson.getUserId() + " - userType: " + userFromJson.getUserType()
-                + " - userName: " + userFromJson.getUserName() + " - userLastname: " + userFromJson.getUserLastname()
-                + " - userEmail: " + userFromJson.getUserEmail() + " - userPassword: " + userFromJson.getUserPassword()
-                + " - userRoute: " + userFromJson.getUserRoute() + " - userZone:" + userFromJson.getUserZone()
-                + " - userStatus: " + userFromJson.getUserstatus());
-
-        mUserPreferences = new UserPreferences(this);
-        mUserPreferences.setUser(userFromJson);
-
-        if (mUserPreferences.getUser() != null) {
-            Log.d(DEBUG_TAG, "El usuario no fue nulo.");
-        } else {
-            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
-        }
-
-        mUserPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
-        mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(mainIntent);
-        this.finish();
         //}
     }
 
@@ -110,6 +80,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginSuccessResponse(User user) {
+        mUserPreferences = new UserPreferences(this);
+        mUserPreferences.setUser(user);
 
+        if (mUserPreferences.getUser() != null) {
+            Log.d(DEBUG_TAG, "El usuario no fue nulo.");
+        } else {
+            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
+        }
+
+        //mUserPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
+        mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        this.finish();
     }
 }

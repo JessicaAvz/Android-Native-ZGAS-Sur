@@ -54,8 +54,8 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection.setDoOutput(true);
+            //httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            httpURLConnection.setDoOutput(false);
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);
             httpURLConnection.connect();
@@ -75,7 +75,7 @@ public class ConnectionController {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuffer stringBuffer = new StringBuffer();
 
-                String line;
+                String line = null;
                 if (bufferedReader != null) {
                     while ((line = bufferedReader.readLine()) != null) {
                         stringBuffer.append(line);
@@ -91,6 +91,9 @@ public class ConnectionController {
                     jsonObject = new JSONObject();
                     jsonObject.put("jsonArray", new JSONArray(stringBuffer.toString()));
                 }
+
+
+                //Log.d("AAAAAAAAAAAAAAAAAAAAAAA", line);
 
             } else if (status <= 500) {
                 jsonObject = new JSONObject();
