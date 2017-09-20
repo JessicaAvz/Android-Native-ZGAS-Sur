@@ -17,7 +17,6 @@ import com.zgas.tesselar.myzuite.Controller.Activity.UserService.DetailActivityS
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 /**
@@ -51,7 +50,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         String caseAddress = mCase.getCaseAddress();
         Case.caseStatus caseStatus = mCase.getCaseStatus();
         Case.caseTypes caseType = mCase.getCaseType();
-        Time orderHourIn = mCase.getCaseTimeIn();
+        String orderHourIn = mCase.getCaseTimeIn();
 
         TextView id = holder.mOrderId;
         TextView address = holder.mOrderAddress;
@@ -134,10 +133,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     String address = mCase.getCaseAddress();
                     Case.caseStatus status = mCase.getCaseStatus();
                     Case.caseTypes type = mCase.getCaseType();
-                    Time timeIn = mCase.getCaseTimeIn();
-                    Time timeSeen = mCase.getCaseTimeSeen();
-                    Time timeArrival = mCase.getCaseTimeArrival();
-                    Time timeProgrammed = mCase.getCaseTimeProgrammed();
+                    String timeIn = mCase.getCaseTimeIn();
+                    String timeSeen = mCase.getCaseTimeSeen();
+                    String timeArrival = mCase.getCaseTimeArrival();
+                    String timeProgrammed = mCase.getCaseTimeProgrammed();
                     Case.casePriority priority = mCase.getCasePriority();
                     String userName = mCase.getCaseClientName();
                     String userLastname = mCase.getCaseClientLastname();

@@ -138,7 +138,9 @@
     <string name="error">Error</string>
     <string name="server_error">Error en el servidor.</string>
     <string name="post">POST</string>
-    <string name="login_error">Error al iniciar sesión.</string>}
+    <string name="login_error">Error al iniciar sesión.</string>
+    <string name="wait_message">Por favor, espere...</string>
+    <string name="wait_cases_message">Recuperando los casos...</string>
     <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
 
 </resources>

@@ -18,11 +18,13 @@ import com.zgas.tesselar.myzuite.Service.UserPreferences;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
+    private static final String EMAIL = "email";
+    private static final String PASS = "password";
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
     private Button mLogin;
-    private User userToJson;
+    private User user;
     private Intent mainIntent;
     private UserPreferences mUserPreferences;
 
@@ -52,10 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
-                LoginTask loginTask = new LoginTask(this, null);
-                loginTask.setLoginTaskListener(this);
-                loginTask.execute();
-                //login();
+                login();
                 break;
         }
     }
@@ -65,6 +64,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //    Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
         //} else {
 
+        try {
+            LoginTask loginTask = new LoginTask(this, null);
+            loginTask.setLoginTaskListener(this);
+            loginTask.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //}
     }
 
@@ -80,18 +86,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginSuccessResponse(User user) {
-        mUserPreferences = new UserPreferences(this);
-        mUserPreferences.setUser(user);
+        try {
+            mUserPreferences = new UserPreferences(this);
+            mUserPreferences.setUser(user);
 
-        if (mUserPreferences.getUser() != null) {
-            Log.d(DEBUG_TAG, "El usuario no fue nulo.");
-        } else {
-            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
+            if (mUserPreferences.getUser() != null) {
+                Log.d(DEBUG_TAG, "El usuario no fue nulo.");
+            } else {
+                Log.d(DEBUG_TAG, "El usuario fue nulo. ");
+            }
+
+            mUserPreferences.createLoginSession(user.getUserEmail(), user.getUserPassword());
+            mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(mainIntent);
+            this.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        //mUserPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
-        mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(mainIntent);
-        this.finish();
     }
 }

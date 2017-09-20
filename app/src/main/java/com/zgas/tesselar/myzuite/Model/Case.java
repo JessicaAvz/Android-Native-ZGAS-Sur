@@ -1,6 +1,6 @@
 package com.zgas.tesselar.myzuite.Model;
 
-import java.sql.Time;
+import com.google.gson.annotations.Expose;
 
 /**
  * Created by jarvizu on 28/08/2017.
@@ -9,15 +9,18 @@ import java.sql.Time;
 public class Case {
     private int caseId;
     private int caseUserId;
-    private Time caseTimeIn;
-    private Time caseTimeSeen;
-    private Time caseTimeArrival;
-    private Time caseTimeProgrammed;
+    private String caseTimeIn;
+    private String caseTimeSeen;
+    private String caseTimeArrival;
+    private String caseTimeProgrammed;
+    @Expose
     private caseStatus caseStatus;
+    @Expose
     private casePriority casePriority;
     private String caseClientName;
     private String caseClientLastname;
     private String caseAddress;
+    @Expose
     private caseTypes caseType;
 
     public enum casePriority {
@@ -86,7 +89,7 @@ public class Case {
     public Case() {
     }
 
-    public Case(int caseId, int caseUserId, Time caseTimeIn, Time caseTimeSeen, Time caseTimeArrival, Time caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseClientName, String caseClientLastname, String caseAddress, caseTypes caseType) {
+    public Case(int caseId, int caseUserId, String caseTimeIn, String caseTimeSeen, String caseTimeArrival, String caseTimeProgrammed, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseClientName, String caseClientLastname, String caseAddress, caseTypes caseType) {
         this.caseId = caseId;
         this.caseUserId = caseUserId;
         this.caseTimeIn = caseTimeIn;
@@ -117,27 +120,27 @@ public class Case {
         this.caseUserId = caseUserId;
     }
 
-    public Time getCaseTimeIn() {
+    public String getCaseTimeIn() {
         return caseTimeIn;
     }
 
-    public void setCaseTimeIn(Time caseTimeIn) {
+    public void setCaseTimeIn(String caseTimeIn) {
         this.caseTimeIn = caseTimeIn;
     }
 
-    public Time getCaseTimeSeen() {
+    public String getCaseTimeSeen() {
         return caseTimeSeen;
     }
 
-    public void setCaseTimeSeen(Time caseTimeSeen) {
+    public void setCaseTimeSeen(String caseTimeSeen) {
         this.caseTimeSeen = caseTimeSeen;
     }
 
-    public Time getCaseTimeArrival() {
+    public String getCaseTimeArrival() {
         return caseTimeArrival;
     }
 
-    public void setCaseTimeArrival(Time caseTimeArrival) {
+    public void setCaseTimeArrival(String caseTimeArrival) {
         this.caseTimeArrival = caseTimeArrival;
     }
 
@@ -189,11 +192,11 @@ public class Case {
         this.caseClientLastname = caseClientLastname;
     }
 
-    public Time getCaseTimeProgrammed() {
+    public String getCaseTimeProgrammed() {
         return caseTimeProgrammed;
     }
 
-    public void setCaseTimeProgrammed(Time caseTimeProgrammed) {
+    public void setCaseTimeProgrammed(String caseTimeProgrammed) {
         this.caseTimeProgrammed = caseTimeProgrammed;
     }
 }

@@ -92,9 +92,6 @@ public class ConnectionController {
                     jsonObject.put("jsonArray", new JSONArray(stringBuffer.toString()));
                 }
 
-
-                //Log.d("AAAAAAAAAAAAAAAAAAAAAAA", line);
-
             } else if (status <= 500) {
                 jsonObject = new JSONObject();
                 jsonObject.put(context.getResources().getString(R.string.error), context.getResources().getString(R.string.server_error));
