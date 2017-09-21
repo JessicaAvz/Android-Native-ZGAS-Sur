@@ -136,6 +136,7 @@
 
     <!-- Responses -->
     <string name="error">Error</string>
+    <string name="no_data">Sin datos.</string>
     <string name="server_error">Error en el servidor.</string>
     <string name="post">POST</string>
     <string name="login_error">Error al iniciar sesión.</string>

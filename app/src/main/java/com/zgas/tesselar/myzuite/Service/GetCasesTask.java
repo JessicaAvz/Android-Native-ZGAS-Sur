@@ -145,8 +145,6 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     aCase.setCasePriority(Case.casePriority.MEDIUM);
                 }
 
-
-                //casesTaskListener.getCasesSuccessResponse(casesList);
                 isError = false;
                 casesList.add(aCase);
 

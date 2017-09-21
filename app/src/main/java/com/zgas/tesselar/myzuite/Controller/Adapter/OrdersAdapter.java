@@ -17,7 +17,6 @@ import com.zgas.tesselar.myzuite.Controller.Activity.UserService.DetailActivityS
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,17 +60,29 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.LEAKAGE));
             id.setText("Reporte número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
-            hourIn.setText("Hora del reporte: " + orderHourIn.toString());
+            if (orderHourIn != null && !orderHourIn.equals("")) {
+                hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
+            } else {
+                hourIn.setText("Hora del reporte: " + orderHourIn);
+            }
         } else if (caseType.equals(Case.caseTypes.ORDER)) {
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
             id.setText("Pedido número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
-            hourIn.setText("Hora del pedido: " + orderHourIn.toString());
+            if (orderHourIn != null && !orderHourIn.equals("")) {
+                hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
+            } else {
+                hourIn.setText("Hora del pedido: " + orderHourIn);
+            }
         } else if (caseType.equals(Case.caseTypes.CUSTOM_SERVICE)) {
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
             id.setText("Servicio número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
-            hourIn.setText("Hora del servicio: " + orderHourIn.toString());
+            if (orderHourIn != null && !orderHourIn.equals("")) {
+                hourIn.setText("Hora del servicio: " + context.getResources().getString(R.string.no_data));
+            } else {
+                hourIn.setText("Hora del servicio: " + orderHourIn);
+            }
         } else if (caseType.equals(Case.caseTypes.CUT)) {
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.CUT));
         } else if (caseType.equals(Case.caseTypes.CANCELLATION)) {
