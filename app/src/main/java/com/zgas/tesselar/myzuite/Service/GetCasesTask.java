@@ -5,10 +5,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +16,8 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jarvizu on 20/09/2017.
@@ -25,13 +27,25 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetCasesTask";
     private static final String CASE = "case";
+    private static final String CASES_ARRAY = "cases";
     private static final String CASE_ERROR = "error";
+    private static final String CASE_ID = "caseId";
+    private static final String CASE_USER_ID = "caseUserId";
+    private static final String CASE_TIME_IN = "caseTimeIn";
+    private static final String CASE_TIME_SEEN = "caseTimeSeen";
+    private static final String CASE_TIME_ARRIVAL = "caseTimeArrival";
+    private static final String CASE_TIME_PROGRAMMED = "caseTimeProgrammed";
+    private static final String CASE_PRIORITY = "casePriority";
+    private static final String CASE_CIENT_NAME = "caseClientName";
+    private static final String CASE_CLIENT_LASTNAME = "caseClientLastname";
+    private static final String CASE_ADDRESS = "caseAddress";
     private static final String CASE_STATUS = "caseStatus";
     private static final String CASE_TYPE = "caseType";
+    private static final String URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/get_cases";
 
     private Context context;
     private JSONObject params;
-    private GetCasesTaskListener GetCasesTaskListener;
+    private CasesTaskListener casesTaskListener;
     private ProgressDialog progressDialog;
     private boolean isError = false;
 
@@ -50,7 +64,7 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL("https://my-json-server.typicode.com/JessicaAvz/jsons/get_cases");
+            URL url = new URL(URL);
             ConnectionController connection = new ConnectionController(url, "GET", params);
             jsonObject = connection.execute();
 
@@ -76,21 +90,31 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObjectResult) {
         super.onPostExecute(jsonObjectResult);
         progressDialog.dismiss();
-        Gson gson = new Gson();
-        Case aCase = null;
+
+        List<Case> casesList = new ArrayList<>();
+        JSONArray casesArray;
+
+        Case aCase;
 
         try {
-            if (jsonObjectResult == null) {
-                GetCasesTaskListener.getCasesErrorResponse(jsonObjectResult.getString(CASE_ERROR));
-                isError = true;
-            } else if (jsonObjectResult.has(CASE_ERROR)) {
-                Log.d(DEBUG_TAG, "Error " + jsonObjectResult.getString(CASE_ERROR));
-                GetCasesTaskListener.getCasesErrorResponse(jsonObjectResult.getString(CASE_ERROR));
-                isError = true;
-            } else if (jsonObjectResult.has(CASE)) {
-                aCase = gson.fromJson(jsonObjectResult.getJSONObject(CASE).toString(), Case.class);
-                String caseType = jsonObjectResult.getJSONObject(CASE).get(CASE_TYPE).toString();
-                String caseStatus = jsonObjectResult.getJSONObject(CASE).get(CASE_STATUS).toString();
+            casesArray = jsonObjectResult.getJSONArray(CASES_ARRAY);
+
+            for (int i = 0; i < casesArray.length(); i++) {
+                JSONObject caseObject = casesArray.getJSONObject(i);
+                aCase = new Case();
+                aCase.setCaseId(caseObject.getInt(CASE_ID));
+                aCase.setCaseUserId(caseObject.getInt(CASE_USER_ID));
+                aCase.setCaseTimeArrival(caseObject.getString(CASE_TIME_SEEN));
+                aCase.setCaseTimeProgrammed(caseObject.getString(CASE_TIME_PROGRAMMED));
+                aCase.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                aCase.setCaseTimeIn(caseObject.getString(CASE_TIME_IN));
+                aCase.setCaseClientName(caseObject.getString(CASE_CIENT_NAME));
+                aCase.setCaseClientLastname(caseObject.getString(CASE_CLIENT_LASTNAME));
+                aCase.setCaseAddress(caseObject.getString(CASE_ADDRESS));
+
+                String caseType = caseObject.get(CASE_TYPE).toString();
+                String caseStatus = caseObject.get(CASE_STATUS).toString();
+                String casePriority = caseObject.get(CASE_PRIORITY).toString();
                 if (caseType.equals(Case.caseTypes.ORDER.toString())) {
                     aCase.setCaseType(Case.caseTypes.ORDER);
                 } else if (caseType.equals(Case.caseTypes.CANCELLATION.toString())) {
@@ -112,8 +136,19 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 } else if (caseStatus.equals(Case.caseStatus.FINISHED.toString())) {
                     aCase.setCaseStatus(Case.caseStatus.FINISHED);
                 }
-                GetCasesTaskListener.getCasesSuccessResponse(aCase);
+
+                if (casePriority.equals(Case.casePriority.HIGH.toString())) {
+                    aCase.setCasePriority(Case.casePriority.HIGH);
+                } else if (casePriority.equals(Case.casePriority.LOW.toString())) {
+                    aCase.setCasePriority(Case.casePriority.LOW);
+                } else if (casePriority.equals(Case.casePriority.MEDIUM.toString())) {
+                    aCase.setCasePriority(Case.casePriority.MEDIUM);
+                }
+
+
+                //casesTaskListener.getCasesSuccessResponse(casesList);
                 isError = false;
+                casesList.add(aCase);
 
                 Log.d(DEBUG_TAG, "Id del caso: " + aCase.getCaseId());
                 Log.d(DEBUG_TAG, "Id del encargado del caso: " + aCase.getCaseUserId());
@@ -128,12 +163,12 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Dirección del caso: " + aCase.getCaseAddress());
                 Log.d(DEBUG_TAG, "Tipo del caso: " + aCase.getCaseType());
             }
-
-            if (isError == false) {
-                GetCasesTaskListener.getCasesSuccessResponse(aCase);
-            }
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (casesTaskListener != null) {
+                casesTaskListener.getCasesSuccessResponse(casesList);
+            }
         }
     }
 
@@ -141,16 +176,16 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onCancelled() {
         super.onCancelled();
         progressDialog.dismiss();
-        GetCasesTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
+        casesTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    public void setCasesTaskListener(GetCasesTaskListener GetCasesTaskListener) {
-        this.GetCasesTaskListener = GetCasesTaskListener;
+    public void setCasesTaskListener(CasesTaskListener GetCasesTaskListener) {
+        this.casesTaskListener = GetCasesTaskListener;
     }
 
-    public interface GetCasesTaskListener {
+    public interface CasesTaskListener {
         void getCasesErrorResponse(String error);
 
-        void getCasesSuccessResponse(Case cases);
+        void getCasesSuccessResponse(List<Case> caseList);
     }
 }
