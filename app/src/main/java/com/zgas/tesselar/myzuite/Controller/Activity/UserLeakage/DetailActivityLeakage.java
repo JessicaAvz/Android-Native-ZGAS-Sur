@@ -27,8 +27,6 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
-import java.sql.Time;
-
 public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivityLeakage";
@@ -41,10 +39,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private String mCldCaseTimeIn;
-    private String mCldCaseTimeSeen;
-    private String mCldCaseTimeArrived;
-    private String mCldCaseTimeProgrammed;
+    private String mStrCaseTimeIn;
+    private String mStrCaseTimeSeen;
+    private String mStrCaseTimeArrived;
+    private String mStrCaseTimeProgrammed;
 
     private TextView mUserId;
     private TextView mUserName;
@@ -90,10 +88,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mStrCaseStatus = mBundle.getString(MainActivity.EXTRA_CASE_STATUS);
         mStrCaseType = mBundle.getString(MainActivity.EXTRA_CASE_TYPE);
         mStrCasePriority = mBundle.getString(MainActivity.EXTRA_CASE_PRIORITY);
-        mCldCaseTimeIn = mBundle.getString(MainActivity.EXTRA_CASE_TIME_IN);
-        mCldCaseTimeSeen = mBundle.getString(MainActivity.EXTRA_CASE_TIME_SEEN);
-        mCldCaseTimeArrived = mBundle.getString(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = mBundle.getString(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
+        mStrCaseTimeIn = mBundle.getString(MainActivity.EXTRA_CASE_TIME_IN);
+        mStrCaseTimeSeen = mBundle.getString(MainActivity.EXTRA_CASE_TIME_SEEN);
+        mStrCaseTimeArrived = mBundle.getString(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
+        mStrCaseTimeProgrammed = mBundle.getString(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
 
         Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
         Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -103,9 +101,9 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, "Estatus de la fuga: " + mStrCaseStatus.toString());
         Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType.toString());
         Log.d(DEBUG_TAG, "Prioridad de la fuga: " + mStrCasePriority.toString());
-        Log.d(DEBUG_TAG, "Hora de reporte: " + String.valueOf(mCldCaseTimeIn));
-        Log.d(DEBUG_TAG, "Hora de visualización del reporte: " + String.valueOf(mCldCaseTimeSeen));
-        Log.d(DEBUG_TAG, "Hora de llegada del reporte: " + String.valueOf(mCldCaseTimeArrived));
+        Log.d(DEBUG_TAG, "Hora de reporte: " + String.valueOf(mStrCaseTimeIn));
+        Log.d(DEBUG_TAG, "Hora de visualización del reporte: " + String.valueOf(mStrCaseTimeSeen));
+        Log.d(DEBUG_TAG, "Hora de llegada del reporte: " + String.valueOf(mStrCaseTimeArrived));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -119,14 +117,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mCaseAddress.setText(mStrCaseAddress);
         mCaseStatus = (TextView) findViewById(R.id.activity_detail_leakage_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
-        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_in);
-        mCaseTimeIn.setText(String.valueOf(mCldCaseTimeIn));
-        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_seen);
-        mCaseTimeSeen.setText(String.valueOf(mCldCaseTimeSeen));
-        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_leakage_tv_arrived);
-        mCaseTimeArrived.setText(String.valueOf(mCldCaseTimeArrived));
-        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_programmed);
-        mCaseTimeProgrammed.setText(String.valueOf(mCldCaseTimeProgrammed));
         mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
         mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_finished);
@@ -135,6 +125,31 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mFabCanceled.setOnClickListener(this);
         mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_waze);
         mFabWaze.setOnClickListener(this);
+
+        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_in);
+        if (mStrCaseTimeIn != null && !mStrCaseTimeIn.equals("")) {
+            mCaseTimeIn.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeIn.setText(String.valueOf(mStrCaseTimeIn));
+        }
+        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_seen);
+        if (mStrCaseTimeSeen != null && !mStrCaseTimeSeen.equals("")) {
+            mCaseTimeSeen.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeSeen.setText(String.valueOf(mStrCaseTimeSeen));
+        }
+        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_leakage_tv_arrived);
+        if (mStrCaseTimeArrived != null && !mStrCaseTimeArrived.equals("")) {
+            mCaseTimeArrived.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeArrived.setText(String.valueOf(mStrCaseTimeArrived));
+        }
+        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_programmed);
+        if (mStrCaseTimeProgrammed != null && !mStrCaseTimeProgrammed.equals("")) {
+            mCaseTimeProgrammed.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeProgrammed.setText(String.valueOf(mStrCaseTimeProgrammed));
+        }
 
         if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
