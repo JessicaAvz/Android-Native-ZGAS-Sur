@@ -23,9 +23,9 @@ import java.util.List;
  * Created by jarvizu on 20/09/2017.
  */
 
-public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "GetCasesTask";
+    private static final String DEBUG_TAG = "GetOrdersTask";
     private static final String CASE = "case";
     private static final String CASES_ARRAY = "cases";
     private static final String CASE_ERROR = "error";
@@ -45,11 +45,11 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private Context context;
     private JSONObject params;
-    private CasesTaskListener casesTaskListener;
+    private OrderTaskListener orderTaskListener;
     private ProgressDialog progressDialog;
     private boolean isError = false;
 
-    public GetCasesTask(Context context, JSONObject params) {
+    public GetOrdersTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
     }
@@ -164,8 +164,8 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            if (casesTaskListener != null) {
-                casesTaskListener.getCasesSuccessResponse(casesList);
+            if (orderTaskListener != null) {
+                orderTaskListener.getCasesSuccessResponse(casesList);
             }
         }
     }
@@ -174,14 +174,14 @@ public class GetCasesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onCancelled() {
         super.onCancelled();
         progressDialog.dismiss();
-        casesTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
+        orderTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    public void setCasesTaskListener(CasesTaskListener GetCasesTaskListener) {
-        this.casesTaskListener = GetCasesTaskListener;
+    public void setOrderTaskListener(OrderTaskListener getOrderTaskListener) {
+        this.orderTaskListener = getOrderTaskListener;
     }
 
-    public interface CasesTaskListener {
+    public interface OrderTaskListener {
         void getCasesErrorResponse(String error);
 
         void getCasesSuccessResponse(List<Case> caseList);

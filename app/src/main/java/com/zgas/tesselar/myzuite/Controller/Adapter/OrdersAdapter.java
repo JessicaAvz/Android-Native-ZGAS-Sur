@@ -55,11 +55,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView id = holder.mOrderId;
         TextView address = holder.mOrderAddress;
         TextView hourIn = holder.mOrderTimeIn;
+        TextView type = holder.mOrderType;
 
         if (caseType.equals(Case.caseTypes.LEAKAGE)) {
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.LEAKAGE));
             id.setText("Reporte número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
+            type.setText("Tipo: " + caseType);
             if (orderHourIn != null && !orderHourIn.equals("")) {
                 hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
             } else {
@@ -69,6 +71,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
             id.setText("Pedido número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
+            type.setText("Tipo: " + caseType);
             if (orderHourIn != null && !orderHourIn.equals("")) {
                 hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
             } else {
@@ -78,6 +81,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
             id.setText("Servicio número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
+            type.setText("Tipo: " + caseType);
             if (orderHourIn != null && !orderHourIn.equals("")) {
                 hourIn.setText("Hora del servicio: " + context.getResources().getString(R.string.no_data));
             } else {
@@ -126,6 +130,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         private TextView mOrderStatus;
         private TextView mOrderAddress;
         private TextView mOrderTimeIn;
+        private TextView mOrderType;
 
         public OrderViewHolder(final View itemView) {
             super(itemView);
@@ -134,6 +139,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             mOrderStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
             mOrderAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
             mOrderTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
+            mOrderType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

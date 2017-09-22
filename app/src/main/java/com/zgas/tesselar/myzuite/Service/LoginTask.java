@@ -28,6 +28,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String USER_ERROR = "error";
     private static final String USER_STATUS = "userStatus";
     private static final String USER_TYPE = "userType";
+    private static final String URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/login_success";
 
     private Context context;
     private JSONObject params;
@@ -56,7 +57,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL("https://my-json-server.typicode.com/JessicaAvz/jsons/login_success");
+            URL url = new URL(URL);
             ConnectionController connection = new ConnectionController(url, "GET", params);
             jsonObject = connection.execute();
 

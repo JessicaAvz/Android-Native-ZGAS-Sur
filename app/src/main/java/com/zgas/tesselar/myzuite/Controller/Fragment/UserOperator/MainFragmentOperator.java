@@ -15,27 +15,24 @@ import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Service.GetCasesTask;
+import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragmentOperator extends Fragment implements GetCasesTask.CasesTaskListener {
+public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
 
     private static final String DEBUG_TAG = "MainFragmentOperator";
 
-    private final ArrayList<Case> mCaseList = new ArrayList();
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
     LinearLayoutManager layoutManager;
     private User mUser;
-    private Case aCase;
 
     public MainFragmentOperator() {
         // Required empty public constructor
@@ -53,9 +50,9 @@ public class MainFragmentOperator extends Fragment implements GetCasesTask.Cases
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
         initUi(mRootView);
         try {
-            GetCasesTask getCasesTask = new GetCasesTask(getContext(), null);
-            getCasesTask.setCasesTaskListener(this);
-            getCasesTask.execute();
+            GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), null);
+            getOrdersTask.setOrderTaskListener(this);
+            getOrdersTask.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

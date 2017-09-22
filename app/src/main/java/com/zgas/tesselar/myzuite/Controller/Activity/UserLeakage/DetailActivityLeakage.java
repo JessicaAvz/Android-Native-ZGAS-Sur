@@ -41,10 +41,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private Time mCldCaseTimeIn;
-    private Time mCldCaseTimeSeen;
-    private Time mCldCaseTimeArrived;
-    private Time mCldCaseTimeProgrammed;
+    private String mCldCaseTimeIn;
+    private String mCldCaseTimeSeen;
+    private String mCldCaseTimeArrived;
+    private String mCldCaseTimeProgrammed;
 
     private TextView mUserId;
     private TextView mUserName;
@@ -90,10 +90,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mStrCaseStatus = mBundle.getString(MainActivity.EXTRA_CASE_STATUS);
         mStrCaseType = mBundle.getString(MainActivity.EXTRA_CASE_TYPE);
         mStrCasePriority = mBundle.getString(MainActivity.EXTRA_CASE_PRIORITY);
-        mCldCaseTimeIn = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_IN);
-        mCldCaseTimeSeen = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_SEEN);
-        mCldCaseTimeArrived = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
+        mCldCaseTimeIn = mBundle.getString(MainActivity.EXTRA_CASE_TIME_IN);
+        mCldCaseTimeSeen = mBundle.getString(MainActivity.EXTRA_CASE_TIME_SEEN);
+        mCldCaseTimeArrived = mBundle.getString(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
+        mCldCaseTimeProgrammed = mBundle.getString(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
 
         Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
         Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
