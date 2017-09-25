@@ -54,7 +54,7 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            //httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            //httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             httpURLConnection.setDoOutput(false);
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);

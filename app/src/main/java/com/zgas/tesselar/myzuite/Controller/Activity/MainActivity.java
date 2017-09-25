@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -31,11 +32,13 @@ import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.MainFragmentSer
 import com.zgas.tesselar.myzuite.CustomViewPager;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.GetUsersTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUsersTask.GetUsersTaskListener {
 
     private static final String DEBUG_TAG = "MainActivity";
     public static final String EXTRA_CASE_ID = "CaseId";
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mRecyclerViewSupervised;
     private Toolbar toolbar;
     private UserPreferences mUserPreferences;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +104,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (mUser.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
+
+            try {
+                GetUsersTask getUsersTask = new GetUsersTask(this, null);
+                getUsersTask.setUsersTaskListener(this);
+                getUsersTask.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             initUiSupervisor();
         } else if (mUser.getUserType() == User.userType.LEAKAGE) {
             setContentView(R.layout.activity_main);
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
+        } else {
+            Log.d(DEBUG_TAG, "OnCreate Default");
+            setContentView(R.layout.activity_main);
+            initUiOperator();
         }
     }
 
@@ -170,29 +187,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle(R.string.prompt_supervised);
         mFabCallSupervisor = (FloatingActionButton) findViewById(R.id.ativity_supervisor_fab_call);
         mFabCallSupervisor.setOnClickListener(this);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mSupervisorAdapter = new SupervisorAdapter(this, mUserList);
-
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerViewSupervised = (RecyclerView) findViewById(R.id.activity_supervisor_recycler_view);
-        mRecyclerViewSupervised.setHasFixedSize(true);
-        mRecyclerViewSupervised.setItemViewCacheSize(20);
-        mRecyclerViewSupervised.setDrawingCacheEnabled(true);
-        mRecyclerViewSupervised.setLayoutManager(layoutManager);
-        mRecyclerViewSupervised.setAdapter(mSupervisorAdapter);
-
-        for (int x = 0; x < 15; x++) {
-            mUser = new User();
-            mUser.setUserId(x);
-            mUser.setUserName("Juan");
-            mUser.setUserLastname("López");
-            mUser.setUserEmail("jlopez@test.com");
-            mUser.setUserRoute("Ruta 4");
-            mUser.setUserZone("Cancún");
-            mUser.setUserType(User.userType.OPERATOR);
-            mUser.setUserstatus(User.userStatus.ACTIVE);
-            mUserList.add(mUser);
-        }
     }
 
     private void initUiLeakage() {
@@ -458,5 +454,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void getUsersErrorResponse(String error) {
+        Log.d(DEBUG_TAG, error);
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void getUsersSuccessResponse(List<User> userList) {
+        mSupervisorAdapter = new SupervisorAdapter(this, userList);
+        mRecyclerViewSupervised.setHasFixedSize(true);
+        mRecyclerViewSupervised.setItemViewCacheSize(20);
+        mRecyclerViewSupervised.setDrawingCacheEnabled(true);
+        mRecyclerViewSupervised.setLayoutManager(linearLayoutManager);
+        mRecyclerViewSupervised.setAdapter(mSupervisorAdapter);
     }
 }

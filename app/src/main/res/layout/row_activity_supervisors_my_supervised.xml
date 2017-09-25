@@ -18,11 +18,12 @@
             android:id="@+id/row_activity_supervisor_tv_supervised_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prompt_supervised_name"
-            android:layout_marginTop="4dp"
-            app:layout_constraintTop_toBottomOf="@+id/row_activity_supervisor_prompt_name"
             android:layout_marginLeft="24dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:layout_marginTop="4dp"
+            android:text="@string/prompt_supervised_name"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_activity_supervisor_prompt_name" />
 
         <TextView
             android:id="@+id/row_activity_supervisor_prompt_name"
@@ -35,6 +36,7 @@
             android:drawableTint="@color/dark_grey_300"
             android:gravity="center"
             android:text="@string/prompt_supervised_name"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,8 +46,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/icon_list"
+            android:drawablePadding="3dp"
+            android:drawableTint="@color/dark_grey_300"
             android:gravity="center"
             android:text="@string/prompt_supervised_status"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/row_activity_supervisor_tv_supervised_name" />
 
@@ -57,6 +63,8 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="4dp"
             android:text="@string/prompt_supervised_status"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/row_activity_supervisor_prompt_status" />

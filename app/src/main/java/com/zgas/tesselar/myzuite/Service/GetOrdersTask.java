@@ -26,7 +26,6 @@ import java.util.List;
 public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetOrdersTask";
-    private static final String CASE = "case";
     private static final String CASES_ARRAY = "cases";
     private static final String CASE_ERROR = "error";
     private static final String CASE_ID = "caseId";
@@ -93,7 +92,6 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         List<Case> casesList = new ArrayList<>();
         JSONArray casesArray;
-
         Case aCase;
 
         try {
@@ -104,7 +102,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 aCase = new Case();
                 aCase.setCaseId(caseObject.getInt(CASE_ID));
                 aCase.setCaseUserId(caseObject.getInt(CASE_USER_ID));
-                aCase.setCaseTimeArrival(caseObject.getString(CASE_TIME_SEEN));
+                aCase.setCaseTimeArrival(caseObject.getString(CASE_TIME_ARRIVAL));
                 aCase.setCaseTimeProgrammed(caseObject.getString(CASE_TIME_PROGRAMMED));
                 aCase.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
                 aCase.setCaseTimeIn(caseObject.getString(CASE_TIME_IN));

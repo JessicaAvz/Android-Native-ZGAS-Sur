@@ -15,6 +15,8 @@ import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
@@ -63,8 +65,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //if (isEmpty(mEmail) || isEmpty(mPassword)) {
         //    Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
         //} else {
+        JSONObject params = new JSONObject();
 
         try {
+            params.put(EMAIL, mEmail.getText().toString());
+            params.put(PASS, mPassword.getText().toString());
+
+            Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL));
+            Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS));
+
             LoginTask loginTask = new LoginTask(this, null);
             loginTask.setLoginTaskListener(this);
             loginTask.execute();

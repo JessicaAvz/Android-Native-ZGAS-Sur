@@ -17,7 +17,7 @@ import com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor.DetailActivi
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jarvizu on 04/09/2017.
@@ -27,9 +27,9 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
 
     private static final String DEBUG_TAG = "SupervisorAdapter";
     private Context context;
-    private ArrayList<User> mSupervisedList;
+    private List<User> mSupervisedList;
 
-    public SupervisorAdapter(Context context, ArrayList<User> mSupervisedList) {
+    public SupervisorAdapter(Context context, List<User> mSupervisedList) {
         this.context = context;
         this.mSupervisedList = mSupervisedList;
     }

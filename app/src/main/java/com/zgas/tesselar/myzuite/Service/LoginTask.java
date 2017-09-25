@@ -28,6 +28,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String USER_ERROR = "error";
     private static final String USER_STATUS = "userStatus";
     private static final String USER_TYPE = "userType";
+    //private static final String URL = "https://login.salesforce.com/services/oauth2/token";
     private static final String URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/login_success";
 
     private Context context;
