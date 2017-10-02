@@ -1,9 +1,6 @@
 package com.zgas.tesselar.myzuite.Service;
 
-import android.content.Context;
 import android.util.Log;
-
-import com.zgas.tesselar.myzuite.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,15 +24,17 @@ import java.net.URL;
 
 public class ConnectionController {
 
-    private static final String DEBUG_TAG = "ConnectionController";
-    private static final int TIMEOUT = 10000;
+    private static final String DEBUG_CONNECTION_TAG = "ConnectionController";
 
-    private Context context;
     private URL url;
     private String method;
     private JSONObject params;
+
     private JSONObject jsonObject;
+
     private HttpURLConnection httpURLConnection;
+
+    private static final int TIMEOUT = 10000;
 
     public ConnectionController(URL url, String method) {
         this.url = url;
@@ -54,12 +53,12 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            //httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            httpURLConnection.setDoOutput(false);
+            httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            httpURLConnection.setDoOutput(true);
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);
             httpURLConnection.connect();
-            Log.d(DEBUG_TAG, "Connected");
+            Log.d(DEBUG_CONNECTION_TAG, "Connected");
 
             if (params != null) {
                 OutputStreamWriter os = new OutputStreamWriter(httpURLConnection.getOutputStream());
@@ -75,7 +74,7 @@ public class ConnectionController {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuffer stringBuffer = new StringBuffer();
 
-                String line = null;
+                String line;
                 if (bufferedReader != null) {
                     while ((line = bufferedReader.readLine()) != null) {
                         stringBuffer.append(line);
@@ -94,12 +93,12 @@ public class ConnectionController {
 
             } else if (status <= 500) {
                 jsonObject = new JSONObject();
-                jsonObject.put(context.getResources().getString(R.string.error), context.getResources().getString(R.string.server_error));
-                Log.d(DEBUG_TAG, context.getResources().getString(R.string.server_error));
+                jsonObject.put("error", "Error en el servidor.");
+                Log.d(DEBUG_CONNECTION_TAG, "Server Error");
             } else {
                 jsonObject = new JSONObject();
-                jsonObject.put(context.getResources().getString(R.string.error), status);
-                Log.d(DEBUG_TAG, "Status: " + status);
+                jsonObject.put("error", status);
+                Log.d(DEBUG_CONNECTION_TAG, "Status: " + status);
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -116,4 +115,3 @@ public class ConnectionController {
         return jsonObject;
     }
 }
-

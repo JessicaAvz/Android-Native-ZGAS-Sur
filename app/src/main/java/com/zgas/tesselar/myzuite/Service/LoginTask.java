@@ -1,12 +1,10 @@
 package com.zgas.tesselar.myzuite.Service;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.zgas.tesselar.myzuite.Model.User;
+import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.R;
 
 import org.json.JSONException;
@@ -18,23 +16,22 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
- * Created by jarvizu on 19/09/2017.
+ * Created by jarvizu on 25/09/2017.
  */
 
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "LoginTask";
-    private static final String USER = "user";
-    private static final String USER_ERROR = "error";
-    private static final String USER_STATUS = "userStatus";
-    private static final String USER_TYPE = "userType";
-    //private static final String URL = "https://login.salesforce.com/services/oauth2/token";
-    private static final String URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/login_success";
+    private static final String LOGIN_CONTROLLER = "userLogin";
+    private static final String JSON_OBJECT_USER = "user";
+    private static final String JSON_OBJECT_ID = "id";
+    private static final String JSON_OBJECT_EMAIL = "email";
+    private static final String JSON_OBJECT_API_TOKEN = "api_token";
+    private static final String JSON_OBJECT_ERROR = "error";
 
     private Context context;
     private JSONObject params;
     private LoginTaskListener loginTaskListener;
-    private ProgressDialog progressDialog;
     private boolean isError = false;
 
     public LoginTask(Context context, JSONObject params) {
@@ -42,24 +39,14 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         this.params = params;
     }
 
-
-    /** progress dialog to show user that the backup is processing. */
-    /**
-     * application context.
-     */
-    @Override
-    protected void onPreExecute() {
-        progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_message), false);
-    }
-
     @Override
     protected JSONObject doInBackground(URL... urls) {
-
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL(URL);
-            ConnectionController connection = new ConnectionController(url, "GET", params);
+            URL url = new URL(UrlHelper.getUrl(LOGIN_CONTROLLER));
+            ConnectionController connection = new ConnectionController(url, "POST", params);
+
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
@@ -81,65 +68,47 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObjectResult) {
-        super.onPostExecute(jsonObjectResult);
-        progressDialog.dismiss();
-        Gson gson = new Gson();
-        User user = null;
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
+
+        Login login = null;
 
         try {
-            if (jsonObjectResult == null) {
-                loginTaskListener.loginErrorResponse(jsonObjectResult.getString(USER_ERROR));
+            if (jsonObject == null) {
+                loginTaskListener.loginErrorResponse(context.getResources().getString(R.string.login_error));
                 isError = true;
-            } else if (jsonObjectResult.has(USER_ERROR)) {
-                Log.d(DEBUG_TAG, "Error " + jsonObjectResult.getString(USER_ERROR));
-                loginTaskListener.loginErrorResponse(jsonObjectResult.getString(USER_ERROR));
-                isError = true;
-            } else if (jsonObjectResult.has(USER)) {
-                user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
-                String userType = jsonObjectResult.getJSONObject(USER).get(USER_TYPE).toString();
-                String userStatus = jsonObjectResult.getJSONObject(USER).get(USER_STATUS).toString();
-                if (userType.equals(User.userType.OPERATOR.toString())) {
-                    user.setUserType(User.userType.OPERATOR);
-                } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
-                    user.setUserType(User.userType.SUPERVISOR);
-                } else if (userType.equals(User.userType.SERVICE.toString())) {
-                    user.setUserType(User.userType.SERVICE);
-                } else if (userType.equals(User.userType.LEAKAGE.toString())) {
-                    user.setUserType(User.userType.LEAKAGE);
-                }
 
-                if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
-                    user.setUserstatus(User.userStatus.ACTIVE);
-                } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                    user.setUserstatus(User.userStatus.NOTACTIVE);
-                }
-                loginTaskListener.loginSuccessResponse(user);
+            } else if (jsonObject.has(JSON_OBJECT_ERROR)) {
+                Log.d(DEBUG_TAG, "Error " + jsonObject.getString(JSON_OBJECT_ERROR));
+                loginTaskListener.loginErrorResponse(jsonObject.getString(JSON_OBJECT_ERROR));
+                isError = true;
+
+            } else if (jsonObject.has(JSON_OBJECT_USER)) {
+
+                login = new Login();
+
+                jsonObject = jsonObject.getJSONObject(JSON_OBJECT_USER);
+                login.setLoginId(Integer.parseInt(jsonObject.getString(JSON_OBJECT_ID)));
+                login.setLoginEmail(jsonObject.getString(JSON_OBJECT_EMAIL));
+                login.setLoginApiToken(jsonObject.getString(JSON_OBJECT_API_TOKEN));
+
                 isError = false;
-
-                Log.d(DEBUG_TAG, "Id del usuario: " + user.getUserId());
-                Log.d(DEBUG_TAG, "Nombre de usuario: " + user.getUserName());
-                Log.d(DEBUG_TAG, "Apellido del usuario: " + user.getUserLastname());
-                Log.d(DEBUG_TAG, "Tipo de usuario: " + user.getUserType());
-                Log.d(DEBUG_TAG, "Email del usuario: " + user.getUserEmail());
-                Log.d(DEBUG_TAG, "Password del usuario: " + user.getUserPassword());
-                Log.d(DEBUG_TAG, "Zona del usuario: " + user.getUserZone());
-                Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
-                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());
             }
 
             if (isError == false) {
-                loginTaskListener.loginSuccessResponse(user);
+                loginTaskListener.loginSuccessResponse(login);
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        progressDialog.dismiss();
         loginTaskListener.loginErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
@@ -150,6 +119,6 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     public interface LoginTaskListener {
         void loginErrorResponse(String error);
 
-        void loginSuccessResponse(User user);
+        void loginSuccessResponse(Login login);
     }
 }

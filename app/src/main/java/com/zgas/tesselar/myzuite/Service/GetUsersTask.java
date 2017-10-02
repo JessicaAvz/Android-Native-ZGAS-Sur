@@ -35,7 +35,6 @@ public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String USER_ZONE = "userZone";
     private static final String USER_TYPE = "userType";
     private static final String USER_STATUS = "userStatus";
-    private static final String URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/get_users";
 
     private Context context;
     private JSONObject params;
@@ -58,7 +57,7 @@ public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL(URL);
+            URL url = new URL(UrlHelper.GET_USERS_URL);
             ConnectionController connection = new ConnectionController(url, "GET", params);
             jsonObject = connection.execute();
 
