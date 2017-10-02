@@ -17,11 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-
-/**
- * Created by jarvizu on 19/09/2017.
- */
-
 public class ConnectionController {
 
     private static final String DEBUG_CONNECTION_TAG = "ConnectionController";
@@ -100,10 +95,10 @@ public class ConnectionController {
                 jsonObject.put("error", status);
                 Log.d(DEBUG_CONNECTION_TAG, "Status: " + status);
             }
-        } catch (MalformedURLException e) {
+        } catch(MalformedURLException e){
             e.printStackTrace();
             httpURLConnection.disconnect();
-        } catch (IOException e) {
+        } catch(IOException e){
             e.printStackTrace();
             httpURLConnection.disconnect();
         } catch (JSONException e) {

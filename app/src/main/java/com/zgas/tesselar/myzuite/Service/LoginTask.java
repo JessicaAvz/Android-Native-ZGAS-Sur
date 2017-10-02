@@ -22,7 +22,7 @@ import java.net.URL;
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "LoginTask";
-    private static final String LOGIN_CONTROLLER = "userLogin";
+    private static final String LOGIN_CONTROLLER = "services/oauth2/token";
     private static final String JSON_OBJECT_USER = "user";
     private static final String JSON_OBJECT_ID = "id";
     private static final String JSON_OBJECT_EMAIL = "email";
@@ -44,9 +44,8 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL(UrlHelper.getUrl(LOGIN_CONTROLLER));
+            URL url = new URL("https://test.salesforce.com/services/oauth2/token");
             ConnectionController connection = new ConnectionController(url, "POST", params);
-
             jsonObject = connection.execute();
 
             if (jsonObject == null) {

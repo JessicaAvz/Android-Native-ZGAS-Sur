@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,11 +25,11 @@ import java.net.URL;
 public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetUserInfoTask";
-    private static final String USER = "user";
     private static final String USER_ERROR = "error";
+    private static final String USER_INFO_CONTROLLER = "userInfo";
+    private static final String USER = "user";
     private static final String USER_STATUS = "userStatus";
     private static final String USER_TYPE = "userType";
-    //private static final String URL = "https://login.salesforce.com/services/oauth2/token";
 
     private Context context;
     private JSONObject params;
@@ -57,8 +58,8 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL(UrlHelper.LOGIN_URL);
-            ConnectionController connection = new ConnectionController(url, "GET", params);
+            URL url = new URL(UrlHelper.getUrlToken(USER_INFO_CONTROLLER, context));
+            ConnectionController connection = new ConnectionController(url, "POST", params);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
