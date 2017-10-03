@@ -57,7 +57,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         JSONObject jsonObject = null;
 
-        try {
+        /*try {
             URL url = new URL(UrlHelper.getUrlToken(USER_INFO_CONTROLLER, context));
             ConnectionController connection = new ConnectionController(url, "POST", params);
             jsonObject = connection.execute();
@@ -76,7 +76,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             e.printStackTrace();
             cancel(true);
         }
-
+*/
         return jsonObject;
     }
 

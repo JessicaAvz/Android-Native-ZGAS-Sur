@@ -68,31 +68,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void paramsCapture() {
         //if (isEmpty(mEmail) || isEmpty(mPassword)) {
 //            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
-  //      } else {
-            JSONObject params = new JSONObject();
-            //String email = mEmail.getText().toString();
-            //String password = mPassword.getText().toString();
-            try {
-                params.put(EMAIL_TAG, "mbravo@grupozeta.biz.dev1");
-                params.put(PASS_TAG, "sfgrupozeta16");
-                params.put(GRANT_TYPE, "password");
-                params.put(CLIENT_ID, "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003");
-                params.put(CLIENT_SECRET, "631836681953146126");
+        //      } else {
+        JSONObject params = new JSONObject();
+        String email = mEmail.getText().toString();
+        String password = mPassword.getText().toString();
 
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(GRANT_TYPE));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(CLIENT_ID));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(CLIENT_SECRET));
+        try {
+            params.put(EMAIL_TAG, email);
+            params.put(PASS_TAG, password);
 
-                LoginTask loginTask = new LoginTask(context, params);
-                loginTask.setLoginTaskListener(this);
-                loginTask.execute();
+            LoginTask loginTask = new LoginTask(context, params);
+            loginTask.setLoginTaskListener(this);
+            loginTask.execute();
 
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //}
     }
 
@@ -108,19 +100,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginSuccessResponse(Login login) {
-        try {
-            login.setLoginPassword(mPassword.getText().toString());
-            userPreferences.setToken(login.getLoginApiToken());
-            userPreferences.setLoginData(login);
+        //try {
+        //login.setLoginPassword(mPassword.getText().toString());
+        userPreferences.setToken(login.getLoginAccessToken());
+        userPreferences.setLoginData(login);
 
-            GetUserInfoTask userInfoTask = new GetUserInfoTask(this, new JSONObject().put(USER_ID, login.getLoginId()));
-            userInfoTask.setUserInfoListener(this);
-            userInfoTask.execute();
+        //  GetUserInfoTask userInfoTask = new GetUserInfoTask(this, new JSONObject().put(USER_ID, login.getLoginId()));
+//            userInfoTask.setUserInfoListener(this);
+//            userInfoTask.execute();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        //} catch (JSONException e) {
+//            e.printStackTrace();
+        //}
     }
 
     @Override

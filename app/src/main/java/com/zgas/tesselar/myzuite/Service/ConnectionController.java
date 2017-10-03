@@ -63,6 +63,7 @@ public class ConnectionController {
 
             int status = httpURLConnection.getResponseCode();
 
+
             if (status >= 200 && status < 300) {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
