@@ -152,8 +152,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void userInfoSuccessResponse(User user) {
-        UserPreferences userPreferences = new UserPreferences(this);
-        userPreferences.setUser(user);
+        //UserPreferences userPreferences = new UserPreferences(this);
+        //userPreferences.setUser(user);
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
     }

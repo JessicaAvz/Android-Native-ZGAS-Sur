@@ -29,6 +29,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String JSON_OBJECT_ID = "Id";
     private static final String USER = "user";
+    private static final String JSON_OBJECT_ERROR = "error";
     private static final String USER_EMAIL = "email";
     private static final String USER_STATUS = "userStatus";
     private static final String USER_TYPE = "userType";
@@ -99,6 +100,8 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             if (jsonObjectResult == null) {
                 userInfoListener.userInfoErrorResponse(jsonObjectResult.getString(USER_ERROR));
                 isError = true;
+            } else if (jsonObjectResult.has(JSON_OBJECT_ERROR)) {
+                Log.d(DEBUG_TAG, "ADIÓS NO SIRVE");
             } else if (jsonObjectResult.has(JSON_OBJECT_ID)) {
                 Log.d(DEBUG_TAG, "HOLA SI SIRVE");
                 /*user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
