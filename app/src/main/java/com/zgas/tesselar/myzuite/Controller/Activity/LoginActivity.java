@@ -1,5 +1,6 @@
 package com.zgas.tesselar.myzuite.Controller.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -10,34 +11,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener, GetUserInfoTask.UserInfoListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
+    private static final String EMAIL_TAG = "email";
+    private static final String PASS_TAG = "password";
+    private static final String CLIENT_ID = "client_id";
+    private static final String CLIENT_SECRET = "client_secret";
+    private static final String GRANT_TYPE = "grant_type";
+    private static final String USER_ID = "userId";
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
     private Button mLogin;
-    private User userToJson;
-    private Intent mainIntent;
-    private UserPreferences mUserPreferences;
+    private UserPreferences userPreferences;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserPreferences = new UserPreferences(this);
-        if (mUserPreferences.isLoggedIn()) {
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
-        } else {
-            setContentView(R.layout.activity_login);
-            Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-            initUi();
-        }
+        setContentView(R.layout.activity_login);
+        context = getApplicationContext();
+        userPreferences = new UserPreferences(this);
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+        initUi();
+
     }
 
     private void initUi() {
@@ -52,19 +60,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
-                LoginTask loginTask = new LoginTask(this, null);
-                loginTask.setLoginTaskListener(this);
-                loginTask.execute();
-                //login();
+                paramsCapture();
                 break;
         }
     }
 
-    private void login() {
+    private void paramsCapture() {
         //if (isEmpty(mEmail) || isEmpty(mPassword)) {
-        //    Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
-        //} else {
+//            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
+  //      } else {
+            JSONObject params = new JSONObject();
+            //String email = mEmail.getText().toString();
+            //String password = mPassword.getText().toString();
+            try {
+                params.put(EMAIL_TAG, "mbravo@grupozeta.biz.dev1");
+                params.put(PASS_TAG, "sfgrupozeta16");
+                params.put(GRANT_TYPE, "password");
+                params.put(CLIENT_ID, "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003");
+                params.put(CLIENT_SECRET, "631836681953146126");
 
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(GRANT_TYPE));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(CLIENT_ID));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(CLIENT_SECRET));
+
+                LoginTask loginTask = new LoginTask(context, params);
+                loginTask.setLoginTaskListener(this);
+                loginTask.execute();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         //}
     }
 
@@ -74,24 +102,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginErrorResponse(String error) {
-        Log.d(DEBUG_TAG, error);
+        Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void loginSuccessResponse(User user) {
-        mUserPreferences = new UserPreferences(this);
-        mUserPreferences.setUser(user);
+    public void loginSuccessResponse(Login login) {
+        try {
+            login.setLoginPassword(mPassword.getText().toString());
+            userPreferences.setToken(login.getLoginApiToken());
+            userPreferences.setLoginData(login);
 
-        if (mUserPreferences.getUser() != null) {
-            Log.d(DEBUG_TAG, "El usuario no fue nulo.");
-        } else {
-            Log.d(DEBUG_TAG, "El usuario fue nulo. ");
+            GetUserInfoTask userInfoTask = new GetUserInfoTask(this, new JSONObject().put(USER_ID, login.getLoginId()));
+            userInfoTask.setUserInfoListener(this);
+            userInfoTask.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        //mUserPreferences.createLoginSession(userToJson.getUserEmail(), userToJson.getUserPassword());
-        mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+    }
+
+    @Override
+    public void userInfoErrorResponse(String error) {
+        Log.d(DEBUG_TAG, "Error response: " + error);
+        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void userInfoSuccessResponse(User user) {
+        UserPreferences userPreferences = new UserPreferences(this);
+        userPreferences.setUser(user);
+        Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
-        this.finish();
     }
 }

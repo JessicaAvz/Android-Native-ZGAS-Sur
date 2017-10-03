@@ -26,8 +26,6 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
-import java.sql.Time;
-
 public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivityOperator";
@@ -40,10 +38,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private Time mTmCaseTimeIn;
-    private Time mTmCaseTimeSeen;
-    private Time mTmCaseTimeArrived;
-    private Time mTmCaseTimeProgrammed;
+    private String mStrCaseTimeIn;
+    private String mStrCaseTimeSeen;
+    private String mStrCaseTimeArrived;
+    private String mStrCaseTimeProgrammed;
 
     private TextView mUserId;
     private TextView mUserName;
@@ -102,22 +100,23 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCaseStatus = mBundle.getString(MainActivity.EXTRA_CASE_STATUS);
         mStrCaseType = mBundle.getString(MainActivity.EXTRA_CASE_TYPE);
         mStrCasePriority = mBundle.getString(MainActivity.EXTRA_CASE_PRIORITY);
-        mTmCaseTimeIn = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_IN);
-        mTmCaseTimeSeen = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_SEEN);
-        mTmCaseTimeArrived = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
-        mTmCaseTimeProgrammed = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
+        mStrCaseTimeIn = mBundle.getString(MainActivity.EXTRA_CASE_TIME_IN);
+        mStrCaseTimeSeen = mBundle.getString(MainActivity.EXTRA_CASE_TIME_SEEN);
+        mStrCaseTimeArrived = mBundle.getString(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
+        mStrCaseTimeProgrammed = mBundle.getString(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
 
         Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mIntCaseId));
         Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
         Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
         Log.d(DEBUG_TAG, "Apellido del cliente: " + mStrCaseUserLastname);
         Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus.toString());
-        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType.toString());
-        Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority.toString());
-        Log.d(DEBUG_TAG, "Hora de pedido: " + String.valueOf(mTmCaseTimeIn));
-        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + String.valueOf(mTmCaseTimeSeen));
-        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + String.valueOf(mTmCaseTimeArrived));
+        Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus);
+        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType);
+        Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority);
+        Log.d(DEBUG_TAG, "Hora de pedido: " + mStrCaseTimeIn);
+        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + mStrCaseTimeSeen);
+        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + mStrCaseTimeArrived);
+        Log.d(DEBUG_TAG, "Hora programada del pedido: " + mStrCaseTimeProgrammed);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -134,28 +133,29 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mCaseStatus = (TextView) findViewById(R.id.activity_detail_operator_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
         mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_operator_tv_time_in);
-        if (mTmCaseTimeIn == null) {
-            mCaseTimeIn.setText("Sin datos.");
+
+        if (mStrCaseTimeIn != null && !mStrCaseTimeIn.equals("")) {
+            mCaseTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeIn.setText(String.valueOf(mTmCaseTimeIn));
+            mCaseTimeIn.setText(String.valueOf(mStrCaseTimeIn));
         }
         mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_operator_tv_time_seen);
-        if (mTmCaseTimeSeen == null) {
-            mCaseTimeSeen.setText("Sin datos.");
+        if (mStrCaseTimeSeen != null && !mStrCaseTimeSeen.equals("")) {
+            mCaseTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeSeen.setText(String.valueOf(mTmCaseTimeSeen));
+            mCaseTimeSeen.setText(String.valueOf(mStrCaseTimeSeen));
         }
         mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_operator_tv_arrived);
-        if (mTmCaseTimeArrived == null) {
-            mCaseTimeArrived.setText("Sin datos.");
+        if (mStrCaseTimeArrived != null && !mStrCaseTimeArrived.equals("")) {
+            mCaseTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeArrived.setText(String.valueOf(mTmCaseTimeArrived));
+            mCaseTimeArrived.setText(String.valueOf(mStrCaseTimeArrived));
         }
         mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_operator_tv_time_programmed);
-        if (mTmCaseTimeProgrammed == null) {
-            mCaseTimeProgrammed.setText("Sin datos.");
+        if (mStrCaseTimeProgrammed != null && !mStrCaseTimeProgrammed.equals("")) {
+            mCaseTimeProgrammed.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeProgrammed.setText(String.valueOf(mTmCaseTimeProgrammed));
+            mCaseTimeProgrammed.setText(String.valueOf(mStrCaseTimeProgrammed));
         }
         mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_in_progress);
         mFabInProgress.setOnClickListener(this);

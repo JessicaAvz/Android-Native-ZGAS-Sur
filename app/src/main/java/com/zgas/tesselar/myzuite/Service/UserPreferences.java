@@ -3,9 +3,11 @@ package com.zgas.tesselar.myzuite.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Controller.Activity.LoginActivity;
+import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 
 /**
@@ -14,27 +16,33 @@ import com.zgas.tesselar.myzuite.Model.User;
 
 public class UserPreferences {
 
-    public static final String EXTRA_USER = "UserInfo";
-    public static final String IS_LOGGED = "IsLoggedIn";
-    public static final String KEY_EMAIL = "Email";
-    public static final String KEY_PASS = "Password";
-    private SharedPreferences mSharedPreferences;
+    private static final String EXTRA_USER = "UserInfo";
+    private static final String IS_LOGGED = "IsLoggedIn";
+    private static final String LOGIN_DATA = "loginData";
+    private static final String KEY_EMAIL = "Email";
+    private static final String KEY_PASS = "Password";
+    private static final String SHARED_PREFERENCES = "sharedPreferences";
+    private static final String API_TOKEN = "apiToken";
+
+    private static final String USER_DATA = "SetUserData";
+
+    private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Context context;
 
     public UserPreferences(Context context) {
         this.context = context;
-        mSharedPreferences = context.getSharedPreferences(EXTRA_USER, Context.MODE_PRIVATE);
-        editor = mSharedPreferences.edit();
+        sharedPreferences = context.getSharedPreferences(EXTRA_USER, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     public User getUser() {
         Gson gson = new Gson();
-        return gson.fromJson(mSharedPreferences.getString(EXTRA_USER, "Null"), User.class);
+        return gson.fromJson(sharedPreferences.getString(EXTRA_USER, "Null"), User.class);
     }
 
     public void setUser(User user) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(EXTRA_USER, user.toJson());
         editor.apply();
     }
@@ -56,6 +64,23 @@ public class UserPreferences {
         }
     }
 
+    public void setLoginData(Login login) {
+        if (login != null) {
+            Gson gson = new Gson();
+            String loginString = gson.toJson(login);
+
+            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(LOGIN_DATA, loginString);
+            editor.apply();
+
+            Log.d(USER_DATA, "Object user has been saved successfully");
+
+        } else {
+            Log.d(USER_DATA, "Object user is null");
+        }
+    }
+
     public void logoutUser() {
         editor.clear();
         editor.commit();
@@ -66,6 +91,19 @@ public class UserPreferences {
     }
 
     public boolean isLoggedIn() {
-        return mSharedPreferences.getBoolean(IS_LOGGED, false);
+        return sharedPreferences.getBoolean(IS_LOGGED, false);
+    }
+
+    public void setToken(String apiKey) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(API_TOKEN, apiKey);
+        editor.apply();
+    }
+
+    public String getToken() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
+        return sharedPreferences.getString(API_TOKEN, null);
     }
 }

@@ -136,9 +136,14 @@
 
     <!-- Responses -->
     <string name="error">Error</string>
+    <string name="no_data">Sin datos.</string>
     <string name="server_error">Error en el servidor.</string>
     <string name="post">POST</string>
-    <string name="login_error">Error al iniciar sesión.</string>}
+    <string name="login_error">Error al iniciar sesión.</string>
+    <string name="wait_message">Por favor, espere...</string>
+    <string name="wait_cases_message">Recuperando los pedidos...</string>
+    <string name="wait_leakages_message">Recuperando los reportes...</string>
+    <string name="wait_users_message">Recuperando los usuarios...</string>
     <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
 
 </resources>

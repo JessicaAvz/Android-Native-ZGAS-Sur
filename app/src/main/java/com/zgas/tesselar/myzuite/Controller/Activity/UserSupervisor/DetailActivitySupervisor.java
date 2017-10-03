@@ -73,7 +73,7 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mBundle = getIntent().getExtras();
-        mIntUserId = mBundle.getInt(MainActivity.EXTRA_CASE_ID);
+        mIntUserId = mBundle.getInt(MainActivity.EXTRA_USER_ID);
         mStrUserName = mBundle.getString(MainActivity.EXTRA_USER_NAME);
         mStrUserLastname = mBundle.getString(MainActivity.EXTRA_USER_LASTNAME);
         mStrUserEmail = mBundle.getString(MainActivity.EXTRA_USER_EMAIL);
