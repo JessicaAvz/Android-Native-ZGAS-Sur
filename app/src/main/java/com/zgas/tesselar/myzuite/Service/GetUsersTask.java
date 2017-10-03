@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,9 +56,9 @@ public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected JSONObject doInBackground(URL... urls) {
 
         JSONObject jsonObject = null;
-
-        /*try {
-            URL url = new URL(UrlHelper.getUrl(GET_USERS_URL));
+/*
+        try {
+            URL url = new URL(UrlHelper.GET_USERS_URL);
             ConnectionController connection = new ConnectionController(url, "GET", params);
             jsonObject = connection.execute();
 

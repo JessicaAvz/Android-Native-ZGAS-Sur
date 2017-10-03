@@ -1,20 +1,21 @@
 package com.zgas.tesselar.myzuite.Utilities;
 
+import android.content.Context;
+
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
+
 import java.util.Formatter;
 
 /**
- * Created by jarvizu on 19/09/2017.
+ * Created by jarvizu on 25/09/2017.
  */
 
 public class UrlHelper {
 
-    public static final String URL = "0.0.0.0";
-    private static final String API_URL = "api/v1/mobile";
+    public static final String TOKEN_URL = "https://test.salesforce.com/services/oauth2/token";
 
     public static String getUrl(String controller) {
         Formatter formatter = new Formatter();
-
-        return formatter.format(URL, API_URL, controller).toString();
+        return formatter.format(TOKEN_URL, controller).toString();
     }
-
 }

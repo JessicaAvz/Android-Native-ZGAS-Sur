@@ -11,9 +11,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.Formatter;
 
 /**
  * Created by jarvizu on 25/09/2017.
@@ -22,12 +24,14 @@ import java.net.URL;
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "LoginTask";
-    private static final String LOGIN_CONTROLLER = "userLogin";
-    private static final String JSON_OBJECT_USER = "user";
+    private static final String JSON_OBJETC_TOKEN = "access_token";
     private static final String JSON_OBJECT_ID = "id";
+    private static final String JSON_OBJECT_INSTANCE = "instance_url";
+    private static final String JSON_OBJECT_TOKEN_TYPE = "token_type";
+    private static final String JSON_OBJECT_ISSUED_AT = "issued_at";
+    private static final String JSON_OBJECT_SIGNATURE = "signature";
     private static final String JSON_OBJECT_EMAIL = "email";
-    private static final String JSON_OBJECT_API_TOKEN = "api_token";
-    private static final String JSON_OBJECT_ERROR = "error";
+    private static final String JSON_OBJECT_PASSWORD = "password";
 
     private Context context;
     private JSONObject params;
@@ -44,9 +48,17 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-            URL url = new URL(UrlHelper.getUrl(LOGIN_CONTROLLER));
-            ConnectionController connection = new ConnectionController(url, "POST", params);
 
+            String preUrl = "https://test.salesforce.com/services/oauth2/token?grant_type=%1$s&client_id=%2$s&client_secret=%3$s&username=%4$s&password=%5$s";
+            Formatter formatter = new Formatter();
+            String format = formatter.format(preUrl, "password", "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003",
+                    "631836681953146126", params.get(JSON_OBJECT_EMAIL), params.get(JSON_OBJECT_PASSWORD)).toString();
+
+            Log.d(DEBUG_TAG, format);
+
+            //URL url = new URL("https://test.salesforce.com/services/oauth2/token?grant_type=password&client_id=3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003&client_secret=631836681953146126&username=mbravo@grupozeta.biz.dev1&password=sfgrupozeta16");
+            URL url = new URL(format);
+            ConnectionController connection = new ConnectionController(url, "POST");
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
@@ -62,6 +74,8 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return jsonObject;
@@ -70,7 +84,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
-
+        Log.d(DEBUG_TAG, jsonObject.toString());
         Login login = null;
 
         try {
@@ -78,20 +92,15 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 loginTaskListener.loginErrorResponse(context.getResources().getString(R.string.login_error));
                 isError = true;
 
-            } else if (jsonObject.has(JSON_OBJECT_ERROR)) {
-                Log.d(DEBUG_TAG, "Error " + jsonObject.getString(JSON_OBJECT_ERROR));
-                loginTaskListener.loginErrorResponse(jsonObject.getString(JSON_OBJECT_ERROR));
-                isError = true;
-
-            } else if (jsonObject.has(JSON_OBJECT_USER)) {
+            } else if (jsonObject.has(JSON_OBJETC_TOKEN)) {
 
                 login = new Login();
-
-                jsonObject = jsonObject.getJSONObject(JSON_OBJECT_USER);
-                login.setLoginId(Integer.parseInt(jsonObject.getString(JSON_OBJECT_ID)));
-                login.setLoginEmail(jsonObject.getString(JSON_OBJECT_EMAIL));
-                login.setLoginApiToken(jsonObject.getString(JSON_OBJECT_API_TOKEN));
-
+                login.setLoginAccessToken(jsonObject.get(JSON_OBJETC_TOKEN).toString());
+                login.setLoginId(jsonObject.get(JSON_OBJECT_ID).toString());
+                login.setLoginInstanceUrl(jsonObject.get(JSON_OBJECT_INSTANCE).toString());
+                login.setLoginIssuedAt(jsonObject.get(JSON_OBJECT_ISSUED_AT).toString());
+                login.setLoginTokenType(jsonObject.get(JSON_OBJECT_TOKEN_TYPE).toString());
+                login.setLoginSignature(jsonObject.get(JSON_OBJECT_SIGNATURE).toString());
                 isError = false;
             }
 
