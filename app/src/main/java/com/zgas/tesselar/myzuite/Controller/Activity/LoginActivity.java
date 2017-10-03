@@ -26,10 +26,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String DEBUG_TAG = "LoginActivity";
     private static final String EMAIL_TAG = "email";
     private static final String PASS_TAG = "password";
-    private static final String CLIENT_ID = "client_id";
-    private static final String CLIENT_SECRET = "client_secret";
-    private static final String GRANT_TYPE = "grant_type";
     private static final String USER_ID = "userId";
+    private static final String ADMIN_TOKEN = "access_token";
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
@@ -103,12 +101,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void loginSuccessResponse(Login login) {
         try {
+            JSONObject params = new JSONObject();
             login.setLoginAccessToken(login.getLoginAccessToken());
             login.setLoginId(login.getLoginId());
             login.setLoginInstanceUrl(login.getLoginInstanceUrl());
             login.setLoginIssuedAt(login.getLoginIssuedAt());
             login.setLoginSignature(login.getLoginSignature());
             login.setLoginTokenType(login.getLoginTokenType());
+            login.setLoginEmail(login.getLoginEmail());
 
             userPreferences.setLoginToken(login.getLoginAccessToken());
             userPreferences.setLoginId(login.getLoginId());
@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             userPreferences.setLoginSignature(login.getLoginSignature());
             userPreferences.setLoginIssuedAt(login.getLoginIssuedAt());
             userPreferences.setLoginTokenType(login.getLoginTokenType());
+            userPreferences.setLoginEmail(mEmail.getText().toString());
 
             userPreferences.setLoginData(login);
 
@@ -125,14 +126,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d(DEBUG_TAG, "Login preference issued at: " + userPreferences.getLoginIssuedAt());
             Log.d(DEBUG_TAG, "Login preference signature: " + userPreferences.getLoginSignature());
             Log.d(DEBUG_TAG, "Login preference token type: " + userPreferences.getLoginTokenType());
-            
-            GetUserInfoTask userInfoTask = new GetUserInfoTask(this, new JSONObject().put(USER_ID, login.getLoginId()));
+            Log.d(DEBUG_TAG, "Login preference email: " + userPreferences.getLoginEmail());
+
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            startActivity(mainIntent);
+
+            params.put(EMAIL_TAG, userPreferences.getLoginEmail());
+            params.put(ADMIN_TOKEN, userPreferences.getLoginToken());
+
+            GetUserInfoTask userInfoTask = new GetUserInfoTask(this, params);
             userInfoTask.setUserInfoListener(this);
             userInfoTask.execute();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override

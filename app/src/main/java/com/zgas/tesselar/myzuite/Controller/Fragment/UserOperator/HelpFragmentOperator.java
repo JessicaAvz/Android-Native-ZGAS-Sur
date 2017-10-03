@@ -31,7 +31,7 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
     private Button mSendProblem;
     private View mRootView;
     private UserPreferences mUserPreferences;
-    private User mUser;
+    private String mUser;
 
     public HelpFragmentOperator() {
         // Required empty public constructor
@@ -45,8 +45,8 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
         mRootView = inflater.inflate(R.layout.fragment_help_operator, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUser();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        mUser = mUserPreferences.getLoginEmail();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginEmail());
         initUi(mRootView);
         return mRootView;
     }

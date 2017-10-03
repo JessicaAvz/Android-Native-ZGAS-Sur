@@ -12,7 +12,11 @@ import com.zgas.tesselar.myzuite.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.Formatter;
 
 /**
  * Created by jarvizu on 19/09/2017.
@@ -22,10 +26,13 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetUserInfoTask";
     private static final String USER_ERROR = "error";
-    private static final String USER_INFO_CONTROLLER = "userInfo";
+
+    private static final String JSON_OBJECT_ID = "Id";
     private static final String USER = "user";
+    private static final String USER_EMAIL = "email";
     private static final String USER_STATUS = "userStatus";
     private static final String USER_TYPE = "userType";
+    private static final String PRE_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/users?username=%1$s";
 
     private Context context;
     private JSONObject params;
@@ -53,10 +60,13 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         JSONObject jsonObject = null;
 
-        /*try {
-            URL url = new URL(UrlHelper.getUrlToken(USER_INFO_CONTROLLER, context));
-            ConnectionController connection = new ConnectionController(url, "POST", params);
+        try {
+            Formatter formatter = new Formatter();
+            String format = formatter.format(PRE_URL, params.get(USER_EMAIL)).toString();
+            Log.d(DEBUG_TAG, format);
 
+            URL url = new URL(format);
+            ConnectionController connection = new ConnectionController(url, "GET");
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
@@ -72,8 +82,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-*/
         return jsonObject;
     }
 
@@ -88,12 +99,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             if (jsonObjectResult == null) {
                 userInfoListener.userInfoErrorResponse(jsonObjectResult.getString(USER_ERROR));
                 isError = true;
-            } else if (jsonObjectResult.has(USER_ERROR)) {
-                Log.d(DEBUG_TAG, "Error " + jsonObjectResult.getString(USER_ERROR));
-                userInfoListener.userInfoErrorResponse(jsonObjectResult.getString(USER_ERROR));
-                isError = true;
-            } else if (jsonObjectResult.has(USER)) {
-                user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
+            } else if (jsonObjectResult.has(JSON_OBJECT_ID)) {
+                Log.d(DEBUG_TAG, "HOLA SI SIRVE");
+                /*user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
                 String userType = jsonObjectResult.getJSONObject(USER).get(USER_TYPE).toString();
                 String userStatus = jsonObjectResult.getJSONObject(USER).get(USER_STATUS).toString();
                 if (userType.equals(User.userType.OPERATOR.toString())) {
@@ -122,7 +130,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Password del usuario: " + user.getUserPassword());
                 Log.d(DEBUG_TAG, "Zona del usuario: " + user.getUserZone());
                 Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
-                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());
+                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());*/
             }
 
             if (isError == false) {

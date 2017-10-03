@@ -11,17 +11,19 @@ public class Login {
     private String loginTokenType;
     private String loginIssuedAt;
     private String loginSignature;
+    private String loginEmail;
 
     public Login() {
     }
 
-    public Login(String loginId, String loginAccessToken, String loginInstanceUrl, String loginTokenType, String loginIssuedAt, String loginSignature) {
+    public Login(String loginId, String loginAccessToken, String loginInstanceUrl, String loginTokenType, String loginIssuedAt, String loginSignature, String loginEmail) {
         this.loginId = loginId;
         this.loginAccessToken = loginAccessToken;
         this.loginInstanceUrl = loginInstanceUrl;
         this.loginTokenType = loginTokenType;
         this.loginIssuedAt = loginIssuedAt;
         this.loginSignature = loginSignature;
+        this.loginEmail = loginEmail;
     }
 
     public String getLoginId() {
@@ -70,6 +72,14 @@ public class Login {
 
     public void setLoginSignature(String loginSignature) {
         this.loginSignature = loginSignature;
+    }
+
+    public String getLoginEmail() {
+        return loginEmail;
+    }
+
+    public void setLoginEmail(String loginEmail) {
+        this.loginEmail = loginEmail;
     }
 }
 

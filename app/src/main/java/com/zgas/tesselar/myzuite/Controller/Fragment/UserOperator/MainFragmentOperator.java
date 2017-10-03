@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
-import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
@@ -32,7 +31,7 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     private View mRootView;
     private UserPreferences mUserPreferences;
     LinearLayoutManager layoutManager;
-    private User mUser;
+    private String mUser;
 
     public MainFragmentOperator() {
         // Required empty public constructor
@@ -46,16 +45,16 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUser();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        mUser = mUserPreferences.getLoginEmail();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginEmail());
         initUi(mRootView);
-        try {
+        /*try {
             GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), null);
             getOrdersTask.setOrderTaskListener(this);
             getOrdersTask.execute();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         return mRootView;
     }

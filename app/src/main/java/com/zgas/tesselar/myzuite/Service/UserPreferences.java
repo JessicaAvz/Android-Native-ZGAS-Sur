@@ -23,12 +23,13 @@ public class UserPreferences {
     private static final String KEY_PASS = "Password";
     private static final String SHARED_PREFERENCES = "sharedPreferences";
 
-    private static final String LOGIN_TOKEN = "loginToken";
     private static final String LOGIN_ID = "loginId";
-    private static final String LOGIN_INSTANCE_URL = "loginInstanceUrl";
+    private static final String LOGIN_EMAIL = "loginEmail";
+    private static final String LOGIN_TOKEN = "loginToken";
     private static final String LOGIN_ISSUED_AT = "loginIssuedAt";
     private static final String LOGIN_SIGNATURE = "loginSignature";
     private static final String LOGIN_TOKEN_TYPE = "loginTokenType";
+    private static final String LOGIN_INSTANCE_URL = "loginInstanceUrl";
 
     private static final String USER_DATA = "SetUserData";
 
@@ -169,5 +170,17 @@ public class UserPreferences {
     public String getLoginTokenType() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString(LOGIN_TOKEN_TYPE, null);
+    }
+
+    public void setLoginEmail(String email) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LOGIN_EMAIL, email);
+        editor.apply();
+    }
+
+    public String getLoginEmail() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_EMAIL, null);
     }
 }

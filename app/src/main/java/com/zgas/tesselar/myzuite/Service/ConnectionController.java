@@ -17,12 +17,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+
 public class ConnectionController {
 
     private static final String DEBUG_TAG = "ConnectionController";
 
     private URL url;
     private String method;
+    private String basicAuth;
     private JSONObject params;
 
     private JSONObject jsonObject;
@@ -48,7 +50,7 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            httpURLConnection.setRequestProperty("Authorization", "Bearer 00D0x000000CmVa!ARgAQA.EVop_EeJeJTPFGrdrFsZc8Usp5CKqroRR1vYMeYzEX1J37ROtVhEK45d4qAwDsv3dgicGx9Fyn0mjsXdxWt7UPnNX");
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);
@@ -62,7 +64,7 @@ public class ConnectionController {
             }
 
             int status = httpURLConnection.getResponseCode();
-            Log.d(DEBUG_TAG, "Estaaaaaaaaatus: " + String.valueOf(status));
+            Log.d(DEBUG_TAG, "Estatuuuuus: " + String.valueOf(status));
             if (status >= 200 && status < 300) {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
@@ -95,10 +97,10 @@ public class ConnectionController {
                 jsonObject.put("error", status);
                 Log.d(DEBUG_TAG, "Status: " + status);
             }
-        } catch(MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
             httpURLConnection.disconnect();
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             httpURLConnection.disconnect();
         } catch (JSONException e) {

@@ -88,14 +88,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(getApplicationContext());
-        mUser = mUserPreferences.getUser();
-        String loginId = mUserPreferences.getLoginId();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
-        Log.d(DEBUG_TAG, "LoginId: " + loginId);
 
-        if (mUser.getUserType() == User.userType.OPERATOR) {
+        setContentView(R.layout.activity_main);
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+        initUiOperator();
+        mUserPreferences = new UserPreferences(getApplicationContext());
+        //mUser = mUserPreferences.getUser();
+        String loginId = mUserPreferences.getLoginId();
+        String loginEmail = mUserPreferences.getLoginEmail();
+        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginEmail());
+        Log.d(DEBUG_TAG, "LoginId: " + loginId);
+        Log.d(DEBUG_TAG, "Usuario: " + loginEmail);
+
+        /*if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
             setContentView(R.layout.activity_main);
             initUiOperator();
@@ -124,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Default");
             setContentView(R.layout.activity_main);
             initUiOperator();
-        }
+        }*/
     }
 
     @Override
