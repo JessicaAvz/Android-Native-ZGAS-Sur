@@ -56,8 +56,8 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         JSONObject jsonObject = null;
 
-        try {
-            URL url = new URL(UrlHelper.LOGIN_URL);
+        /*try {
+            URL url = new URL(UrlHelper.getUrl(LOGIN_URL));
             ConnectionController connection = new ConnectionController(url, "GET", params);
             jsonObject = connection.execute();
 
@@ -74,7 +74,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
-        }
+        }*/
 
         return jsonObject;
     }

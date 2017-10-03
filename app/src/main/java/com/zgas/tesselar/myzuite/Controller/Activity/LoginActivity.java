@@ -64,9 +64,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void paramsCapture() {
-        if (isEmpty(mEmail) || isEmpty(mPassword)) {
-            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
-        } else {
+        //if (isEmpty(mEmail) || isEmpty(mPassword)) {
+//            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
+//        } else {
             JSONObject params = new JSONObject();
             String email = mEmail.getText().toString();
             String password = mPassword.getText().toString();
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+  //      }
     }
 
     private boolean isEmpty(EditText etText) {

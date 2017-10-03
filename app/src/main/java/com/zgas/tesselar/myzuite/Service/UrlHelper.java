@@ -10,9 +10,6 @@ import java.util.Formatter;
 
 public class UrlHelper {
 
-    public static final String LOGIN_URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/login_success";
-    public static final String GET_USERS_URL = "https://my-json-server.typicode.com/JessicaAvz/jsons/get_users";
-
     public static final String URL = "https://test.salesforce.com/services/oauth2/token";
     public static final String TOKEN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static final String API_URL = "";
@@ -20,12 +17,12 @@ public class UrlHelper {
     public static String getUrlToken(String controller, Context context) {
         UserPreferences usersPreferences = new UserPreferences(context);
         Formatter formatter = new Formatter();
-        return formatter.format(TOKEN_URL, API_URL, controller, usersPreferences.getToken()).toString();
+        return formatter.format(TOKEN_URL, controller, usersPreferences.getToken()).toString();
     }
 
     public static String getUrl(String controller) {
         Formatter formatter = new Formatter();
-        return formatter.format(URL, API_URL, controller).toString();
+        return formatter.format(URL, controller).toString();
     }
 
 }

@@ -24,7 +24,7 @@ import java.net.URL;
 
 public class ConnectionController {
 
-    private static final String DEBUG_CONNECTION_TAG = "ConnectionController";
+    private static final String DEBUG_TAG = "ConnectionController";
 
     private URL url;
     private String method;
@@ -58,7 +58,7 @@ public class ConnectionController {
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);
             httpURLConnection.connect();
-            Log.d(DEBUG_CONNECTION_TAG, "Connected");
+            Log.d(DEBUG_TAG, "Connected");
 
             if (params != null) {
                 OutputStreamWriter os = new OutputStreamWriter(httpURLConnection.getOutputStream());
@@ -67,8 +67,9 @@ public class ConnectionController {
             }
 
             int status = httpURLConnection.getResponseCode();
+            Log.d(DEBUG_TAG, "Estaaaaaaaaatus: " + String.valueOf(status));
 
-            if (status >= 200 && status < 300) {
+            if (status >= 200 && status <= 400) {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -91,14 +92,14 @@ public class ConnectionController {
                     jsonObject.put("jsonArray", new JSONArray(stringBuffer.toString()));
                 }
 
-            } else if (status <= 500) {
+            } else if (status >= 500) {
                 jsonObject = new JSONObject();
                 jsonObject.put("error", "Error en el servidor.");
-                Log.d(DEBUG_CONNECTION_TAG, "Server Error");
+                Log.d(DEBUG_TAG, "Server Error");
             } else {
                 jsonObject = new JSONObject();
                 jsonObject.put("error", status);
-                Log.d(DEBUG_CONNECTION_TAG, "Status: " + status);
+                Log.d(DEBUG_TAG, "Status: " + status);
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
