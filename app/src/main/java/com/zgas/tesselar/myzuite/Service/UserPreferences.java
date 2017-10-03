@@ -22,7 +22,13 @@ public class UserPreferences {
     private static final String KEY_EMAIL = "Email";
     private static final String KEY_PASS = "Password";
     private static final String SHARED_PREFERENCES = "sharedPreferences";
-    private static final String API_TOKEN = "apiToken";
+
+    private static final String LOGIN_TOKEN = "loginToken";
+    private static final String LOGIN_ID = "loginId";
+    private static final String LOGIN_INSTANCE_URL = "loginInstanceUrl";
+    private static final String LOGIN_ISSUED_AT = "loginIssuedAt";
+    private static final String LOGIN_SIGNATURE = "loginSignature";
+    private static final String LOGIN_TOKEN_TYPE = "loginTokenType";
 
     private static final String USER_DATA = "SetUserData";
 
@@ -53,7 +59,6 @@ public class UserPreferences {
         editor.putString(KEY_PASS, pass);
         editor.commit();
     }
-
 
     public void checkLogin() {
         if (!this.isLoggedIn()) {
@@ -94,16 +99,75 @@ public class UserPreferences {
         return sharedPreferences.getBoolean(IS_LOGGED, false);
     }
 
-    public void setToken(String apiKey) {
+    public void setLoginToken(String loginToken) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(API_TOKEN, apiKey);
+        editor.putString(LOGIN_TOKEN, loginToken);
         editor.apply();
     }
 
-    public String getToken() {
+    public String getLoginToken() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_TOKEN, null);
+    }
 
-        return sharedPreferences.getString(API_TOKEN, null);
+    public void setLoginId(String loginId) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LOGIN_ID, loginId);
+        editor.apply();
+    }
+
+    public String getLoginId() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_ID, null);
+    }
+
+    public void setLoginInstanceUrl(String loginInstanceUrl) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LOGIN_INSTANCE_URL, loginInstanceUrl);
+        editor.apply();
+    }
+
+    public String getLoginInstanceUrl() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_INSTANCE_URL, null);
+    }
+
+    public void setLoginIssuedAt(String loginIssuedAt) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LOGIN_ISSUED_AT, loginIssuedAt);
+        editor.apply();
+    }
+
+    public String getLoginIssuedAt() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_ISSUED_AT, null);
+    }
+
+    public void setLoginSignature(String loginSignature) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LOGIN_SIGNATURE, loginSignature);
+        editor.apply();
+    }
+
+    public String getLoginSignature() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_SIGNATURE, null);
+    }
+
+    public void setLoginTokenType(String tokenType) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LOGIN_TOKEN_TYPE, tokenType);
+        editor.apply();
+    }
+
+    public String getLoginTokenType() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_TOKEN_TYPE, null);
     }
 }

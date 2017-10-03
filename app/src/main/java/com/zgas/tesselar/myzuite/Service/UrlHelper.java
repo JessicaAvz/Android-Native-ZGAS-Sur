@@ -17,7 +17,7 @@ public class UrlHelper {
     public static String getUrlToken(String controller, Context context) {
         UserPreferences usersPreferences = new UserPreferences(context);
         Formatter formatter = new Formatter();
-        return formatter.format(TOKEN_URL, controller, usersPreferences.getToken()).toString();
+        return formatter.format(TOKEN_URL, controller, usersPreferences.getLoginToken()).toString();
     }
 
     public static String getUrl(String controller) {

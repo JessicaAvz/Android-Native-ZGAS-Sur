@@ -18,6 +18,7 @@ import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener, GetUserInfoTask.UserInfoListener {
@@ -65,28 +66,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void paramsCapture() {
-        //if (isEmpty(mEmail) || isEmpty(mPassword)) {
-//            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
-//        } else {
-        JSONObject params = new JSONObject();
-        String email = mEmail.getText().toString();
-        String password = mPassword.getText().toString();
-        try {
-            params.put(EMAIL_TAG, email);
-            params.put(PASS_TAG, password);
+        if (isEmpty(mEmail) || isEmpty(mPassword)) {
+            Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
+        } else {
+            JSONObject params = new JSONObject();
+            String email = mEmail.getText().toString();
+            String password = mPassword.getText().toString();
+            try {
+                params.put(EMAIL_TAG, email);
+                params.put(PASS_TAG, password);
 
-            Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
-            Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
 
-            LoginTask loginTask = new LoginTask(this, params);
-            loginTask.setLoginTaskListener(this);
-            loginTask.execute();
+                LoginTask loginTask = new LoginTask(this, params);
+                loginTask.setLoginTaskListener(this);
+                loginTask.execute();
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        //      }
     }
 
     private boolean isEmpty(EditText etText) {
@@ -101,18 +102,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginSuccessResponse(Login login) {
-        //try {
-        //login.setLoginPassword(mPassword.getText().toString());
-        userPreferences.setToken(login.getLoginAccessToken());
-        userPreferences.setLoginData(login);
+        try {
+            login.setLoginAccessToken(login.getLoginAccessToken());
+            login.setLoginId(login.getLoginId());
+            login.setLoginInstanceUrl(login.getLoginInstanceUrl());
+            login.setLoginIssuedAt(login.getLoginIssuedAt());
+            login.setLoginSignature(login.getLoginSignature());
+            login.setLoginTokenType(login.getLoginTokenType());
 
-        //  GetUserInfoTask userInfoTask = new GetUserInfoTask(this, new JSONObject().put(USER_ID, login.getLoginId()));
-//            userInfoTask.setUserInfoListener(this);
-//            userInfoTask.execute();
+            userPreferences.setLoginToken(login.getLoginAccessToken());
+            userPreferences.setLoginId(login.getLoginId());
+            userPreferences.setLoginInstanceUrl(login.getLoginInstanceUrl());
+            userPreferences.setLoginSignature(login.getLoginSignature());
+            userPreferences.setLoginIssuedAt(login.getLoginIssuedAt());
+            userPreferences.setLoginTokenType(login.getLoginTokenType());
 
-        //} catch (JSONException e) {
-//            e.printStackTrace();
-        //}
+            userPreferences.setLoginData(login);
+
+            Log.d(DEBUG_TAG, "Login preference token: " + userPreferences.getLoginToken());
+            Log.d(DEBUG_TAG, "Login preference id: " + userPreferences.getLoginId());
+            Log.d(DEBUG_TAG, "Login preference instance url: " + userPreferences.getLoginInstanceUrl());
+            Log.d(DEBUG_TAG, "Login preference issued at: " + userPreferences.getLoginIssuedAt());
+            Log.d(DEBUG_TAG, "Login preference signature: " + userPreferences.getLoginSignature());
+            Log.d(DEBUG_TAG, "Login preference token type: " + userPreferences.getLoginTokenType());
+            
+            GetUserInfoTask userInfoTask = new GetUserInfoTask(this, new JSONObject().put(USER_ID, login.getLoginId()));
+            userInfoTask.setUserInfoListener(this);
+            userInfoTask.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -129,3 +149,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(mainIntent);
     }
 }
+
