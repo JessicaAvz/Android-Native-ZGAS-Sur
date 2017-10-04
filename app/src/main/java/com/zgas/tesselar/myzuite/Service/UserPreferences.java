@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.zgas.tesselar.myzuite.Controller.Activity.LoginActivity;
+import com.zgas.tesselar.myzuite.View.Activity.LoginActivity;
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 

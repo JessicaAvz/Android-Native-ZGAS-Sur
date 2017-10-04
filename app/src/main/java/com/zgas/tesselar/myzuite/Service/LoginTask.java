@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ import java.util.Formatter;
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "LoginTask";
+    private static final String METHOD = "POST";
     private static final String JSON_OBJECT_TOKEN = "access_token";
     private static final String JSON_OBJECT_ID = "id";
     private static final String JSON_OBJECT_INSTANCE = "instance_url";
@@ -32,11 +34,6 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String JSON_OBJECT_EMAIL = "email";
     private static final String JSON_OBJECT_PASSWORD = "password";
     private static final String JSON_OBJECT_ERROR = "error";
-
-    private static final String PRE_URL = "https://test.salesforce.com/services/oauth2/token?grant_type=%1$s&client_id=%2$s&client_secret=%3$s&username=%4$s&password=%5$s";
-    private static final String GRANT_TYPE = "password";
-    private static final String CLIENT_ID = "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003";
-    private static final String CLIENT_SECRET = "631836681953146126";
 
     private Context context;
     private JSONObject params;
@@ -55,11 +52,11 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
 
             Formatter formatter = new Formatter();
-            String format = formatter.format(PRE_URL, GRANT_TYPE, CLIENT_ID, CLIENT_SECRET, params.get(JSON_OBJECT_EMAIL), params.get(JSON_OBJECT_PASSWORD)).toString();
+            String format = formatter.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, params.get(JSON_OBJECT_EMAIL), params.get(JSON_OBJECT_PASSWORD)).toString();
             Log.d(DEBUG_TAG, format);
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(url, "POST");
+            ConnectionController connection = new ConnectionController(url, METHOD);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {

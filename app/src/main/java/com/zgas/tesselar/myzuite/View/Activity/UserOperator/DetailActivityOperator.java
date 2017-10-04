@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Activity.UserService;
+package com.zgas.tesselar.myzuite.View.Activity.UserOperator;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,19 +19,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
-import java.sql.Time;
+public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener {
 
-public class DetailActivityService extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String DEBUG_TAG = "DetailActivityLeakage";
-
+    private static final String DEBUG_TAG = "DetailActivityOperator";
     private Bundle mBundle;
     private int mIntCaseId;
     private int mIntCaseUserId;
@@ -41,10 +38,10 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private Time mCldCaseTimeIn;
-    private Time mCldCaseTimeSeen;
-    private Time mCldCaseTimeArrived;
-    private Time mCldCaseTimeProgrammed;
+    private String mStrCaseTimeIn;
+    private String mStrCaseTimeSeen;
+    private String mStrCaseTimeArrived;
+    private String mStrCaseTimeProgrammed;
 
     private TextView mUserId;
     private TextView mUserName;
@@ -59,13 +56,14 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private FloatingActionButton mFabCanceled;
     private FloatingActionButton mFabWaze;
 
+    private Case mCase;
     private UserPreferences mUserPreferences;
     private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_service);
+        setContentView(R.layout.activity_detail_operator);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
@@ -74,10 +72,25 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         initUi();
     }
 
-    private void initUi() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.activity_detail_operator_fab_in_progress:
+                inProgressDialog();
+                break;
+            case R.id.activity_detail_operator_fab_finished:
+                finishDialog();
+                break;
+            case R.id.activity_detail_operator_fab_cancel:
+                cancelDialog();
+                break;
+            case R.id.activity_detail_operator_fab_waze:
+                wazeIntent(mStrCaseAddress);
+                break;
+        }
+    }
 
+    private void initUi() {
         mBundle = getIntent().getExtras();
         mIntCaseId = mBundle.getInt(MainActivity.EXTRA_CASE_ID);
         mIntCaseUserId = mBundle.getInt(MainActivity.EXTRA_CASE_USER_ID);
@@ -87,50 +100,70 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         mStrCaseStatus = mBundle.getString(MainActivity.EXTRA_CASE_STATUS);
         mStrCaseType = mBundle.getString(MainActivity.EXTRA_CASE_TYPE);
         mStrCasePriority = mBundle.getString(MainActivity.EXTRA_CASE_PRIORITY);
-        mCldCaseTimeIn = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_IN);
-        mCldCaseTimeSeen = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_SEEN);
-        mCldCaseTimeArrived = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
+        mStrCaseTimeIn = mBundle.getString(MainActivity.EXTRA_CASE_TIME_IN);
+        mStrCaseTimeSeen = mBundle.getString(MainActivity.EXTRA_CASE_TIME_SEEN);
+        mStrCaseTimeArrived = mBundle.getString(MainActivity.EXTRA_CASE_TIME_ARRIVAL);
+        mStrCaseTimeProgrammed = mBundle.getString(MainActivity.EXTRA_CASE_TIME_PROGRAMMED);
 
-        Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
+        Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mIntCaseId));
         Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
         Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
         Log.d(DEBUG_TAG, "Apellido del cliente: " + mStrCaseUserLastname);
         Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus de la fuga: " + mStrCaseStatus.toString());
-        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType.toString());
-        Log.d(DEBUG_TAG, "Prioridad de la fuga: " + mStrCasePriority.toString());
-        Log.d(DEBUG_TAG, "Hora de reporte: " + String.valueOf(mCldCaseTimeIn));
-        Log.d(DEBUG_TAG, "Hora de visualización del reporte: " + String.valueOf(mCldCaseTimeSeen));
-        Log.d(DEBUG_TAG, "Hora de llegada del reporte: " + String.valueOf(mCldCaseTimeArrived));
+        Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus);
+        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType);
+        Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority);
+        Log.d(DEBUG_TAG, "Hora de pedido: " + mStrCaseTimeIn);
+        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + mStrCaseTimeSeen);
+        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + mStrCaseTimeArrived);
+        Log.d(DEBUG_TAG, "Hora programada del pedido: " + mStrCaseTimeProgrammed);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Detalle del servicio " + mIntCaseId);
+        getSupportActionBar().setTitle("Detalle del pedido " + mIntCaseId);
 
-        mUserId = (TextView) findViewById(R.id.activity_detai_service_tv_client_id);
+        mUserId = (TextView) findViewById(R.id.activity_detai_operator_tv_client_id);
         mUserId.setText(String.valueOf(mIntCaseUserId));
-        mUserName = (TextView) findViewById(R.id.activity_detail_service_tv_client_name);
+        mUserName = (TextView) findViewById(R.id.activity_detail_operator_tv_client_name);
         mUserName.setText(mStrCaseUserName + " " + mStrCaseUserLastname);
-        mCaseAddress = (TextView) findViewById(R.id.activity_detail_service_tv_case_address);
+        mCaseAddress = (TextView) findViewById(R.id.activity_detail_operator_tv_case_address);
         mCaseAddress.setText(mStrCaseAddress);
-        mCaseStatus = (TextView) findViewById(R.id.activity_detail_service_tv_status);
+        mCaseStatus = (TextView) findViewById(R.id.activity_detail_operator_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
-        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_service_tv_time_in);
-        mCaseTimeIn.setText(String.valueOf(mCldCaseTimeIn));
-        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_service_tv_time_seen);
-        mCaseTimeSeen.setText(String.valueOf(mCldCaseTimeSeen));
-        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_service_tv_arrived);
-        mCaseTimeArrived.setText(String.valueOf(mCldCaseTimeArrived));
-        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_service_tv_time_programmed);
-        mCaseTimeProgrammed.setText(String.valueOf(mCldCaseTimeProgrammed));
-        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_in_progress);
+        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_operator_tv_time_in);
+
+        if (mStrCaseTimeIn != null && !mStrCaseTimeIn.equals("")) {
+            mCaseTimeIn.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeIn.setText(String.valueOf(mStrCaseTimeIn));
+        }
+        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_operator_tv_time_seen);
+        if (mStrCaseTimeSeen != null && !mStrCaseTimeSeen.equals("")) {
+            mCaseTimeSeen.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeSeen.setText(String.valueOf(mStrCaseTimeSeen));
+        }
+        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_operator_tv_arrived);
+        if (mStrCaseTimeArrived != null && !mStrCaseTimeArrived.equals("")) {
+            mCaseTimeArrived.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeArrived.setText(String.valueOf(mStrCaseTimeArrived));
+        }
+        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_operator_tv_time_programmed);
+        if (mStrCaseTimeProgrammed != null && !mStrCaseTimeProgrammed.equals("")) {
+            mCaseTimeProgrammed.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTimeProgrammed.setText(String.valueOf(mStrCaseTimeProgrammed));
+        }
+        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
-        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_finished);
+        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_finished);
         mFabFinished.setOnClickListener(this);
-        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_cancel);
+        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_cancel);
         mFabCanceled.setOnClickListener(this);
-        mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_waze);
+        mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_waze);
         mFabWaze.setOnClickListener(this);
 
         if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
@@ -169,24 +202,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_detail_service_fab_in_progress:
-                inProgressDialog();
-                break;
-            case R.id.activity_detail_service_fab_finished:
-                finishDialog();
-                break;
-            case R.id.activity_detail_service_fab_cancel:
-                cancelDialog();
-                break;
-            case R.id.activity_detail_service_fab_waze:
-                wazeIntent(mStrCaseAddress);
-                break;
-        }
-    }
-
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -196,7 +211,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_finish_case_operator);
-        Log.d(DEBUG_TAG, "Finish dialog " + getResources().getString(R.string.on_create));
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
         final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
@@ -208,8 +223,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View v) {
                 if (isEmpty(etQuantity) || isEmpty(etTicket) || isEmpty(etTotal)) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_finish_incorrect), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
                 } else {
+
                     final String quantity = etQuantity.getText().toString();
                     final String ticket = etTicket.getText().toString();
                     final String total = etTotal.getText().toString();
@@ -219,7 +235,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                     etQuantity.getText().clear();
                     etTicket.getText().clear();
                     etTotal.getText().clear();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_finish_correct), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
             }
@@ -232,13 +248,14 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
             }
         });
+
         dialog.show();
     }
 
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_operator);
-        Log.d(DEBUG_TAG, "Cancel dialog " + getResources().getString(R.string.on_create));
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
         final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
@@ -251,18 +268,20 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View view) {
                 if (mSpinnerOptions.getSelectedItem() == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
                     Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
                     mSpinnerOptions.setSelection(0);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_cancel_correct), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
             }
         });
 
         Button mBtnCancel = dialog.findViewById(R.id.dialog_cancel_case_btn_cancel);
-        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+        mBtnCancel.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -272,7 +291,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     }
 
     private void inProgressDialog() {
-        Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
                 .setMessage(getResources().getString(R.string.dialog_in_progress_body))

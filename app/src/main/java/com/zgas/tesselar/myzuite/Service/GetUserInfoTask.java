@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +28,11 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String DEBUG_TAG = "GetUserInfoTask";
 
     private static final String JSON_OBJECT_ID = "Id";
+    private static final String JSON_OBJECT_NAME = "Name";
+    private static final String JSON_OBJECT_STATUS = "Status";
+    private static final String JSON_OBJECT_POSITION = "Position";
     private static final String JSON_OBJECT_ERROR = "errorCode";
     private static final String USER_EMAIL = "email";
-    private static final String USER_STATUS = "userStatus";
-    private static final String USER_TYPE = "userType";
-    private static final String PRE_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/users?username=%1$s";
-
     private Context context;
     private JSONObject params;
     private UserInfoListener userInfoListener;
@@ -61,7 +61,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         try {
             Formatter formatter = new Formatter();
-            String format = formatter.format(PRE_URL, params.get(USER_EMAIL)).toString();
+            String format = formatter.format(UrlHelper.GET_USER_DATA_URL, params.get(USER_EMAIL)).toString();
             Log.d(DEBUG_TAG, format);
 
             URL url = new URL(format);
@@ -101,14 +101,17 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             } else if (jsonObject.has(JSON_OBJECT_ERROR)) {
                 Log.d(DEBUG_TAG, "Error: " + jsonObject.get(JSON_OBJECT_ERROR).toString());
                 if (jsonObject.get(JSON_OBJECT_ERROR).toString().equals("400")) {
-                    userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.login_error));
+                    userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.user_data_error));
                     isError = true;
                 }
-            } else if (jsonObject.has(JSON_OBJECT_ID)) {
-                Log.d(DEBUG_TAG, "HOLA SI SIRVE");
-                /*user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
-                String userType = jsonObjectResult.getJSONObject(USER).get(USER_TYPE).toString();
-                String userStatus = jsonObjectResult.getJSONObject(USER).get(USER_STATUS).toString();
+            } else if (jsonObject.has(JSON_OBJECT_NAME)) {
+                Log.d(DEBUG_TAG, "HOLA, SI SIRVE");
+                user = new User();
+                user.setUserName(jsonObject.get(JSON_OBJECT_NAME).toString());
+                String userStatus = jsonObject.get(JSON_OBJECT_STATUS).toString();
+                String userType = jsonObject.get(JSON_OBJECT_POSITION).toString();
+                Log.d(DEBUG_TAG, userStatus);
+                Log.d(DEBUG_TAG, userType);
                 if (userType.equals(User.userType.OPERATOR.toString())) {
                     user.setUserType(User.userType.OPERATOR);
                 } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
@@ -135,7 +138,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Password del usuario: " + user.getUserPassword());
                 Log.d(DEBUG_TAG, "Zona del usuario: " + user.getUserZone());
                 Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
-                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());*/
+                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());
             }
 
             if (isError == false) {

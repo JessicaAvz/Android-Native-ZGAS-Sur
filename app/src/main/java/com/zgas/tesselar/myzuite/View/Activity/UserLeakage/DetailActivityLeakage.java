@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Activity.UserLeakage;
+package com.zgas.tesselar.myzuite.View.Activity.UserLeakage;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -20,8 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;

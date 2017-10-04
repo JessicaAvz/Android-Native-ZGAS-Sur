@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Activity;
+package com.zgas.tesselar.myzuite.View.Activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,15 +20,15 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
-import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisorAdapter;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.HelpFragmentLeak;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.MainFragmentLeak;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.HelpFragmentOperator;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.MainFragmentOperator;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.OrderFragmentOperator;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.HelpFragmentService;
-import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.MainFragmentService;
+import com.zgas.tesselar.myzuite.View.Adapter.PagerAdapter;
+import com.zgas.tesselar.myzuite.View.Adapter.SupervisorAdapter;
+import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
+import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
+import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.HelpFragmentOperator;
+import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.MainFragmentOperator;
+import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.OrderFragmentOperator;
+import com.zgas.tesselar.myzuite.View.Fragment.UserService.HelpFragmentService;
+import com.zgas.tesselar.myzuite.View.Fragment.UserService.MainFragmentService;
 import com.zgas.tesselar.myzuite.CustomViewPager;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;

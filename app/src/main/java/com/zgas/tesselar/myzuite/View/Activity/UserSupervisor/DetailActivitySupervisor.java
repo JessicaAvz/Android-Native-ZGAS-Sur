@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor;
+package com.zgas.tesselar.myzuite.View.Activity.UserSupervisor;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;

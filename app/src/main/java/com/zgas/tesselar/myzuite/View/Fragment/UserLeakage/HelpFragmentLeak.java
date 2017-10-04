@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Fragment.UserService;
+package com.zgas.tesselar.myzuite.View.Fragment.UserLeakage;
 
 
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
@@ -22,16 +22,16 @@ import com.zgas.tesselar.myzuite.Service.UserPreferences;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HelpFragmentService extends Fragment implements View.OnClickListener {
+public class HelpFragmentLeak extends Fragment implements View.OnClickListener {
 
-    private static final String DEBUG_TAG = "HelpFragmentService";
+    private static final String DEBUG_TAG = "HelpFragmentOperator";
     private Spinner mSpinnerOptions;
     private Button mSendProblem;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
 
-    public HelpFragmentService() {
+    public HelpFragmentLeak() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,7 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_help_service, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_help_leak, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUser();
@@ -52,25 +51,25 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.fragment_help_service_btn_send_problem:
+            case R.id.fragment_help_leakage_btn_send_problem:
                 selectOption();
                 break;
         }
     }
 
     private void initUi(View pRootView) {
-        mSpinnerOptions = pRootView.findViewById(R.id.fragment_help_service_sp_options);
+        mSpinnerOptions = pRootView.findViewById(R.id.fragment_help_leakage_sp_options);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
 
-        mSendProblem = pRootView.findViewById(R.id.fragment_help_service_btn_send_problem);
+        mSendProblem = pRootView.findViewById(R.id.fragment_help_leakage_btn_send_problem);
         mSendProblem.setOnClickListener(this);
     }
 
     private void selectOption() {
         if (mSpinnerOptions.getSelectedItem() == null) {
-            Toast.makeText(getContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
         } else {
             Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
             mSpinnerOptions.setSelection(0);

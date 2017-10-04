@@ -13,14 +13,11 @@ public class Case {
     private String caseTimeSeen;
     private String caseTimeArrival;
     private String caseTimeProgrammed;
-    @Expose
     private caseStatus caseStatus;
-    @Expose
     private casePriority casePriority;
     private String caseClientName;
     private String caseClientLastname;
     private String caseAddress;
-    @Expose
     private caseTypes caseType;
 
     public enum casePriority {

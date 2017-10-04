@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Adapter;
+package com.zgas.tesselar.myzuite.View.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor.DetailActivitySupervisor;
+import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupervisor;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 

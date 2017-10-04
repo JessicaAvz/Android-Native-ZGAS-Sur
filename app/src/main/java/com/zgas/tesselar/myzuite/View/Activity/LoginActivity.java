@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Activity;
+package com.zgas.tesselar.myzuite.View.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,10 +31,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String ADMIN_PASS_TAG = "adminPass";
     private static final String USER_ID = "userId";
     private static final String ADMIN_TOKEN = "access_token";
-
-    private static final String ADMIN_EMAIL = "mbravo@grupozeta.biz.dev1";
-    private static final String ADMIN_PASSWORD = "sfgrupozeta16";
-
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
@@ -86,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             try {
                 params.put(EMAIL_TAG, email);
                 params.put(PASS_TAG, password);
-                params.put(ADMIN_EMAIL_TAG, ADMIN_EMAIL);
-                params.put(ADMIN_PASS_TAG, ADMIN_PASSWORD);
+                params.put(ADMIN_EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
+                params.put(ADMIN_PASS_TAG, UrlHelper.ADMIN_PASS);
 
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
@@ -174,6 +171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mUserPreferences.createLoginSession(mUserPreferences.getLoginEmail());
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
+        this.finish();
     }
 }
 

@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator;
+package com.zgas.tesselar.myzuite.View.Fragment.UserOperator;
 
 
 import android.content.DialogInterface;
@@ -15,8 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
-import com.zgas.tesselar.myzuite.Model.User;
+import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
