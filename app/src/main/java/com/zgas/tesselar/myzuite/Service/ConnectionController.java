@@ -21,6 +21,10 @@ import java.net.URL;
 public class ConnectionController {
 
     private static final String DEBUG_TAG = "ConnectionController";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String AUTH_KEY = "Bearer ";
+    private static final String AUTH_BODY = "00D0x000000CmVa!ARgAQIcC1VcqdcnsV.rp80wseOqdh0Xoi5EHOEPmpqtVa5Nj1RYbZH.jbqmJTnhpUOb4i0DUTYAkU8D3tdGuM.I.pr5SlxYg";
 
     private URL url;
     private String method;
@@ -50,12 +54,19 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            httpURLConnection.setRequestProperty("Authorization", "Bearer 00D0x000000CmVa!ARgAQA.EVop_EeJeJTPFGrdrFsZc8Usp5CKqroRR1vYMeYzEX1J37ROtVhEK45d4qAwDsv3dgicGx9Fyn0mjsXdxWt7UPnNX");
-            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setRequestProperty(CONTENT_TYPE, "application/json; charset=utf-8");
+            String encodedAuth = AUTH_KEY + AUTH_BODY;
+            httpURLConnection.setRequestProperty(AUTHORIZATION, encodedAuth);
+            if (httpURLConnection.getRequestMethod().equals("POST")) {
+                httpURLConnection.setDoOutput(true);
+            } else if (httpURLConnection.getRequestMethod().equals("GET")){
+                httpURLConnection.setDoOutput(false);
+            }
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);
             httpURLConnection.connect();
-            Log.d(DEBUG_TAG, "Connected");
+
+            Log.d(DEBUG_TAG, "Url is connected.");
 
             if (params != null) {
                 OutputStreamWriter os = new OutputStreamWriter(httpURLConnection.getOutputStream());
@@ -65,6 +76,8 @@ public class ConnectionController {
 
             int status = httpURLConnection.getResponseCode();
             Log.d(DEBUG_TAG, "Estatuuuuus: " + String.valueOf(status));
+            Log.d(DEBUG_TAG, encodedAuth);
+            Log.d(DEBUG_TAG, "Request: " + httpURLConnection.getRequestProperty(AUTHORIZATION));
             if (status >= 200 && status < 300) {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
@@ -77,6 +90,7 @@ public class ConnectionController {
                         stringBuffer.append(line);
                     }
                 }
+                bufferedReader.close();
 
                 Object json = new JSONTokener(stringBuffer.toString()).nextValue();
 

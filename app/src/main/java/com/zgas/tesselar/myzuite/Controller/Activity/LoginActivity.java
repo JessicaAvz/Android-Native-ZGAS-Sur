@@ -26,13 +26,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String DEBUG_TAG = "LoginActivity";
     private static final String EMAIL_TAG = "email";
     private static final String PASS_TAG = "password";
+    private static final String ADMIN_EMAIL_TAG = "adminEmail";
+    private static final String ADMIN_PASS_TAG = "adminPass";
     private static final String USER_ID = "userId";
     private static final String ADMIN_TOKEN = "access_token";
+
+    private static final String ADMIN_EMAIL = "mbravo@grupozeta.biz.dev1";
+    private static final String ADMIN_PASSWORD = "sfgrupozeta16";
+
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
     private Button mLogin;
-    private UserPreferences userPreferences;
+    private UserPreferences mUserPreferences;
     private Context context;
 
     @Override
@@ -40,10 +46,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = getApplicationContext();
-        userPreferences = new UserPreferences(this);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        initUi();
+        mUserPreferences = new UserPreferences(this);
 
+        if (mUserPreferences.isLoggedIn()) {
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            startActivity(mainIntent);
+        } else {
+            setContentView(R.layout.activity_login);
+            Log.d(DEBUG_TAG, "OnCreate");
+            initUi();
+        }
     }
 
     private void initUi() {
@@ -73,9 +86,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             try {
                 params.put(EMAIL_TAG, email);
                 params.put(PASS_TAG, password);
+                params.put(ADMIN_EMAIL_TAG, ADMIN_EMAIL);
+                params.put(ADMIN_PASS_TAG, ADMIN_PASSWORD);
 
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(ADMIN_EMAIL_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(ADMIN_PASS_TAG));
 
                 LoginTask loginTask = new LoginTask(this, params);
                 loginTask.setLoginTaskListener(this);
@@ -110,29 +127,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             login.setLoginTokenType(login.getLoginTokenType());
             login.setLoginEmail(login.getLoginEmail());
 
-            userPreferences.setLoginToken(login.getLoginAccessToken());
-            userPreferences.setLoginId(login.getLoginId());
-            userPreferences.setLoginInstanceUrl(login.getLoginInstanceUrl());
-            userPreferences.setLoginSignature(login.getLoginSignature());
-            userPreferences.setLoginIssuedAt(login.getLoginIssuedAt());
-            userPreferences.setLoginTokenType(login.getLoginTokenType());
-            userPreferences.setLoginEmail(mEmail.getText().toString());
+            mUserPreferences.setLoginToken(login.getLoginAccessToken());
+            mUserPreferences.setLoginId(login.getLoginId());
+            mUserPreferences.setLoginInstanceUrl(login.getLoginInstanceUrl());
+            mUserPreferences.setLoginSignature(login.getLoginSignature());
+            mUserPreferences.setLoginIssuedAt(login.getLoginIssuedAt());
+            mUserPreferences.setLoginTokenType(login.getLoginTokenType());
+            mUserPreferences.setLoginEmail(mEmail.getText().toString());
 
-            userPreferences.setLoginData(login);
+            mUserPreferences.setLoginData(login);
 
-            Log.d(DEBUG_TAG, "Login preference token: " + userPreferences.getLoginToken());
-            Log.d(DEBUG_TAG, "Login preference id: " + userPreferences.getLoginId());
-            Log.d(DEBUG_TAG, "Login preference instance url: " + userPreferences.getLoginInstanceUrl());
-            Log.d(DEBUG_TAG, "Login preference issued at: " + userPreferences.getLoginIssuedAt());
-            Log.d(DEBUG_TAG, "Login preference signature: " + userPreferences.getLoginSignature());
-            Log.d(DEBUG_TAG, "Login preference token type: " + userPreferences.getLoginTokenType());
-            Log.d(DEBUG_TAG, "Login preference email: " + userPreferences.getLoginEmail());
+            Log.d(DEBUG_TAG, "Login preference token: " + mUserPreferences.getLoginToken());
+            Log.d(DEBUG_TAG, "Login preference id: " + mUserPreferences.getLoginId());
+            Log.d(DEBUG_TAG, "Login preference instance url: " + mUserPreferences.getLoginInstanceUrl());
+            Log.d(DEBUG_TAG, "Login preference issued at: " + mUserPreferences.getLoginIssuedAt());
+            Log.d(DEBUG_TAG, "Login preference signature: " + mUserPreferences.getLoginSignature());
+            Log.d(DEBUG_TAG, "Login preference token type: " + mUserPreferences.getLoginTokenType());
+            Log.d(DEBUG_TAG, "Login preference email: " + mUserPreferences.getLoginEmail());
 
             Intent mainIntent = new Intent(this, MainActivity.class);
             startActivity(mainIntent);
 
-            params.put(EMAIL_TAG, userPreferences.getLoginEmail());
-            params.put(ADMIN_TOKEN, userPreferences.getLoginToken());
+            params.put(EMAIL_TAG, mUserPreferences.getLoginEmail());
+            params.put(ADMIN_TOKEN, mUserPreferences.getLoginToken());
 
             GetUserInfoTask userInfoTask = new GetUserInfoTask(this, params);
             userInfoTask.setUserInfoListener(this);
@@ -152,8 +169,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void userInfoSuccessResponse(User user) {
-        //UserPreferences userPreferences = new UserPreferences(this);
-        //userPreferences.setUser(user);
+        //UserPreferences mUserPreferences = new UserPreferences(this);
+        //mUserPreferences.setUser(user);
+        mUserPreferences.createLoginSession(mUserPreferences.getLoginEmail());
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
     }

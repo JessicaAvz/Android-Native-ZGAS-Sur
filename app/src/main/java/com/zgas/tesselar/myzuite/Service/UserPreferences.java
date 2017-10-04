@@ -54,10 +54,9 @@ public class UserPreferences {
         editor.apply();
     }
 
-    public void createLoginSession(String email, String pass) {
+    public void createLoginSession(String email) {
         editor.putBoolean(IS_LOGGED, true);
         editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_PASS, pass);
         editor.commit();
     }
 

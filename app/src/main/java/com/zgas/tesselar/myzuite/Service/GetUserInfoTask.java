@@ -25,11 +25,9 @@ import java.util.Formatter;
 public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetUserInfoTask";
-    private static final String USER_ERROR = "error";
 
     private static final String JSON_OBJECT_ID = "Id";
-    private static final String USER = "user";
-    private static final String JSON_OBJECT_ERROR = "error";
+    private static final String JSON_OBJECT_ERROR = "errorCode";
     private static final String USER_EMAIL = "email";
     private static final String USER_STATUS = "userStatus";
     private static final String USER_TYPE = "userType";
@@ -90,19 +88,23 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObjectResult) {
-        super.onPostExecute(jsonObjectResult);
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
         progressDialog.dismiss();
         Gson gson = new Gson();
         User user = null;
 
         try {
-            if (jsonObjectResult == null) {
-                userInfoListener.userInfoErrorResponse(jsonObjectResult.getString(USER_ERROR));
+            if (jsonObject == null) {
+                userInfoListener.userInfoErrorResponse(jsonObject.getString(JSON_OBJECT_ERROR));
                 isError = true;
-            } else if (jsonObjectResult.has(JSON_OBJECT_ERROR)) {
-                Log.d(DEBUG_TAG, "ADIÓS NO SIRVE");
-            } else if (jsonObjectResult.has(JSON_OBJECT_ID)) {
+            } else if (jsonObject.has(JSON_OBJECT_ERROR)) {
+                Log.d(DEBUG_TAG, "Error: " + jsonObject.get(JSON_OBJECT_ERROR).toString());
+                if (jsonObject.get(JSON_OBJECT_ERROR).toString().equals("400")) {
+                    userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.login_error));
+                    isError = true;
+                }
+            } else if (jsonObject.has(JSON_OBJECT_ID)) {
                 Log.d(DEBUG_TAG, "HOLA SI SIRVE");
                 /*user = gson.fromJson(jsonObjectResult.getJSONObject(USER).toString(), User.class);
                 String userType = jsonObjectResult.getJSONObject(USER).get(USER_TYPE).toString();

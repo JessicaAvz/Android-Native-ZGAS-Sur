@@ -32,7 +32,6 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String JSON_OBJECT_EMAIL = "email";
     private static final String JSON_OBJECT_PASSWORD = "password";
     private static final String JSON_OBJECT_ERROR = "error";
-    private static final String JSON_OBJECT_ERROR_DESCRIPTION = "error_description";
 
     private static final String PRE_URL = "https://test.salesforce.com/services/oauth2/token?grant_type=%1$s&client_id=%2$s&client_secret=%3$s&username=%4$s&password=%5$s";
     private static final String GRANT_TYPE = "password";
