@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Adapter;
+package com.zgas.tesselar.myzuite.Controller.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

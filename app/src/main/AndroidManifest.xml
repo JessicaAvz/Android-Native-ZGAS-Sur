@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
         <activity
-            android:name=".View.Activity.LoginActivity"
+            android:name=".Controller.Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -32,29 +32,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".View.Activity.MainActivity"
+            android:name=".Controller.Activity.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".View.Activity.UserOperator.DetailActivityOperator"
+            android:name=".Controller.Activity.UserOperator.DetailActivityOperator"
             android:label="@string/title_activity_detail"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".View.Activity.UserSupervisor.DetailActivitySupervisor"
+            android:name=".Controller.Activity.UserSupervisor.DetailActivitySupervisor"
             android:label="@string/title_activity_detail_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".View.Activity.UserLeakage.DetailActivityLeakage"
+            android:name=".Controller.Activity.UserLeakage.DetailActivityLeakage"
             android:label="@string/title_activity_detail_leakage"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".View.Activity.UserService.DetailActivityService"
+            android:name=".Controller.Activity.UserService.DetailActivityService"
             android:label="@string/title_activity_detail_service"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>

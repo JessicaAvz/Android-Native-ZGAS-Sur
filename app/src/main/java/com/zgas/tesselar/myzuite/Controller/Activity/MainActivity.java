@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Activity;
+package com.zgas.tesselar.myzuite.Controller.Activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,15 +20,15 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.zgas.tesselar.myzuite.View.Adapter.PagerAdapter;
-import com.zgas.tesselar.myzuite.View.Adapter.SupervisorAdapter;
-import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
-import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
-import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.HelpFragmentOperator;
-import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.MainFragmentOperator;
-import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.OrderFragmentOperator;
-import com.zgas.tesselar.myzuite.View.Fragment.UserService.HelpFragmentService;
-import com.zgas.tesselar.myzuite.View.Fragment.UserService.MainFragmentService;
+import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisorAdapter;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.HelpFragmentLeak;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage.MainFragmentLeak;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.HelpFragmentOperator;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.MainFragmentOperator;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator.OrderFragmentOperator;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.HelpFragmentService;
+import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.MainFragmentService;
 import com.zgas.tesselar.myzuite.CustomViewPager;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PagerAdapter mPagerAdapter;
     private SupervisorAdapter mSupervisorAdapter;
 
-    private User mUser;
     private RecyclerView mRecyclerViewSupervised;
     private Toolbar toolbar;
     private UserPreferences mUserPreferences;
     private LinearLayoutManager linearLayoutManager;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,14 +92,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         initUiOperator();
-        mUserPreferences = new UserPreferences(getApplicationContext());
-        //mUser = mUserPreferences.getUser();
-        String loginId = mUserPreferences.getLoginId();
-        String loginEmail = mUserPreferences.getLoginEmail();
-        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginEmail());
-        Log.d(DEBUG_TAG, "LoginId: " + loginId);
-        Log.d(DEBUG_TAG, "Usuario: " + loginEmail);
-
+        mUserPreferences = new UserPreferences(this);
+        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginData().getLoginAccessToken());
+        //mUser = mUserPreferences.getUserData();
+        //String loginId = mUser.getUserId();
+        //String loginEmail = mUserPreferences.getLoginEmail();
+        //Log.d(DEBUG_TAG, "LoginId: " + loginId);
+        //Log.d(DEBUG_TAG, "Usuario: " + loginEmail);
         /*if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
             setContentView(R.layout.activity_main);

@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Activity.UserLeakage;
+package com.zgas.tesselar.myzuite.Controller.Activity.UserLeakage;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -20,8 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -69,9 +69,9 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
-        mUser = mUserPreferences.getUser();
+        mUser = mUserPreferences.getUserData();
         context = this;
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi();
     }
 

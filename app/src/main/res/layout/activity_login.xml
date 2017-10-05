@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zgas.tesselar.myzuite.View.Activity.LoginActivity">
+    tools:context="com.zgas.tesselar.myzuite.Controller.Activity.LoginActivity">
 
     <ImageView
         android:id="@+id/activity_login_img_logo"

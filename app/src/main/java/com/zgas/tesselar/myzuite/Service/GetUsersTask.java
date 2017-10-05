@@ -30,7 +30,6 @@ public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String USERS_ARRAY = "users";
     private static final String USER_ID = "userId";
     private static final String USER_NAME = "userName";
-    private static final String USER_LASTNAME = "userLastname";
     private static final String USER_EMAIL = "userEmail";
     private static final String USER_ROUTE = "userRoute";
     private static final String USER_ZONE = "userZone";
@@ -95,9 +94,8 @@ public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
             for (int i = 0; i < usersArray.length(); i++) {
                 JSONObject userObject = usersArray.getJSONObject(i);
                 user = new User();
-                user.setUserId(userObject.getInt(USER_ID));
+                user.setUserId(userObject.getString(USER_ID));
                 user.setUserName(userObject.getString(USER_NAME));
-                user.setUserLastname(userObject.getString(USER_LASTNAME));
                 user.setUserEmail(userObject.getString(USER_EMAIL));
                 user.setUserZone(userObject.getString(USER_ZONE));
                 user.setUserRoute(userObject.getString(USER_ROUTE));
@@ -126,7 +124,6 @@ public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Id del usuario: " + user.getUserId());
                 Log.d(DEBUG_TAG, "Tipo de usuario: " + user.getUserType());
                 Log.d(DEBUG_TAG, "Nombre del usuario: " + user.getUserName());
-                Log.d(DEBUG_TAG, "Apellido del usuario: " + user.getUserLastname());
                 Log.d(DEBUG_TAG, "Correo del usuario: " + user.getUserEmail());
                 Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
                 Log.d(DEBUG_TAG, "Zona del usuario: " + user.getUserZone());

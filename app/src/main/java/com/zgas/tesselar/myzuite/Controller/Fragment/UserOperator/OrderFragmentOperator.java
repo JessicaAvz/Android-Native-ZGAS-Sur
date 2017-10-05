@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Fragment.UserOperator;
+package com.zgas.tesselar.myzuite.Controller.Fragment.UserOperator;
 
 
 import android.content.DialogInterface;

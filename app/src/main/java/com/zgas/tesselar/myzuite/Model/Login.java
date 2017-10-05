@@ -1,5 +1,7 @@
 package com.zgas.tesselar.myzuite.Model;
 
+import com.google.gson.Gson;
+
 /**
  * Created by jarvizu on 25/09/2017.
  */
@@ -80,6 +82,20 @@ public class Login {
 
     public void setLoginEmail(String loginEmail) {
         this.loginEmail = loginEmail;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    /**
+     * @param json en formato correcto de json, ej: {"height":1.6,"id":1001,"isAdmin":true,"name":"Jessica"}
+     * @return una instancia de tipo User con los valores que estaban en el json.
+     */
+    public static Login fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Login.class);
     }
 }
 

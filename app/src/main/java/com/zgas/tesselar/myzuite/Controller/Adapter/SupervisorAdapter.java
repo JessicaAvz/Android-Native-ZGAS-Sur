@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Adapter;
+package com.zgas.tesselar.myzuite.Controller.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupervisor;
+import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor.DetailActivitySupervisor;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 
@@ -45,13 +45,10 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
     @Override
     public void onBindViewHolder(SupervisedViewHolder holder, int position) {
         User mUser = mSupervisedList.get(position);
-        int id = mUser.getUserId();
+        String id = mUser.getUserId();
         String userName = mUser.getUserName();
-        String userLastname = mUser.getUserLastname();
         User.userStatus userStatus = mUser.getUserstatus();
-
         TextView name = holder.supervisedName;
-        name.setText(userName + " " + userLastname);
 
         TextView status = holder.supervisedStatus;
         if (userStatus == User.userStatus.NOTACTIVE) {
@@ -90,9 +87,8 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     int requestCode = getAdapterPosition();
                     User mUser = mSupervisedList.get(requestCode);
 
-                    int id = mUser.getUserId();
+                    String id = mUser.getUserId();
                     String name = mUser.getUserName();
-                    String lastname = mUser.getUserLastname();
                     String email = mUser.getUserEmail();
                     String zone = mUser.getUserZone();
                     String route = mUser.getUserRoute();
@@ -101,7 +97,6 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
 
                     Log.d(DEBUG_TAG, "Id del usuario: " + String.valueOf(id));
                     Log.d(DEBUG_TAG, "Nombre del usuario: " + name);
-                    Log.d(DEBUG_TAG, "Apellido del usuario:" + lastname);
                     Log.d(DEBUG_TAG, "Correo: " + email);
                     Log.d(DEBUG_TAG, "Zona: " + zone);
                     Log.d(DEBUG_TAG, "Ruta: " + route);
@@ -109,9 +104,8 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     Log.d(DEBUG_TAG, "Estatus del usuario: " + String.valueOf(status));
 
                     Bundle bundle = new Bundle();
-                    bundle.putInt(MainActivity.EXTRA_USER_ID, id);
+                    bundle.putString(MainActivity.EXTRA_USER_ID, id);
                     bundle.putString(MainActivity.EXTRA_USER_NAME, name);
-                    bundle.putString(MainActivity.EXTRA_USER_LASTNAME, lastname);
                     bundle.putString(MainActivity.EXTRA_USER_EMAIL, email);
                     bundle.putString(MainActivity.EXTRA_USER_ZONE, zone);
                     bundle.putString(MainActivity.EXTRA_USER_ROUTE, route);

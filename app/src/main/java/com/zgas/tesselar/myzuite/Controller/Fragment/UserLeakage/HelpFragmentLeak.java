@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Fragment.UserLeakage;
+package com.zgas.tesselar.myzuite.Controller.Fragment.UserLeakage;
 
 
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
@@ -42,8 +42,8 @@ public class HelpFragmentLeak extends Fragment implements View.OnClickListener {
         mRootView = inflater.inflate(R.layout.fragment_help_leak, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUser();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        mUser = mUserPreferences.getUserData();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

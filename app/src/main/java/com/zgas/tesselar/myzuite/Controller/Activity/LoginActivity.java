@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Activity;
+package com.zgas.tesselar.myzuite.Controller.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button mLogin;
     private UserPreferences mUserPreferences;
     private Context context;
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +80,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
         } else {
             JSONObject params = new JSONObject();
-            String email = mEmail.getText().toString();
-            String password = mPassword.getText().toString();
+            email = mEmail.getText().toString();
+            password = mPassword.getText().toString();
             try {
                 params.put(EMAIL_TAG, email);
                 params.put(PASS_TAG, password);
@@ -94,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 LoginTask loginTask = new LoginTask(this, params);
                 loginTask.setLoginTaskListener(this);
                 loginTask.execute();
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -116,42 +117,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void loginSuccessResponse(Login login) {
         try {
             JSONObject params = new JSONObject();
-            login.setLoginAccessToken(login.getLoginAccessToken());
-            login.setLoginId(login.getLoginId());
-            login.setLoginInstanceUrl(login.getLoginInstanceUrl());
-            login.setLoginIssuedAt(login.getLoginIssuedAt());
-            login.setLoginSignature(login.getLoginSignature());
-            login.setLoginTokenType(login.getLoginTokenType());
-            login.setLoginEmail(login.getLoginEmail());
-
-            mUserPreferences.setLoginToken(login.getLoginAccessToken());
-            mUserPreferences.setLoginId(login.getLoginId());
-            mUserPreferences.setLoginInstanceUrl(login.getLoginInstanceUrl());
-            mUserPreferences.setLoginSignature(login.getLoginSignature());
-            mUserPreferences.setLoginIssuedAt(login.getLoginIssuedAt());
-            mUserPreferences.setLoginTokenType(login.getLoginTokenType());
-            mUserPreferences.setLoginEmail(mEmail.getText().toString());
-
             mUserPreferences.setLoginData(login);
+            Log.d(DEBUG_TAG, "Login preference token: " + mUserPreferences.getLoginData().getLoginAccessToken());
+            Log.d(DEBUG_TAG, "Login preference id: " + mUserPreferences.getLoginData().getLoginId());
+            Log.d(DEBUG_TAG, "Login preference instance url: " + mUserPreferences.getLoginData().getLoginInstanceUrl());
+            Log.d(DEBUG_TAG, "Login preference issued at: " + mUserPreferences.getLoginData().getLoginIssuedAt());
+            Log.d(DEBUG_TAG, "Login preference signature: " + mUserPreferences.getLoginData().getLoginSignature());
+            Log.d(DEBUG_TAG, "Login preference token type: " + mUserPreferences.getLoginData().getLoginTokenType());
 
-            Log.d(DEBUG_TAG, "Login preference token: " + mUserPreferences.getLoginToken());
-            Log.d(DEBUG_TAG, "Login preference id: " + mUserPreferences.getLoginId());
-            Log.d(DEBUG_TAG, "Login preference instance url: " + mUserPreferences.getLoginInstanceUrl());
-            Log.d(DEBUG_TAG, "Login preference issued at: " + mUserPreferences.getLoginIssuedAt());
-            Log.d(DEBUG_TAG, "Login preference signature: " + mUserPreferences.getLoginSignature());
-            Log.d(DEBUG_TAG, "Login preference token type: " + mUserPreferences.getLoginTokenType());
-            Log.d(DEBUG_TAG, "Login preference email: " + mUserPreferences.getLoginEmail());
-
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
-
-            params.put(EMAIL_TAG, mUserPreferences.getLoginEmail());
-            params.put(ADMIN_TOKEN, mUserPreferences.getLoginToken());
+            params.put(EMAIL_TAG, mEmail.getText().toString());
+            params.put(ADMIN_TOKEN, mUserPreferences.getLoginData().getLoginAccessToken());
+            mUserPreferences.createLoginSession(email);
 
             GetUserInfoTask userInfoTask = new GetUserInfoTask(this, params);
             userInfoTask.setUserInfoListener(this);
             userInfoTask.execute();
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -166,9 +146,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void userInfoSuccessResponse(User user) {
-        //UserPreferences mUserPreferences = new UserPreferences(this);
-        //mUserPreferences.setUser(user);
-        mUserPreferences.createLoginSession(mUserPreferences.getLoginEmail());
+        mUserPreferences.setUserData(user);
+        Log.d(DEBUG_TAG, "User preference id: " + mUserPreferences.getUserData().getUserId());
+        Log.d(DEBUG_TAG, "User preference name: " + mUserPreferences.getUserData().getUserName());
+        Log.d(DEBUG_TAG, "User preference type: " + mUserPreferences.getUserData().getUserType());
+        Log.d(DEBUG_TAG, "User preference email: " + mUserPreferences.getUserData().getUserEmail());
+        Log.d(DEBUG_TAG, "User preference zone: " + mUserPreferences.getUserData().getUserZone());
+        Log.d(DEBUG_TAG, "User preference route: " + mUserPreferences.getUserData().getUserRoute());
+        Log.d(DEBUG_TAG, "User preference status: " + mUserPreferences.getUserData().getUserstatus());
+
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         this.finish();

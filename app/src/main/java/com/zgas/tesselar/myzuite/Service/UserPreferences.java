@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.zgas.tesselar.myzuite.View.Activity.LoginActivity;
+import com.zgas.tesselar.myzuite.Controller.Activity.LoginActivity;
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 
@@ -16,22 +16,15 @@ import com.zgas.tesselar.myzuite.Model.User;
 
 public class UserPreferences {
 
-    private static final String EXTRA_USER = "UserInfo";
+    private static final String DEBUG_TAG = "UserPreferences";
     private static final String IS_LOGGED = "IsLoggedIn";
-    private static final String LOGIN_DATA = "loginData";
     private static final String KEY_EMAIL = "Email";
     private static final String KEY_PASS = "Password";
     private static final String SHARED_PREFERENCES = "sharedPreferences";
-
-    private static final String LOGIN_ID = "loginId";
     private static final String LOGIN_EMAIL = "loginEmail";
     private static final String LOGIN_TOKEN = "loginToken";
-    private static final String LOGIN_ISSUED_AT = "loginIssuedAt";
-    private static final String LOGIN_SIGNATURE = "loginSignature";
-    private static final String LOGIN_TOKEN_TYPE = "loginTokenType";
-    private static final String LOGIN_INSTANCE_URL = "loginInstanceUrl";
-
-    private static final String USER_DATA = "SetUserData";
+    private static final String LOGIN_DATA = "loginData";
+    private static final String USER_DATA = "userData";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -39,25 +32,34 @@ public class UserPreferences {
 
     public UserPreferences(Context context) {
         this.context = context;
-        sharedPreferences = context.getSharedPreferences(EXTRA_USER, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
     }
 
-    public User getUser() {
+    public User getUserData() {
         Gson gson = new Gson();
-        return gson.fromJson(sharedPreferences.getString(EXTRA_USER, "Null"), User.class);
+        return gson.fromJson(sharedPreferences.getString(USER_DATA, null), User.class);
     }
 
-    public void setUser(User user) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(EXTRA_USER, user.toJson());
-        editor.apply();
+    public void setUserData(User user) {
+        if (user != null) {
+            Gson gson = new Gson();
+            String userString = gson.toJson(user);
+
+            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(USER_DATA, userString);
+            editor.apply();
+
+            Log.d(DEBUG_TAG, "Object user has been saved successfully");
+        } else {
+            Log.d(DEBUG_TAG, "Object user is null");
+        }
     }
 
     public void createLoginSession(String email) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_LOGGED, true);
         editor.putString(KEY_EMAIL, email);
-        editor.commit();
+        editor.apply();
     }
 
     public void checkLogin() {
@@ -79,11 +81,16 @@ public class UserPreferences {
             editor.putString(LOGIN_DATA, loginString);
             editor.apply();
 
-            Log.d(USER_DATA, "Object user has been saved successfully");
+            Log.d(DEBUG_TAG, "Object login has been saved successfully");
 
         } else {
-            Log.d(USER_DATA, "Object user is null");
+            Log.d(DEBUG_TAG, "Object login is null");
         }
+    }
+
+    public Login getLoginData() {
+        Gson gson = new Gson();
+        return gson.fromJson(sharedPreferences.getString(LOGIN_DATA, null), Login.class);
     }
 
     public void logoutUser() {
@@ -96,14 +103,8 @@ public class UserPreferences {
     }
 
     public boolean isLoggedIn() {
-        return sharedPreferences.getBoolean(IS_LOGGED, false);
-    }
-
-    public void setLoginToken(String loginToken) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_TOKEN, loginToken);
-        editor.apply();
+        return sharedPreferences.getBoolean(IS_LOGGED, false);
     }
 
     public String getLoginToken() {
@@ -111,75 +112,9 @@ public class UserPreferences {
         return sharedPreferences.getString(LOGIN_TOKEN, null);
     }
 
-    public void setLoginId(String loginId) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_ID, loginId);
-        editor.apply();
-    }
-
-    public String getLoginId() {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_ID, null);
-    }
-
-    public void setLoginInstanceUrl(String loginInstanceUrl) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_INSTANCE_URL, loginInstanceUrl);
-        editor.apply();
-    }
-
-    public String getLoginInstanceUrl() {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_INSTANCE_URL, null);
-    }
-
-    public void setLoginIssuedAt(String loginIssuedAt) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_ISSUED_AT, loginIssuedAt);
-        editor.apply();
-    }
-
-    public String getLoginIssuedAt() {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_ISSUED_AT, null);
-    }
-
-    public void setLoginSignature(String loginSignature) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_SIGNATURE, loginSignature);
-        editor.apply();
-    }
-
-    public String getLoginSignature() {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_SIGNATURE, null);
-    }
-
-    public void setLoginTokenType(String tokenType) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_TOKEN_TYPE, tokenType);
-        editor.apply();
-    }
-
-    public String getLoginTokenType() {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_TOKEN_TYPE, null);
-    }
-
-    public void setLoginEmail(String email) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LOGIN_EMAIL, email);
-        editor.apply();
-    }
-
     public String getLoginEmail() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString(LOGIN_EMAIL, null);
     }
 }
+

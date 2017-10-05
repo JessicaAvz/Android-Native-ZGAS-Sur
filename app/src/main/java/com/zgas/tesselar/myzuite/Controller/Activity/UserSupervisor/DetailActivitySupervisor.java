@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Activity.UserSupervisor;
+package com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
@@ -44,8 +44,8 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
-        mUser = mUserPreferences.getUser();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        mUser = mUserPreferences.getUserData();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi();
     }
 

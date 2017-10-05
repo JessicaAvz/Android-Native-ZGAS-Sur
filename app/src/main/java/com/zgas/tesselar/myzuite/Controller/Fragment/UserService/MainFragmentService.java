@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Fragment.UserService;
+package com.zgas.tesselar.myzuite.Controller.Fragment.UserService;
 
 
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -46,8 +46,8 @@ public class MainFragmentService extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_main_service, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUser();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        mUser = mUserPreferences.getUserData();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

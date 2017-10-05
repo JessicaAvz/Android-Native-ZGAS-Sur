@@ -24,7 +24,7 @@ public class ConnectionController {
     private static final String AUTHORIZATION = "Authorization";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String AUTH_KEY = "Bearer ";
-    private static final String AUTH_BODY = "00D0x000000CmVa!ARgAQIcC1VcqdcnsV.rp80wseOqdh0Xoi5EHOEPmpqtVa5Nj1RYbZH.jbqmJTnhpUOb4i0DUTYAkU8D3tdGuM.I.pr5SlxYg";
+    private static final String AUTH_BODY = "00D0x000000CmVa!ARgAQK_q2ur710MF65SsciLYIPZiUiFGaRaRkhOQDhQtTE72W0D531OIwPAx.4vwncmACZDCiWr.DVO47vq7mHcRAOyPQQMe";
 
     private URL url;
     private String method;
@@ -59,7 +59,7 @@ public class ConnectionController {
             httpURLConnection.setRequestProperty(AUTHORIZATION, encodedAuth);
             if (httpURLConnection.getRequestMethod().equals("POST")) {
                 httpURLConnection.setDoOutput(true);
-            } else if (httpURLConnection.getRequestMethod().equals("GET")){
+            } else if (httpURLConnection.getRequestMethod().equals("GET")) {
                 httpURLConnection.setDoOutput(false);
             }
             httpURLConnection.setConnectTimeout(TIMEOUT);

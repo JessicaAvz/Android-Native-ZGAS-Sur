@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupervisor">
+    tools:context="com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor.DetailActivitySupervisor">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

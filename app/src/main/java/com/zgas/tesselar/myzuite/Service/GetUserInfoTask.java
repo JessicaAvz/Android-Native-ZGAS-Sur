@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
@@ -29,15 +28,20 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String JSON_OBJECT_ID = "Id";
     private static final String JSON_OBJECT_NAME = "Name";
+    private static final String PARAMS_EMAIL = "email";
     private static final String JSON_OBJECT_STATUS = "Status";
     private static final String JSON_OBJECT_POSITION = "Position";
     private static final String JSON_OBJECT_ERROR = "errorCode";
-    private static final String USER_EMAIL = "email";
+    private static final String JSON_OBJECT_ZONE = "Zone";
+    private static final String JSON_OBJECT_EMAIL = "Email";
+    private static final String JSON_OBJECT_ROUTE = "Route";
+
     private Context context;
     private JSONObject params;
     private UserInfoListener userInfoListener;
     private ProgressDialog progressDialog;
     private boolean isError = false;
+    private User user;
 
     public GetUserInfoTask(Context context, JSONObject params) {
         this.context = context;
@@ -61,8 +65,8 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         try {
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.GET_USER_DATA_URL, params.get(USER_EMAIL)).toString();
-            Log.d(DEBUG_TAG, format);
+            String format = formatter.format(UrlHelper.GET_USER_DATA_URL, params.get(PARAMS_EMAIL)).toString();
+            Log.d(DEBUG_TAG, "Url del usuario: " + format);
 
             URL url = new URL(format);
             ConnectionController connection = new ConnectionController(url, "GET");
@@ -91,8 +95,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
-        Gson gson = new Gson();
-        User user = null;
+        user = null;
 
         try {
             if (jsonObject == null) {
@@ -104,14 +107,16 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.user_data_error));
                     isError = true;
                 }
-            } else if (jsonObject.has(JSON_OBJECT_NAME)) {
+            } else if (jsonObject.has(JSON_OBJECT_ID)) {
                 Log.d(DEBUG_TAG, "HOLA, SI SIRVE");
                 user = new User();
-                user.setUserName(jsonObject.get(JSON_OBJECT_NAME).toString());
                 String userStatus = jsonObject.get(JSON_OBJECT_STATUS).toString();
                 String userType = jsonObject.get(JSON_OBJECT_POSITION).toString();
-                Log.d(DEBUG_TAG, userStatus);
-                Log.d(DEBUG_TAG, userType);
+                user.setUserName(jsonObject.get(JSON_OBJECT_NAME).toString());
+                user.setUserId(jsonObject.get(JSON_OBJECT_ID).toString());
+                user.setUserRoute(jsonObject.get(JSON_OBJECT_ROUTE).toString());
+                user.setUserZone(jsonObject.get(JSON_OBJECT_ZONE).toString());
+                user.setUserEmail(jsonObject.get(JSON_OBJECT_EMAIL).toString());
                 if (userType.equals(User.userType.OPERATOR.toString())) {
                     user.setUserType(User.userType.OPERATOR);
                 } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
@@ -127,15 +132,12 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
                     user.setUserstatus(User.userStatus.NOTACTIVE);
                 }
-                userInfoListener.userInfoSuccessResponse(user);
                 isError = false;
 
                 Log.d(DEBUG_TAG, "Id del usuario: " + user.getUserId());
                 Log.d(DEBUG_TAG, "Nombre de usuario: " + user.getUserName());
-                Log.d(DEBUG_TAG, "Apellido del usuario: " + user.getUserLastname());
                 Log.d(DEBUG_TAG, "Tipo de usuario: " + user.getUserType());
                 Log.d(DEBUG_TAG, "Email del usuario: " + user.getUserEmail());
-                Log.d(DEBUG_TAG, "Password del usuario: " + user.getUserPassword());
                 Log.d(DEBUG_TAG, "Zona del usuario: " + user.getUserZone());
                 Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
                 Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());

@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.View.Activity.UserOperator;
+package com.zgas.tesselar.myzuite.Controller.Activity.UserOperator;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,8 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -67,8 +67,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
-        mUser = mUserPreferences.getUser();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUser().getUserEmail());
+        mUser = mUserPreferences.getUserData();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi();
     }
 
