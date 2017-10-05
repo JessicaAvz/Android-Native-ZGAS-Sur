@@ -67,8 +67,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
-        mUser = mUserPreferences.getUserData();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
+        //mUser = mUserPreferences.getUserData();
+        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi();
     }
 

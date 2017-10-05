@@ -43,8 +43,8 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
         mRootView = inflater.inflate(R.layout.fragment_help_service, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserData();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
+        //mUser = mUserPreferences.getUserData();
+        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

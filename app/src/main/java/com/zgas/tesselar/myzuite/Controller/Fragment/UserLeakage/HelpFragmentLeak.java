@@ -42,8 +42,8 @@ public class HelpFragmentLeak extends Fragment implements View.OnClickListener {
         mRootView = inflater.inflate(R.layout.fragment_help_leak, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserData();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
+        //mUser = mUserPreferences.getUserData();
+        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi(mRootView);
         return mRootView;
     }

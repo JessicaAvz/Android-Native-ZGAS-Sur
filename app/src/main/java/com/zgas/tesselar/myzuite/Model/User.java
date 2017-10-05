@@ -37,7 +37,7 @@ public class User {
 
     public enum userType {
         OPERATOR("Operador"),
-        SERVICE("Servicio medido"),
+        SERVICE("Servicio Medido"),
         SUPERVISOR("Supervisor"),
         LEAKAGE("Técnico de Fugas");
 

@@ -20,9 +20,10 @@ public class UserPreferences {
     private static final String IS_LOGGED = "IsLoggedIn";
     private static final String KEY_EMAIL = "Email";
     private static final String KEY_PASS = "Password";
-    private static final String SHARED_PREFERENCES = "sharedPreferences";
+    private static final String SHARED_PREFERENCES = "userPreferences";
     private static final String LOGIN_EMAIL = "loginEmail";
     private static final String LOGIN_TOKEN = "loginToken";
+
     private static final String LOGIN_DATA = "loginData";
     private static final String USER_DATA = "userData";
 
@@ -34,9 +35,9 @@ public class UserPreferences {
         this.context = context;
     }
 
-    public User getUserData() {
-        Gson gson = new Gson();
-        return gson.fromJson(sharedPreferences.getString(USER_DATA, null), User.class);
+    public String getUserData() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(USER_DATA, null);
     }
 
     public void setUserData(User user) {
@@ -55,20 +56,22 @@ public class UserPreferences {
         }
     }
 
+    public User getUserObject() {
+        Gson gson = new Gson();
+        User user = gson.fromJson(getUserData(), User.class);
+        return user;
+    }
+
+    public String getLoginData() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(LOGIN_DATA, null);
+    }
+
     public void createLoginSession(String email) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_LOGGED, true);
         editor.putString(KEY_EMAIL, email);
         editor.apply();
-    }
-
-    public void checkLogin() {
-        if (!this.isLoggedIn()) {
-            Intent i = new Intent(context, LoginActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
-        }
     }
 
     public void setLoginData(Login login) {
@@ -88,18 +91,28 @@ public class UserPreferences {
         }
     }
 
-    public Login getLoginData() {
+    public Login getLoginObject() {
         Gson gson = new Gson();
-        return gson.fromJson(sharedPreferences.getString(LOGIN_DATA, null), Login.class);
+        Login login = gson.fromJson(getLoginData(), Login.class);
+        return login;
+    }
+
+    public void checkLogin() {
+        if (!this.isLoggedIn()) {
+            Intent i = new Intent(context, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }
     }
 
     public void logoutUser() {
-        editor.clear();
-        editor.commit();
+        context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE).edit().clear().apply();
         Intent i = new Intent(context, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
+        Log.d(DEBUG_TAG, "User has logged out.");
     }
 
     public boolean isLoggedIn() {

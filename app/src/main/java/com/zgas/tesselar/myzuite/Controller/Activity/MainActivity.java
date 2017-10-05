@@ -93,13 +93,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         initUiOperator();
         mUserPreferences = new UserPreferences(this);
-        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginData().getLoginAccessToken());
-        //mUser = mUserPreferences.getUserData();
-        //String loginId = mUser.getUserId();
-        //String loginEmail = mUserPreferences.getLoginEmail();
-        //Log.d(DEBUG_TAG, "LoginId: " + loginId);
-        //Log.d(DEBUG_TAG, "Usuario: " + loginEmail);
-        /*if (mUser.getUserType() == User.userType.OPERATOR) {
+        mUser = mUserPreferences.getUserObject();
+
+        Log.d(DEBUG_TAG, "Login : " + mUserPreferences.getLoginObject().getLoginAccessToken());
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserObject().getUserName());
+
+        if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
             setContentView(R.layout.activity_main);
             initUiOperator();
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Default");
             setContentView(R.layout.activity_main);
             initUiOperator();
-        }*/
+        }
     }
 
     @Override
