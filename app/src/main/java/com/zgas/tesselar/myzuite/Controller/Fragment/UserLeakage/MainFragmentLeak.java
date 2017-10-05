@@ -46,8 +46,10 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         mRootView = inflater.inflate(R.layout.fragment_main_leak, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        //mUser = mUserPreferences.getUserData();
-        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
+        mUser = mUserPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         initUi(mRootView);
         try {
             GetLeakagesTask getLeakagesTask = new GetLeakagesTask(getContext(), null);

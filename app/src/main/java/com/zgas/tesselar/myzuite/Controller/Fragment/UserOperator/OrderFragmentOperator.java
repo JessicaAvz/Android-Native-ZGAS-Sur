@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
@@ -27,7 +28,7 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
     private EditText mPhoneNumber;
     private Button mMakeOrder;
     private UserPreferences mUserPreferences;
-    private String mUser;
+    private User mUser;
 
     public OrderFragmentOperator() {
         // Required empty public constructor
@@ -40,8 +41,10 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
         mRootView = inflater.inflate(R.layout.fragment_order_operator, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getLoginEmail();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginEmail());
+        mUser = mUserPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         initUi(mRootView);
         return mRootView;
     }

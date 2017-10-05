@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
@@ -30,7 +31,7 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
     private Button mSendProblem;
     private View mRootView;
     private UserPreferences mUserPreferences;
-    private String mUser;
+    private User mUser;
 
     public HelpFragmentOperator() {
         // Required empty public constructor
@@ -44,8 +45,10 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener {
         mRootView = inflater.inflate(R.layout.fragment_help_operator, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getLoginEmail();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginEmail());
+        mUser = mUserPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         initUi(mRootView);
         return mRootView;
     }

@@ -1,7 +1,5 @@
 package com.zgas.tesselar.myzuite.Model;
 
-import com.google.gson.Gson;
-
 /**
  * Created by jarvizu on 28/08/2017.
  */
@@ -113,23 +111,5 @@ public class User {
 
     public void setUserstatus(userStatus userstatus) {
         this.userstatus = userstatus;
-    }
-
-    /**
-     * @return un String con formato json con las propiedades correspondientes.
-     */
-
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
-
-    /**
-     * @param json en formato correcto de json, ej: {"height":1.6,"id":1001,"isAdmin":true,"name":"Jessica"}
-     * @return una instancia de tipo User con los valores que estaban en el json.
-     */
-    public static User fromJson(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, User.class);
     }
 }
