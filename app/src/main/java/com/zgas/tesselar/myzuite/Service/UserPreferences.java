@@ -23,7 +23,7 @@ public class UserPreferences {
     private static final String SHARED_PREFERENCES = "userPreferences";
     private static final String LOGIN_EMAIL = "loginEmail";
     private static final String LOGIN_TOKEN = "loginToken";
-
+    private static final String API_TOKEN = "apiToken";
     private static final String LOGIN_DATA = "loginData";
     private static final String USER_DATA = "userData";
 
@@ -120,14 +120,17 @@ public class UserPreferences {
         return sharedPreferences.getBoolean(IS_LOGGED, false);
     }
 
-    public String getLoginToken() {
+    public void setAdminToken(String token) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_TOKEN, null);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(API_TOKEN, token);
+        editor.apply();
     }
 
-    public String getLoginEmail() {
+    public String getAdminToken() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(LOGIN_EMAIL, null);
+        return sharedPreferences.getString(API_TOKEN, null);
     }
+
 }
 

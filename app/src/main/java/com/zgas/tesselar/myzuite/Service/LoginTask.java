@@ -38,11 +38,13 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private Context context;
     private JSONObject params;
     private LoginTaskListener loginTaskListener;
+    private UserPreferences userPreferences;
     private boolean isError = false;
 
     public LoginTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
+        userPreferences = new UserPreferences(context);
     }
 
     @Override
@@ -50,6 +52,18 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
+
+            Formatter formatter_admin = new Formatter();
+            String format_admin = formatter_admin.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, UrlHelper.ADMIN_EMAIL, UrlHelper.ADMIN_PASS).toString();
+            Log.d(DEBUG_TAG, format_admin);
+            URL url_admin = new URL(format_admin);
+            ConnectionController connection_admin = new ConnectionController(url_admin, METHOD);
+
+            JSONObject jsonObjectAdmin = connection_admin.execute();
+            String token_admin = jsonObjectAdmin.get(JSON_OBJECT_TOKEN).toString();
+            Log.d(DEBUG_TAG, "Token del admin: " + token_admin);
+            userPreferences.setAdminToken(token_admin);
+            Log.d(DEBUG_TAG, "Token del admin: " + userPreferences.getAdminToken().toString());
 
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, params.get(JSON_OBJECT_EMAIL), params.get(JSON_OBJECT_PASSWORD)).toString();

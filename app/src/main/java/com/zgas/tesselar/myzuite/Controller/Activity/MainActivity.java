@@ -34,6 +34,7 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUsersTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
 
-        Log.d(DEBUG_TAG, "Login : " + mUserPreferences.getLoginObject().getLoginAccessToken());
+        Log.d(DEBUG_TAG, "Admin token: " + mUserPreferences.getAdminToken());
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserObject().getUserName());
 
         if (mUser.getUserType() == User.userType.OPERATOR) {
@@ -436,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void callIntent() {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:6241370525"));
+        callIntent.setData(Uri.parse(UrlHelper.CALL));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }

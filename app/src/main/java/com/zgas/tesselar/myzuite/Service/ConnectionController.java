@@ -2,6 +2,8 @@ package com.zgas.tesselar.myzuite.Service;
 
 import android.util.Log;
 
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,18 +23,11 @@ import java.net.URL;
 public class ConnectionController {
 
     private static final String DEBUG_TAG = "ConnectionController";
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String CONTENT_TYPE = "Content-Type";
-    private static final String AUTH_KEY = "Bearer ";
-    private static final String AUTH_BODY = "00D0x000000CmVa!ARgAQK_q2ur710MF65SsciLYIPZiUiFGaRaRkhOQDhQtTE72W0D531OIwPAx.4vwncmACZDCiWr.DVO47vq7mHcRAOyPQQMe";
 
     private URL url;
     private String method;
-    private String basicAuth;
     private JSONObject params;
-
     private JSONObject jsonObject;
-
     private HttpURLConnection httpURLConnection;
 
     private static final int TIMEOUT = 10000;
@@ -54,14 +49,16 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            httpURLConnection.setRequestProperty(CONTENT_TYPE, "application/json; charset=utf-8");
-            String encodedAuth = AUTH_KEY + AUTH_BODY;
-            httpURLConnection.setRequestProperty(AUTHORIZATION, encodedAuth);
+            httpURLConnection.setRequestProperty(UrlHelper.CONTENT_TYPE, "application/json; charset=utf-8");
+            String encodedAuth = UrlHelper.AUTH_KEY + UrlHelper.AUTH_BODY;
+            httpURLConnection.setRequestProperty(UrlHelper.AUTHORIZATION, encodedAuth);
+
             if (httpURLConnection.getRequestMethod().equals("POST")) {
                 httpURLConnection.setDoOutput(true);
             } else if (httpURLConnection.getRequestMethod().equals("GET")) {
                 httpURLConnection.setDoOutput(false);
             }
+
             httpURLConnection.setConnectTimeout(TIMEOUT);
             httpURLConnection.setReadTimeout(TIMEOUT);
             httpURLConnection.connect();
@@ -77,7 +74,7 @@ public class ConnectionController {
             int status = httpURLConnection.getResponseCode();
             Log.d(DEBUG_TAG, "Estatuuuuus: " + String.valueOf(status));
             Log.d(DEBUG_TAG, encodedAuth);
-            Log.d(DEBUG_TAG, "Request: " + httpURLConnection.getRequestProperty(AUTHORIZATION));
+            Log.d(DEBUG_TAG, "Request: " + httpURLConnection.getRequestProperty(UrlHelper.AUTHORIZATION));
             if (status >= 200 && status < 300) {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
