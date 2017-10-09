@@ -39,6 +39,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private JSONObject params;
     private LoginTaskListener loginTaskListener;
     private UserPreferences userPreferences;
+    private String adminToken;
     private boolean isError = false;
 
     public LoginTask(Context context, JSONObject params) {
@@ -57,20 +58,20 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
             String format_admin = formatter_admin.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, UrlHelper.ADMIN_EMAIL, UrlHelper.ADMIN_PASS).toString();
             Log.d(DEBUG_TAG, format_admin);
             URL url_admin = new URL(format_admin);
-            ConnectionController connection_admin = new ConnectionController(url_admin, METHOD);
+            ConnectionController connection_admin = new ConnectionController(null, url_admin, METHOD);
 
             JSONObject jsonObjectAdmin = connection_admin.execute();
-            String token_admin = jsonObjectAdmin.get(JSON_OBJECT_TOKEN).toString();
-            Log.d(DEBUG_TAG, "Token del admin: " + token_admin);
-            userPreferences.setAdminToken(token_admin);
-            Log.d(DEBUG_TAG, "Token del admin: " + userPreferences.getAdminToken().toString());
+            adminToken = jsonObjectAdmin.get(JSON_OBJECT_TOKEN).toString();
+            Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
+            userPreferences.setAdminToken(adminToken);
+            Log.d(DEBUG_TAG, "Token del admin userPreferences: " + userPreferences.getAdminToken().toString());
 
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, params.get(JSON_OBJECT_EMAIL), params.get(JSON_OBJECT_PASSWORD)).toString();
             Log.d(DEBUG_TAG, format);
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(url, METHOD);
+            ConnectionController connection = new ConnectionController(null, url, METHOD);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {

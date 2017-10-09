@@ -17,7 +17,6 @@ import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
-import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +26,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String DEBUG_TAG = "LoginActivity";
     private static final String EMAIL_TAG = "email";
     private static final String PASS_TAG = "password";
-    private static final String ADMIN_EMAIL_TAG = "adminEmail";
-    private static final String ADMIN_PASS_TAG = "adminPass";
     private static final String ADMIN_TOKEN = "access_token";
 
     private TextInputEditText mEmail;
@@ -84,13 +81,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             try {
                 params.put(EMAIL_TAG, email);
                 params.put(PASS_TAG, password);
-                params.put(ADMIN_EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
-                params.put(ADMIN_PASS_TAG, UrlHelper.ADMIN_PASS);
-
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(ADMIN_EMAIL_TAG));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(ADMIN_PASS_TAG));
 
                 LoginTask loginTask = new LoginTask(this, params);
                 loginTask.setLoginTaskListener(this);

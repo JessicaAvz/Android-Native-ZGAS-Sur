@@ -26,18 +26,21 @@ public class ConnectionController {
 
     private URL url;
     private String method;
+    private String adminToken;
     private JSONObject params;
     private JSONObject jsonObject;
     private HttpURLConnection httpURLConnection;
 
     private static final int TIMEOUT = 10000;
 
-    public ConnectionController(URL url, String method) {
+    public ConnectionController(String adminToken, URL url, String method) {
+        this.adminToken = adminToken;
         this.url = url;
         this.method = method;
     }
 
-    public ConnectionController(URL url, String method, JSONObject params) {
+    public ConnectionController(String adminToken, URL url, String method, JSONObject params) {
+        this.adminToken = adminToken;
         this.url = url;
         this.method = method;
         this.params = params;
@@ -49,9 +52,11 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            httpURLConnection.setRequestProperty(UrlHelper.CONTENT_TYPE, "application/json; charset=utf-8");
+            Log.d(DEBUG_TAG, "Método de la llamada: " + method);
+            Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
             String encodedAuth = UrlHelper.AUTH_KEY + UrlHelper.AUTH_BODY;
-            httpURLConnection.setRequestProperty(UrlHelper.AUTHORIZATION, encodedAuth);
+            httpURLConnection.setRequestProperty("Authorization", encodedAuth);
+            httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
             if (httpURLConnection.getRequestMethod().equals("POST")) {
                 httpURLConnection.setDoOutput(true);
@@ -72,9 +77,6 @@ public class ConnectionController {
             }
 
             int status = httpURLConnection.getResponseCode();
-            Log.d(DEBUG_TAG, "Estatuuuuus: " + String.valueOf(status));
-            Log.d(DEBUG_TAG, encodedAuth);
-            Log.d(DEBUG_TAG, "Request: " + httpURLConnection.getRequestProperty(UrlHelper.AUTHORIZATION));
             if (status >= 200 && status < 300) {
 
                 InputStream inputStream = httpURLConnection.getInputStream();

@@ -39,13 +39,16 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private Context context;
     private JSONObject params;
     private UserInfoListener userInfoListener;
+    private UserPreferences userPreferences;
     private ProgressDialog progressDialog;
     private boolean isError = false;
     private User user;
+    private String adminToken;
 
     public GetUserInfoTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
+        userPreferences = new UserPreferences(context);
     }
 
 
@@ -67,9 +70,11 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_USER_DATA_URL, params.get(PARAMS_EMAIL)).toString();
             Log.d(DEBUG_TAG, "Url del usuario: " + format);
+            adminToken = userPreferences.getAdminToken();
+            Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(url, "GET");
+            ConnectionController connection = new ConnectionController(adminToken, url, "GET");
             jsonObject = connection.execute();
 
             if (jsonObject == null) {

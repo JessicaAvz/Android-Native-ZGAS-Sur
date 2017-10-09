@@ -17,8 +17,6 @@ public class UrlHelper {
     public static final String CLIENT_ID = "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003";
     public static final String CLIENT_SECRET = "631836681953146126";
 
-    public static final String AUTHORIZATION = "Authorization";
-    public static final String CONTENT_TYPE = "Content-Type";
     public static final String AUTH_KEY = "Bearer ";
-    public static final String AUTH_BODY = "00D0x000000CmVa!ARgAQORl4ABd4tLJlKWY14o31.KIRKcVBkS6FTchKaFVryv66HI0qC1k8wzwyDUtwfIgXUtl8.nEgUfH2u3fKQgV3aIA6FNb";
+    public static final String AUTH_BODY = "00D0x000000CmVa!ARgAQPa7H06StmjshIc0zsU0P_MiebNyc.KJ_uZHN.hcK1R4xzaGx.h1it6R17SonvfkrBI7lsKERxbEsIdAk60p9RkDO3Q8";
 }

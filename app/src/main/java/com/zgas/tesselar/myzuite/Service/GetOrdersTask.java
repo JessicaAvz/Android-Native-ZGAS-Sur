@@ -64,7 +64,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         try {
             URL url = new URL(URL);
-            ConnectionController connection = new ConnectionController(url, "GET", params);
+            ConnectionController connection = new ConnectionController(null, url, "GET", params);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
