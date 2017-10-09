@@ -112,6 +112,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 }
             } else if (jsonObject.has(JSON_OBJECT_TOKEN)) {
                 login = new Login();
+                login.setLoginEmail(params.get(JSON_OBJECT_EMAIL).toString());
                 login.setLoginAccessToken(jsonObject.get(JSON_OBJECT_TOKEN).toString());
                 login.setLoginId(jsonObject.get(JSON_OBJECT_ID).toString());
                 login.setLoginInstanceUrl(jsonObject.get(JSON_OBJECT_INSTANCE).toString());

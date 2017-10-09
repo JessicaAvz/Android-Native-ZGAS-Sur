@@ -67,10 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String EXTRA_USER_ZONE = "UserZone";
 
     private static final String EMAIL_TAG = "email";
-    private static final String PASS_TAG = "password";
     private static final String ADMIN_TOKEN = "access_token";
-
-    private final ArrayList<User> mUserList = new ArrayList();
 
     private AHBottomNavigation mAhBottomNavigation;
     private CustomViewPager mViewPager;
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mUser = mUserPreferences.getUserObject();
 
         Log.d(DEBUG_TAG, "Admin token: " + mUserPreferences.getAdminToken());
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserObject().getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginObject().getLoginEmail());
 
         if (mUser.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
@@ -116,13 +113,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (mUser.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
-
-
             try {
-                params.put(EMAIL_TAG, mUserPreferences.getUserObject().getUserEmail());
+                params.put(EMAIL_TAG, mUserPreferences.getLoginObject().getLoginEmail());
                 params.put(ADMIN_TOKEN, mUserPreferences.getAdminToken());
                 Log.d(DEBUG_TAG, "Parámetros: " + params.getString(EMAIL_TAG) + " " + params.getString(ADMIN_TOKEN));
-
                 GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this, params);
                 getUserInfoTask.setUserInfoListener(this);
                 getUserInfoTask.execute();
