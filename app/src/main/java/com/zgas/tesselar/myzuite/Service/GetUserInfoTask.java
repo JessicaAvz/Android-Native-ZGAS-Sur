@@ -9,6 +9,7 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +17,9 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 
 /**
  * Created by jarvizu on 19/09/2017.
@@ -35,6 +38,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private static final String JSON_OBJECT_ZONE = "Zone";
     private static final String JSON_OBJECT_EMAIL = "Email";
     private static final String JSON_OBJECT_ROUTE = "Route";
+    private static final String OPERATORS_ARRAY = "Operators";
 
     private Context context;
     private JSONObject params;
@@ -43,6 +47,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private ProgressDialog progressDialog;
     private boolean isError = false;
     private User user;
+    private User supervisedUser;
     private String adminToken;
 
     public GetUserInfoTask(Context context, JSONObject params) {
@@ -101,6 +106,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
         user = null;
+        List<User> usersList = new ArrayList<>();
 
         try {
             if (jsonObject == null) {
@@ -117,6 +123,36 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 user = new User();
                 String userStatus = jsonObject.get(JSON_OBJECT_STATUS).toString();
                 String userType = jsonObject.get(JSON_OBJECT_POSITION).toString();
+                JSONArray usersArray = jsonObject.getJSONArray(OPERATORS_ARRAY);
+
+                for (int i = 0; i < usersArray.length(); i++) {
+                    JSONObject userObject = usersArray.getJSONObject(i);
+                    supervisedUser = new User();
+                    //supervisedUser.setUserId(userObject.getString(JSON_OBJECT_ID));
+                    supervisedUser.setUserName(userObject.getString(JSON_OBJECT_NAME));
+                    //supervisedUser.setUserEmail(userObject.getString(JSON_OBJECT_EMAIL));
+                    //supervisedUser.setUserZone(userObject.getString(JSON_OBJECT_ZONE));
+                    //supervisedUser.setUserRoute(userObject.getString(JSON_OBJECT_ROUTE));
+
+                    if (userType.equals(User.userType.OPERATOR.toString())) {
+                        supervisedUser.setUserType(User.userType.OPERATOR);
+                    } else if (userType.equals(User.userType.LEAKAGE.toString())) {
+                        supervisedUser.setUserType(User.userType.LEAKAGE);
+                    } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
+                        supervisedUser.setUserType(User.userType.SUPERVISOR);
+                    } else if (userType.equals(User.userType.SERVICE.toString())) {
+                        supervisedUser.setUserType(User.userType.SERVICE);
+                    }
+
+                    /*if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
+                        user.setUserstatus(User.userStatus.ACTIVE);
+                    } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
+                        user.setUserstatus(User.userStatus.NOTACTIVE);
+                    }*/
+                    Log.d(DEBUG_TAG, "Supervisados - Nombre: " + supervisedUser.getUserName() + " Tipo: " + supervisedUser.getUserType());
+                    usersList.add(supervisedUser);
+                }
+
                 user.setUserName(jsonObject.get(JSON_OBJECT_NAME).toString());
                 user.setUserId(jsonObject.get(JSON_OBJECT_ID).toString());
                 user.setUserRoute(jsonObject.get(JSON_OBJECT_ROUTE).toString());
@@ -150,6 +186,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
             if (isError == false) {
                 userInfoListener.userInfoSuccessResponse(user);
+                userInfoListener.userSupervisedSuccessResponse(usersList);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -171,5 +208,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         void userInfoErrorResponse(String error);
 
         void userInfoSuccessResponse(User user);
+
+        void userSupervisedSuccessResponse(List<User> userList);
     }
 }

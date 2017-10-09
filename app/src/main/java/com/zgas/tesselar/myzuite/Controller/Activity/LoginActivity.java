@@ -21,6 +21,8 @@ import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener, GetUserInfoTask.UserInfoListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
@@ -81,8 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             try {
                 params.put(EMAIL_TAG, email);
                 params.put(PASS_TAG, password);
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG));
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(PASS_TAG));
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG) + " " + params.getString(PASS_TAG));
 
                 LoginTask loginTask = new LoginTask(this, params);
                 loginTask.setLoginTaskListener(this);
@@ -149,6 +150,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         this.finish();
+    }
+
+    @Override
+    public void userSupervisedSuccessResponse(List<User> userList) {
+
     }
 }
 

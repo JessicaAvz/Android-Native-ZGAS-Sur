@@ -27,7 +27,7 @@ import java.util.List;
 public class GetUsersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetUsersTask";
-    private static final String USERS_ARRAY = "users";
+    private static final String USERS_ARRAY = "Operators";
     private static final String USER_ID = "userId";
     private static final String USER_NAME = "userName";
     private static final String USER_EMAIL = "userEmail";

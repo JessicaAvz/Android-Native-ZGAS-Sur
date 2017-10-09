@@ -52,16 +52,17 @@ public class ConnectionController {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
-            Log.d(DEBUG_TAG, "Método de la llamada: " + method);
-            Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
-            String encodedAuth = UrlHelper.AUTH_KEY + UrlHelper.AUTH_BODY;
-            httpURLConnection.setRequestProperty("Authorization", encodedAuth);
+            String encodedAuth = UrlHelper.AUTH_KEY + adminToken;
             httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
             if (httpURLConnection.getRequestMethod().equals("POST")) {
+                Log.d(DEBUG_TAG, "If Método POST");
                 httpURLConnection.setDoOutput(true);
             } else if (httpURLConnection.getRequestMethod().equals("GET")) {
+                Log.d(DEBUG_TAG, "If Método GET");
                 httpURLConnection.setDoOutput(false);
+                Log.d(DEBUG_TAG, "Token admin GET : " + encodedAuth);
+                httpURLConnection.setRequestProperty("Authorization", encodedAuth);
             }
 
             httpURLConnection.setConnectTimeout(TIMEOUT);

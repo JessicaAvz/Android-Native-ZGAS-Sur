@@ -17,6 +17,7 @@ import com.zgas.tesselar.myzuite.Controller.Activity.UserSupervisor.DetailActivi
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,9 +28,9 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
 
     private static final String DEBUG_TAG = "SupervisorAdapter";
     private Context context;
-    private List<User> mSupervisedList;
+    private ArrayList<User> mSupervisedList;
 
-    public SupervisorAdapter(Context context, List<User> mSupervisedList) {
+    public SupervisorAdapter(Context context, ArrayList<User> mSupervisedList) {
         this.context = context;
         this.mSupervisedList = mSupervisedList;
     }
@@ -41,7 +42,6 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         return new SupervisorAdapter.SupervisedViewHolder(v);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(SupervisedViewHolder holder, int position) {
         User mUser = mSupervisedList.get(position);

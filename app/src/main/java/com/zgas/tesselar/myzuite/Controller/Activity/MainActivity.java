@@ -32,14 +32,16 @@ import com.zgas.tesselar.myzuite.Controller.Fragment.UserService.MainFragmentSer
 import com.zgas.tesselar.myzuite.CustomViewPager;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Service.GetUsersTask;
+import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUsersTask.GetUsersTaskListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener {
 
     private static final String DEBUG_TAG = "MainActivity";
     public static final String EXTRA_CASE_ID = "CaseId";
@@ -63,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String EXTRA_USER_STATUS = "UserStatus";
     public static final String EXTRA_USER_ROUTE = "UserRoute";
     public static final String EXTRA_USER_ZONE = "UserZone";
+
+    private static final String EMAIL_TAG = "email";
+    private static final String PASS_TAG = "password";
+    private static final String ADMIN_TOKEN = "access_token";
 
     private final ArrayList<User> mUserList = new ArrayList();
 
@@ -89,10 +95,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         initUiOperator();
+        JSONObject params = new JSONObject();
         mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
 
@@ -111,10 +117,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
 
+
             try {
-                GetUsersTask getUsersTask = new GetUsersTask(this, null);
-                getUsersTask.setUsersTaskListener(this);
-                getUsersTask.execute();
+                params.put(EMAIL_TAG, mUserPreferences.getUserObject().getUserEmail());
+                params.put(ADMIN_TOKEN, mUserPreferences.getAdminToken());
+                Log.d(DEBUG_TAG, "Parámetros: " + params.getString(EMAIL_TAG) + " " + params.getString(ADMIN_TOKEN));
+
+                GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this, params);
+                getUserInfoTask.setUserInfoListener(this);
+                getUserInfoTask.execute();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -463,18 +474,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void getUsersErrorResponse(String error) {
-        Log.d(DEBUG_TAG, error);
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    public void userInfoErrorResponse(String error) {
+        Log.d(DEBUG_TAG, "Error response: " + error);
+        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void getUsersSuccessResponse(List<User> userList) {
-        mSupervisorAdapter = new SupervisorAdapter(this, userList);
+    public void userInfoSuccessResponse(User user) {
+        Log.d(DEBUG_TAG, "User preference id: " + mUserPreferences.getUserObject().getUserId());
+        Log.d(DEBUG_TAG, "User preference name: " + mUserPreferences.getUserObject().getUserName());
+        Log.d(DEBUG_TAG, "User preference type: " + mUserPreferences.getUserObject().getUserType());
+        Log.d(DEBUG_TAG, "User preference email: " + mUserPreferences.getUserObject().getUserEmail());
+        Log.d(DEBUG_TAG, "User preference zone: " + mUserPreferences.getUserObject().getUserZone());
+        Log.d(DEBUG_TAG, "User preference route: " + mUserPreferences.getUserObject().getUserRoute());
+        Log.d(DEBUG_TAG, "User preference status: " + mUserPreferences.getUserObject().getUserstatus());
+    }
+
+    @Override
+    public void userSupervisedSuccessResponse(List<User> userList) {
+        mSupervisorAdapter = new SupervisorAdapter(this, (ArrayList<User>) userList);
+        mRecyclerViewSupervised.setLayoutManager(linearLayoutManager);
+        mRecyclerViewSupervised.setAdapter(mSupervisorAdapter);
         mRecyclerViewSupervised.setHasFixedSize(true);
         mRecyclerViewSupervised.setItemViewCacheSize(20);
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
-        mRecyclerViewSupervised.setLayoutManager(linearLayoutManager);
-        mRecyclerViewSupervised.setAdapter(mSupervisorAdapter);
+        Log.d(DEBUG_TAG, "hola");
     }
+
+
 }
