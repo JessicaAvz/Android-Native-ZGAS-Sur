@@ -57,14 +57,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String EXTRA_CASE_ADDRESS = "CaseAddress";
     public static final String EXTRA_CASE_TYPE = "CaseType";
 
-    public static final String EXTRA_USER_ID = "UserId";
-    public static final String EXTRA_USER_NAME = "UserName";
-    public static final String EXTRA_USER_LASTNAME = "UserLastname";
-    public static final String EXTRA_USER_EMAIL = "UserEmail";
-    public static final String EXTRA_USER_TYPE = "UserType";
-    public static final String EXTRA_USER_STATUS = "UserStatus";
-    public static final String EXTRA_USER_ROUTE = "UserRoute";
-    public static final String EXTRA_USER_ZONE = "UserZone";
+    public static final String EXTRA_USER_ID = "userId";
+    public static final String EXTRA_USER_NAME = "userName";
+    public static final String EXTRA_USER_EMAIL = "userEmail";
+    public static final String EXTRA_USER_TYPE = "userType";
+    public static final String EXTRA_USER_STATUS = "userStatus";
+    public static final String EXTRA_USER_ROUTE = "userRoute";
+    public static final String EXTRA_USER_ZONE = "userZone";
 
     private static final String EMAIL_TAG = "email";
     private static final String ADMIN_TOKEN = "access_token";

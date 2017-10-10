@@ -14,12 +14,11 @@ import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
 public class DetailActivitySupervisor extends AppCompatActivity {
 
-    private static final String DEBUG_TAG = "Det.Act.Supervisor";
+    private static final String DEBUG_TAG = "DetailActSuperv";
 
     private Bundle mBundle;
-    private int mIntUserId;
+    private String mStrUserId;
     private String mStrUserName;
-    private String mStrUserLastname;
     private String mStrUserEmail;
     private String mStrUserRoute;
     private String mStrUserZone;
@@ -44,8 +43,8 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getApplicationContext());
-        //mUser = mUserPreferences.getUserData();
-        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
+        mUser = mUserPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginObject().getLoginEmail());
         initUi();
     }
 
@@ -73,21 +72,20 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mBundle = getIntent().getExtras();
-        mIntUserId = mBundle.getInt(MainActivity.EXTRA_USER_ID);
+        mStrUserId = mBundle.getString(MainActivity.EXTRA_USER_ID);
         mStrUserName = mBundle.getString(MainActivity.EXTRA_USER_NAME);
-        mStrUserLastname = mBundle.getString(MainActivity.EXTRA_USER_LASTNAME);
         mStrUserEmail = mBundle.getString(MainActivity.EXTRA_USER_EMAIL);
         mStrUserRoute = mBundle.getString(MainActivity.EXTRA_USER_ROUTE);
         mStrUserZone = mBundle.getString(MainActivity.EXTRA_USER_ZONE);
         mStrUserStatus = mBundle.getString(MainActivity.EXTRA_USER_STATUS);
         mStrUserType = mBundle.getString(MainActivity.EXTRA_USER_TYPE);
 
-        getSupportActionBar().setTitle("Detalles de " + mStrUserName + " " + mStrUserLastname);
+        getSupportActionBar().setTitle("Detalles de " + mStrUserName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Log.d(DEBUG_TAG, "Id del usuario: " + String.valueOf(mIntUserId));
-        Log.d(DEBUG_TAG, "Nombre del usuario: " + mStrUserName + " " + mStrUserLastname);
+        Log.d(DEBUG_TAG, "Id del usuario: " + mStrUserId);
+        Log.d(DEBUG_TAG, "Nombre del usuario: " + mStrUserName);
         Log.d(DEBUG_TAG, "Correo del usuario: " + mStrUserEmail);
         Log.d(DEBUG_TAG, "Ruta del usuario: " + mStrUserRoute);
         Log.d(DEBUG_TAG, "Zona del usuario: " + mStrUserZone);
@@ -95,25 +93,53 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         Log.d(DEBUG_TAG, "Tipo del usuario: " + mStrUserType);
 
         mUserId = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_id);
-        mUserId.setText(String.valueOf(mIntUserId));
+        if (mStrUserId != null) {
+            mUserId.setText(String.valueOf(mStrUserId));
+        } else {
+            mUserId.setText(getResources().getString(R.string.no_data));
+        }
         mUserName = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_name);
-        mUserName.setText(mStrUserName);
+        if (mStrUserName != null) {
+            mUserName.setText(mStrUserName);
+        } else {
+            mUserName.setText(getResources().getString(R.string.no_data));
+        }
         mUserEmail = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_email);
-        mUserEmail.setText(mStrUserEmail);
+        if (mStrUserEmail != null) {
+            mUserEmail.setText(mStrUserEmail);
+        } else {
+            mUserEmail.setText(getResources().getString(R.string.no_data));
+        }
         mUserRoute = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_route);
-        mUserRoute.setText(mStrUserRoute);
+        if (mStrUserRoute != null) {
+            mUserRoute.setText(mStrUserRoute);
+        } else {
+            mUserRoute.setText(getResources().getString(R.string.no_data));
+        }
         mUserZone = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_zone);
-        mUserZone.setText(mStrUserZone);
+        if (mStrUserZone != null) {
+            mUserZone.setText(mStrUserZone);
+        } else {
+            mUserZone.setText(getResources().getString(R.string.no_data));
+        }
         mUserStatus = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_status);
-        mUserStatus.setText(String.valueOf(mStrUserStatus));
-        if (mStrUserStatus.equals(User.userStatus.ACTIVE.toString())) {
-            mUserStatus.setTextColor(getResources().getColor(R.color.light_green));
-        } else if (mStrUserStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-            mUserStatus.setTextColor(getResources().getColor(R.color.red));
+        if (mStrUserStatus != null) {
+            if (mStrUserStatus.equals(User.userStatus.ACTIVE.toString())) {
+                mUserStatus.setTextColor(getResources().getColor(R.color.light_green));
+                mUserStatus.setText(String.valueOf(mStrUserStatus));
+            } else if (mStrUserStatus.equals(User.userStatus.NOTACTIVE.toString())) {
+                mUserStatus.setTextColor(getResources().getColor(R.color.red));
+                mUserStatus.setText(String.valueOf(mStrUserStatus));
+            }
+        } else {
+            mUserStatus.setText(getResources().getString(R.string.no_data));
         }
 
         mUserType = (TextView) findViewById(R.id.activity_detail_supervisor_tv_user_type);
-        mUserType.setText(String.valueOf(mStrUserType));
-
+        if (mStrUserType != null) {
+            mUserType.setText(String.valueOf(mStrUserType));
+        } else {
+            mUserType.setText(getResources().getString(R.string.no_data));
+        }
     }
 }

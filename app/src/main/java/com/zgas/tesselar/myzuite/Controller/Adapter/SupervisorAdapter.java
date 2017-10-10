@@ -2,9 +2,7 @@ package com.zgas.tesselar.myzuite.Controller.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jarvizu on 04/09/2017.
@@ -49,15 +46,23 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         String userName = mUser.getUserName();
         User.userStatus userStatus = mUser.getUserstatus();
         TextView name = holder.supervisedName;
-
         TextView status = holder.supervisedStatus;
+
+        if (userName == null) {
+            name.setText(context.getString(R.string.no_data));
+        } else {
+            name.setText(userName);
+        }
+
         if (userStatus == User.userStatus.NOTACTIVE) {
             status.setTextColor(context.getResources().getColor(R.color.red));
+            status.setText(String.valueOf(userStatus));
         } else if (userStatus == User.userStatus.ACTIVE) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
+            status.setText(String.valueOf(userStatus));
+        } else if (userStatus == null) {
+            status.setText(context.getString(R.string.no_data));
         }
-        status.setText(String.valueOf(userStatus));
-
         holder.itemView.setTag(mSupervisedList.get(position));
     }
 

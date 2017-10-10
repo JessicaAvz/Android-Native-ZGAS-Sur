@@ -128,28 +128,28 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 for (int i = 0; i < usersArray.length(); i++) {
                     JSONObject userObject = usersArray.getJSONObject(i);
                     supervisedUser = new User();
+                    String supervisedType = userObject.get(JSON_OBJECT_POSITION).toString();
                     //supervisedUser.setUserId(userObject.getString(JSON_OBJECT_ID));
                     supervisedUser.setUserName(userObject.getString(JSON_OBJECT_NAME));
                     //supervisedUser.setUserEmail(userObject.getString(JSON_OBJECT_EMAIL));
                     //supervisedUser.setUserZone(userObject.getString(JSON_OBJECT_ZONE));
                     //supervisedUser.setUserRoute(userObject.getString(JSON_OBJECT_ROUTE));
 
-                    if (userType.equals(User.userType.OPERATOR.toString())) {
+                    if (supervisedType.equals(User.userType.OPERATOR.toString())) {
                         supervisedUser.setUserType(User.userType.OPERATOR);
-                    } else if (userType.equals(User.userType.LEAKAGE.toString())) {
+                    } else if (supervisedType.equals(User.userType.LEAKAGE.toString())) {
                         supervisedUser.setUserType(User.userType.LEAKAGE);
-                    } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
+                    } else if (supervisedType.equals(User.userType.SUPERVISOR.toString())) {
                         supervisedUser.setUserType(User.userType.SUPERVISOR);
-                    } else if (userType.equals(User.userType.SERVICE.toString())) {
+                    } else if (supervisedType.equals(User.userType.SERVICE.toString())) {
                         supervisedUser.setUserType(User.userType.SERVICE);
                     }
 
-                    /*if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
+                    if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
                         user.setUserstatus(User.userStatus.ACTIVE);
                     } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
                         user.setUserstatus(User.userStatus.NOTACTIVE);
-                    }*/
-                    Log.d(DEBUG_TAG, "Supervisados - Nombre: " + supervisedUser.getUserName() + " Tipo: " + supervisedUser.getUserType());
+                    }
                     usersList.add(supervisedUser);
                 }
 

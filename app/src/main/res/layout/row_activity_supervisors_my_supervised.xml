@@ -18,7 +18,7 @@
             android:id="@+id/row_activity_supervisor_tv_supervised_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="32dp"
             android:layout_marginTop="4dp"
             android:text="@string/prompt_supervised_name"
             android:textSize="16sp"
@@ -60,14 +60,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="32dp"
             android:layout_marginTop="4dp"
             android:text="@string/prompt_supervised_status"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/row_activity_supervisor_prompt_status" />
+            app:layout_constraintTop_toBottomOf="@+id/row_activity_supervisor_prompt_status"
+            app:layout_constraintVertical_bias="0.0" />
 
     </android.support.constraint.ConstraintLayout>
 
