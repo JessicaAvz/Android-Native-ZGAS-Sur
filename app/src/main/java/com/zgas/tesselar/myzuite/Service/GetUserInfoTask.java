@@ -123,45 +123,46 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 user = new User();
                 String userStatus = jsonObject.get(JSON_OBJECT_STATUS).toString();
                 String userType = jsonObject.get(JSON_OBJECT_POSITION).toString();
-                JSONArray usersArray = jsonObject.getJSONArray(OPERATORS_ARRAY);
-
-                for (int i = 0; i < usersArray.length(); i++) {
-                    JSONObject userObject = usersArray.getJSONObject(i);
-                    supervisedUser = new User();
-                    String supervisedType = userObject.get(JSON_OBJECT_POSITION).toString();
-                    //supervisedUser.setUserId(userObject.getString(JSON_OBJECT_ID));
-                    supervisedUser.setUserName(userObject.getString(JSON_OBJECT_NAME));
-                    //supervisedUser.setUserEmail(userObject.getString(JSON_OBJECT_EMAIL));
-                    //supervisedUser.setUserZone(userObject.getString(JSON_OBJECT_ZONE));
-                    //supervisedUser.setUserRoute(userObject.getString(JSON_OBJECT_ROUTE));
-
-                    if (supervisedType.equals(User.userType.OPERATOR.toString())) {
-                        supervisedUser.setUserType(User.userType.OPERATOR);
-                    } else if (supervisedType.equals(User.userType.LEAKAGE.toString())) {
-                        supervisedUser.setUserType(User.userType.LEAKAGE);
-                    } else if (supervisedType.equals(User.userType.SUPERVISOR.toString())) {
-                        supervisedUser.setUserType(User.userType.SUPERVISOR);
-                    } else if (supervisedType.equals(User.userType.SERVICE.toString())) {
-                        supervisedUser.setUserType(User.userType.SERVICE);
-                    }
-
-                    if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
-                        user.setUserstatus(User.userStatus.ACTIVE);
-                    } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                        user.setUserstatus(User.userStatus.NOTACTIVE);
-                    }
-                    usersList.add(supervisedUser);
-                }
-
                 user.setUserName(jsonObject.get(JSON_OBJECT_NAME).toString());
                 user.setUserId(jsonObject.get(JSON_OBJECT_ID).toString());
                 user.setUserRoute(jsonObject.get(JSON_OBJECT_ROUTE).toString());
                 user.setUserZone(jsonObject.get(JSON_OBJECT_ZONE).toString());
                 user.setUserEmail(jsonObject.get(JSON_OBJECT_EMAIL).toString());
+
                 if (userType.equals(User.userType.OPERATOR.toString())) {
                     user.setUserType(User.userType.OPERATOR);
                 } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
                     user.setUserType(User.userType.SUPERVISOR);
+                    JSONArray usersArray = jsonObject.getJSONArray(OPERATORS_ARRAY);
+
+                    for (int i = 0; i < usersArray.length(); i++) {
+                        JSONObject userObject = usersArray.getJSONObject(i);
+                        supervisedUser = new User();
+                        String supervisedType = userObject.get(JSON_OBJECT_POSITION).toString();
+                        //supervisedUser.setUserId(userObject.getString(JSON_OBJECT_ID));
+                        supervisedUser.setUserName(userObject.getString(JSON_OBJECT_NAME));
+                        //supervisedUser.setUserEmail(userObject.getString(JSON_OBJECT_EMAIL));
+                        //supervisedUser.setUserZone(userObject.getString(JSON_OBJECT_ZONE));
+                        //supervisedUser.setUserRoute(userObject.getString(JSON_OBJECT_ROUTE));
+
+                        if (supervisedType.equals(User.userType.OPERATOR.toString())) {
+                            supervisedUser.setUserType(User.userType.OPERATOR);
+                        } else if (supervisedType.equals(User.userType.LEAKAGE.toString())) {
+                            supervisedUser.setUserType(User.userType.LEAKAGE);
+                        } else if (supervisedType.equals(User.userType.SUPERVISOR.toString())) {
+                            supervisedUser.setUserType(User.userType.SUPERVISOR);
+                        } else if (supervisedType.equals(User.userType.SERVICE.toString())) {
+                            supervisedUser.setUserType(User.userType.SERVICE);
+                        }
+
+                        if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
+                            user.setUserstatus(User.userStatus.ACTIVE);
+                        } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
+                            user.setUserstatus(User.userStatus.NOTACTIVE);
+                        }
+                        usersList.add(supervisedUser);
+                    }
+
                 } else if (userType.equals(User.userType.SERVICE.toString())) {
                     user.setUserType(User.userType.SERVICE);
                 } else if (userType.equals(User.userType.LEAKAGE.toString())) {
@@ -173,6 +174,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
                     user.setUserstatus(User.userStatus.NOTACTIVE);
                 }
+
                 isError = false;
 
                 Log.d(DEBUG_TAG, "Id del usuario: " + user.getUserId());
@@ -188,7 +190,10 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 userInfoListener.userInfoSuccessResponse(user);
                 userInfoListener.userSupervisedSuccessResponse(usersList);
             }
-        } catch (JSONException e) {
+        } catch (
+                JSONException e)
+
+        {
             e.printStackTrace();
         }
     }
