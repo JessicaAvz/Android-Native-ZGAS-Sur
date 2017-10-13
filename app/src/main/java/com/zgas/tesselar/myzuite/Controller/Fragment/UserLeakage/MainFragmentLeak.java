@@ -18,6 +18,7 @@ import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetLeakagesTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,7 +75,7 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
 
     @Override
     public void getLeakagesSuccessResponse(List<Case> caseList) {
-        mOrderAdapter = new OrdersAdapter(getActivity(), caseList);
+        mOrderAdapter = new OrdersAdapter(getActivity(), (ArrayList<Case>) caseList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);

@@ -146,6 +146,7 @@
     <string name="wait_users_message">Recuperando los usuarios...</string>
     <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
     <string name="user_data_error">Error al obtener los datos del usuario.</string>
+    <string name="cases_data_error">Error al obtener los casos.</string>
 
 </resources>
 

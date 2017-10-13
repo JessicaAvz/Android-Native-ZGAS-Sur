@@ -8,6 +8,7 @@ public class UrlHelper {
 
     public static final String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token?grant_type=%1$s&client_id=%2$s&client_secret=%3$s&username=%4$s&password=%5$s";
     public static final String GET_USER_DATA_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/users?username=%1$s";
+    public static final String GET_CASES_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/orders?operatorId=%1$s";
 
     public static final String CALL = "tel:6241370525";
 

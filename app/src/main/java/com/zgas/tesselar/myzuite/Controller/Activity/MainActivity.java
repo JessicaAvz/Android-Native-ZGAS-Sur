@@ -491,8 +491,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSupervised.setHasFixedSize(true);
         mRecyclerViewSupervised.setItemViewCacheSize(20);
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
-        Log.d(DEBUG_TAG, "hola");
     }
-
-
 }

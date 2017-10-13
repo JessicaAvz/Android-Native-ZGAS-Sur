@@ -113,7 +113,6 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 userInfoListener.userInfoErrorResponse(jsonObject.getString(JSON_OBJECT_ERROR));
                 isError = true;
             } else if (jsonObject.has(JSON_OBJECT_ERROR)) {
-                Log.d(DEBUG_TAG, "Error: " + jsonObject.get(JSON_OBJECT_ERROR).toString());
                 if (jsonObject.get(JSON_OBJECT_ERROR).toString().equals("400")) {
                     userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.user_data_error));
                     isError = true;

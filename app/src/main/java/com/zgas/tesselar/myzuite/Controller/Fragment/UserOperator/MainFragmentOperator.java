@@ -18,6 +18,9 @@ import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +29,8 @@ import java.util.List;
 public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
 
     private static final String DEBUG_TAG = "MainFragmentOperator";
+    private static final String USER_ID = "Id";
+    private static final String ADMIN_TOKEN = "access_token";
 
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
@@ -45,6 +50,7 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+        JSONObject params = new JSONObject();
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
@@ -52,13 +58,16 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
 
         initUi(mRootView);
-        /*try {
-            GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), null);
+        try {
+            params.put(USER_ID, mUserPreferences.getUserObject().getUserId());
+            params.put(ADMIN_TOKEN, mUserPreferences.getAdminToken());
+
+            GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), params);
             getOrdersTask.setOrderTaskListener(this);
             getOrdersTask.execute();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
         return mRootView;
     }
@@ -77,7 +86,7 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
 
     @Override
     public void getCasesSuccessResponse(List<Case> caseList) {
-        mOrderAdapter = new OrdersAdapter(getContext(), caseList);
+        mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Case>) caseList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);

@@ -17,6 +17,7 @@ import com.zgas.tesselar.myzuite.Controller.Activity.UserService.DetailActivityS
 import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,10 +29,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     private static final String DEBUG_TAG = "OrdersAdapter";
 
     private Context context;
-    private List<Case> mCaseList;
+    private ArrayList<Case> mCaseList;
     private Intent intent;
 
-    public OrdersAdapter(Context context, List<Case> mCaseList) {
+    public OrdersAdapter(Context context, ArrayList<Case> mCaseList) {
         this.context = context;
         this.mCaseList = mCaseList;
     }
