@@ -10,11 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
-import com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupervisor;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupervisor;
 
 import java.util.ArrayList;
 
@@ -101,13 +100,13 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     User.userType type = mUser.getUserType();
                     User.userStatus status = mUser.getUserstatus();
 
-                    Log.d(DEBUG_TAG, "Id del usuario: " + String.valueOf(id));
+                    Log.d(DEBUG_TAG, "Id del usuario: " + id);
                     Log.d(DEBUG_TAG, "Nombre del usuario: " + name);
                     Log.d(DEBUG_TAG, "Correo: " + email);
                     Log.d(DEBUG_TAG, "Zona: " + zone);
                     Log.d(DEBUG_TAG, "Ruta: " + route);
-                    Log.d(DEBUG_TAG, "Tipo de usuario: " + String.valueOf(type));
-                    Log.d(DEBUG_TAG, "Estatus del usuario: " + String.valueOf(status));
+                    Log.d(DEBUG_TAG, "Tipo de usuario: " + type);
+                    Log.d(DEBUG_TAG, "Estatus del usuario: " + status);
 
                     Bundle bundle = new Bundle();
                     bundle.putString(ExtrasHelper.EXTRA_USER_ID, id);
@@ -119,6 +118,13 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     bundle.putString(ExtrasHelper.EXTRA_USER_STATUS, String.valueOf(status));
 
                     Log.d(DEBUG_TAG, "SupervisorAdapter itemView listener for adapter position: " + requestCode);
+                    Log.d(DEBUG_TAG, "Bundle - user id " + bundle.getString(ExtrasHelper.EXTRA_USER_ID));
+                    Log.d(DEBUG_TAG, "Bundle - user name " + bundle.getString(ExtrasHelper.EXTRA_USER_NAME));
+                    Log.d(DEBUG_TAG, "Bundle - user email " + bundle.getString(ExtrasHelper.EXTRA_USER_EMAIL));
+                    Log.d(DEBUG_TAG, "Bundle - user zone " + bundle.getString(ExtrasHelper.EXTRA_USER_ZONE));
+                    Log.d(DEBUG_TAG, "Bundle - user route " + bundle.getString(ExtrasHelper.EXTRA_USER_ROUTE));
+                    Log.d(DEBUG_TAG, "Bundle - user type " + bundle.getString(ExtrasHelper.EXTRA_USER_TYPE));
+                    Log.d(DEBUG_TAG, "Bundle - user status " + bundle.getString(ExtrasHelper.EXTRA_USER_STATUS));
 
                     Intent intent = new Intent(context, DetailActivitySupervisor.class);
                     intent.putExtras(bundle);
@@ -128,4 +134,5 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         }
     }
 }
+
 

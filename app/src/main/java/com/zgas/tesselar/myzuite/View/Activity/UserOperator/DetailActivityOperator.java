@@ -100,7 +100,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCaseTimeIn = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT);
         mStrCaseTimeSeen = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SEEN);
         mStrCaseTimeArrived = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ARRIVAL);
-        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_PROGRAMMED);
+        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED);
 
         Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mIntCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));

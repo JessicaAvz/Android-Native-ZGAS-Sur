@@ -68,10 +68,12 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_detail_leakage);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(getApplicationContext());
-        //mUser = mUserPreferences.getUserData();
+        mUserPreferences = new UserPreferences(this);
+        mUser = mUserPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         context = this;
-        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
         initUi();
     }
 
@@ -90,7 +92,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mStrCaseTimeIn = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT);
         mStrCaseTimeSeen = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SEEN);
         mStrCaseTimeArrived = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ARRIVAL);
-        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_PROGRAMMED);
+        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED);
 
         Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
         Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -107,8 +109,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle de la fuga " + mIntCaseId);
 
-        mUserId = (TextView) findViewById(R.id.activity_detai_leakage_tv_client_id);
-        mUserId.setText(String.valueOf(mIntCaseUserId));
         mUserName = (TextView) findViewById(R.id.activity_detail_leakage_tv_client_name);
         mUserName.setText(mStrCaseUserName + " " + mStrCaseUserLastname);
         mCaseAddress = (TextView) findViewById(R.id.activity_detail_leakage_tv_case_address);

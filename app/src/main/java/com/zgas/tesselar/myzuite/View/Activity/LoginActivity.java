@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Model.Login;
-import com.zgas.tesselar.myzuite.Model.User;
-import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Controller.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Controller.LoginTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Model.Login;
+import com.zgas.tesselar.myzuite.Model.User;
+import com.zgas.tesselar.myzuite.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

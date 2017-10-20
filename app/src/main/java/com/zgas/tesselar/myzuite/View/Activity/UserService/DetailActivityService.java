@@ -68,9 +68,11 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_detail_service);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(getApplicationContext());
-        //mUser = mUserPreferences.getUserData();
-        //Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getUserData().getUserEmail());
+        mUserPreferences = new UserPreferences(this);
+        mUser = mUserPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         initUi();
     }
 
@@ -89,7 +91,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         mCldCaseTimeIn = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT);
         mCldCaseTimeSeen = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SEEN);
         mCldCaseTimeArrived = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_PROGRAMMED);
+        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED);
 
         Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -107,8 +109,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle del servicio " + mIntCaseId);
 
-        mUserId = (TextView) findViewById(R.id.activity_detai_service_tv_client_id);
-        mUserId.setText(String.valueOf(mIntCaseUserId));
         mUserName = (TextView) findViewById(R.id.activity_detail_service_tv_client_name);
         mUserName.setText(mStrCaseUserName + " " + mStrCaseUserLastname);
         mCaseAddress = (TextView) findViewById(R.id.activity_detail_service_tv_case_address);

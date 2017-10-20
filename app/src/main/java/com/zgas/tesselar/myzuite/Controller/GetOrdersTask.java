@@ -122,8 +122,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Id del caso: " + aCase.getCaseId());
                     aCase.setCaseUserId(userPreferences.getUserObject().getUserId());
                     Log.d(DEBUG_TAG, "Id del operador: " + aCase.getCaseUserId());
-                    //aCase.setCaseTimeArrival(caseObject.getString(CASE_TIME_ARRIVAL));
-                    aCase.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_PROGRAMMED));
+                    aCase.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED));
                     Log.d(DEBUG_TAG, "Hora programada: " + aCase.getCaseTimeScheduled());
                     //aCase.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
                     aCase.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT));

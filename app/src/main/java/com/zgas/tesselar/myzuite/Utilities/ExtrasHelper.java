@@ -21,7 +21,7 @@ public class ExtrasHelper {
     public static final String EXTRA_JSON_OBJECT_TIME_SEEN = "CaseTimeSeen";
     public static final String EXTRA_JSON_OBJECT_TIME_ARRIVAL = "CaseTimeArrival";
     /*Hora en que se programa el pedido. Si el cliente no especifica una hora, es al mismo tiempo que DateTimeAssignment*/
-    public static final String EXTRA_JSON_OBJECT_TIME_PROGRAMMED = "ScheduledDate";
+    public static final String EXTRA_JSON_OBJECT_TIME_SCHEDULED = "ScheduledDate";
     public static final String EXTRA_JSON_OBJECT_STATUS = "Status";
     public static final String EXTRA_JSON_OBJECT_PRIORITY = "Priority";
     public static final String EXTRA_JSON_OBJECT_USER_NAME = "AccountName";
@@ -37,6 +37,8 @@ public class ExtrasHelper {
     public static final String EXTRA_USER_STATUS = "Status";
     public static final String EXTRA_USER_ROUTE = "Route";
     public static final String EXTRA_USER_ZONE = "Zone";
+    /*Rutas y zonas*/
+    public static final String EXTRA_USER_GEOGRAPHIES = "Geographies";
 
     public static final String EMAIL_TAG = "email";
     public static final String ADMIN_TOKEN = "access_token";

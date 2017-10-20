@@ -7,11 +7,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Activity.MainActivity;
+import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 
 public class DetailActivitySupervisor extends AppCompatActivity {
 
@@ -43,9 +42,11 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         setContentView(R.layout.activity_detail_supervisor);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(getApplicationContext());
+        mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginObject().getLoginEmail());
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         initUi();
     }
 
@@ -80,6 +81,14 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         mStrUserZone = mBundle.getString(ExtrasHelper.EXTRA_USER_ZONE);
         mStrUserStatus = mBundle.getString(ExtrasHelper.EXTRA_USER_STATUS);
         mStrUserType = mBundle.getString(ExtrasHelper.EXTRA_USER_TYPE);
+
+        Log.d(DEBUG_TAG, "Bundle - user id " + mStrUserId);
+        Log.d(DEBUG_TAG, "Bundle - user name " + mStrUserName);
+        Log.d(DEBUG_TAG, "Bundle - user email " + mStrUserEmail);
+        Log.d(DEBUG_TAG, "Bundle - user zone " + mStrUserRoute);
+        Log.d(DEBUG_TAG, "Bundle - user route " + mStrUserZone);
+        Log.d(DEBUG_TAG, "Bundle - user type " + mStrUserStatus);
+        Log.d(DEBUG_TAG, "Bundle - user status " + mStrUserType);
 
         getSupportActionBar().setTitle("Detalles de " + mStrUserName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
