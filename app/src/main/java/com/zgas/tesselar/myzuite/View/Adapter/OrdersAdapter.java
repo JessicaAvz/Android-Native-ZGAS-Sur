@@ -49,9 +49,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         String caseId = mCase.getCaseId();
         String caseAddress = mCase.getCaseAddress();
         Case.caseStatus caseStatus = mCase.getCaseStatus();
-        Log.d(DEBUG_TAG, "OnBindViewHolder " + caseStatus);
         Case.caseTypes caseType = mCase.getCaseType();
         String orderHourIn = mCase.getCaseTimeAssignment();
+        String serviceType = mCase.getCaseServiceType();
 
         TextView id = holder.mOrderId;
         id.setText(caseId);
@@ -65,7 +65,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             id.setText("Reporte número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
             type.setText("Tipo: " + caseType);
-            if (orderHourIn != null && !orderHourIn.equals("")) {
+            if (orderHourIn == null || orderHourIn.equals("")) {
                 hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
             } else {
                 hourIn.setText("Hora del reporte: " + orderHourIn);
@@ -74,8 +74,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
             id.setText("Pedido número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
-            type.setText("Tipo: " + caseType);
-            if (orderHourIn != null && !orderHourIn.equals("")) {
+            type.setText("Tipo: " + caseType + " - " + serviceType);
+            if (orderHourIn == null || orderHourIn.equals("")) {
                 hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
             } else {
                 hourIn.setText("Hora del pedido: " + orderHourIn);
@@ -85,7 +85,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             id.setText("Servicio número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
             type.setText("Tipo: " + caseType);
-            if (orderHourIn != null && !orderHourIn.equals("")) {
+            if (orderHourIn == null || orderHourIn.equals("")) {
                 hourIn.setText("Hora del servicio: " + context.getResources().getString(R.string.no_data));
             } else {
                 hourIn.setText("Hora del servicio: " + orderHourIn);
@@ -106,8 +106,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         } else if (caseStatus == Case.caseStatus.INPROGRESS) {
             Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.INPROGRESS));
             status.setTextColor(context.getResources().getColor(R.color.amber));
-        } else if (caseStatus == Case.caseStatus.NEW) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.NEW));
+        } else {
             status.setTextColor(context.getResources().getColor(R.color.sky_blue));
         }
         status.setText(caseStatus.toString());
@@ -155,7 +154,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     String timeArrival = mCase.getCaseTimeArrival();
                     String timeScheduled = mCase.getCaseTimeScheduled();
                     String priority = mCase.getCasePriority().toString();
-                    String userName = mCase.getCaseClientName();
+                    String userName = mCase.getCaseAccountName();
 
                     Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
                     Log.d(DEBUG_TAG, "Id del caso: " + id);
@@ -190,7 +189,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     //Log.d(DEBUG_TAG, "Bundle - Hora de llegada del caso: " + String.valueOf(timeArrival));
                     Log.d(DEBUG_TAG, "Bundle - Hora programada del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED));
                     Log.d(DEBUG_TAG, "Bundle - Prioridad del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY));
-                    Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_CLIENT_NAME));
+                    Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ACCOUNT_NAME));
 
                     intent = new Intent();
                     if (type.equals(Case.caseTypes.ORDER.toString())) {
@@ -213,3 +212,4 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         }
     }
 }
+

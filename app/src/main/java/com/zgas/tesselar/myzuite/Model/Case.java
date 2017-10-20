@@ -14,7 +14,8 @@ public class Case {
     private String caseServiceType;
     private caseStatus caseStatus;
     private casePriority casePriority;
-    private String caseClientName;
+    private String caseAccountName;
+    private String caseContactName;
     private String caseAddress;
     private caseTypes caseType;
 
@@ -88,7 +89,7 @@ public class Case {
     public Case() {
     }
 
-    public Case(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseClientName, String caseAddress, caseTypes caseType) {
+    public Case(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseAccountName, String caseContactName, String caseAddress, caseTypes caseType) {
         this.caseId = caseId;
         this.caseUserId = caseUserId;
         this.caseTimeAssignment = caseTimeAssignment;
@@ -98,7 +99,8 @@ public class Case {
         this.caseServiceType = caseServiceType;
         this.caseStatus = caseStatus;
         this.casePriority = casePriority;
-        this.caseClientName = caseClientName;
+        this.caseAccountName = caseAccountName;
+        this.caseContactName = caseContactName;
         this.caseAddress = caseAddress;
         this.caseType = caseType;
     }
@@ -159,12 +161,12 @@ public class Case {
         this.casePriority = casePriority;
     }
 
-    public String getCaseClientName() {
-        return caseClientName;
+    public String getCaseAccountName() {
+        return caseAccountName;
     }
 
-    public void setCaseClientName(String caseClientName) {
-        this.caseClientName = caseClientName;
+    public void setCaseAccountName(String caseAccountName) {
+        this.caseAccountName = caseAccountName;
     }
 
     public String getCaseAddress() {
@@ -198,5 +200,13 @@ public class Case {
 
     public void setCaseServiceType(String caseServiceType) {
         this.caseServiceType = caseServiceType;
+    }
+
+    public String getCaseContactName() {
+        return caseContactName;
+    }
+
+    public void setCaseContactName(String caseContactName) {
+        this.caseContactName = caseContactName;
     }
 }

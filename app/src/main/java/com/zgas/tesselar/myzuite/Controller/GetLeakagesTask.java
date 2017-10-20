@@ -108,7 +108,7 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 aCase.setCaseTimeScheduled(caseObject.getString(CASE_TIME_PROGRAMMED));
                 aCase.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
                 aCase.setCaseTimeAssignment(caseObject.getString(CASE_TIME_IN));
-                aCase.setCaseClientName(caseObject.getString(CASE_CIENT_NAME));
+                aCase.setCaseAccountName(caseObject.getString(CASE_CIENT_NAME));
                 aCase.setCaseAddress(caseObject.getString(CASE_ADDRESS));
 
                 String caseType = caseObject.get(CASE_TYPE).toString();
@@ -153,7 +153,7 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Tiempo de programación del caso: " + aCase.getCaseTimeScheduled());
                 Log.d(DEBUG_TAG, "Estatus del caso: " + aCase.getCaseStatus());
                 Log.d(DEBUG_TAG, "Prioridad del caso: " + aCase.getCasePriority());
-                Log.d(DEBUG_TAG, "Nombre del cliente del caso: " + aCase.getCaseClientName());
+                Log.d(DEBUG_TAG, "Nombre del cliente del caso: " + aCase.getCaseAccountName());
                 Log.d(DEBUG_TAG, "Dirección del caso: " + aCase.getCaseAddress());
                 Log.d(DEBUG_TAG, "Tipo del caso: " + aCase.getCaseType());
             }

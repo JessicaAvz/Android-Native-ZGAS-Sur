@@ -20,7 +20,13 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.zgas.tesselar.myzuite.Controller.GetUserInfoTask;
+import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.CustomViewPager;
+import com.zgas.tesselar.myzuite.Model.User;
+import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 import com.zgas.tesselar.myzuite.View.Adapter.PagerAdapter;
 import com.zgas.tesselar.myzuite.View.Adapter.SupervisorAdapter;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
@@ -30,12 +36,6 @@ import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.MainFragmentOperator
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.OrderFragmentOperator;
 import com.zgas.tesselar.myzuite.View.Fragment.UserService.HelpFragmentService;
 import com.zgas.tesselar.myzuite.View.Fragment.UserService.MainFragmentService;
-import com.zgas.tesselar.myzuite.CustomViewPager;
-import com.zgas.tesselar.myzuite.Model.User;
-import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.GetUserInfoTask;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
-import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 
 import org.json.JSONObject;
 
@@ -438,6 +438,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.logout_menu:
                 mUserPreferences.logoutUser();
+                this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

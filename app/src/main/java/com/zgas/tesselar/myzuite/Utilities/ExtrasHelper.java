@@ -25,10 +25,12 @@ public class ExtrasHelper {
     public static final String EXTRA_JSON_OBJECT_STATUS = "Status";
     public static final String EXTRA_JSON_OBJECT_PRIORITY = "Priority";
     public static final String EXTRA_JSON_OBJECT_USER_NAME = "AccountName";
+    /*Tipo de servicio: estacionario, cilindro...*/
     public static final String EXTRA_JSON_OBJECT_SERVICE_TYPE = "ServiceType";
     public static final String EXTRA_JSON_OBJECT_ADDRESS = "Address";
     public static final String EXTRA_JSON_OBJECT_TYPE = "RecordTypeName";
-    public static final String EXTRA_JSON_OBJECT_CLIENT_NAME = "AccountName";
+    public static final String EXTRA_JSON_OBJECT_ACCOUNT_NAME = "AccountName";
+    public static final String EXTRA_JSON_OBJECT_CONTACT_NAME = "ContactName";
 
     public static final String EXTRA_USER_ID = "Id";
     public static final String EXTRA_USER_NAME = "Name";

@@ -76,7 +76,7 @@ public class MainFragmentService extends Fragment {
             mCase.setCaseTimeArrival("07:30");
             mCase.setCaseTimeScheduled("06:30");
             mCase.setCasePriority(Case.casePriority.HIGH);
-            mCase.setCaseClientName("Oscar");
+            mCase.setCaseAccountName("Oscar");
             mCase.setCaseUserId(String.valueOf(1234));
             mCaseList.add(mCase);
         }

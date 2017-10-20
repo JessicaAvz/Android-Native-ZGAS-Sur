@@ -126,12 +126,12 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
                     user.setUserType(User.userType.SUPERVISOR);
                     JSONArray usersArray = jsonObject.getJSONArray(OPERATORS_ARRAY);
-
                     for (int i = 0; i < usersArray.length(); i++) {
                         JSONObject userObject = usersArray.getJSONObject(i);
                         supervisedUser = new User();
                         String supervisedType = userObject.get(ExtrasHelper.EXTRA_USER_TYPE).toString();
                         String supervisedStatus = userObject.get(ExtrasHelper.EXTRA_USER_STATUS).toString();
+                        Log.d(DEBUG_TAG, "SupervisedStatus " + supervisedStatus);
 
                         supervisedUser.setUserId(userObject.getString(ExtrasHelper.EXTRA_USER_ID));
                         Log.d(DEBUG_TAG, "Id del supervisado: " + supervisedUser.getUserId());
@@ -156,9 +156,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                         Log.d(DEBUG_TAG, "Tipo de supervisado: " + supervisedUser.getUserType());
 
                         if (supervisedStatus.equals(User.userStatus.ACTIVE.toString())) {
-                            user.setUserstatus(User.userStatus.ACTIVE);
+                            supervisedUser.setUserstatus(User.userStatus.ACTIVE);
                         } else if (supervisedStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                            user.setUserstatus(User.userStatus.NOTACTIVE);
+                            supervisedUser.setUserstatus(User.userStatus.NOTACTIVE);
                         }
                         Log.d(DEBUG_TAG, "Estatus del supervisado: " + supervisedUser.getUserstatus());
 

@@ -45,8 +45,6 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private String adminToken;
     private Case aCase;
     private List<Case> casesList;
-    private List<Case> detailsList;
-
 
     public GetOrdersTask(Context context, JSONObject params) {
         this.context = context;
@@ -98,9 +96,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         progressDialog.dismiss();
 
         casesList = new ArrayList<>();
-        detailsList = new ArrayList<>();
         JSONArray casesArray;
-        JSONArray detailsArray;
 
         try {
             if (jsonObject == null) {
@@ -127,10 +123,15 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     //aCase.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
                     aCase.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT));
                     Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT));
-                    aCase.setCaseClientName(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_CLIENT_NAME));
-                    Log.d(DEBUG_TAG, "Cliente: " + aCase.getCaseClientName());
+                    aCase.setCaseAccountName(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ACCOUNT_NAME));
+                    Log.d(DEBUG_TAG, "Cliente: " + aCase.getCaseAccountName());
                     aCase.setCaseAddress(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ADDRESS));
                     Log.d(DEBUG_TAG, "Dirección: " + aCase.getCaseAddress());
+                    aCase.setCaseContactName(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_CONTACT_NAME));
+                    Log.d(DEBUG_TAG, "Cuenta: " + aCase.getCaseAccountName());
+                    aCase.setCaseServiceType(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_SERVICE_TYPE));
+                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aCase.getCaseServiceType());
+
                     String caseType = caseObject.get(ExtrasHelper.EXTRA_JSON_OBJECT_TYPE).toString();
                     String caseStatus = caseObject.get(ExtrasHelper.EXTRA_JSON_OBJECT_STATUS).toString();
                     String casePriority = caseObject.get(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY).toString();
