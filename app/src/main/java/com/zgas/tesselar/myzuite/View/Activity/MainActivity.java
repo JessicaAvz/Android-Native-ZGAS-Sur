@@ -21,9 +21,11 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.zgas.tesselar.myzuite.Controller.GetRefreshTokenTask;
 import com.zgas.tesselar.myzuite.Controller.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.CustomViewPager;
+import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -45,9 +47,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener,
+        GetRefreshTokenTask.RefreshTokenListener {
 
     private static final String DEBUG_TAG = "MainActivity";
+    private static final String EMAIL_TAG = "email";
+    private static final String PASS_TAG = "password";
 
     private AHBottomNavigation mAhBottomNavigation;
     private CustomViewPager mViewPager;
@@ -78,6 +83,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
 
+        if (mUserPreferences.isLoggedIn()) {
+            try {
+                JSONObject params = new JSONObject();
+                params.put(EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
+                params.put(PASS_TAG, UrlHelper.ADMIN_PASS);
+                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG) + " " + params.getString(PASS_TAG));
+
+                GetRefreshTokenTask refreshTokenTask = new GetRefreshTokenTask(this, params);
+                refreshTokenTask.setRefreshTokenListener(this);
+                refreshTokenTask.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         Log.d(DEBUG_TAG, "Admin token: " + mUserPreferences.getAdminToken());
         Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginObject().getLoginEmail());
 
@@ -93,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
 
-            callAsyncTask();
+            getSupervisedCallAsyncTask();
 
             initUiSupervisor();
         } else if (mUser.getUserType() == User.userType.LEAKAGE) {
@@ -420,7 +440,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(callIntent);
     }
 
-    private void asyncTask() {
+    private void getSupervisedAsynTask() {
         try {
             JSONObject params = new JSONObject();
             params.put(ExtrasHelper.EMAIL_TAG, mUserPreferences.getLoginObject().getLoginEmail());
@@ -434,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void callAsyncTask() {
+    private void getSupervisedCallAsyncTask() {
         final Handler handler = new Handler();
         Timer timer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
@@ -443,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            asyncTask();
+                            getSupervisedAsynTask();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -499,5 +519,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSupervised.setHasFixedSize(true);
         mRecyclerViewSupervised.setItemViewCacheSize(20);
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
+    }
+
+
+    @Override
+    public void refreshErrorResponse(String error) {
+        Log.d(DEBUG_TAG, "Error response: " + error);
+        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void refreshSuccessResponse(Login login) {
+        mUserPreferences.setLoginData(login);
+        Log.d(DEBUG_TAG, "Login refresh token: " + mUserPreferences.getLoginObject().getLoginAccessToken());
+        Log.d(DEBUG_TAG, "Login refresh id: " + mUserPreferences.getLoginObject().getLoginId());
+        Log.d(DEBUG_TAG, "Login refresh instance url: " + mUserPreferences.getLoginObject().getLoginInstanceUrl());
+        Log.d(DEBUG_TAG, "Login refresh issued at: " + mUserPreferences.getLoginObject().getLoginIssuedAt());
+        Log.d(DEBUG_TAG, "Login refresh signature: " + mUserPreferences.getLoginObject().getLoginSignature());
+        Log.d(DEBUG_TAG, "Login refresh token type: " + mUserPreferences.getLoginObject().getLoginTokenType());
     }
 }

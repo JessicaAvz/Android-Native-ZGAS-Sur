@@ -23,7 +23,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener, GetUserInfoTask.UserInfoListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener,
+        GetUserInfoTask.UserInfoListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
     private static final String EMAIL_TAG = "email";
