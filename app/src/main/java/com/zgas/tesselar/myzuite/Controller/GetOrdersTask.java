@@ -118,23 +118,23 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Id del caso: " + aCase.getCaseId());
                     aCase.setCaseUserId(userPreferences.getUserObject().getUserId());
                     Log.d(DEBUG_TAG, "Id del operador: " + aCase.getCaseUserId());
-                    aCase.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED));
+                    aCase.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
                     Log.d(DEBUG_TAG, "Hora programada: " + aCase.getCaseTimeScheduled());
                     //aCase.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
-                    aCase.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT));
-                    Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT));
-                    aCase.setCaseAccountName(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ACCOUNT_NAME));
+                    aCase.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
+                    Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
+                    aCase.setCaseAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
                     Log.d(DEBUG_TAG, "Cliente: " + aCase.getCaseAccountName());
-                    aCase.setCaseAddress(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ADDRESS));
+                    aCase.setCaseAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
                     Log.d(DEBUG_TAG, "Dirección: " + aCase.getCaseAddress());
-                    aCase.setCaseContactName(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_CONTACT_NAME));
+                    aCase.setCaseContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
                     Log.d(DEBUG_TAG, "Cuenta: " + aCase.getCaseAccountName());
-                    aCase.setCaseServiceType(caseObject.getString(ExtrasHelper.EXTRA_JSON_OBJECT_SERVICE_TYPE));
+                    aCase.setCaseServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
                     Log.d(DEBUG_TAG, "Tipo de servicio: " + aCase.getCaseServiceType());
 
-                    String caseType = caseObject.get(ExtrasHelper.EXTRA_JSON_OBJECT_TYPE).toString();
-                    String caseStatus = caseObject.get(ExtrasHelper.EXTRA_JSON_OBJECT_STATUS).toString();
-                    String casePriority = caseObject.get(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY).toString();
+                    String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
+                    String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();
+                    String casePriority = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString();
 
                     if (caseType.equals(Case.caseTypes.ORDER.toString())) {
                         aCase.setCaseType(Case.caseTypes.ORDER);

@@ -68,12 +68,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_login_btn_login:
-                paramsCapture();
+                callAsyncTask();
                 break;
         }
     }
 
-    private void paramsCapture() {
+    private void callAsyncTask() {
         if (isEmpty(mEmail) || isEmpty(mPassword)) {
             Toast.makeText(getApplicationContext(), "Por favor, ingrese todos los datos.", Toast.LENGTH_SHORT).show();
         } else {

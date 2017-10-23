@@ -91,16 +91,16 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
 
     private void initUi() {
         mBundle = getIntent().getExtras();
-        mIntCaseId = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ID);
-        mStrCaseUserName = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_USER_NAME);
-        mStrCaseAddress = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ADDRESS);
-        mStrCaseStatus = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_STATUS);
-        mStrCaseType = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TYPE);
-        mStrCasePriority = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY);
-        mStrCaseTimeIn = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT);
-        mStrCaseTimeSeen = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SEEN);
-        mStrCaseTimeArrived = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ARRIVAL);
-        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED);
+        mIntCaseId = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
+        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME);
+        mStrCaseAddress = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
+        mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
+        mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
+        mStrCasePriority = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
+        mStrCaseTimeIn = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
+        mStrCaseTimeSeen = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
+        mStrCaseTimeArrived = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
+        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
 
         Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mIntCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -182,12 +182,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (mStrCaseStatus.equals(Case.caseStatus.NEW.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.sky_blue));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
+        } else {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.orange));
         }
     }
 
@@ -307,6 +303,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 .setPositiveButton(getResources().getString(R.string.dialog_in_progress_accept), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
+
                         dialogInterface.dismiss();
                     }
 

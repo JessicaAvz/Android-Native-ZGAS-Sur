@@ -107,7 +107,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.INPROGRESS));
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
-            status.setTextColor(context.getResources().getColor(R.color.sky_blue));
+            status.setTextColor(context.getResources().getColor(R.color.orange));
         }
         status.setText(caseStatus.toString());
         holder.itemView.setTag(mCaseList.get(position));
@@ -169,27 +169,27 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     Log.d(DEBUG_TAG, "Nombre del cliente: " + userName);
 
                     Bundle bundle = new Bundle();
-                    bundle.putString(ExtrasHelper.EXTRA_JSON_OBJECT_ID, id);
-                    bundle.putString(ExtrasHelper.EXTRA_JSON_OBJECT_ADDRESS, address);
-                    bundle.putString(ExtrasHelper.EXTRA_JSON_OBJECT_STATUS, status);
-                    bundle.putString(ExtrasHelper.EXTRA_JSON_OBJECT_TYPE, type);
-                    bundle.putSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT, timeAssignment);
-                    bundle.putSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SEEN, timeSeen);
-                    bundle.putSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ARRIVAL, timeArrival);
-                    bundle.putSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
-                    bundle.putString(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY, priority);
-                    bundle.putString(ExtrasHelper.EXTRA_JSON_OBJECT_USER_NAME, userName);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, status);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE, type);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT, timeAssignment);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, timeSeen);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL, timeArrival);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY, priority);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME, userName);
 
-                    Log.d(DEBUG_TAG, "Bundle - Id del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ID));
-                    Log.d(DEBUG_TAG, "Bundle - Dirección del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ADDRESS));
-                    Log.d(DEBUG_TAG, "Bundle - Estatus del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_STATUS));
-                    Log.d(DEBUG_TAG, "Bundle - Tipo de caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TYPE));
-                    Log.d(DEBUG_TAG, "Bundle - Hora de caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT));
+                    Log.d(DEBUG_TAG, "Bundle - Id del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+                    Log.d(DEBUG_TAG, "Bundle - Dirección del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
+                    Log.d(DEBUG_TAG, "Bundle - Estatus del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
+                    Log.d(DEBUG_TAG, "Bundle - Tipo de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE));
+                    Log.d(DEBUG_TAG, "Bundle - Hora de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
                     //Log.d(DEBUG_TAG, "Bundle - Hora de visualización de caso: " + String.valueOf(timeSeen));
                     //Log.d(DEBUG_TAG, "Bundle - Hora de llegada del caso: " + String.valueOf(timeArrival));
-                    Log.d(DEBUG_TAG, "Bundle - Hora programada del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED));
-                    Log.d(DEBUG_TAG, "Bundle - Prioridad del caso: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY));
-                    Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ACCOUNT_NAME));
+                    Log.d(DEBUG_TAG, "Bundle - Hora programada del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
+                    Log.d(DEBUG_TAG, "Bundle - Prioridad del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY));
+                    Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
 
                     intent = new Intent();
                     if (type.equals(Case.caseTypes.ORDER.toString())) {

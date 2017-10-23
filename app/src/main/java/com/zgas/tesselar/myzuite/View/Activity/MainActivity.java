@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener {
 
@@ -72,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         initUiOperator();
-        JSONObject params = new JSONObject();
         mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
 
@@ -90,16 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (mUser.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
-            try {
-                params.put(ExtrasHelper.EMAIL_TAG, mUserPreferences.getLoginObject().getLoginEmail());
-                params.put(ExtrasHelper.ADMIN_TOKEN, mUserPreferences.getAdminToken());
-                Log.d(DEBUG_TAG, "Parámetros: " + params.getString(ExtrasHelper.EMAIL_TAG) + " " + params.getString(ExtrasHelper.ADMIN_TOKEN));
-                GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this, params);
-                getUserInfoTask.setUserInfoListener(this);
-                getUserInfoTask.execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+            callAsyncTask();
 
             initUiSupervisor();
         } else if (mUser.getUserType() == User.userType.LEAKAGE) {
@@ -424,6 +418,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         startActivity(callIntent);
+    }
+
+    private void asyncTask() {
+        try {
+            JSONObject params = new JSONObject();
+            params.put(ExtrasHelper.EMAIL_TAG, mUserPreferences.getLoginObject().getLoginEmail());
+            params.put(ExtrasHelper.ADMIN_TOKEN, mUserPreferences.getAdminToken());
+            Log.d(DEBUG_TAG, "Parámetros: " + params.getString(ExtrasHelper.EMAIL_TAG) + " " + params.getString(ExtrasHelper.ADMIN_TOKEN));
+            GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this, params);
+            getUserInfoTask.setUserInfoListener(this);
+            getUserInfoTask.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callAsyncTask() {
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            asyncTask();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 0, 900000); //execute in every 900000 ms = 15 min
+        //timer.schedule(doAsynchronousTask, 0, 5000); //executes in every 5000ms = 5 seconds
     }
 
     @Override

@@ -81,17 +81,17 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         setSupportActionBar(toolbar);
 
         mBundle = getIntent().getExtras();
-        mIntCaseId = mBundle.getInt(ExtrasHelper.EXTRA_JSON_OBJECT_ID);
+        mIntCaseId = mBundle.getInt(ExtrasHelper.ORDER_JSON_OBJECT_ID);
         //mIntCaseUserId = mBundle.getInt(ExtrasHelper.EXTRA_JSON_OBJECT_USER_ID);
-        mStrCaseUserName = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_USER_NAME);
-        mStrCaseAddress = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_ADDRESS);
-        mStrCaseStatus = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_STATUS);
-        mStrCaseType = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_TYPE);
-        mStrCasePriority = mBundle.getString(ExtrasHelper.EXTRA_JSON_OBJECT_PRIORITY);
-        mCldCaseTimeIn = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ASSIGNMENT);
-        mCldCaseTimeSeen = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SEEN);
-        mCldCaseTimeArrived = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(ExtrasHelper.EXTRA_JSON_OBJECT_TIME_SCHEDULED);
+        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME);
+        mStrCaseAddress = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
+        mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
+        mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
+        mStrCasePriority = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
+        mCldCaseTimeIn = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
+        mCldCaseTimeSeen = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
+        mCldCaseTimeArrived = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
+        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
 
         Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
