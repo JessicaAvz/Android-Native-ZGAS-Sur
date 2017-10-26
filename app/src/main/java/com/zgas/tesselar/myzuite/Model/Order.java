@@ -4,7 +4,7 @@ package com.zgas.tesselar.myzuite.Model;
  * Created by jarvizu on 28/08/2017.
  */
 
-public class Case {
+public class Order {
     private String caseId;
     private String caseUserId;
     private String caseTimeAssignment;
@@ -12,12 +12,33 @@ public class Case {
     private String caseTimeArrival;
     private String caseTimeScheduled;
     private String caseServiceType;
-    private caseStatus caseStatus;
-    private casePriority casePriority;
     private String caseAccountName;
     private String caseContactName;
     private String caseAddress;
+    private String caseSubject;
+    private caseStatus caseStatus;
     private caseTypes caseType;
+    private casePriority casePriority;
+
+    public Order() {
+    }
+
+    public Order(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, String caseAccountName, String caseContactName, String caseAddress, String caseSubject, Order.caseStatus caseStatus, caseTypes caseType, Order.casePriority casePriority) {
+        this.caseId = caseId;
+        this.caseUserId = caseUserId;
+        this.caseTimeAssignment = caseTimeAssignment;
+        this.caseTimeSeen = caseTimeSeen;
+        this.caseTimeArrival = caseTimeArrival;
+        this.caseTimeScheduled = caseTimeScheduled;
+        this.caseServiceType = caseServiceType;
+        this.caseAccountName = caseAccountName;
+        this.caseContactName = caseContactName;
+        this.caseAddress = caseAddress;
+        this.caseSubject = caseSubject;
+        this.caseStatus = caseStatus;
+        this.caseType = caseType;
+        this.casePriority = casePriority;
+    }
 
     public enum casePriority {
         HIGH("High"),
@@ -47,6 +68,7 @@ public class Case {
         INPROGRESS("En curso"),
         RETIRED("Cilindro retirado"),
         FINISHED("Entregado"),
+        CLOSED("Closed"),
         CANCELLED("Cancelado");
 
         private final String name;
@@ -65,7 +87,7 @@ public class Case {
     }
 
     public enum caseTypes {
-        LEAKAGE("Fuga"),
+        LEAKAGE("Fugas"),
         CUT("Corte"),
         ORDER("Pedido"),
         CUSTOM_SERVICE("Servicio medido"),
@@ -84,25 +106,6 @@ public class Case {
         public String toString() {
             return this.name;
         }
-    }
-
-    public Case() {
-    }
-
-    public Case(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, Case.caseStatus caseStatus, Case.casePriority casePriority, String caseAccountName, String caseContactName, String caseAddress, caseTypes caseType) {
-        this.caseId = caseId;
-        this.caseUserId = caseUserId;
-        this.caseTimeAssignment = caseTimeAssignment;
-        this.caseTimeSeen = caseTimeSeen;
-        this.caseTimeArrival = caseTimeArrival;
-        this.caseTimeScheduled = caseTimeScheduled;
-        this.caseServiceType = caseServiceType;
-        this.caseStatus = caseStatus;
-        this.casePriority = casePriority;
-        this.caseAccountName = caseAccountName;
-        this.caseContactName = caseContactName;
-        this.caseAddress = caseAddress;
-        this.caseType = caseType;
     }
 
     public String getCaseId() {
@@ -185,7 +188,6 @@ public class Case {
         this.caseType = caseType;
     }
 
-
     public String getCaseTimeScheduled() {
         return caseTimeScheduled;
     }
@@ -208,5 +210,13 @@ public class Case {
 
     public void setCaseContactName(String caseContactName) {
         this.caseContactName = caseContactName;
+    }
+
+    public String getCaseSubject() {
+        return caseSubject;
+    }
+
+    public void setCaseSubject(String caseSubject) {
+        this.caseSubject = caseSubject;
     }
 }

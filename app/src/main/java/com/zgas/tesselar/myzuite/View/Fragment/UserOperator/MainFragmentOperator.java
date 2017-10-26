@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.GetOrdersTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
-import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
@@ -112,8 +112,8 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     }
 
     @Override
-    public void getCasesSuccessResponse(List<Case> caseList) {
-        mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Case>) caseList);
+    public void getCasesSuccessResponse(List<Order> orderList) {
+        mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) orderList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);

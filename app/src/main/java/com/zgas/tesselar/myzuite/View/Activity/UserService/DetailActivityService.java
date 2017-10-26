@@ -19,14 +19,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
-import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
-
-import java.sql.Time;
+import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 
 public class DetailActivityService extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,10 +39,10 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private Time mCldCaseTimeIn;
-    private Time mCldCaseTimeSeen;
-    private Time mCldCaseTimeArrived;
-    private Time mCldCaseTimeProgrammed;
+    private String mCldCaseTimeIn;
+    private String mCldCaseTimeSeen;
+    private String mCldCaseTimeArrived;
+    private String mCldCaseTimeProgrammed;
 
     private TextView mUserId;
     private TextView mUserName;
@@ -88,19 +86,19 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
         mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
         mStrCasePriority = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
-        mCldCaseTimeIn = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
-        mCldCaseTimeSeen = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
-        mCldCaseTimeArrived = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = (Time) mBundle.getSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        mCldCaseTimeIn = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
+        mCldCaseTimeSeen = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
+        mCldCaseTimeArrived = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
+        mCldCaseTimeProgrammed = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
 
         Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
         Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
         Log.d(DEBUG_TAG, "Apellido del cliente: " + mStrCaseUserLastname);
         Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus de la fuga: " + mStrCaseStatus.toString());
-        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType.toString());
-        Log.d(DEBUG_TAG, "Prioridad de la fuga: " + mStrCasePriority.toString());
+        Log.d(DEBUG_TAG, "Estatus de la fuga: " + mStrCaseStatus);
+        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType);
+        Log.d(DEBUG_TAG, "Prioridad de la fuga: " + mStrCasePriority);
         Log.d(DEBUG_TAG, "Hora de reporte: " + String.valueOf(mCldCaseTimeIn));
         Log.d(DEBUG_TAG, "Hora de visualización del reporte: " + String.valueOf(mCldCaseTimeSeen));
         Log.d(DEBUG_TAG, "Hora de llegada del reporte: " + String.valueOf(mCldCaseTimeArrived));
@@ -132,15 +130,15 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_waze);
         mFabWaze.setOnClickListener(this);
 
-        if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
+        if (mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
-        } else if (mStrCaseStatus.equals(Case.caseStatus.FINISHED.toString())) {
+        } else if (mStrCaseStatus.equals(Order.caseStatus.FINISHED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (mStrCaseStatus.equals(Case.caseStatus.CANCELLED.toString())) {
+        } else if (mStrCaseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);

@@ -49,7 +49,8 @@ public class ExtrasHelper {
 
     //LeakObject
     public static final String LEAK_JSON_OBJECT_ID = "Id";
-    public static final String LEAJ_JSON_OBJECT_WHO_REPORTS = "WhoReports";
+    public static final String LEAK_JSON_OBJECT_WHO_REPORTS = "WhoReports";
+    public static final String LEAK_JSON_OBJECT_SERVICE_TYPE = "RecordTypeName";
     public static final String LEAK_JSON_OBJECT_SUBJECT = "Subject";
     public static final String LEAK_JSON_OBJECT_STATUS = "Status";
     public static final String LEAK_JSON_OBJECT_PRIORITY = "Priority";
@@ -58,8 +59,10 @@ public class ExtrasHelper {
     public static final String LEAK_JSON_OBJECT_DATE_TECHNICIAN = "DateTimeTechnician";
     public static final String LEAK_JSON_OBJECT_DATE_SCHEDULED = "DateTimeScheduled";
     public static final String LEAK_JSON_OBJECT_DATE_END = "DateTimeEnd";
+    public static final String LEAK_JSON_OBJECT_SEEN = "TimeSeen";
     public static final String LEAK_JSON_OBJECT_DATE_DEPARTURE = "DateTimeDeparture";
     public static final String LEAK_JSON_OBJECT_CYLINDER_CAPACITY = "CylinderCapacity";
     public static final String LEAK_JSON_OBJECT_COLOR = "Color";
-    public static final String LEAK_JSON_OBJECT_CHANEL = "Chanel";
+    public static final String LEAK_JSON_OBJECT_CHANNEL = "Chanel";
+    public static final String LEAK_JSON_OBJECT_ADDRESS = "Address";
 }

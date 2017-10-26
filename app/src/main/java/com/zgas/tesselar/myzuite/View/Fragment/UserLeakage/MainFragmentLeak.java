@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
-import com.zgas.tesselar.myzuite.Model.Case;
-import com.zgas.tesselar.myzuite.Model.User;
-import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Controller.GetLeakagesTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Model.Leak;
+import com.zgas.tesselar.myzuite.Model.User;
+import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.View.Adapter.LeaksAdapter;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +31,12 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
     private static final String DEBUG_TAG = "MainFragmentLeak";
 
     private RecyclerView mRecyclerOrders;
-    private OrdersAdapter mOrderAdapter;
+    private LeaksAdapter leaksAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
+    private static final String USER_ID = "Id";
+    private static final String ADMIN_TOKEN = "access_token";
     private LinearLayoutManager linearLayoutManager;
 
     public MainFragmentLeak() {
@@ -51,14 +55,18 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
-        initUi(mRootView);
         try {
-            GetLeakagesTask getLeakagesTask = new GetLeakagesTask(getContext(), null);
+            JSONObject params = new JSONObject();
+            params.put(USER_ID, mUserPreferences.getUserObject().getUserId());
+            params.put(ADMIN_TOKEN, mUserPreferences.getAdminToken());
+            Log.d(DEBUG_TAG, "Parámetros: " + params.getString(USER_ID) + " " + params.getString(ADMIN_TOKEN));
+            GetLeakagesTask getLeakagesTask = new GetLeakagesTask(getContext(), params);
             getLeakagesTask.setLeakagesTaskListener(this);
             getLeakagesTask.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        initUi(mRootView);
         return mRootView;
     }
 
@@ -74,12 +82,12 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
     }
 
     @Override
-    public void getLeakagesSuccessResponse(List<Case> caseList) {
-        mOrderAdapter = new OrdersAdapter(getActivity(), (ArrayList<Case>) caseList);
+    public void getLeakagesSuccessResponse(List<Leak> leakList) {
+        leaksAdapter = new LeaksAdapter(getActivity(), (ArrayList<Leak>) leakList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);
         mRecyclerOrders.setLayoutManager(linearLayoutManager);
-        mRecyclerOrders.setAdapter(mOrderAdapter);
+        mRecyclerOrders.setAdapter(leaksAdapter);
     }
 }

@@ -20,38 +20,43 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
-import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 
 public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivityLeakage";
     private Bundle mBundle;
-    private int mIntCaseId;
-    private int mIntCaseUserId;
-    private String mStrCaseUserName;
-    private String mStrCaseUserLastname;
-    private String mStrCaseAddress;
-    private String mStrCaseStatus;
-    private String mStrCaseType;
-    private String mStrCasePriority;
-    private String mStrCaseTimeIn;
-    private String mStrCaseTimeSeen;
-    private String mStrCaseTimeArrived;
-    private String mStrCaseTimeProgrammed;
+    private String mStrLeakId;
+    private String mStrLeakClientName;
+    private String mStrLeakStatus;
+    private String mStrLeakType;
+    private String mStrLeakPriority;
+    private String mStrLeakOperator;
+    private String mStrLeakSubject;
+    private String mStrLeakFolioSalesNote;
+    private String mStrLeakTimeSeen;
+    private String mStrLeakTimeDeparture;
+    private String mStrLeakTimeArrived;
+    private String mStrLeakTimeScheduled;
+    private String mStrLeakTimeTechnician;
+    private String mStrCylinderCapacity;
+    private String mStrCylinderColor;
+    private String mStrChannel;
+    private String mStrLeakAddress;
 
     private TextView mUserId;
     private TextView mUserName;
-    private TextView mCaseAddress;
-    private TextView mCaseStatus;
-    private TextView mCaseTimeIn;
-    private TextView mCaseTimeSeen;
-    private TextView mCaseTimeArrived;
-    private TextView mCaseTimeProgrammed;
+    private TextView mLeakAddress;
+    private TextView mLeakStatus;
+    private TextView mLeakTimeIn;
+    private TextView mLeakTimeSeen;
+    private TextView mLeakTimeArrived;
+    private TextView mLeakTimeScheduled;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
@@ -82,39 +87,50 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         setSupportActionBar(toolbar);
 
         mBundle = getIntent().getExtras();
-        mIntCaseId = mBundle.getInt(ExtrasHelper.ORDER_JSON_OBJECT_ID);
-        //mIntCaseUserId = mBundle.getInt(ExtrasHelper.EXTRA_USER_ID);
-        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME);
-        mStrCaseAddress = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
-        mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
-        mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
-        mStrCasePriority = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
-        mStrCaseTimeIn = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
-        mStrCaseTimeSeen = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
-        mStrCaseTimeArrived = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
-        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        mStrLeakId = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID);
+        mStrLeakClientName = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS);
+        mStrLeakSubject = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT);
+        mStrLeakAddress = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS);
+        mStrLeakStatus = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS);
+        mStrLeakType = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SERVICE_TYPE);
+        mStrLeakPriority = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY);
+        mStrLeakTimeSeen = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SEEN);
+        mStrLeakTimeArrived = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END);
+        mStrLeakTimeScheduled = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED);
+        mStrLeakTimeDeparture = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE);
+        mStrLeakOperator = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_OPERATOR);
+        mStrLeakFolioSalesNote = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE);
+        mStrLeakTimeTechnician = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN);
+        mStrCylinderCapacity = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY);
+        mStrCylinderColor = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR);
+        mStrChannel = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL);
 
-        Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
-        Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
-        Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
-        Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus de la fuga: " + mStrCaseStatus.toString());
-        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType.toString());
-        Log.d(DEBUG_TAG, "Prioridad de la fuga: " + mStrCasePriority.toString());
-        Log.d(DEBUG_TAG, "Hora de reporte: " + String.valueOf(mStrCaseTimeIn));
-        Log.d(DEBUG_TAG, "Hora de visualización del reporte: " + String.valueOf(mStrCaseTimeSeen));
-        Log.d(DEBUG_TAG, "Hora de llegada del reporte: " + String.valueOf(mStrCaseTimeArrived));
+        Log.d(DEBUG_TAG, "Bundle - Id de la fuga: " + mStrLeakId);
+        Log.d(DEBUG_TAG, "Bundle - WhoReports: " + mStrLeakClientName);
+        Log.d(DEBUG_TAG, "Bundle - Subject: " + mStrLeakSubject);
+        Log.d(DEBUG_TAG, "Bundle - Status: " + mStrLeakStatus);
+        Log.d(DEBUG_TAG, "Bundle - RecordTypeName: " + mStrLeakType);
+        Log.d(DEBUG_TAG, "Bundle - Priority: " + mStrLeakPriority);
+        Log.d(DEBUG_TAG, "Bundle - FolioSalesNote: " + mStrLeakFolioSalesNote);
+        Log.d(DEBUG_TAG, "Bundle - DateTimeTechnician: " + mStrLeakTimeTechnician);
+        Log.d(DEBUG_TAG, "Bundle - DateTimeScheduled: " + mStrLeakTimeScheduled);
+        Log.d(DEBUG_TAG, "Bundle - DateTimeEnd: " + mStrLeakTimeArrived);
+        Log.d(DEBUG_TAG, "Bundle - DateTimeDeparture: " + mStrLeakTimeDeparture);
+        Log.d(DEBUG_TAG, "Bundle - CylinderCapacity: " + mStrCylinderCapacity);
+        Log.d(DEBUG_TAG, "Bundle - CylinderColor: " + mStrCylinderColor);
+        Log.d(DEBUG_TAG, "Bundle - Channel: " + mStrChannel);
+        Log.d(DEBUG_TAG, "Bundle - Address: " + mStrLeakAddress);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Detalle de la fuga " + mIntCaseId);
+        getSupportActionBar().setTitle("Detalle de la fuga " + mStrLeakId);
 
         mUserName = (TextView) findViewById(R.id.activity_detail_leakage_tv_client_name);
-        mUserName.setText(mStrCaseUserName + " " + mStrCaseUserLastname);
-        mCaseAddress = (TextView) findViewById(R.id.activity_detail_leakage_tv_case_address);
-        mCaseAddress.setText(mStrCaseAddress);
-        mCaseStatus = (TextView) findViewById(R.id.activity_detail_leakage_tv_status);
-        mCaseStatus.setText(mStrCaseStatus);
+        mUserName.setText(mStrLeakClientName);
+        mLeakAddress = (TextView) findViewById(R.id.activity_detail_leakage_tv_case_address);
+        mLeakAddress.setText(mStrLeakAddress);
+        mLeakStatus = (TextView) findViewById(R.id.activity_detail_leakage_tv_status);
+        mLeakStatus.setText(mStrLeakStatus);
         mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
         mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_finished);
@@ -124,45 +140,47 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_waze);
         mFabWaze.setOnClickListener(this);
 
-        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_in);
-        if (mStrCaseTimeIn != null && !mStrCaseTimeIn.equals("")) {
-            mCaseTimeIn.setText(getResources().getString(R.string.no_data));
+        mLeakTimeIn = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_in);
+        if (mStrLeakTimeTechnician == null || mStrLeakTimeTechnician.equals("")) {
+            mLeakTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeIn.setText(String.valueOf(mStrCaseTimeIn));
+            mLeakTimeIn.setText(mStrLeakTimeTechnician);
         }
-        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_seen);
-        if (mStrCaseTimeSeen != null && !mStrCaseTimeSeen.equals("")) {
-            mCaseTimeSeen.setText(getResources().getString(R.string.no_data));
+        mLeakTimeSeen = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_seen);
+        if (mStrLeakTimeSeen == null || mStrLeakTimeSeen.equals("")) {
+            mLeakTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeSeen.setText(String.valueOf(mStrCaseTimeSeen));
+            mLeakTimeSeen.setText(mStrLeakTimeSeen);
         }
-        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_leakage_tv_arrived);
-        if (mStrCaseTimeArrived != null && !mStrCaseTimeArrived.equals("")) {
-            mCaseTimeArrived.setText(getResources().getString(R.string.no_data));
+        mLeakTimeArrived = (TextView) findViewById(R.id.activity_detail_leakage_tv_arrived);
+        if (mStrLeakTimeArrived == null || mStrLeakTimeArrived.equals("")) {
+            mLeakTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeArrived.setText(String.valueOf(mStrCaseTimeArrived));
+            mLeakTimeArrived.setText(mStrLeakTimeArrived);
         }
-        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_programmed);
-        if (mStrCaseTimeProgrammed != null && !mStrCaseTimeProgrammed.equals("")) {
-            mCaseTimeProgrammed.setText(getResources().getString(R.string.no_data));
+        mLeakTimeScheduled = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_programmed);
+        if (mStrLeakTimeScheduled == null || mStrLeakTimeScheduled.equals("")) {
+            mLeakTimeScheduled.setText(getResources().getString(R.string.no_data));
         } else {
-            mCaseTimeProgrammed.setText(String.valueOf(mStrCaseTimeProgrammed));
+            mLeakTimeScheduled.setText(mStrLeakTimeScheduled);
         }
 
-        if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
-        } else if (mStrCaseStatus.equals(Case.caseStatus.FINISHED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
+        if (mStrLeakStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
+        } else if (mStrLeakStatus.equals(Order.caseStatus.FINISHED.toString())) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (mStrCaseStatus.equals(Case.caseStatus.CANCELLED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.red));
+        } else if (mStrLeakStatus.equals(Order.caseStatus.CANCELLED.toString())) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
+        } else {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.orange));
         }
     }
 
@@ -198,7 +216,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
                 cancelDialog();
                 break;
             case R.id.activity_detail_leakage_fab_waze:
-                wazeIntent(mStrCaseAddress);
+                wazeIntent(mStrLeakAddress);
                 break;
         }
     }

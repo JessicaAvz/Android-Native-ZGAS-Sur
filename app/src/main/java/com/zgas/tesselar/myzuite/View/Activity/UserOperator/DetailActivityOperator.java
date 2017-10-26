@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
-import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -53,7 +53,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private FloatingActionButton mFabCanceled;
     private FloatingActionButton mFabWaze;
 
-    private Case mCase;
+    private Order mOrder;
     private UserPreferences mUserPreferences;
     private User mUser;
 
@@ -168,15 +168,15 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_waze);
         mFabWaze.setOnClickListener(this);
 
-        if (mStrCaseStatus.equals(Case.caseStatus.INPROGRESS.toString())) {
+        if (mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
-        } else if (mStrCaseStatus.equals(Case.caseStatus.FINISHED.toString())) {
+        } else if (mStrCaseStatus.equals(Order.caseStatus.FINISHED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (mStrCaseStatus.equals(Case.caseStatus.CANCELLED.toString())) {
+        } else if (mStrCaseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);

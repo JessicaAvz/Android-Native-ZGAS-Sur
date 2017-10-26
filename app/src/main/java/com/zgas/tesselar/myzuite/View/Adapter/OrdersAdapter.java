@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zgas.tesselar.myzuite.Model.Case;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.View.Activity.UserLeakage.DetailActivityLeakage;
@@ -28,12 +28,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     private static final String DEBUG_TAG = "OrdersAdapter";
 
     private Context context;
-    private ArrayList<Case> mCaseList;
+    private ArrayList<Order> mOrderList;
     private Intent intent;
 
-    public OrdersAdapter(Context context, ArrayList<Case> mCaseList) {
+    public OrdersAdapter(Context context, ArrayList<Order> mOrderList) {
         this.context = context;
-        this.mCaseList = mCaseList;
+        this.mOrderList = mOrderList;
     }
 
     @Override
@@ -45,13 +45,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     @Override
     public void onBindViewHolder(OrdersAdapter.OrderViewHolder holder, int position) {
-        Case mCase = mCaseList.get(position);
-        String caseId = mCase.getCaseId();
-        String caseAddress = mCase.getCaseAddress();
-        Case.caseStatus caseStatus = mCase.getCaseStatus();
-        Case.caseTypes caseType = mCase.getCaseType();
-        String orderHourIn = mCase.getCaseTimeAssignment();
-        String serviceType = mCase.getCaseServiceType();
+        Order mOrder = mOrderList.get(position);
+        String caseId = mOrder.getCaseId();
+        String caseAddress = mOrder.getCaseAddress();
+        Order.caseStatus caseStatus = mOrder.getCaseStatus();
+        Order.caseTypes caseType = mOrder.getCaseType();
+        String orderHourIn = mOrder.getCaseTimeAssignment();
+        String serviceType = mOrder.getCaseServiceType();
 
         TextView id = holder.mOrderId;
         id.setText(caseId);
@@ -60,8 +60,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView hourIn = holder.mOrderTimeIn;
         TextView type = holder.mOrderType;
 
-        if (caseType.equals(Case.caseTypes.LEAKAGE)) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.LEAKAGE));
+        if (caseType.equals(Order.caseTypes.LEAKAGE)) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.LEAKAGE));
             id.setText("Reporte número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
             type.setText("Tipo: " + caseType);
@@ -70,8 +70,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             } else {
                 hourIn.setText("Hora del reporte: " + orderHourIn);
             }
-        } else if (caseType.equals(Case.caseTypes.ORDER)) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
+        } else if (caseType.equals(Order.caseTypes.ORDER)) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.ORDER));
             id.setText("Pedido número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
             type.setText("Tipo: " + caseType + " - " + serviceType);
@@ -80,8 +80,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             } else {
                 hourIn.setText("Hora del pedido: " + orderHourIn);
             }
-        } else if (caseType.equals(Case.caseTypes.CUSTOM_SERVICE)) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.ORDER));
+        } else if (caseType.equals(Order.caseTypes.CUSTOM_SERVICE)) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.ORDER));
             id.setText("Servicio número: " + String.valueOf(caseId));
             address.setText("Dirección: " + caseAddress);
             type.setText("Tipo: " + caseType);
@@ -90,35 +90,35 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             } else {
                 hourIn.setText("Hora del servicio: " + orderHourIn);
             }
-        } else if (caseType.equals(Case.caseTypes.CUT)) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.CUT));
-        } else if (caseType.equals(Case.caseTypes.RECONNECTION)) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseTypes.RECONNECTION));
+        } else if (caseType.equals(Order.caseTypes.CUT)) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.CUT));
+        } else if (caseType.equals(Order.caseTypes.RECONNECTION)) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.RECONNECTION));
         }
 
         TextView status = holder.mOrderStatus;
-        if (caseStatus == Case.caseStatus.CANCELLED) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.CANCELLED));
+        if (caseStatus == Order.caseStatus.CANCELLED) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseStatus.CANCELLED));
             status.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (caseStatus == Case.caseStatus.FINISHED) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.FINISHED));
+        } else if (caseStatus == Order.caseStatus.FINISHED) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseStatus.FINISHED));
             status.setTextColor(context.getResources().getColor(R.color.light_green));
-        } else if (caseStatus == Case.caseStatus.INPROGRESS) {
-            Log.d(DEBUG_TAG, String.valueOf(Case.caseStatus.INPROGRESS));
+        } else if (caseStatus == Order.caseStatus.INPROGRESS) {
+            Log.d(DEBUG_TAG, String.valueOf(Order.caseStatus.INPROGRESS));
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
             status.setTextColor(context.getResources().getColor(R.color.orange));
         }
         status.setText(caseStatus.toString());
-        holder.itemView.setTag(mCaseList.get(position));
+        holder.itemView.setTag(mOrderList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mCaseList.isEmpty()) {
+        if (mOrderList.isEmpty()) {
             return 0;
         } else {
-            return mCaseList.size();
+            return mOrderList.size();
         }
     }
 
@@ -143,18 +143,18 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();
-                    Case mCase = mCaseList.get(requestCode);
+                    Order mOrder = mOrderList.get(requestCode);
 
-                    String id = mCase.getCaseId();
-                    String address = mCase.getCaseAddress();
-                    String status = mCase.getCaseStatus().toString();
-                    String type = mCase.getCaseType().toString();
-                    String timeAssignment = mCase.getCaseTimeAssignment();
-                    String timeSeen = mCase.getCaseTimeSeen();
-                    String timeArrival = mCase.getCaseTimeArrival();
-                    String timeScheduled = mCase.getCaseTimeScheduled();
-                    String priority = mCase.getCasePriority().toString();
-                    String userName = mCase.getCaseAccountName();
+                    String id = mOrder.getCaseId();
+                    String address = mOrder.getCaseAddress();
+                    String status = mOrder.getCaseStatus().toString();
+                    String type = mOrder.getCaseType().toString();
+                    String timeAssignment = mOrder.getCaseTimeAssignment();
+                    String timeSeen = mOrder.getCaseTimeSeen();
+                    String timeArrival = mOrder.getCaseTimeArrival();
+                    String timeScheduled = mOrder.getCaseTimeScheduled();
+                    String priority = mOrder.getCasePriority().toString();
+                    String userName = mOrder.getCaseAccountName();
 
                     Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
                     Log.d(DEBUG_TAG, "Id del caso: " + id);
@@ -192,20 +192,20 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
 
                     intent = new Intent();
-                    if (type.equals(Case.caseTypes.ORDER.toString())) {
+                    if (type.equals(Order.caseTypes.ORDER.toString())) {
                         intent = new Intent(context, DetailActivityOperator.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
-                    } else if (type.equals(Case.caseTypes.LEAKAGE.toString())) {
+                    } else if (type.equals(Order.caseTypes.LEAKAGE.toString())) {
                         intent = new Intent(context, DetailActivityLeakage.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
-                    } else if (type.equals(Case.caseTypes.CUSTOM_SERVICE.toString())) {
+                    } else if (type.equals(Order.caseTypes.CUSTOM_SERVICE.toString())) {
                         intent = new Intent(context, DetailActivityService.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
-                    } else if (type.equals(Case.caseTypes.CUT.toString())) {
-                    } else if (type.equals(Case.caseTypes.RECONNECTION.toString())) {
+                    } else if (type.equals(Order.caseTypes.CUT.toString())) {
+                    } else if (type.equals(Order.caseTypes.RECONNECTION.toString())) {
                     }
                 }
             });

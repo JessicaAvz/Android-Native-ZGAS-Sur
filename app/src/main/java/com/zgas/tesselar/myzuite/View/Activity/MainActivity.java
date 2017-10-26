@@ -1,13 +1,10 @@
 package com.zgas.tesselar.myzuite.View.Activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        initUiOperator();
+
         mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
 
@@ -432,12 +429,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void callIntent() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse(UrlHelper.CALL));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        startActivity(callIntent);
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(UrlHelper.CALL));
+        startActivity(intent);
     }
 
     private void getSupervisedAsynTask() {

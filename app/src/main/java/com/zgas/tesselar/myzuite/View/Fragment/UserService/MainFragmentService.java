@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
-import com.zgas.tesselar.myzuite.Model.Case;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
@@ -26,11 +26,11 @@ public class MainFragmentService extends Fragment {
 
     private static final String DEBUG_TAG = "MainFragmentService";
 
-    private final ArrayList<Case> mCaseList = new ArrayList();
+    private final ArrayList<Order> mOrderList = new ArrayList();
     private RecyclerView mRecyclerOrders;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
-    private Case mCase;
+    private Order mOrder;
     private UserPreferences mUserPreferences;
     private User mUser;
 
@@ -56,7 +56,7 @@ public class MainFragmentService extends Fragment {
 
     private void initUi(View pRootview) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mOrderAdapter = new OrdersAdapter(getActivity(), mCaseList);
+        mOrderAdapter = new OrdersAdapter(getActivity(), mOrderList);
 
         mRecyclerOrders = pRootview.findViewById(R.id.fragment_main_service_recycler_view);
         mRecyclerOrders.setHasFixedSize(true);
@@ -66,19 +66,19 @@ public class MainFragmentService extends Fragment {
         mRecyclerOrders.setAdapter(mOrderAdapter);
 
         for (int x = 0; x < 15; x++) {
-            mCase = new Case();
-            mCase.setCaseId(String.valueOf(x));
-            mCase.setCaseAddress("Av. Patria #123");
-            mCase.setCaseStatus(Case.caseStatus.INPROGRESS);
-            mCase.setCaseType(Case.caseTypes.CUSTOM_SERVICE);
-            mCase.setCaseTimeAssignment("04:40");
-            mCase.setCaseTimeSeen(new Time(System.currentTimeMillis()).toString());
-            mCase.setCaseTimeArrival("07:30");
-            mCase.setCaseTimeScheduled("06:30");
-            mCase.setCasePriority(Case.casePriority.HIGH);
-            mCase.setCaseAccountName("Oscar");
-            mCase.setCaseUserId(String.valueOf(1234));
-            mCaseList.add(mCase);
+            mOrder = new Order();
+            mOrder.setCaseId(String.valueOf(x));
+            mOrder.setCaseAddress("Av. Patria #123");
+            mOrder.setCaseStatus(Order.caseStatus.INPROGRESS);
+            mOrder.setCaseType(Order.caseTypes.CUSTOM_SERVICE);
+            mOrder.setCaseTimeAssignment("04:40");
+            mOrder.setCaseTimeSeen(new Time(System.currentTimeMillis()).toString());
+            mOrder.setCaseTimeArrival("07:30");
+            mOrder.setCaseTimeScheduled("06:30");
+            mOrder.setCasePriority(Order.casePriority.HIGH);
+            mOrder.setCaseAccountName("Oscar");
+            mOrder.setCaseUserId(String.valueOf(1234));
+            mOrderList.add(mOrder);
         }
     }
 
