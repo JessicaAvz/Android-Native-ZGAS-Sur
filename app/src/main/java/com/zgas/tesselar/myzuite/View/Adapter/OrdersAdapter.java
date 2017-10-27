@@ -13,9 +13,7 @@ import android.widget.TextView;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Activity.UserLeakage.DetailActivityLeakage;
 import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperator;
-import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService;
 
 import java.util.ArrayList;
 
@@ -60,40 +58,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView hourIn = holder.mOrderTimeIn;
         TextView type = holder.mOrderType;
 
-        if (caseType.equals(Order.caseTypes.LEAKAGE)) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.LEAKAGE));
-            id.setText("Reporte número: " + String.valueOf(caseId));
-            address.setText("Dirección: " + caseAddress);
-            type.setText("Tipo: " + caseType);
-            if (orderHourIn == null || orderHourIn.equals("")) {
-                hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
-            } else {
-                hourIn.setText("Hora del reporte: " + orderHourIn);
-            }
-        } else if (caseType.equals(Order.caseTypes.ORDER)) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.ORDER));
-            id.setText("Pedido número: " + String.valueOf(caseId));
-            address.setText("Dirección: " + caseAddress);
-            type.setText("Tipo: " + caseType + " - " + serviceType);
-            if (orderHourIn == null || orderHourIn.equals("")) {
-                hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
-            } else {
-                hourIn.setText("Hora del pedido: " + orderHourIn);
-            }
-        } else if (caseType.equals(Order.caseTypes.CUSTOM_SERVICE)) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.ORDER));
-            id.setText("Servicio número: " + String.valueOf(caseId));
-            address.setText("Dirección: " + caseAddress);
-            type.setText("Tipo: " + caseType);
-            if (orderHourIn == null || orderHourIn.equals("")) {
-                hourIn.setText("Hora del servicio: " + context.getResources().getString(R.string.no_data));
-            } else {
-                hourIn.setText("Hora del servicio: " + orderHourIn);
-            }
-        } else if (caseType.equals(Order.caseTypes.CUT)) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.CUT));
-        } else if (caseType.equals(Order.caseTypes.RECONNECTION)) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.RECONNECTION));
+        Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.ORDER));
+        id.setText("Pedido número: " + String.valueOf(caseId));
+        address.setText("Dirección: " + caseAddress);
+        type.setText("Tipo: " + caseType + " - " + serviceType);
+
+        if (orderHourIn == null || orderHourIn.equals("")) {
+            hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
+        } else {
+            hourIn.setText("Hora del pedido: " + orderHourIn);
         }
 
         TextView status = holder.mOrderStatus;
@@ -178,15 +151,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL, timeArrival);
                     bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
                     bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY, priority);
-                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME, userName);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME, userName);
 
                     Log.d(DEBUG_TAG, "Bundle - Id del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
                     Log.d(DEBUG_TAG, "Bundle - Dirección del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
                     Log.d(DEBUG_TAG, "Bundle - Estatus del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
                     Log.d(DEBUG_TAG, "Bundle - Tipo de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE));
                     Log.d(DEBUG_TAG, "Bundle - Hora de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
-                    //Log.d(DEBUG_TAG, "Bundle - Hora de visualización de caso: " + String.valueOf(timeSeen));
-                    //Log.d(DEBUG_TAG, "Bundle - Hora de llegada del caso: " + String.valueOf(timeArrival));
+                    Log.d(DEBUG_TAG, "Bundle - Hora de visualización de caso: " + String.valueOf(timeSeen));
+                    Log.d(DEBUG_TAG, "Bundle - Hora de llegada del caso: " + String.valueOf(timeArrival));
                     Log.d(DEBUG_TAG, "Bundle - Hora programada del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
                     Log.d(DEBUG_TAG, "Bundle - Prioridad del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY));
                     Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
@@ -196,16 +169,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                         intent = new Intent(context, DetailActivityOperator.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
-                    } else if (type.equals(Order.caseTypes.LEAKAGE.toString())) {
-                        intent = new Intent(context, DetailActivityLeakage.class);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                    } else if (type.equals(Order.caseTypes.CUSTOM_SERVICE.toString())) {
-                        intent = new Intent(context, DetailActivityService.class);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                    } else if (type.equals(Order.caseTypes.CUT.toString())) {
-                    } else if (type.equals(Order.caseTypes.RECONNECTION.toString())) {
+                    } else {
+
                     }
                 }
             });

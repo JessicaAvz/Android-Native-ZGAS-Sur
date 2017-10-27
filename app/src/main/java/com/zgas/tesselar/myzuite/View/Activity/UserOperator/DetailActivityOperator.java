@@ -92,7 +92,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private void initUi() {
         mBundle = getIntent().getExtras();
         mIntCaseId = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
-        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME);
+        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
         mStrCaseAddress = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
         mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
         mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);

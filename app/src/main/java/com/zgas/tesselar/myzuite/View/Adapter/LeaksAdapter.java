@@ -15,8 +15,6 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.View.Activity.UserLeakage.DetailActivityLeakage;
-import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperator;
-import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService;
 
 import java.util.ArrayList;
 
@@ -61,40 +59,14 @@ public class LeaksAdapter extends RecyclerView.Adapter<LeaksAdapter.LeaksViewHol
         TextView hourIn = holder.mLeakTimeIn;
         TextView type = holder.mLeakType;
 
-        if (leakType.equals(Leak.leakType.LEAKAGE)) {
-            Log.d(DEBUG_TAG, String.valueOf(Leak.leakType.LEAKAGE));
-            id.setText("Reporte número: " + String.valueOf(leakId));
-            address.setText("Dirección: " + leakAddress);
-            type.setText("Tipo: " + leakType);
-            if (leakHourIn == null || leakHourIn.equals("")) {
-                hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
-            } else {
-                hourIn.setText("Hora del reporte: " + leakHourIn);
-            }
-        } else if (leakType.equals(Leak.leakType.ORDER)) {
-            Log.d(DEBUG_TAG, String.valueOf(Leak.leakType.ORDER));
-            id.setText("Pedido número: " + String.valueOf(leakId));
-            address.setText("Dirección: " + leakAddress);
-            type.setText("Tipo: " + leakType + " - " + serviceType);
-            if (leakHourIn == null || leakHourIn.equals("")) {
-                hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
-            } else {
-                hourIn.setText("Hora del pedido: " + leakHourIn);
-            }
-        } else if (leakType.equals(Leak.leakType.CUSTOM_SERVICE)) {
-            Log.d(DEBUG_TAG, String.valueOf(Leak.leakType.CUSTOM_SERVICE));
-            id.setText("Servicio número: " + String.valueOf(leakId));
-            address.setText("Dirección: " + leakAddress);
-            type.setText("Tipo: " + leakType);
-            if (leakHourIn == null || leakHourIn.equals("")) {
-                hourIn.setText("Hora del servicio: " + context.getResources().getString(R.string.no_data));
-            } else {
-                hourIn.setText("Hora del servicio: " + leakHourIn);
-            }
-        } else if (leakType.equals(Leak.leakType.CUT)) {
-            Log.d(DEBUG_TAG, String.valueOf(Leak.leakType.CUT));
-        } else if (leakType.equals(Leak.leakType.RECONNECTION)) {
-            Log.d(DEBUG_TAG, String.valueOf(Leak.leakType.RECONNECTION));
+        Log.d(DEBUG_TAG, String.valueOf(Leak.leakType.LEAKAGE));
+        id.setText("Reporte número: " + String.valueOf(leakId));
+        address.setText("Dirección: " + leakAddress);
+        type.setText("Tipo: " + leakType);
+        if (leakHourIn == null || leakHourIn.equals("")) {
+            hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
+        } else {
+            hourIn.setText("Hora del reporte: " + leakHourIn);
         }
 
         TextView status = holder.mLeakStatus;
@@ -108,7 +80,7 @@ public class LeaksAdapter extends RecyclerView.Adapter<LeaksAdapter.LeaksViewHol
             Log.d(DEBUG_TAG, String.valueOf(Leak.leakStatus.INPROGRESS));
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
-            status.setTextColor(context.getResources().getColor(R.color.orange));
+            status.setTextColor(context.getResources().getColor(R.color.teal));
         }
 
         status.setText(leakStatus.toString());
@@ -223,20 +195,10 @@ public class LeaksAdapter extends RecyclerView.Adapter<LeaksAdapter.LeaksViewHol
                     Log.d(DEBUG_TAG, "Bundle - Address: " + bundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS));
 
                     intent = new Intent();
-                    if (type.equals(Order.caseTypes.ORDER.toString())) {
-                        intent = new Intent(context, DetailActivityOperator.class);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                    } else if (type.equals(Order.caseTypes.LEAKAGE.toString())) {
+                    if (type.equals(Order.caseTypes.LEAKAGE.toString())) {
                         intent = new Intent(context, DetailActivityLeakage.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
-                    } else if (type.equals(Order.caseTypes.CUSTOM_SERVICE.toString())) {
-                        intent = new Intent(context, DetailActivityService.class);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                    } else if (type.equals(Order.caseTypes.CUT.toString())) {
-                    } else if (type.equals(Order.caseTypes.RECONNECTION.toString())) {
                     }
                 }
             });
