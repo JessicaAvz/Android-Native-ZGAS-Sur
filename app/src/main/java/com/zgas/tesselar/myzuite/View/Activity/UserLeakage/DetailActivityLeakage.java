@@ -57,6 +57,9 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private TextView mLeakTimeSeen;
     private TextView mLeakTimeArrived;
     private TextView mLeakTimeScheduled;
+    private TextView mLeakCylinderCapacity;
+    private TextView mLeakCylinderColor;
+    private TextView mLeakChannel;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
@@ -104,7 +107,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mStrCylinderCapacity = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY);
         mStrCylinderColor = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR);
         mStrChannel = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL);
-
+        mLeakChannel = (TextView) findViewById(R.id.activity_detail_leakage_tv_channel);
+        mLeakChannel.setText(mStrChannel);
         Log.d(DEBUG_TAG, "Bundle - Id de la fuga: " + mStrLeakId);
         Log.d(DEBUG_TAG, "Bundle - WhoReports: " + mStrLeakClientName);
         Log.d(DEBUG_TAG, "Bundle - Subject: " + mStrLeakSubject);
@@ -131,6 +135,11 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mLeakAddress.setText(mStrLeakAddress);
         mLeakStatus = (TextView) findViewById(R.id.activity_detail_leakage_tv_status);
         mLeakStatus.setText(mStrLeakStatus);
+        mLeakCylinderColor = (TextView) findViewById(R.id.activity_detail_leakage_tv_color);
+        mLeakCylinderColor.setText(mStrCylinderColor);
+        mLeakCylinderCapacity = (TextView) findViewById(R.id.activity_detail_leakage_tv_capacity);
+        mLeakCylinderCapacity.setText(mStrCylinderCapacity);
+
         mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
         mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_finished);

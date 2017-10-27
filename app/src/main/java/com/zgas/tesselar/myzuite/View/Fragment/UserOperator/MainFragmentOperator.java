@@ -102,7 +102,6 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
             }
         };
         timer.schedule(doAsynchronousTask, 0, 600000); //execute in every 600000 ms = 10 min
-        //timer.schedule(doAsynchronousTask, 0, 5000); //executes in every 5000ms = 5 seconds
     }
 
     @Override

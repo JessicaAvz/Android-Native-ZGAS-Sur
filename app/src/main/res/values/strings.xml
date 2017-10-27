@@ -38,6 +38,9 @@
     <string name="prompt_detail_leakage_hour_seen">Hora de visualización del reporte</string>
     <string name="prompt_detail_leakage_hour_made">Hora del reporte</string>
     <string name="prompt_detail_leakage_hour_arrived">Hora de entrega</string>
+    <string name="prompt_detail_leakage_cylinder_capacity">Capacidad del tanque</string>
+    <string name="prompt_detail_leakage_cylinder_color">Color del tanque</string>
+    <string name="prompt_detail_leakage_channel">Tipo de fuga</string>
     <string name="prompt_detail_leakage_status">Estatus del reporte</string>
     <string name="prompt_detail_leakage_tank">Cantidad de litros</string>
     <string name="prompt_detail_leakage_ticket">Folio del ticket</string>
