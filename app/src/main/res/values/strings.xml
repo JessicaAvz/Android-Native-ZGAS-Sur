@@ -29,6 +29,7 @@
     <string name="prompt_detail_operator_tank">Cantidad de litros</string>
     <string name="prompt_detail_operator_ticket">Folio del ticket</string>
     <string name="prompt_detail_operator_total">Total</string>
+    <string name="prompt_detail_operator_payment">Tipo de pago</string>
 
     <!-- Activity detail leakage -->
     <string name="prompt_detail_leakage_client_id">Número de cliente</string>
@@ -150,6 +151,15 @@
     <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
     <string name="user_data_error">Error al obtener los datos del usuario.</string>
     <string name="cases_data_error">Error al obtener los casos.</string>
+
+    <string name="delete">Eliminar</string>
+
+    <!-- Delete order -->
+    <string name="dialog_delete_order">Cancelar pedido</string>
+    <string name="dialog_delete_order_prompt">¿Está seguro de que desea cancelar este pedido?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+
 
 </resources>
 

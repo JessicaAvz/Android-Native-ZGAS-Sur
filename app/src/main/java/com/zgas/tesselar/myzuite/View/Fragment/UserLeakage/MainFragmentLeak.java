@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.zgas.tesselar.myzuite.Controller.GetLeakagesTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Leak;
@@ -29,8 +30,10 @@ import java.util.List;
 public class MainFragmentLeak extends Fragment implements GetLeakagesTask.LeakagesTaskListener {
 
     private static final String DEBUG_TAG = "MainFragmentLeak";
+    private static final int REFRESH_DELAY = 1000;
 
     private RecyclerView mRecyclerOrders;
+    private RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LeaksAdapter leaksAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
@@ -55,6 +58,24 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
+
+        initUi(mRootView);
+        return mRootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        asyncTask();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        asyncTask();
+    }
+
+    private void asyncTask() {
         try {
             JSONObject params = new JSONObject();
             params.put(USER_ID, mUserPreferences.getUserObject().getUserId());
@@ -66,13 +87,25 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         } catch (Exception e) {
             e.printStackTrace();
         }
-        initUi(mRootView);
-        return mRootView;
     }
 
     private void initUi(View pRootView) {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_leak_recycler_view);
+
+        mRecyclerRefreshLayout = pRootView.findViewById(R.id.fragment_main_leakage_refresh_layout);
+        mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mRecyclerRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerRefreshLayout.setRefreshing(false);
+                        asyncTask();
+                    }
+                }, REFRESH_DELAY);
+            }
+        });
     }
 
     @Override

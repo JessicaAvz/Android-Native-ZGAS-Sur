@@ -22,9 +22,9 @@ import java.util.Formatter;
  * Created by jarvizu on 23/10/2017.
  */
 
-public class GetRefreshTokenTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class RefreshTokenTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "GetRefreshTokenTask";
+    private static final String DEBUG_TAG = "RefreshTokenTask";
     private static final String METHOD = "POST";
     private static final String JSON_OBJECT_ERROR = "error";
 
@@ -35,7 +35,7 @@ public class GetRefreshTokenTask extends AsyncTask<URL, JSONObject, JSONObject> 
     private String adminToken;
     private boolean isError = false;
 
-    public GetRefreshTokenTask(Context context, JSONObject params) {
+    public RefreshTokenTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);

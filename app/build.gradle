@@ -26,11 +26,13 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support:design:26.+'
-    compile 'com.aurelhubert:ahbottomnavigation:2.0.4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:cardview-v7:26.+'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    compile 'com.aurelhubert:ahbottomnavigation:2.0.4'
+    compile 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
     testCompile 'junit:junit:4.12'
 }

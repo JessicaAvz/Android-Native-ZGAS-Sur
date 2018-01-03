@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.User;
@@ -25,9 +26,11 @@ import java.util.ArrayList;
 public class MainFragmentService extends Fragment {
 
     private static final String DEBUG_TAG = "MainFragmentService";
+    private static final int REFRESH_DELAY = 1000;
 
     private final ArrayList<Order> mOrderList = new ArrayList();
     private RecyclerView mRecyclerOrders;
+    private RecyclerRefreshLayout mRecyclerRefreshLayout;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private Order mOrder;
@@ -54,23 +57,36 @@ public class MainFragmentService extends Fragment {
         return mRootView;
     }
 
-    private void initUi(View pRootview) {
+    private void initUi(View pRootView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mOrderAdapter = new OrdersAdapter(getActivity(), mOrderList);
 
-        mRecyclerOrders = pRootview.findViewById(R.id.fragment_main_service_recycler_view);
+        mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_service_recycler_view);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);
         mRecyclerOrders.setLayoutManager(layoutManager);
         mRecyclerOrders.setAdapter(mOrderAdapter);
 
+        mRecyclerRefreshLayout = pRootView.findViewById(R.id.fragment_main_service_refresh_layout);
+        mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mRecyclerRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerRefreshLayout.setRefreshing(false);
+                        //asyncTask();
+                    }
+                }, REFRESH_DELAY);
+            }
+        });
+
         for (int x = 0; x < 15; x++) {
             mOrder = new Order();
             mOrder.setCaseId(String.valueOf(x));
             mOrder.setCaseAddress("Av. Patria #123");
             mOrder.setCaseStatus(Order.caseStatus.INPROGRESS);
-            mOrder.setCaseType(Order.caseTypes.CUSTOM_SERVICE);
             mOrder.setCaseTimeAssignment("04:40");
             mOrder.setCaseTimeSeen(new Time(System.currentTimeMillis()).toString());
             mOrder.setCaseTimeArrival("07:30");

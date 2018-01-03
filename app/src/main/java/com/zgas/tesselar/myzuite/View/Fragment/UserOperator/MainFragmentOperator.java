@@ -2,8 +2,8 @@ package com.zgas.tesselar.myzuite.View.Fragment.UserOperator;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.zgas.tesselar.myzuite.Controller.GetOrdersTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
@@ -23,10 +24,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
+ * author: Jessica Arvizu
  * A simple {@link Fragment} subclass.
  */
 public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
@@ -34,8 +34,10 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     private static final String DEBUG_TAG = "MainFragmentOperator";
     private static final String USER_ID = "Id";
     private static final String ADMIN_TOKEN = "access_token";
+    private static final int REFRESH_DELAY = 1000;
 
     private RecyclerView mRecyclerOrders;
+    private RecyclerRefreshLayout mRecyclerRefreshLayout;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
@@ -59,15 +61,43 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
 
-        callAsyncTask();
-
         initUi(mRootView);
         return mRootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(DEBUG_TAG, "onStart");
+        Log.d(DEBUG_TAG, "Llamado de asyncTask onStart");
+        asyncTask();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        Log.d(DEBUG_TAG, "onResume");
+        Log.d(DEBUG_TAG, "Llamado de asyncTask onResume");
+        asyncTask();
     }
 
     private void initUi(View pRootView) {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_operator_recycler_view);
+        mRecyclerRefreshLayout = pRootView.findViewById(R.id.fragment_main_operator_refresh_layout);
+
+        mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mRecyclerRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerRefreshLayout.setRefreshing(false);
+                        asyncTask();
+                    }
+                }, REFRESH_DELAY);
+            }
+        });
     }
 
     private void asyncTask() {
@@ -75,33 +105,13 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
             JSONObject params = new JSONObject();
             params.put(USER_ID, mUserPreferences.getUserObject().getUserId());
             params.put(ADMIN_TOKEN, mUserPreferences.getAdminToken());
-            Log.d(DEBUG_TAG, "Parámetros: " + params.getString(USER_ID) + " " + params.getString(ADMIN_TOKEN));
+            Log.d(DEBUG_TAG, "Parámetros: " + "Id de usuario: " + params.getString(USER_ID) + " Token de admin: " + params.getString(ADMIN_TOKEN));
             GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), params);
             getOrdersTask.setOrderTaskListener(this);
             getOrdersTask.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void callAsyncTask() {
-        final Handler handler = new Handler();
-        Timer timer = new Timer();
-        TimerTask doAsynchronousTask = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            asyncTask();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(doAsynchronousTask, 0, 600000); //execute in every 600000 ms = 10 min
     }
 
     @Override

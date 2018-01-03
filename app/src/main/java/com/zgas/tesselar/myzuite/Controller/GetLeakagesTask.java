@@ -41,8 +41,7 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private LeakagesTaskListener leakagesTaskListener;
     private UserPreferences userPreferences;
     private String adminToken;
-    private Leak aLeak;
-    private List<Leak> leaksList;
+    private Leak leak;
     private ProgressDialog progressDialog;
     private boolean isError = false;
 
@@ -115,32 +114,32 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 for (int i = 0; i < leaksArray.length(); i++) {
                     JSONObject caseObject = leaksArray.getJSONObject(i);
-                    aLeak = new Leak();
-                    aLeak.setLeakId(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
-                    Log.d(DEBUG_TAG, "Id del caso: " + aLeak.getLeakId());
-                    aLeak.setLeakTimeDeparture(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE));
-                    Log.d(DEBUG_TAG, "Llegada del caso: " + aLeak.getLeakTimeDeparture());
-                    aLeak.setLeakTimeScheduled(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED));
-                    Log.d(DEBUG_TAG, "Hora programada del caso: " + aLeak.getLeakTimeScheduled());
-                    //aLeak.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
-                    aLeak.setLeakTimeAssignment(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN));
-                    Log.d(DEBUG_TAG, "Hora de asignación del caso: " + aLeak.getLeakTimeAssignment());
-                    aLeak.setLeakTimeEnd(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END));
-                    Log.d(DEBUG_TAG, "Hora de terminación del caso: " + aLeak.getLeakTimeEnd());
-                    aLeak.setLeakAccountName(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS));
-                    Log.d(DEBUG_TAG, "Cliente del caso: " + aLeak.getLeakAccountName());
-                    aLeak.setLeakAddress(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS));
-                    Log.d(DEBUG_TAG, "Dirección del caso: " + aLeak.getLeakAddress());
-                    aLeak.setLeakSubject(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT));
-                    Log.d(DEBUG_TAG, "Descripción del caso: " + aLeak.getLeakSubject());
-                    aLeak.setLeakCylinderCapacity(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY));
-                    Log.d(DEBUG_TAG, "Capacidad: " + aLeak.getLeakCylinderCapacity());
-                    aLeak.setLeakCylinderColor(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR));
-                    Log.d(DEBUG_TAG, "Color del cilindro: " + aLeak.getLeakCylinderColor());
-                    aLeak.setLeakChannel(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL));
-                    Log.d(DEBUG_TAG, "Chanel: " + aLeak.getLeakChannel());
-                    aLeak.setLeakFolioSalesNote(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE));
-                    Log.d(DEBUG_TAG, "Folio: " + aLeak.getLeakFolioSalesNote());
+                    leak = new Leak();
+                    leak.setLeakId(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
+                    Log.d(DEBUG_TAG, "Id del caso: " + leak.getLeakId());
+                    leak.setLeakTimeDeparture(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE));
+                    Log.d(DEBUG_TAG, "Llegada del caso: " + leak.getLeakTimeDeparture());
+                    leak.setLeakTimeScheduled(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED));
+                    Log.d(DEBUG_TAG, "Hora programada del caso: " + leak.getLeakTimeScheduled());
+                    //leak.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                    leak.setLeakTimeAssignment(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN));
+                    Log.d(DEBUG_TAG, "Hora de asignación del caso: " + leak.getLeakTimeAssignment());
+                    leak.setLeakTimeEnd(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END));
+                    Log.d(DEBUG_TAG, "Hora de terminación del caso: " + leak.getLeakTimeEnd());
+                    leak.setLeakAccountName(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS));
+                    Log.d(DEBUG_TAG, "Cliente del caso: " + leak.getLeakAccountName());
+                    leak.setLeakAddress(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS));
+                    Log.d(DEBUG_TAG, "Dirección del caso: " + leak.getLeakAddress());
+                    leak.setLeakSubject(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT));
+                    Log.d(DEBUG_TAG, "Descripción del caso: " + leak.getLeakSubject());
+                    leak.setLeakCylinderCapacity(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY));
+                    Log.d(DEBUG_TAG, "Capacidad: " + leak.getLeakCylinderCapacity());
+                    leak.setLeakCylinderColor(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR));
+                    Log.d(DEBUG_TAG, "Color del cilindro: " + leak.getLeakCylinderColor());
+                    leak.setLeakChannel(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL));
+                    Log.d(DEBUG_TAG, "Chanel: " + leak.getLeakChannel());
+                    leak.setLeakFolioSalesNote(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE));
+                    Log.d(DEBUG_TAG, "Folio: " + leak.getLeakFolioSalesNote());
 
                     //<-------------------------Agregar tipo de fuga --------------------------------------------->
                     String leakType = caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_SERVICE_TYPE).toString();
@@ -151,48 +150,44 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "CasePriority " + leakPriority);
 
                     if (leakType.equals(Leak.leakType.ORDER.toString())) {
-                        aLeak.setLeakType(Leak.leakType.ORDER);
-                    } else if (leakType.equals(Order.caseTypes.LEAKAGE.toString())) {
-                        aLeak.setLeakType(Leak.leakType.LEAKAGE);
+                        leak.setLeakType(Leak.leakType.ORDER);
                     } else if (leakType.equals(Order.caseTypes.CUT.toString())) {
-                        aLeak.setLeakType(Leak.leakType.CUT);
+                        leak.setLeakType(Leak.leakType.CUT);
                     } else if (leakType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        aLeak.setLeakType(Leak.leakType.RECONNECTION);
-                    } else if (leakType.equals(Order.caseTypes.CUSTOM_SERVICE.toString())) {
-                        aLeak.setLeakType(Leak.leakType.CUSTOM_SERVICE);
+                        leak.setLeakType(Leak.leakType.RECONNECTION);
                     }
-                    Log.d(DEBUG_TAG, "Tipo del caso: " + aLeak.getLeakType());
+                    Log.d(DEBUG_TAG, "Tipo del caso: " + leak.getLeakType());
 
                     if (leakStatus.equals(Leak.leakStatus.INPROGRESS.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.INPROGRESS);
+                        leak.setLeakStatus(Leak.leakStatus.INPROGRESS);
                     } else if (leakStatus.equals(Leak.leakStatus.CANCELLED.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.CANCELLED);
+                        leak.setLeakStatus(Leak.leakStatus.CANCELLED);
                     } else if (leakStatus.equals(Leak.leakStatus.FINISHED.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.FINISHED);
+                        leak.setLeakStatus(Leak.leakStatus.FINISHED);
                     } else if (leakStatus.equals(Leak.leakStatus.NEW.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.NEW);
+                        leak.setLeakStatus(Leak.leakStatus.NEW);
                     } else if (leakStatus.equals(Leak.leakStatus.ASSIGNED.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.ASSIGNED);
+                        leak.setLeakStatus(Leak.leakStatus.ASSIGNED);
                     } else if (leakStatus.equals(Leak.leakStatus.ACCEPTED.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.ACCEPTED);
+                        leak.setLeakStatus(Leak.leakStatus.ACCEPTED);
                     } else if (leakStatus.equals(Leak.leakStatus.RETIRED.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.RETIRED);
+                        leak.setLeakStatus(Leak.leakStatus.RETIRED);
                     } else if (leakStatus.equals(Leak.leakStatus.CLOSED.toString())) {
-                        aLeak.setLeakStatus(Leak.leakStatus.CLOSED);
+                        leak.setLeakStatus(Leak.leakStatus.CLOSED);
                     }
-                    Log.d(DEBUG_TAG, "Status del caso: " + aLeak.getLeakStatus());
+                    Log.d(DEBUG_TAG, "Status del caso: " + leak.getLeakStatus());
 
                     if (leakPriority.equals(Leak.leakPriority.HIGH.toString())) {
-                        aLeak.setLeakPriority(Leak.leakPriority.HIGH);
+                        leak.setLeakPriority(Leak.leakPriority.HIGH);
                     } else if (leakPriority.equals(Leak.leakPriority.LOW.toString())) {
-                        aLeak.setLeakPriority(Leak.leakPriority.LOW);
+                        leak.setLeakPriority(Leak.leakPriority.LOW);
                     } else if (leakPriority.equals(Leak.leakPriority.MEDIUM.toString())) {
-                        aLeak.setLeakPriority(Leak.leakPriority.MEDIUM);
+                        leak.setLeakPriority(Leak.leakPriority.MEDIUM);
                     }
-                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aLeak.getLeakPriority());
+                    Log.d(DEBUG_TAG, "Prioridad del caso: " + leak.getLeakPriority());
 
                     isError = false;
-                    leaksList.add(aLeak);
+                    leaksList.add(leak);
                 }
             }
         } catch (JSONException e) {

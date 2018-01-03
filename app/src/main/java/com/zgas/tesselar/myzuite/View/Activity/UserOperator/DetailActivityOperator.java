@@ -29,8 +29,9 @@ import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivityOperator";
-    private Bundle mBundle;
-    private String mIntCaseId;
+
+    private Bundle bundle;
+    private String mStrCaseId;
     private String mStrCaseUserName;
     private String mStrCaseAddress;
     private String mStrCaseStatus;
@@ -40,6 +41,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String mStrCaseTimeSeen;
     private String mStrCaseTimeArrived;
     private String mStrCaseTimeProgrammed;
+    private String mStrCasePaymentType;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -48,14 +50,14 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private TextView mCaseTimeSeen;
     private TextView mCaseTimeArrived;
     private TextView mCaseTimeProgrammed;
+    private TextView mCasePaymentType;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
     private FloatingActionButton mFabWaze;
 
-    private Order mOrder;
-    private UserPreferences mUserPreferences;
-    private User mUser;
+    private UserPreferences userPreferences;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +65,11 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_detail_operator);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(this);
-        mUser = mUserPreferences.getUserObject();
-        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
-        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
-        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
+        userPreferences = new UserPreferences(this);
+        user = userPreferences.getUserObject();
+        Log.d(DEBUG_TAG, "Usuario logeado id: " + user.getUserId());
+        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + user.getUserName());
+        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + user.getUserType());
         initUi();
     }
 
@@ -90,19 +92,19 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     private void initUi() {
-        mBundle = getIntent().getExtras();
-        mIntCaseId = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
-        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
-        mStrCaseAddress = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
-        mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
-        mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
-        mStrCasePriority = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
-        mStrCaseTimeIn = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
-        mStrCaseTimeSeen = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
-        mStrCaseTimeArrived = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
-        mStrCaseTimeProgrammed = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        bundle = getIntent().getExtras();
+        mStrCaseId = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
+        mStrCaseUserName = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
+        mStrCaseAddress = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
+        mStrCaseStatus = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
+        mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
+        mStrCasePriority = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
+        mStrCaseTimeIn = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
+        mStrCaseTimeSeen = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
+        mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
+        mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
 
-        Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mIntCaseId));
+        Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mStrCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
         Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
         Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
@@ -118,54 +120,60 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Detalle del pedido " + mIntCaseId);
+        getSupportActionBar().setTitle("Detalle del pedido " + mStrCaseId);
 
-        mUserName = (TextView) findViewById(R.id.activity_detail_operator_tv_client_name);
+        mUserName = findViewById(R.id.activity_detail_operator_tv_client_name);
         if (mStrCaseUserName == null || mStrCaseUserName.equals("")) {
         } else {
             mUserName.setText(mStrCaseUserName);
         }
-        mCaseAddress = (TextView) findViewById(R.id.activity_detail_operator_tv_case_address);
+        mCaseAddress = findViewById(R.id.activity_detail_operator_tv_case_address);
         if (mStrCaseAddress == null || mStrCaseAddress.equals("")) {
         } else {
             mCaseAddress.setText(mStrCaseAddress);
         }
-        mCaseStatus = (TextView) findViewById(R.id.activity_detail_operator_tv_status);
+        mCaseStatus = findViewById(R.id.activity_detail_operator_tv_status);
         if (mStrCaseStatus == null || mStrCaseStatus.equals("")) {
         } else {
             mCaseStatus.setText(mStrCaseStatus);
         }
-        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_operator_tv_time_in);
+        mCaseTimeIn = findViewById(R.id.activity_detail_operator_tv_time_in);
         if (mStrCaseTimeIn == null || mStrCaseTimeIn.equals("")) {
             mCaseTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeIn.setText(mStrCaseTimeIn);
         }
-        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_operator_tv_time_seen);
+        mCaseTimeSeen = findViewById(R.id.activity_detail_operator_tv_time_seen);
         if (mStrCaseTimeSeen == null || mStrCaseTimeSeen.equals("")) {
             mCaseTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeSeen.setText(mStrCaseTimeSeen);
         }
-        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_operator_tv_arrived);
+        mCaseTimeArrived = findViewById(R.id.activity_detail_operator_tv_arrived);
         if (mStrCaseTimeArrived == null || mStrCaseTimeArrived.equals("")) {
             mCaseTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeArrived.setText(mStrCaseTimeArrived);
         }
-        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_operator_tv_time_programmed);
+        mCaseTimeProgrammed = findViewById(R.id.activity_detail_operator_tv_time_programmed);
         if (mStrCaseTimeProgrammed == null || mStrCaseTimeProgrammed.equals("")) {
             mCaseTimeProgrammed.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeProgrammed.setText(mStrCaseTimeProgrammed);
         }
-        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_in_progress);
+        mCasePaymentType = findViewById(R.id.activity_detal_operator_tv_payment);
+        if (mStrCasePaymentType == null || mStrCasePaymentType.equals("")) {
+            mCasePaymentType.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCasePaymentType.setText(mStrCasePaymentType);
+        }
+        mFabInProgress = findViewById(R.id.activity_detail_operator_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
-        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_finished);
+        mFabFinished = findViewById(R.id.activity_detail_operator_fab_finished);
         mFabFinished.setOnClickListener(this);
-        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_cancel);
+        mFabCanceled = findViewById(R.id.activity_detail_operator_fab_cancel);
         mFabCanceled.setOnClickListener(this);
-        mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_operator_fab_waze);
+        mFabWaze = findViewById(R.id.activity_detail_operator_fab_waze);
         mFabWaze.setOnClickListener(this);
 
         if (mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
@@ -220,25 +228,20 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
 
         final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
         final EditText etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
-        final EditText etTotal = dialog.findViewById(R.id.dialog_finish_case_tv_total);
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(etQuantity) || isEmpty(etTicket) || isEmpty(etTotal)) {
+                if (isEmpty(etQuantity) || isEmpty(etTicket)) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-
                     final String quantity = etQuantity.getText().toString();
                     final String ticket = etTicket.getText().toString();
-                    final String total = etTotal.getText().toString();
                     Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
                     Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
-                    Log.d(DEBUG_TAG, "Total " + total);
                     etQuantity.getText().clear();
                     etTicket.getText().clear();
-                    etTotal.getText().clear();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }

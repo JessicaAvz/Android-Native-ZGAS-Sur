@@ -87,10 +87,8 @@ public class Order {
     }
 
     public enum caseTypes {
-        LEAKAGE("Fugas"),
         CUT("Corte"),
         ORDER("Pedido"),
-        CUSTOM_SERVICE("Servicio medido"),
         RECONNECTION("Re-conexión");
 
         private final String name;

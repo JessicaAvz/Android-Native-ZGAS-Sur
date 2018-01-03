@@ -198,24 +198,20 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
 
         final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
         final EditText etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
-        final EditText etTotal = dialog.findViewById(R.id.dialog_finish_case_tv_total);
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(etQuantity) || isEmpty(etTicket) || isEmpty(etTotal)) {
+                if (isEmpty(etQuantity) || isEmpty(etTicket)) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_finish_incorrect), Toast.LENGTH_LONG).show();
                 } else {
                     final String quantity = etQuantity.getText().toString();
                     final String ticket = etTicket.getText().toString();
-                    final String total = etTotal.getText().toString();
                     Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
                     Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
-                    Log.d(DEBUG_TAG, "Total " + total);
                     etQuantity.getText().clear();
                     etTicket.getText().clear();
-                    etTotal.getText().clear();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_finish_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }

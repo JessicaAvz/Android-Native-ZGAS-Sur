@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.zgas.tesselar.myzuite.Controller.GetRefreshTokenTask;
+import com.zgas.tesselar.myzuite.Controller.RefreshTokenTask;
 import com.zgas.tesselar.myzuite.Controller.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.CustomViewPager;
@@ -45,14 +45,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener,
-        GetRefreshTokenTask.RefreshTokenListener {
+        RefreshTokenTask.RefreshTokenListener {
 
     private static final String DEBUG_TAG = "MainActivity";
     private static final String EMAIL_TAG = "email";
     private static final String PASS_TAG = "password";
 
-    private AHBottomNavigation mAhBottomNavigation;
-    private CustomViewPager mViewPager;
+    private AHBottomNavigation ahBottomNavigation;
+    private CustomViewPager customViewPager;
     private FloatingActionButton mFabCall;
     private FloatingActionButton mFabCallSupervisor;
     private HelpFragmentOperator mHelpFragmentOperator;
@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private RecyclerView mRecyclerViewSupervised;
     private Toolbar toolbar;
-    private UserPreferences mUserPreferences;
+    private UserPreferences userPreferences;
     private LinearLayoutManager linearLayoutManager;
-    private User mUser;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +77,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
 
-        mUserPreferences = new UserPreferences(this);
-        mUser = mUserPreferences.getUserObject();
+        userPreferences = new UserPreferences(this);
+        user = userPreferences.getUserObject();
 
-        if (mUserPreferences.isLoggedIn()) {
+        if (userPreferences.isLoggedIn()) {
             try {
                 JSONObject params = new JSONObject();
                 params.put(EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
                 params.put(PASS_TAG, UrlHelper.ADMIN_PASS);
                 Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG) + " " + params.getString(PASS_TAG));
 
-                GetRefreshTokenTask refreshTokenTask = new GetRefreshTokenTask(this, params);
+                RefreshTokenTask refreshTokenTask = new RefreshTokenTask(this, params);
                 refreshTokenTask.setRefreshTokenListener(this);
                 refreshTokenTask.execute();
             } catch (Exception e) {
@@ -95,25 +95,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        Log.d(DEBUG_TAG, "Admin token: " + mUserPreferences.getAdminToken());
-        Log.d(DEBUG_TAG, "Usuario logeado: " + mUserPreferences.getLoginObject().getLoginEmail());
+        Log.d(DEBUG_TAG, "Admin token: " + userPreferences.getAdminToken());
+        Log.d(DEBUG_TAG, "Usuario logeado: " + userPreferences.getLoginObject().getLoginEmail());
 
-        if (mUser.getUserType() == User.userType.OPERATOR) {
+        if (user.getUserType() == User.userType.OPERATOR) {
             Log.d(DEBUG_TAG, "OnCreate Operator");
             setContentView(R.layout.activity_main);
             initUiOperator();
-        } else if (mUser.getUserType() == User.userType.SERVICE) {
+        } else if (user.getUserType() == User.userType.SERVICE) {
             Log.d(DEBUG_TAG, "OnCreate Servicio medido");
             setContentView(R.layout.activity_main);
             initUiService();
-        } else if (mUser.getUserType() == User.userType.SUPERVISOR) {
+        } else if (user.getUserType() == User.userType.SUPERVISOR) {
             Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
 
             getSupervisedCallAsyncTask();
 
             initUiSupervisor();
-        } else if (mUser.getUserType() == User.userType.LEAKAGE) {
+        } else if (user.getUserType() == User.userType.LEAKAGE) {
             setContentView(R.layout.activity_main);
             Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
@@ -139,13 +139,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initUiOperator() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_main_fragment);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.activity_main_cv_view_pager);
-        mViewPager.setPagingEnabled(false);
-        mFabCall = (FloatingActionButton) findViewById(R.id.activity_main_fab_call);
+        customViewPager = findViewById(R.id.activity_main_cv_view_pager);
+        customViewPager.setPagingEnabled(false);
+        mFabCall = findViewById(R.id.activity_main_fab_call);
         mFabCall.setOnClickListener(this);
 
         mHelpFragmentOperator = new HelpFragmentOperator();
@@ -156,18 +156,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPagerAdapter.addFragment(mOrderFragmentOperator);
         mPagerAdapter.addFragment(mMainFragmentOperator);
         mPagerAdapter.addFragment(mHelpFragmentOperator);
-        mViewPager.setAdapter(mPagerAdapter);
+        customViewPager.setAdapter(mPagerAdapter);
         initBottomNavigationOperator();
     }
 
     private void initUiService() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.activity_main_cv_view_pager);
-        mViewPager.setPagingEnabled(false);
-        mFabCall = (FloatingActionButton) findViewById(R.id.activity_main_fab_call);
+        customViewPager = findViewById(R.id.activity_main_cv_view_pager);
+        customViewPager.setPagingEnabled(false);
+        mFabCall = findViewById(R.id.activity_main_fab_call);
         mFabCall.setOnClickListener(this);
 
         mMainFragmentService = new MainFragmentService();
@@ -176,12 +176,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mMainFragmentService);
         mPagerAdapter.addFragment(mHelpFragmentService);
-        mViewPager.setAdapter(mPagerAdapter);
+        customViewPager.setAdapter(mPagerAdapter);
         initBottomNavigationService();
     }
 
     private void initUiSupervisor() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_supervised);
         mFabCallSupervisor = (FloatingActionButton) findViewById(R.id.ativity_supervisor_fab_call);
@@ -191,13 +191,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initUiLeakage() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_order_leak);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.activity_main_cv_view_pager);
-        mViewPager.setPagingEnabled(false);
-        mFabCall = (FloatingActionButton) findViewById(R.id.activity_main_fab_call);
+        customViewPager = findViewById(R.id.activity_main_cv_view_pager);
+        customViewPager.setPagingEnabled(false);
+        mFabCall = findViewById(R.id.activity_main_fab_call);
         mFabCall.setOnClickListener(this);
 
         mMainFragmentLeak = new MainFragmentLeak();
@@ -206,31 +206,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mMainFragmentLeak);
         mPagerAdapter.addFragment(mHelpFragmentLeak);
-        mViewPager.setAdapter(mPagerAdapter);
+        customViewPager.setAdapter(mPagerAdapter);
         initBottomNavigationLeakage();
     }
 
     private void initBottomNavigationOperator() {
-        mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
+        ahBottomNavigation = findViewById(R.id.activity_main_cv_bottom_navigation);
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_fragment), R.drawable.icon_check, R.color.pink_500);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
 
-        mAhBottomNavigation.addItem(item1);
-        mAhBottomNavigation.addItem(item2);
-        mAhBottomNavigation.addItem(item3);
+        ahBottomNavigation.addItem(item1);
+        ahBottomNavigation.addItem(item2);
+        ahBottomNavigation.addItem(item3);
 
-        mAhBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
-        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
-        mAhBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
-        mAhBottomNavigation.setForceTint(true);
-        mAhBottomNavigation.setTranslucentNavigationEnabled(true);
-        mAhBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
-        mAhBottomNavigation.setCurrentItem(1);
-        mViewPager.setCurrentItem(1);
-        mViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
+        ahBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        ahBottomNavigation.setBehaviorTranslationEnabled(false);
+        ahBottomNavigation.setBehaviorTranslationEnabled(false);
+        ahBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
+        ahBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        ahBottomNavigation.setForceTint(true);
+        ahBottomNavigation.setTranslucentNavigationEnabled(true);
+        ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
+        ahBottomNavigation.setCurrentItem(1);
+        customViewPager.setCurrentItem(1);
+        customViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -257,20 +257,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mAhBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+        ahBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 if (position == 0) {
-                    mViewPager.setCurrentItem(0);
+                    customViewPager.setCurrentItem(0);
                 } else if (position == 1) {
-                    mViewPager.setCurrentItem(1);
+                    customViewPager.setCurrentItem(1);
                 } else if (position == 2) {
-                    mViewPager.setCurrentItem(2);
+                    customViewPager.setCurrentItem(2);
                 }
                 return true;
             }
         });
-        mAhBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+        ahBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
             @Override
             public void onPositionChange(int y) {
                 Log.d(DEBUG_TAG, "BottomNavigation Position: " + y);
@@ -279,24 +279,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomNavigationService() {
-        mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
+        ahBottomNavigation = findViewById(R.id.activity_main_cv_bottom_navigation);
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment_service), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
 
-        mAhBottomNavigation.addItem(item1);
-        mAhBottomNavigation.addItem(item2);
+        ahBottomNavigation.addItem(item1);
+        ahBottomNavigation.addItem(item2);
 
-        mAhBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
-        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
-        mAhBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
-        mAhBottomNavigation.setForceTint(true);
-        mAhBottomNavigation.setTranslucentNavigationEnabled(true);
-        mAhBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-        mAhBottomNavigation.setCurrentItem(0);
-        mViewPager.setCurrentItem(0);
-        mViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
+        ahBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        ahBottomNavigation.setBehaviorTranslationEnabled(false);
+        ahBottomNavigation.setBehaviorTranslationEnabled(false);
+        ahBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
+        ahBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        ahBottomNavigation.setForceTint(true);
+        ahBottomNavigation.setTranslucentNavigationEnabled(true);
+        ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+        ahBottomNavigation.setCurrentItem(0);
+        customViewPager.setCurrentItem(0);
+        customViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -320,18 +320,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mAhBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+        ahBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 if (position == 0) {
-                    mViewPager.setCurrentItem(0);
+                    customViewPager.setCurrentItem(0);
                 } else if (position == 1) {
-                    mViewPager.setCurrentItem(1);
+                    customViewPager.setCurrentItem(1);
                 }
                 return true;
             }
         });
-        mAhBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+        ahBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
             @Override
             public void onPositionChange(int y) {
                 Log.d(DEBUG_TAG, "BottomNavigation Position: " + y);
@@ -340,24 +340,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomNavigationLeakage() {
-        mAhBottomNavigation = (AHBottomNavigation) findViewById(R.id.activity_main_cv_bottom_navigation);
+        ahBottomNavigation = findViewById(R.id.activity_main_cv_bottom_navigation);
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_leak), R.drawable.icon_truck_fast, R.color.pink_500);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
 
-        mAhBottomNavigation.addItem(item1);
-        mAhBottomNavigation.addItem(item2);
+        ahBottomNavigation.addItem(item1);
+        ahBottomNavigation.addItem(item2);
 
-        mAhBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
-        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setBehaviorTranslationEnabled(false);
-        mAhBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
-        mAhBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
-        mAhBottomNavigation.setForceTint(true);
-        mAhBottomNavigation.setTranslucentNavigationEnabled(true);
-        mAhBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-        mAhBottomNavigation.setCurrentItem(0);
-        mViewPager.setCurrentItem(0);
-        mViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
+        ahBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        ahBottomNavigation.setBehaviorTranslationEnabled(false);
+        ahBottomNavigation.setBehaviorTranslationEnabled(false);
+        ahBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
+        ahBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        ahBottomNavigation.setForceTint(true);
+        ahBottomNavigation.setTranslucentNavigationEnabled(true);
+        ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+        ahBottomNavigation.setCurrentItem(0);
+        customViewPager.setCurrentItem(0);
+        customViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -381,18 +381,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mAhBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+        ahBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 if (position == 0) {
-                    mViewPager.setCurrentItem(0);
+                    customViewPager.setCurrentItem(0);
                 } else if (position == 1) {
-                    mViewPager.setCurrentItem(1);
+                    customViewPager.setCurrentItem(1);
                 }
                 return true;
             }
         });
-        mAhBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+        ahBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
             @Override
             public void onPositionChange(int y) {
                 Log.d(DEBUG_TAG, "BottomNavigation Position: " + y);
@@ -437,8 +437,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getSupervisedAsynTask() {
         try {
             JSONObject params = new JSONObject();
-            params.put(ExtrasHelper.EMAIL_TAG, mUserPreferences.getLoginObject().getLoginEmail());
-            params.put(ExtrasHelper.ADMIN_TOKEN, mUserPreferences.getAdminToken());
+            params.put(ExtrasHelper.EMAIL_TAG, userPreferences.getLoginObject().getLoginEmail());
+            params.put(ExtrasHelper.ADMIN_TOKEN, userPreferences.getAdminToken());
             Log.d(DEBUG_TAG, "Parámetros: " + params.getString(ExtrasHelper.EMAIL_TAG) + " " + params.getString(ExtrasHelper.ADMIN_TOKEN));
             GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this, params);
             getUserInfoTask.setUserInfoListener(this);
@@ -465,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 900000); //execute in every 900000 ms = 15 min
+        timer.schedule(doAsynchronousTask, 0, 300000); //execute in every 300000 ms = 5 min
         //timer.schedule(doAsynchronousTask, 0, 5000); //executes in every 5000ms = 5 seconds
     }
 
@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout_menu:
-                mUserPreferences.logoutUser();
+                userPreferences.logoutUser();
                 this.finish();
                 return true;
             default:
@@ -496,13 +496,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void userInfoSuccessResponse(User user) {
-        Log.d(DEBUG_TAG, "User preference id: " + mUserPreferences.getUserObject().getUserId());
-        Log.d(DEBUG_TAG, "User preference name: " + mUserPreferences.getUserObject().getUserName());
-        Log.d(DEBUG_TAG, "User preference type: " + mUserPreferences.getUserObject().getUserType());
-        Log.d(DEBUG_TAG, "User preference email: " + mUserPreferences.getUserObject().getUserEmail());
-        Log.d(DEBUG_TAG, "User preference zone: " + mUserPreferences.getUserObject().getUserZone());
-        Log.d(DEBUG_TAG, "User preference route: " + mUserPreferences.getUserObject().getUserRoute());
-        Log.d(DEBUG_TAG, "User preference status: " + mUserPreferences.getUserObject().getUserstatus());
+        Log.d(DEBUG_TAG, "User preference id: " + userPreferences.getUserObject().getUserId());
+        Log.d(DEBUG_TAG, "User preference name: " + userPreferences.getUserObject().getUserName());
+        Log.d(DEBUG_TAG, "User preference type: " + userPreferences.getUserObject().getUserType());
+        Log.d(DEBUG_TAG, "User preference email: " + userPreferences.getUserObject().getUserEmail());
+        Log.d(DEBUG_TAG, "User preference zone: " + userPreferences.getUserObject().getUserZone());
+        Log.d(DEBUG_TAG, "User preference route: " + userPreferences.getUserObject().getUserRoute());
+        Log.d(DEBUG_TAG, "User preference status: " + userPreferences.getUserObject().getUserstatus());
     }
 
     @Override
@@ -524,12 +524,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void refreshSuccessResponse(Login login) {
-        mUserPreferences.setLoginData(login);
-        Log.d(DEBUG_TAG, "Login refresh token: " + mUserPreferences.getLoginObject().getLoginAccessToken());
-        Log.d(DEBUG_TAG, "Login refresh id: " + mUserPreferences.getLoginObject().getLoginId());
-        Log.d(DEBUG_TAG, "Login refresh instance url: " + mUserPreferences.getLoginObject().getLoginInstanceUrl());
-        Log.d(DEBUG_TAG, "Login refresh issued at: " + mUserPreferences.getLoginObject().getLoginIssuedAt());
-        Log.d(DEBUG_TAG, "Login refresh signature: " + mUserPreferences.getLoginObject().getLoginSignature());
-        Log.d(DEBUG_TAG, "Login refresh token type: " + mUserPreferences.getLoginObject().getLoginTokenType());
+        userPreferences.setLoginData(login);
+        Log.d(DEBUG_TAG, "Login refresh token: " + userPreferences.getLoginObject().getLoginAccessToken());
+        Log.d(DEBUG_TAG, "Login refresh id: " + userPreferences.getLoginObject().getLoginId());
+        Log.d(DEBUG_TAG, "Login refresh instance url: " + userPreferences.getLoginObject().getLoginInstanceUrl());
+        Log.d(DEBUG_TAG, "Login refresh issued at: " + userPreferences.getLoginObject().getLoginIssuedAt());
+        Log.d(DEBUG_TAG, "Login refresh signature: " + userPreferences.getLoginObject().getLoginSignature());
+        Log.d(DEBUG_TAG, "Login refresh token type: " + userPreferences.getLoginObject().getLoginTokenType());
     }
 }

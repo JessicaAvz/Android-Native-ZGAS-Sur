@@ -138,14 +138,10 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                     if (caseType.equals(Order.caseTypes.ORDER.toString())) {
                         aOrder.setCaseType(Order.caseTypes.ORDER);
-                    } else if (caseType.equals(Order.caseTypes.LEAKAGE.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.LEAKAGE);
                     } else if (caseType.equals(Order.caseTypes.CUT.toString())) {
                         aOrder.setCaseType(Order.caseTypes.CUT);
                     } else if (caseType.equals(Order.caseTypes.RECONNECTION.toString())) {
                         aOrder.setCaseType(Order.caseTypes.RECONNECTION);
-                    } else if (caseType.equals(Order.caseTypes.CUSTOM_SERVICE.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.CUSTOM_SERVICE);
                     }
                     Log.d(DEBUG_TAG, "Tipo de caso: " + aOrder.getCaseType());
 

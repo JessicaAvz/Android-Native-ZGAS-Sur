@@ -14,7 +14,7 @@ public class UrlHelper {
     public static final String CALL = "tel:6241370525";
 
     public static final String ADMIN_EMAIL = "mbravo@grupozeta.biz.dev1";
-    public static final String ADMIN_PASS = "sfgrupozeta16";
+    public static final String ADMIN_PASS = "sfgrupozeta18";
     public static final String GRANT_TYPE = "password";
     public static final String CLIENT_ID = "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003";
     public static final String CLIENT_SECRET = "631836681953146126";
