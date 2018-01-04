@@ -20,11 +20,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.zgas.tesselar.myzuite.CustomViewPager
+    <com.zgas.tesselar.myzuite.Utilities.CustomViewPager
         android:id="@+id/activity_main_cv_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:transitionName="fab_transition"></com.zgas.tesselar.myzuite.CustomViewPager>
+        android:transitionName="fab_transition"></com.zgas.tesselar.myzuite.Utilities.CustomViewPager>
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/activity_main_cv_bottom_navigation"

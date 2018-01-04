@@ -19,6 +19,7 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperator;
+import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         Order.caseStatus caseStatus = mOrder.getCaseStatus();
         Order.caseTypes caseType = mOrder.getCaseType();
         String orderHourIn = mOrder.getCaseTimeAssignment();
-        String serviceType = mOrder.getCaseServiceType();
+        final String serviceType = mOrder.getCaseServiceType();
 
         TextView id = holder.mOrderId;
         id.setText(caseId);
@@ -138,16 +139,22 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 String timeScheduled = mOrder.getCaseTimeScheduled();
                 String priority = mOrder.getCasePriority().toString();
                 String userName = mOrder.getCaseAccountName();
+                String paymentMethod = mOrder.getCasePaymentMethod();
+                String serviceType = mOrder.getCaseServiceType();
+                String recordType = mOrder.getCaseType().toString();
 
                 Log.d(DEBUG_TAG, "Id del caso: " + id);
                 Log.d(DEBUG_TAG, "Dirección del caso: " + address);
                 Log.d(DEBUG_TAG, "Status de caso: " + status);
                 Log.d(DEBUG_TAG, "Hora de asignación: " + timeAssignment);
+                Log.d(DEBUG_TAG, "Tipo de servicio: " + serviceType);
                 //Log.d(DEBUG_TAG, "Visto : " + timeSeen);
                 //Log.d(DEBUG_TAG, "Hora de llegada: " + timeArrival);
                 Log.d(DEBUG_TAG, "Hora programada: " + timeScheduled);
                 Log.d(DEBUG_TAG, "Prioridad del caso: " + priority);
                 Log.d(DEBUG_TAG, "Nombre del cliente: " + userName);
+                Log.d(DEBUG_TAG, "Método de pago: " + paymentMethod);
+                Log.d(DEBUG_TAG, "Tipo de record: " + recordType);
 
                 Bundle bundle = new Bundle();
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
@@ -159,6 +166,9 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY, priority);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME, userName);
+                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
+                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
 
                 Log.d(DEBUG_TAG, "Bundle - Id del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
                 Log.d(DEBUG_TAG, "Bundle - Dirección del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
@@ -169,11 +179,20 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 Log.d(DEBUG_TAG, "Bundle - Hora programada del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
                 Log.d(DEBUG_TAG, "Bundle - Prioridad del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY));
                 Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
+                Log.d(DEBUG_TAG, "Bundle - Método de pago: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
+                Log.d(DEBUG_TAG, "Bundle - Tipo de Servicio: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
+                Log.d(DEBUG_TAG, "Bundle - Tipo de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE));
 
                 intent = new Intent();
-                intent = new Intent(context, DetailActivityOperator.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if (serviceType.equals(Order.caseTypes.MEASURED.toString()) && recordType.equals(Order.caseTypes.ORDER.toString())) {
+                    intent = new Intent(context, DetailActivityService.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                } else if (recordType.equals(Order.caseTypes.ORDER.toString())) {
+                    intent = new Intent(context, DetailActivityOperator.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -234,10 +253,12 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         private TextView mOrderAddress;
         private TextView mOrderTimeIn;
         private TextView mOrderType;
+        private TextView mOrderPayment;
 
         public OrderViewHolder(final View itemView) {
             super(itemView);
 
+            //if de swipe layout si es order o service
             swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
             mOrderDelete = itemView.findViewById(R.id.row_visit_recycler_tv_delete_visit);
             mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);

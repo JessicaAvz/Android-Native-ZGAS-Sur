@@ -28,23 +28,21 @@ import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
 
 public class DetailActivityService extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String DEBUG_TAG = "DetailActivityLeakage";
+    private static final String DEBUG_TAG = "DetailActivityService";
 
-    private Bundle mBundle;
-    private int mIntCaseId;
-    private int mIntCaseUserId;
+    private Bundle bundle;
+    private String mStrCaseId;
     private String mStrCaseUserName;
-    private String mStrCaseUserLastname;
     private String mStrCaseAddress;
     private String mStrCaseStatus;
     private String mStrCaseType;
     private String mStrCasePriority;
-    private String mCldCaseTimeIn;
-    private String mCldCaseTimeSeen;
-    private String mCldCaseTimeArrived;
-    private String mCldCaseTimeProgrammed;
+    private String mStrCaseTimeIn;
+    private String mStrCaseTimeSeen;
+    private String mStrCaseTimeArrived;
+    private String mStrCaseTimeProgrammed;
+    private String mStrCasePaymentMethod;
 
-    private TextView mUserId;
     private TextView mUserName;
     private TextView mCaseAddress;
     private TextView mCaseStatus;
@@ -52,6 +50,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private TextView mCaseTimeSeen;
     private TextView mCaseTimeArrived;
     private TextView mCaseTimeProgrammed;
+    private TextView mCasePaymentMethod;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
@@ -59,6 +58,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
 
     private UserPreferences mUserPreferences;
     private User mUser;
+    private boolean isClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,59 +75,62 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     }
 
     private void initUi() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mBundle = getIntent().getExtras();
-        mIntCaseId = mBundle.getInt(ExtrasHelper.ORDER_JSON_OBJECT_ID);
-        //mIntCaseUserId = mBundle.getInt(ExtrasHelper.EXTRA_JSON_OBJECT_USER_ID);
-        mStrCaseUserName = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_USER_NAME);
-        mStrCaseAddress = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
-        mStrCaseStatus = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
-        mStrCaseType = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
-        mStrCasePriority = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
-        mCldCaseTimeIn = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
-        mCldCaseTimeSeen = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
-        mCldCaseTimeArrived = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
-        mCldCaseTimeProgrammed = mBundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        bundle = getIntent().getExtras();
+        mStrCaseId = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
+        mStrCaseUserName = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
+        mStrCaseAddress = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
+        mStrCaseStatus = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
+        mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
+        mStrCasePriority = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
+        mStrCaseTimeIn = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
+        mStrCaseTimeSeen = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
+        mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
+        mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
 
-        Log.d(DEBUG_TAG, "Id de la fuga: " + String.valueOf(mIntCaseId));
+        Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mStrCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
         Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
-        Log.d(DEBUG_TAG, "Apellido del cliente: " + mStrCaseUserLastname);
         Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus de la fuga: " + mStrCaseStatus);
+        Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus);
         Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType);
-        Log.d(DEBUG_TAG, "Prioridad de la fuga: " + mStrCasePriority);
-        Log.d(DEBUG_TAG, "Hora de reporte: " + String.valueOf(mCldCaseTimeIn));
-        Log.d(DEBUG_TAG, "Hora de visualización del reporte: " + String.valueOf(mCldCaseTimeSeen));
-        Log.d(DEBUG_TAG, "Hora de llegada del reporte: " + String.valueOf(mCldCaseTimeArrived));
+        Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority);
+        Log.d(DEBUG_TAG, "Hora de pedido: " + mStrCaseTimeIn);
+        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + mStrCaseTimeSeen);
+        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + mStrCaseTimeArrived);
+        Log.d(DEBUG_TAG, "Hora programada del pedido: " + mStrCaseTimeProgrammed);
+        Log.d(DEBUG_TAG, "Tipo de pago del pedido: " + mStrCasePaymentMethod);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Detalle del servicio " + mIntCaseId);
+        getSupportActionBar().setTitle("Detalle del servicio " + mStrCaseId);
 
-        mUserName = (TextView) findViewById(R.id.activity_detail_service_tv_client_name);
-        mUserName.setText(mStrCaseUserName + " " + mStrCaseUserLastname);
-        mCaseAddress = (TextView) findViewById(R.id.activity_detail_service_tv_case_address);
+        mUserName = findViewById(R.id.activity_detail_service_tv_client_name);
+        mUserName.setText(mStrCaseUserName);
+        mCaseAddress = findViewById(R.id.activity_detail_service_tv_case_address);
         mCaseAddress.setText(mStrCaseAddress);
-        mCaseStatus = (TextView) findViewById(R.id.activity_detail_service_tv_status);
+        mCaseStatus = findViewById(R.id.activity_detail_service_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
-        mCaseTimeIn = (TextView) findViewById(R.id.activity_detail_service_tv_time_in);
-        mCaseTimeIn.setText(String.valueOf(mCldCaseTimeIn));
-        mCaseTimeSeen = (TextView) findViewById(R.id.activity_detail_service_tv_time_seen);
-        mCaseTimeSeen.setText(String.valueOf(mCldCaseTimeSeen));
-        mCaseTimeArrived = (TextView) findViewById(R.id.activity_detail_service_tv_arrived);
-        mCaseTimeArrived.setText(String.valueOf(mCldCaseTimeArrived));
-        mCaseTimeProgrammed = (TextView) findViewById(R.id.activity_detail_service_tv_time_programmed);
-        mCaseTimeProgrammed.setText(String.valueOf(mCldCaseTimeProgrammed));
-        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_in_progress);
+        mCaseTimeIn = findViewById(R.id.activity_detail_service_tv_time_in);
+        mCaseTimeIn.setText(String.valueOf(mStrCaseTimeIn));
+        mCaseTimeSeen = findViewById(R.id.activity_detail_service_tv_time_seen);
+        mCaseTimeSeen.setText(String.valueOf(mStrCaseTimeSeen));
+        mCaseTimeArrived = findViewById(R.id.activity_detail_service_tv_arrived);
+        mCaseTimeArrived.setText(String.valueOf(mStrCaseTimeArrived));
+        mCaseTimeProgrammed = findViewById(R.id.activity_detail_service_tv_time_programmed);
+        mCaseTimeProgrammed.setText(String.valueOf(mStrCaseTimeProgrammed));
+        mFabInProgress = findViewById(R.id.activity_detail_service_fab_in_progress);
+        mCasePaymentMethod = findViewById(R.id.activity_detail_service_tv_payment);
+        mCasePaymentMethod.setText(mStrCasePaymentMethod);
         mFabInProgress.setOnClickListener(this);
-        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_finished);
+        mFabFinished = findViewById(R.id.activity_detail_service_fab_finished);
         mFabFinished.setOnClickListener(this);
-        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_cancel);
+        mFabCanceled = findViewById(R.id.activity_detail_service_fab_cancel);
         mFabCanceled.setOnClickListener(this);
-        mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_service_fab_waze);
+        mFabWaze = findViewById(R.id.activity_detail_service_fab_waze);
         mFabWaze.setOnClickListener(this);
 
         if (mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
@@ -144,6 +147,8 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
+        } else {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.orange));
         }
     }
 
@@ -164,6 +169,14 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
+    }
+
+    private void checkButtons() {
+        if (isClicked == true) {
+            mFabFinished.setVisibility(View.VISIBLE);
+            mFabCanceled.setVisibility(View.VISIBLE);
+            mFabInProgress.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -266,6 +279,8 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
 
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
+        isClicked = true;
+        checkButtons();
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
                 .setMessage(getResources().getString(R.string.dialog_in_progress_body))

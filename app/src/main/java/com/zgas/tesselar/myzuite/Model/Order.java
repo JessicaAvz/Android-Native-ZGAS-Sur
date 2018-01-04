@@ -16,6 +16,7 @@ public class Order {
     private String caseContactName;
     private String caseAddress;
     private String caseSubject;
+    private String casePaymentMethod;
     private caseStatus caseStatus;
     private caseTypes caseType;
     private casePriority casePriority;
@@ -23,7 +24,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, String caseAccountName, String caseContactName, String caseAddress, String caseSubject, Order.caseStatus caseStatus, caseTypes caseType, Order.casePriority casePriority) {
+    public Order(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, String caseAccountName, String caseContactName, String caseAddress, String caseSubject, String casePaymentMethod, Order.caseStatus caseStatus, caseTypes caseType, Order.casePriority casePriority) {
         this.caseId = caseId;
         this.caseUserId = caseUserId;
         this.caseTimeAssignment = caseTimeAssignment;
@@ -35,6 +36,7 @@ public class Order {
         this.caseContactName = caseContactName;
         this.caseAddress = caseAddress;
         this.caseSubject = caseSubject;
+        this.casePaymentMethod = casePaymentMethod;
         this.caseStatus = caseStatus;
         this.caseType = caseType;
         this.casePriority = casePriority;
@@ -89,6 +91,7 @@ public class Order {
     public enum caseTypes {
         CUT("Corte"),
         ORDER("Pedido"),
+        MEASURED("Medido"),
         RECONNECTION("Re-conexión");
 
         private final String name;
@@ -217,4 +220,13 @@ public class Order {
     public void setCaseSubject(String caseSubject) {
         this.caseSubject = caseSubject;
     }
+
+    public String getCasePaymentMethod() {
+        return casePaymentMethod;
+    }
+
+    public void setCasePaymentMethod(String casePaymentMethod) {
+        this.casePaymentMethod = casePaymentMethod;
+    }
+
 }

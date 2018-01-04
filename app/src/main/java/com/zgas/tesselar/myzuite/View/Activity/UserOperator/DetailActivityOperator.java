@@ -41,7 +41,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String mStrCaseTimeSeen;
     private String mStrCaseTimeArrived;
     private String mStrCaseTimeProgrammed;
-    private String mStrCasePaymentType;
+    private String mStrCasePaymentMethod;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -50,7 +50,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private TextView mCaseTimeSeen;
     private TextView mCaseTimeArrived;
     private TextView mCaseTimeProgrammed;
-    private TextView mCasePaymentType;
+    private TextView mCasePaymentMethod;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
@@ -58,6 +58,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
 
     private UserPreferences userPreferences;
     private User user;
+    private boolean isClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,14 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + user.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + user.getUserType());
         initUi();
+    }
+
+    private void checkButtons() {
+        if (isClicked == true) {
+            mFabFinished.setVisibility(View.VISIBLE);
+            mFabCanceled.setVisibility(View.VISIBLE);
+            mFabInProgress.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -103,6 +112,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCaseTimeSeen = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
         mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
         mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
 
         Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mStrCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -115,8 +125,9 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + mStrCaseTimeSeen);
         Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + mStrCaseTimeArrived);
         Log.d(DEBUG_TAG, "Hora programada del pedido: " + mStrCaseTimeProgrammed);
+        Log.d(DEBUG_TAG, "Tipo de pago del pedido: " + mStrCasePaymentMethod);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -124,16 +135,19 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
 
         mUserName = findViewById(R.id.activity_detail_operator_tv_client_name);
         if (mStrCaseUserName == null || mStrCaseUserName.equals("")) {
+            mUserName.setText(getResources().getString(R.string.no_data));
         } else {
             mUserName.setText(mStrCaseUserName);
         }
         mCaseAddress = findViewById(R.id.activity_detail_operator_tv_case_address);
         if (mStrCaseAddress == null || mStrCaseAddress.equals("")) {
+            mCaseAddress.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseAddress.setText(mStrCaseAddress);
         }
         mCaseStatus = findViewById(R.id.activity_detail_operator_tv_status);
         if (mStrCaseStatus == null || mStrCaseStatus.equals("")) {
+            mCaseStatus.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseStatus.setText(mStrCaseStatus);
         }
@@ -161,18 +175,20 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         } else {
             mCaseTimeProgrammed.setText(mStrCaseTimeProgrammed);
         }
-        mCasePaymentType = findViewById(R.id.activity_detal_operator_tv_payment);
-        if (mStrCasePaymentType == null || mStrCasePaymentType.equals("")) {
-            mCasePaymentType.setText(getResources().getString(R.string.no_data));
+        mCasePaymentMethod = findViewById(R.id.activity_detal_operator_tv_payment);
+        if (mStrCasePaymentMethod == null || mStrCasePaymentMethod.equals("")) {
+            mCasePaymentMethod.setText(getResources().getString(R.string.no_data));
         } else {
-            mCasePaymentType.setText(mStrCasePaymentType);
+            mCasePaymentMethod.setText(mStrCasePaymentMethod);
         }
         mFabInProgress = findViewById(R.id.activity_detail_operator_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
         mFabFinished = findViewById(R.id.activity_detail_operator_fab_finished);
         mFabFinished.setOnClickListener(this);
+        mFabFinished.setVisibility(View.GONE);
         mFabCanceled = findViewById(R.id.activity_detail_operator_fab_cancel);
         mFabCanceled.setOnClickListener(this);
+        mFabCanceled.setVisibility(View.GONE);
         mFabWaze = findViewById(R.id.activity_detail_operator_fab_waze);
         mFabWaze.setOnClickListener(this);
 
@@ -299,6 +315,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
 
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+        isClicked = true;
+        checkButtons();
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
                 .setMessage(getResources().getString(R.string.dialog_in_progress_body))
@@ -319,3 +337,4 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         return etText.getText().toString().trim().length() == 0;
     }
 }
+

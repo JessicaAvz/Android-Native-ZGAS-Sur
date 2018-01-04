@@ -21,7 +21,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.zgas.tesselar.myzuite.Controller.RefreshTokenTask;
 import com.zgas.tesselar.myzuite.Controller.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
-import com.zgas.tesselar.myzuite.CustomViewPager;
+import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;

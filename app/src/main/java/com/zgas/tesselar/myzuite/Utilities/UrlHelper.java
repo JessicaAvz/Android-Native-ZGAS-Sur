@@ -10,6 +10,7 @@ public class UrlHelper {
     public static final String GET_USER_DATA_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/users?username=%1$s";
     public static final String GET_CASES_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/orders?operatorId=%1$s";
     public static final String GET_LEAKS_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/leaks?operatorId=%1$s ";
+    public static final String GET_SERVICE_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/measured_orders?operatorId=%1$s ";
 
     public static final String CALL = "tel:6241370525";
 

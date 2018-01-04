@@ -23,30 +23,29 @@ import java.util.Formatter;
 import java.util.List;
 
 /**
- * Created by jarvizu on 20/09/2017.
+ * Created by jarvizu on 03/01/2018.
  */
 
-public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "GetOrdersTask";
-    private static final String CASES_ARRAY = "Orders";
-    private static final String DETAIL_ARRAY = "Detail";
+    private static final String DEBUG_TAG = "GetServiceTask";
+    private static final String SERVICES_ARRAY = "MeasuredOrders";
     private static final String METHOD = "GET";
     private static final String USER_ID = "Id";
     private static final String JSON_OBJECT_ID = "Id";
     private static final String JSON_OBJECT_ERROR = "errorCode";
 
+    private ServiceTaskListener serviceTaskListener;
     private Context context;
-    private JSONObject params;
-    private UserPreferences userPreferences;
-    private OrderTaskListener orderTaskListener;
     private ProgressDialog progressDialog;
+    private JSONObject params;
     private boolean isError = false;
     private String adminToken;
-    private Order aOrder;
-    private List<Order> casesList;
+    private Order aService;
+    private List<Order> servicesList;
+    private UserPreferences userPreferences;
 
-    public GetOrdersTask(Context context, JSONObject params) {
+    public GetServiceTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
@@ -61,7 +60,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
         try {
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.GET_CASES_URL, params.get(USER_ID)).toString();
+            String format = formatter.format(UrlHelper.GET_SERVICE_URL, params.get(USER_ID)).toString();
             adminToken = userPreferences.getAdminToken();
             Log.d(DEBUG_TAG, "Url del usuario: " + format);
             Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
@@ -93,97 +92,97 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
+
         progressDialog.dismiss();
 
-        casesList = new ArrayList<>();
-        JSONArray casesArray;
-
+        servicesList = new ArrayList<>();
+        JSONArray servicesArray;
         try {
             if (jsonObject == null) {
-                orderTaskListener.getCasesErrorResponse(jsonObject.getString(JSON_OBJECT_ERROR));
+                serviceTaskListener.getServicesError(jsonObject.getString(JSON_OBJECT_ERROR));
                 isError = true;
             } else if (jsonObject.has(JSON_OBJECT_ERROR)) {
                 if (jsonObject.get(JSON_OBJECT_ERROR).toString().equals("400")) {
-                    orderTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.cases_data_error));
+                    serviceTaskListener.getServicesError(context.getResources().getString(R.string.cases_data_error));
                     isError = true;
                 }
-            } else if (jsonObject.has(CASES_ARRAY)) {
+            } else if (jsonObject.has(SERVICES_ARRAY)) {
                 Log.d(DEBUG_TAG, "HOLA, SI SIRVE");
-                casesArray = jsonObject.getJSONArray(CASES_ARRAY);
+                servicesArray = jsonObject.getJSONArray(SERVICES_ARRAY);
 
-                for (int i = 0; i < casesArray.length(); i++) {
-                    JSONObject caseObject = casesArray.getJSONObject(i);
-                    aOrder = new Order();
-                    aOrder.setCaseId(caseObject.get(JSON_OBJECT_ID).toString());
-                    Log.d(DEBUG_TAG, "Id del caso: " + aOrder.getCaseId());
-                    aOrder.setCaseUserId(userPreferences.getUserObject().getUserId());
-                    Log.d(DEBUG_TAG, "Id del operador: " + aOrder.getCaseUserId());
-                    aOrder.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
-                    Log.d(DEBUG_TAG, "Hora programada: " + aOrder.getCaseTimeScheduled());
-                    //aOrder.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
-                    aOrder.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
+                for (int i = 0; i < servicesArray.length(); i++) {
+                    JSONObject caseObject = servicesArray.getJSONObject(i);
+                    aService = new Order();
+                    aService.setCaseId(caseObject.get(JSON_OBJECT_ID).toString());
+                    Log.d(DEBUG_TAG, "Id del caso: " + aService.getCaseId());
+                    aService.setCaseUserId(userPreferences.getUserObject().getUserId());
+                    Log.d(DEBUG_TAG, "Id del operador: " + aService.getCaseUserId());
+                    aService.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
+                    Log.d(DEBUG_TAG, "Hora programada: " + aService.getCaseTimeScheduled());
+                    //aService.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                    aService.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
                     Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
-                    aOrder.setCaseAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
-                    Log.d(DEBUG_TAG, "Cliente: " + aOrder.getCaseAccountName());
-                    aOrder.setCaseAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
-                    Log.d(DEBUG_TAG, "Dirección: " + aOrder.getCaseAddress());
-                    aOrder.setCaseContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
-                    Log.d(DEBUG_TAG, "Cuenta: " + aOrder.getCaseAccountName());
-                    aOrder.setCaseServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
-                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aOrder.getCaseServiceType());
-                    aOrder.setCasePaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
-                    Log.d(DEBUG_TAG, "Tipo de pago: " + aOrder.getCasePaymentMethod());
+                    aService.setCaseAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
+                    Log.d(DEBUG_TAG, "Cliente: " + aService.getCaseAccountName());
+                    aService.setCaseAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
+                    Log.d(DEBUG_TAG, "Dirección: " + aService.getCaseAddress());
+                    aService.setCaseContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
+                    Log.d(DEBUG_TAG, "Cuenta: " + aService.getCaseAccountName());
+                    aService.setCaseServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
+                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aService.getCaseServiceType());
+                    aService.setCasePaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
+                    Log.d(DEBUG_TAG, "Método de pago: " + aService.getCasePaymentMethod());
 
                     String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
                     String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();
                     String casePriority = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString();
 
                     if (caseType.equals(Order.caseTypes.ORDER.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.ORDER);
+                        aService.setCaseType(Order.caseTypes.ORDER);
                     } else if (caseType.equals(Order.caseTypes.CUT.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.CUT);
+                        aService.setCaseType(Order.caseTypes.CUT);
                     } else if (caseType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.RECONNECTION);
+                        aService.setCaseType(Order.caseTypes.RECONNECTION);
                     }
-                    Log.d(DEBUG_TAG, "Tipo de caso: " + aOrder.getCaseType());
+                    Log.d(DEBUG_TAG, "Tipo de caso: " + aService.getCaseType());
 
                     if (caseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.INPROGRESS);
+                        aService.setCaseStatus(Order.caseStatus.INPROGRESS);
                     } else if (caseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.CANCELLED);
+                        aService.setCaseStatus(Order.caseStatus.CANCELLED);
                     } else if (caseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.FINISHED);
+                        aService.setCaseStatus(Order.caseStatus.FINISHED);
                     } else if (caseStatus.equals(Order.caseStatus.NEW.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.NEW);
+                        aService.setCaseStatus(Order.caseStatus.NEW);
                     } else if (caseStatus.equals(Order.caseStatus.ASSIGNED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.ASSIGNED);
+                        aService.setCaseStatus(Order.caseStatus.ASSIGNED);
                     } else if (caseStatus.equals(Order.caseStatus.ACCEPTED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.ACCEPTED);
+                        aService.setCaseStatus(Order.caseStatus.ACCEPTED);
                     } else if (caseStatus.equals(Order.caseStatus.RETIRED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.RETIRED);
+                        aService.setCaseStatus(Order.caseStatus.RETIRED);
                     } else if (caseStatus.equals(Order.caseStatus.CLOSED)) {
-                        aOrder.setCaseStatus(Order.caseStatus.CLOSED);
+                        aService.setCaseStatus(Order.caseStatus.CLOSED);
                     }
-                    Log.d(DEBUG_TAG, "Status del caso : " + aOrder.getCaseStatus());
+                    Log.d(DEBUG_TAG, "Status del caso : " + aService.getCaseStatus());
 
                     if (casePriority.equals(Order.casePriority.HIGH.toString())) {
-                        aOrder.setCasePriority(Order.casePriority.HIGH);
+                        aService.setCasePriority(Order.casePriority.HIGH);
                     } else if (casePriority.equals(Order.casePriority.LOW.toString())) {
-                        aOrder.setCasePriority(Order.casePriority.LOW);
+                        aService.setCasePriority(Order.casePriority.LOW);
                     } else if (casePriority.equals(Order.casePriority.MEDIUM.toString())) {
-                        aOrder.setCasePriority(Order.casePriority.MEDIUM);
+                        aService.setCasePriority(Order.casePriority.MEDIUM);
                     }
-                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aOrder.getCasePriority());
+                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aService.getCasePriority());
 
                     isError = false;
-                    casesList.add(aOrder);
+                    servicesList.add(aService);
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            if (orderTaskListener != null) {
-                orderTaskListener.getCasesSuccessResponse(casesList);
+            if (serviceTaskListener != null) {
+                serviceTaskListener.getServicesSuccessResponse(servicesList);
             }
         }
     }
@@ -192,16 +191,17 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onCancelled() {
         super.onCancelled();
         progressDialog.dismiss();
-        orderTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
+        serviceTaskListener.getServicesError(context.getResources().getString(R.string.connection_error));
     }
 
-    public void setOrderTaskListener(OrderTaskListener getOrderTaskListener) {
-        this.orderTaskListener = getOrderTaskListener;
+    public void setServiceTaskListener(ServiceTaskListener getServiceTaskListener) {
+        this.serviceTaskListener = getServiceTaskListener;
     }
 
-    public interface OrderTaskListener {
-        void getCasesErrorResponse(String error);
+    public interface ServiceTaskListener {
+        void getServicesError(String error);
 
-        void getCasesSuccessResponse(List<Order> orderList);
+        void getServicesSuccessResponse(List<Order> serviceList);
+
     }
 }

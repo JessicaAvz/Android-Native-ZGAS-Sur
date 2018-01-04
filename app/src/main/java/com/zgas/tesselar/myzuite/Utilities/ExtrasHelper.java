@@ -35,6 +35,8 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_TYPE = "RecordTypeName";
     public static final String ORDER_JSON_OBJECT_ACCOUNT_NAME = "AccountName";
     public static final String ORDER_JSON_OBJECT_CONTACT_NAME = "ContactName";
+    public static final String ORDER_JSON_OBJECT_PAYMENT_METHOD = "PaymentMethod";
+    public static final String ORDER_JSON_OBJECT_RECORD_TYPE = "RecordTypeName";
 
     //UserObject
     public static final String EXTRA_USER_ID = "Id";
