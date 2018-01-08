@@ -33,7 +33,7 @@
                 android:background="@color/red"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/delete"
+                android:text="@string/cancel"
                 android:textColor="#fff" />
 
         </LinearLayout>

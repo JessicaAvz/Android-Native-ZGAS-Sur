@@ -1,12 +1,10 @@
 package com.zgas.tesselar.myzuite.View.Activity.UserService;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +17,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
@@ -74,6 +76,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         initUi();
     }
 
+    /**
+     *
+     */
     private void initUi() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,6 +157,10 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * @param menuItem
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -164,6 +173,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         return super.onOptionsItemSelected(menuItem);
     }
 
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -171,6 +183,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 
+    /**
+     *
+     */
     private void checkButtons() {
         if (isClicked == true) {
             mFabFinished.setVisibility(View.VISIBLE);
@@ -179,6 +194,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -197,15 +215,22 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * @param address
+     */
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
 
+    /**
+     *
+     */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_finish_case_operator);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
         Log.d(DEBUG_TAG, "Finish dialog " + getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
@@ -241,9 +266,14 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         dialog.show();
     }
 
+    /**
+     *
+     */
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_operator);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
+
         Log.d(DEBUG_TAG, "Cancel dialog " + getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
@@ -277,25 +307,45 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         dialog.show();
     }
 
+    /**
+     *
+     */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
         isClicked = true;
-        checkButtons();
-        new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.dialog_in_progress_title))
-                .setMessage(getResources().getString(R.string.dialog_in_progress_body))
-                .setIcon(R.drawable.icon_dialog_progress)
-                .setPositiveButton(getResources().getString(R.string.dialog_in_progress_accept), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        dialogInterface.dismiss();
-                    }
 
+        new FancyAlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.dialog_in_progress_title))
+                .setBackgroundColor(getResources().getColor(R.color.amber))
+                .setMessage(getResources().getString(R.string.dialog_in_progress_body))
+                .setNegativeBtnText(getResources().getString(R.string.cancel))
+                .setPositiveBtnBackground(getResources().getColor(R.color.amber))
+                .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
+                .setNegativeBtnBackground(getResources().getColor(R.color.grey_300))
+                .setAnimation(Animation.SIDE)
+                .isCancellable(false)
+                .setIcon(R.drawable.icon_progress, Icon.Visible)
+                .OnPositiveClicked(new FancyAlertDialogListener() {
+                    @Override
+                    public void OnClick() {
+                        //change order status
+                    }
                 })
-                .setCancelable(false)
-                .show();
+                .OnNegativeClicked(new FancyAlertDialogListener() {
+                    @Override
+                    public void OnClick() {
+
+                    }
+                })
+                .build();
+
+        checkButtons();
     }
 
+    /**
+     * @param etText
+     * @return
+     */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }

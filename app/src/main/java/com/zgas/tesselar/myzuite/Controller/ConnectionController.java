@@ -20,6 +20,9 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
+/**
+ *
+ */
 public class ConnectionController {
 
     private static final String DEBUG_TAG = "ConnectionController";
@@ -33,12 +36,23 @@ public class ConnectionController {
 
     private static final int TIMEOUT = 10000;
 
+    /**
+     * @param adminToken
+     * @param url
+     * @param method
+     */
     public ConnectionController(String adminToken, URL url, String method) {
         this.adminToken = adminToken;
         this.url = url;
         this.method = method;
     }
 
+    /**
+     * @param adminToken
+     * @param url
+     * @param method
+     * @param params
+     */
     public ConnectionController(String adminToken, URL url, String method, JSONObject params) {
         this.adminToken = adminToken;
         this.url = url;
@@ -46,6 +60,11 @@ public class ConnectionController {
         this.params = params;
     }
 
+    /**
+     * @return
+     * @throws FileNotFoundException
+     * @throws SocketTimeoutException
+     */
     public JSONObject execute() throws FileNotFoundException, SocketTimeoutException {
 
         try {

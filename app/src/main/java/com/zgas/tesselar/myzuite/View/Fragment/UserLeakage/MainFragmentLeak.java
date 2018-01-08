@@ -89,11 +89,11 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         }
     }
 
-    private void initUi(View pRootView) {
+    private void initUi(View rootview) {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_leak_recycler_view);
+        mRecyclerOrders = rootview.findViewById(R.id.fragment_main_leak_recycler_view);
 
-        mRecyclerRefreshLayout = pRootView.findViewById(R.id.fragment_main_leakage_refresh_layout);
+        mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_leakage_refresh_layout);
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

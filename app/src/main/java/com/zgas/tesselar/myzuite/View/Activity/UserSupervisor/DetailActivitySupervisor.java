@@ -50,25 +50,10 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         initUi();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                finish();
-                overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
-                break;
-        }
-        return super.onOptionsItemSelected(menuItem);
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
-    }
-
+    /**
+     *
+     */
     private void initUi() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -151,5 +136,25 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         } else {
             mUserType.setText(getResources().getString(R.string.no_data));
         }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
+                break;
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 }

@@ -32,6 +32,12 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         this.mSupervisedList = mSupervisedList;
     }
 
+    /**
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public SupervisedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
@@ -39,6 +45,11 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         return new SupervisorAdapter.SupervisedViewHolder(v);
     }
 
+    /**
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(SupervisedViewHolder holder, int position) {
         User mUser = mSupervisedList.get(position);
@@ -75,6 +86,9 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         }
     }
 
+    /**
+     *
+     */
     public class SupervisedViewHolder extends RecyclerView.ViewHolder {
 
         private TextView supervisedName;

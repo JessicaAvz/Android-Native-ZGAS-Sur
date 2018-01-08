@@ -2,12 +2,10 @@ package com.zgas.tesselar.myzuite.View.Activity.UserLeakage;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,6 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
 import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
@@ -66,6 +68,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private FloatingActionButton mFabWaze;
     private UserPreferences mUserPreferences;
     private User mUser;
+    private boolean isClicked = false;
 
     private ArrayAdapter<CharSequence> adapter;
     private Context context;
@@ -85,8 +88,22 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         initUi();
     }
 
+    /**
+     *
+     */
+    private void checkButtons() {
+        if (isClicked == true) {
+            mFabFinished.setVisibility(View.VISIBLE);
+            mFabCanceled.setVisibility(View.VISIBLE);
+            mFabInProgress.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     *
+     */
     private void initUi() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mBundle = getIntent().getExtras();
@@ -129,45 +146,45 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle de la fuga " + mStrLeakId);
 
-        mUserName = (TextView) findViewById(R.id.activity_detail_leakage_tv_client_name);
+        mUserName = findViewById(R.id.activity_detail_leakage_tv_client_name);
         mUserName.setText(mStrLeakClientName);
-        mLeakAddress = (TextView) findViewById(R.id.activity_detail_leakage_tv_case_address);
+        mLeakAddress = findViewById(R.id.activity_detail_leakage_tv_case_address);
         mLeakAddress.setText(mStrLeakAddress);
-        mLeakStatus = (TextView) findViewById(R.id.activity_detail_leakage_tv_status);
+        mLeakStatus = findViewById(R.id.activity_detail_leakage_tv_status);
         mLeakStatus.setText(mStrLeakStatus);
-        mLeakCylinderColor = (TextView) findViewById(R.id.activity_detail_leakage_tv_color);
+        mLeakCylinderColor = findViewById(R.id.activity_detail_leakage_tv_color);
         mLeakCylinderColor.setText(mStrCylinderColor);
-        mLeakCylinderCapacity = (TextView) findViewById(R.id.activity_detail_leakage_tv_capacity);
+        mLeakCylinderCapacity = findViewById(R.id.activity_detail_leakage_tv_capacity);
         mLeakCylinderCapacity.setText(mStrCylinderCapacity);
 
-        mFabInProgress = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_in_progress);
+        mFabInProgress = findViewById(R.id.activity_detail_leakage_fab_in_progress);
         mFabInProgress.setOnClickListener(this);
-        mFabFinished = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_finished);
+        mFabFinished = findViewById(R.id.activity_detail_leakage_fab_finished);
         mFabFinished.setOnClickListener(this);
-        mFabCanceled = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_cancel);
+        mFabCanceled = findViewById(R.id.activity_detail_leakage_fab_cancel);
         mFabCanceled.setOnClickListener(this);
-        mFabWaze = (FloatingActionButton) findViewById(R.id.activity_detail_leakage_fab_waze);
+        mFabWaze = findViewById(R.id.activity_detail_leakage_fab_waze);
         mFabWaze.setOnClickListener(this);
 
-        mLeakTimeIn = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_in);
+        mLeakTimeIn = findViewById(R.id.activity_detail_leakage_tv_time_in);
         if (mStrLeakTimeTechnician == null || mStrLeakTimeTechnician.equals("")) {
             mLeakTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeIn.setText(mStrLeakTimeTechnician);
         }
-        mLeakTimeSeen = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_seen);
+        mLeakTimeSeen = findViewById(R.id.activity_detail_leakage_tv_time_seen);
         if (mStrLeakTimeSeen == null || mStrLeakTimeSeen.equals("")) {
             mLeakTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeSeen.setText(mStrLeakTimeSeen);
         }
-        mLeakTimeArrived = (TextView) findViewById(R.id.activity_detail_leakage_tv_arrived);
+        mLeakTimeArrived = findViewById(R.id.activity_detail_leakage_tv_arrived);
         if (mStrLeakTimeArrived == null || mStrLeakTimeArrived.equals("")) {
             mLeakTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeArrived.setText(mStrLeakTimeArrived);
         }
-        mLeakTimeScheduled = (TextView) findViewById(R.id.activity_detail_leakage_tv_time_programmed);
+        mLeakTimeScheduled = findViewById(R.id.activity_detail_leakage_tv_time_programmed);
         if (mStrLeakTimeScheduled == null || mStrLeakTimeScheduled.equals("")) {
             mLeakTimeScheduled.setText(getResources().getString(R.string.no_data));
         } else {
@@ -230,32 +247,57 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * @param address
+     */
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
 
+    /**
+     *
+     */
     private void inProgressDialog() {
-        Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
-        new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.dialog_in_progress_title))
-                .setMessage(getResources().getString(R.string.dialog_in_progress_body))
-                .setIcon(R.drawable.icon_dialog_progress)
-                .setPositiveButton(getResources().getString(R.string.dialog_in_progress_accept), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        dialogInterface.dismiss();
-                    }
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+        isClicked = true;
 
+        new FancyAlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.dialog_in_progress_title))
+                .setBackgroundColor(getResources().getColor(R.color.amber))
+                .setMessage(getResources().getString(R.string.dialog_in_progress_body))
+                .setNegativeBtnText(getResources().getString(R.string.cancel))
+                .setPositiveBtnBackground(getResources().getColor(R.color.amber))
+                .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
+                .setNegativeBtnBackground(getResources().getColor(R.color.grey_300))
+                .setAnimation(Animation.SIDE)
+                .isCancellable(false)
+                .setIcon(R.drawable.icon_progress, Icon.Visible)
+                .OnPositiveClicked(new FancyAlertDialogListener() {
+                    @Override
+                    public void OnClick() {
+                        //change order status
+                    }
                 })
-                .setCancelable(false)
-                .show();
+                .OnNegativeClicked(new FancyAlertDialogListener() {
+                    @Override
+                    public void OnClick() {
+
+                    }
+                })
+                .build();
+
+        checkButtons();
     }
 
+    /**
+     *
+     */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_finish_case_leakage);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
         Log.d(DEBUG_TAG, "Finish dialog " + getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
@@ -393,9 +435,13 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
 
     }
 
+    /**
+     *
+     */
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_leakage);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
         Log.d(DEBUG_TAG, "Cancel dialog " + getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 

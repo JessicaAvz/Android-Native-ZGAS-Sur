@@ -1,119 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:padding="10dp">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/icon_dialog_finish" />
+        android:background="@color/light_green"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="25dp"
+            app:srcCompat="@drawable/icon_check_circle" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/dialog_cancel_case_leakage_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="13dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="13dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:text="@string/dialog_finish_title_leak"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.031"
-        app:layout_constraintLeft_toRightOf="@+id/imageView2"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:textColor="@color/grey_800"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_below="@+id/dialog_cancel_case_leakage_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:text="@string/dialog_finish_body_leak"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_cancel_case_leakage_title" />
-
-    <Button
-        android:id="@+id/dialog_finish_case_leakage_btn_accept"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/dialog_finish_accept"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_finish_case_leakage_sp_third_option" />
-
-    <Button
-        android:id="@+id/dialog_finish_case_leakage_btn_cancel"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="9dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="9dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/dialog_finish_cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/dialog_finish_case_leakage_btn_accept"
-        app:layout_constraintHorizontal_bias="0.934"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/dialog_finish_case_leakage_btn_accept" />
+        android:textColor="@color/grey_600"
+        android:textSize="15sp" />
 
     <Spinner
         android:id="@+id/dialog_finish_case_leakage_sp_option"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        android:layout_marginTop="24dp" />
 
     <Spinner
         android:id="@+id/dialog_finish_case_leakage_sp_second_option"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_finish_case_leakage_sp_option"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_finish_case_leakage_sp_option" />
+        android:layout_marginTop="16dp" />
 
     <Spinner
         android:id="@+id/dialog_finish_case_leakage_sp_third_option"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_finish_case_leakage_sp_second_option"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_finish_case_leakage_sp_second_option" />
+        android:layout_marginTop="16dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_finish_case_leakage_sp_third_option"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-    <!--dialog_finish_case_leakage_sp_third_option-->
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/dialog_finish_case_leakage_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button_cancel"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/dialog_finish_cancel"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/dialog_finish_case_leakage_btn_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button_accept"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/dialog_finish_accept"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

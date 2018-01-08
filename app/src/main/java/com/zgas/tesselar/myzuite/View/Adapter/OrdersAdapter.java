@@ -1,8 +1,7 @@
 package com.zgas.tesselar.myzuite.View.Adapter;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,10 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -48,16 +51,20 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         return new OrdersAdapter.OrderViewHolder(v);
     }
 
+    /**
+     * @param viewHolder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         final OrderViewHolder holder = (OrderViewHolder) viewHolder;
         final Order mOrder = mOrderList.get(position);
-        String caseId = mOrder.getCaseId();
-        String caseAddress = mOrder.getCaseAddress();
-        Order.caseStatus caseStatus = mOrder.getCaseStatus();
-        Order.caseTypes caseType = mOrder.getCaseType();
-        String orderHourIn = mOrder.getCaseTimeAssignment();
-        final String serviceType = mOrder.getCaseServiceType();
+        String caseId = mOrder.getOrderId();
+        String caseAddress = mOrder.getOrderAddress();
+        Order.caseStatus caseStatus = mOrder.getOrderStatus();
+        Order.caseTypes caseType = mOrder.getOrderType();
+        String orderHourIn = mOrder.getOrderTimeAssignment();
+        final String serviceType = mOrder.getOrderServiceType();
 
         TextView id = holder.mOrderId;
         id.setText(caseId);
@@ -129,19 +136,19 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             @Override
             public void onClick(View v) {
 
-                Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrder.getCaseId());
-                String id = mOrder.getCaseId();
-                String address = mOrder.getCaseAddress();
-                String status = mOrder.getCaseStatus().toString();
-                String timeAssignment = mOrder.getCaseTimeAssignment();
-                String timeSeen = mOrder.getCaseTimeSeen();
-                String timeArrival = mOrder.getCaseTimeArrival();
-                String timeScheduled = mOrder.getCaseTimeScheduled();
-                String priority = mOrder.getCasePriority().toString();
-                String userName = mOrder.getCaseAccountName();
-                String paymentMethod = mOrder.getCasePaymentMethod();
-                String serviceType = mOrder.getCaseServiceType();
-                String recordType = mOrder.getCaseType().toString();
+                Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrder.getOrderId());
+                String id = mOrder.getOrderId();
+                String address = mOrder.getOrderAddress();
+                String status = mOrder.getOrderStatus().toString();
+                String timeAssignment = mOrder.getOrderTimeAssignment();
+                String timeSeen = mOrder.getOrderTimeSeen();
+                String timeArrival = mOrder.getOrderTimeArrival();
+                String timeScheduled = mOrder.getOrderTimeScheduled();
+                String priority = mOrder.getOrderPriority().toString();
+                String userName = mOrder.getOrderAccountName();
+                String paymentMethod = mOrder.getOrderPaymentMethod();
+                String serviceType = mOrder.getOrderServiceType();
+                String recordType = mOrder.getOrderType().toString();
 
                 Log.d(DEBUG_TAG, "Id del caso: " + id);
                 Log.d(DEBUG_TAG, "Dirección del caso: " + address);
@@ -200,32 +207,35 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             @Override
             public void onClick(View v) {
 
-                new AlertDialog.Builder(context)
-                        .setIcon(context.getResources().getDrawable(R.drawable.icon_alert))
+                new FancyAlertDialog.Builder((Activity) context)
                         .setTitle(context.getResources().getString(R.string.dialog_delete_order))
+                        .setBackgroundColor(context.getResources().getColor(R.color.red))
                         .setMessage(context.getResources().getString(R.string.dialog_delete_order_prompt))
-                        .setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        .setNegativeBtnText(context.getResources().getString(R.string.no))
+                        .setPositiveBtnBackground(context.getResources().getColor(R.color.red))
+                        .setPositiveBtnText(context.getResources().getString(R.string.yes))
+                        .setNegativeBtnBackground(context.getResources().getColor(R.color.grey_300))
+                        .setAnimation(Animation.SIDE)
+                        .isCancellable(false)
+                        .setIcon(R.drawable.icon_alert, Icon.Visible)
+                        .OnPositiveClicked(new FancyAlertDialogListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
+                            public void OnClick() {
                                 mItemManger.removeShownLayouts(holder.swipeLayout);
                                 mOrderList.remove(position);
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, mOrderList.size());
                                 mItemManger.closeAllItems();
-                                Log.d(DEBUG_TAG, " Borrar la visita onClick id: " + mOrder.getCaseId());
-                                dialogInterface.dismiss();
+                                Log.d(DEBUG_TAG, " Borrar la visita onClick id: " + mOrder.getOrderId());
                             }
-
                         })
-                        .setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+                        .OnNegativeClicked(new FancyAlertDialogListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mItemManger.closeItem(i);
-                                dialogInterface.dismiss();
+                            public void OnClick() {
+                                mItemManger.closeItem(position);
                             }
                         })
-                        .show();
+                        .build();
             }
         });
     }
@@ -244,6 +254,9 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         return position;
     }
 
+    /**
+     *
+     */
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
         private SwipeLayout swipeLayout;

@@ -94,10 +94,10 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
         }
     }
 
-    private void initUi(View pRootView) {
+    private void initUi(View rootview) {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_service_recycler_view);
-        mRecyclerRefreshLayout = pRootView.findViewById(R.id.fragment_main_service_refresh_layout);
+        mRecyclerOrders = rootview.findViewById(R.id.fragment_main_service_recycler_view);
+        mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_service_refresh_layout);
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

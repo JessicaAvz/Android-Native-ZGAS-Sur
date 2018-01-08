@@ -50,8 +50,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
 
-    /** progress dialog to show user that the backup is processing. */
     /**
+     * progress dialog to show user that the backup is processing.
+     * <p>
      * application context.
      */
     @Override
@@ -59,6 +60,10 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_message), false);
     }
 
+    /**
+     * @param urls
+     * @return
+     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
 
@@ -94,6 +99,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
@@ -200,6 +208,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         }
     }
 
+    /**
+     *
+     */
     @Override
     protected void onCancelled() {
         super.onCancelled();
@@ -207,10 +218,16 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
+    /**
+     * @param userInfoListener
+     */
     public void setUserInfoListener(UserInfoListener userInfoListener) {
         this.userInfoListener = userInfoListener;
     }
 
+    /**
+     *
+     */
     public interface UserInfoListener {
         void userInfoErrorResponse(String error);
 

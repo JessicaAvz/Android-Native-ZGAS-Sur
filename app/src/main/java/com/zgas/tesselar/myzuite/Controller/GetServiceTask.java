@@ -51,10 +51,17 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     *
+     */
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
 
+    /**
+     * @param urls
+     * @return
+     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
         JSONObject jsonObject = null;
@@ -89,6 +96,9 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
@@ -113,66 +123,66 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 for (int i = 0; i < servicesArray.length(); i++) {
                     JSONObject caseObject = servicesArray.getJSONObject(i);
                     aService = new Order();
-                    aService.setCaseId(caseObject.get(JSON_OBJECT_ID).toString());
-                    Log.d(DEBUG_TAG, "Id del caso: " + aService.getCaseId());
-                    aService.setCaseUserId(userPreferences.getUserObject().getUserId());
-                    Log.d(DEBUG_TAG, "Id del operador: " + aService.getCaseUserId());
-                    aService.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
-                    Log.d(DEBUG_TAG, "Hora programada: " + aService.getCaseTimeScheduled());
-                    //aService.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
-                    aService.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
+                    aService.setOrderId(caseObject.get(JSON_OBJECT_ID).toString());
+                    Log.d(DEBUG_TAG, "Id del caso: " + aService.getOrderId());
+                    aService.setOrderUserId(userPreferences.getUserObject().getUserId());
+                    Log.d(DEBUG_TAG, "Id del operador: " + aService.getOrderUserId());
+                    aService.setOrderTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
+                    Log.d(DEBUG_TAG, "Hora programada: " + aService.getOrderTimeScheduled());
+                    //aService.setOrderTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                    aService.setOrderTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
                     Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
-                    aService.setCaseAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
-                    Log.d(DEBUG_TAG, "Cliente: " + aService.getCaseAccountName());
-                    aService.setCaseAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
-                    Log.d(DEBUG_TAG, "Dirección: " + aService.getCaseAddress());
-                    aService.setCaseContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
-                    Log.d(DEBUG_TAG, "Cuenta: " + aService.getCaseAccountName());
-                    aService.setCaseServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
-                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aService.getCaseServiceType());
-                    aService.setCasePaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
-                    Log.d(DEBUG_TAG, "Método de pago: " + aService.getCasePaymentMethod());
+                    aService.setOrderAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
+                    Log.d(DEBUG_TAG, "Cliente: " + aService.getOrderAccountName());
+                    aService.setOrderAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
+                    Log.d(DEBUG_TAG, "Dirección: " + aService.getOrderAddress());
+                    aService.setOrderContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
+                    Log.d(DEBUG_TAG, "Cuenta: " + aService.getOrderAccountName());
+                    aService.setOrderServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
+                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aService.getOrderServiceType());
+                    aService.setOrderPaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
+                    Log.d(DEBUG_TAG, "Método de pago: " + aService.getOrderPaymentMethod());
 
                     String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
                     String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();
                     String casePriority = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString();
 
                     if (caseType.equals(Order.caseTypes.ORDER.toString())) {
-                        aService.setCaseType(Order.caseTypes.ORDER);
+                        aService.setOrderType(Order.caseTypes.ORDER);
                     } else if (caseType.equals(Order.caseTypes.CUT.toString())) {
-                        aService.setCaseType(Order.caseTypes.CUT);
+                        aService.setOrderType(Order.caseTypes.CUT);
                     } else if (caseType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        aService.setCaseType(Order.caseTypes.RECONNECTION);
+                        aService.setOrderType(Order.caseTypes.RECONNECTION);
                     }
-                    Log.d(DEBUG_TAG, "Tipo de caso: " + aService.getCaseType());
+                    Log.d(DEBUG_TAG, "Tipo de caso: " + aService.getOrderType());
 
                     if (caseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.INPROGRESS);
+                        aService.setOrderStatus(Order.caseStatus.INPROGRESS);
                     } else if (caseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.CANCELLED);
+                        aService.setOrderStatus(Order.caseStatus.CANCELLED);
                     } else if (caseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.FINISHED);
+                        aService.setOrderStatus(Order.caseStatus.FINISHED);
                     } else if (caseStatus.equals(Order.caseStatus.NEW.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.NEW);
+                        aService.setOrderStatus(Order.caseStatus.NEW);
                     } else if (caseStatus.equals(Order.caseStatus.ASSIGNED.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.ASSIGNED);
+                        aService.setOrderStatus(Order.caseStatus.ASSIGNED);
                     } else if (caseStatus.equals(Order.caseStatus.ACCEPTED.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.ACCEPTED);
+                        aService.setOrderStatus(Order.caseStatus.ACCEPTED);
                     } else if (caseStatus.equals(Order.caseStatus.RETIRED.toString())) {
-                        aService.setCaseStatus(Order.caseStatus.RETIRED);
+                        aService.setOrderStatus(Order.caseStatus.RETIRED);
                     } else if (caseStatus.equals(Order.caseStatus.CLOSED)) {
-                        aService.setCaseStatus(Order.caseStatus.CLOSED);
+                        aService.setOrderStatus(Order.caseStatus.CLOSED);
                     }
-                    Log.d(DEBUG_TAG, "Status del caso : " + aService.getCaseStatus());
+                    Log.d(DEBUG_TAG, "Status del caso : " + aService.getOrderStatus());
 
                     if (casePriority.equals(Order.casePriority.HIGH.toString())) {
-                        aService.setCasePriority(Order.casePriority.HIGH);
+                        aService.setOrderPriority(Order.casePriority.HIGH);
                     } else if (casePriority.equals(Order.casePriority.LOW.toString())) {
-                        aService.setCasePriority(Order.casePriority.LOW);
+                        aService.setOrderPriority(Order.casePriority.LOW);
                     } else if (casePriority.equals(Order.casePriority.MEDIUM.toString())) {
-                        aService.setCasePriority(Order.casePriority.MEDIUM);
+                        aService.setOrderPriority(Order.casePriority.MEDIUM);
                     }
-                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aService.getCasePriority());
+                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aService.getOrderPriority());
 
                     isError = false;
                     servicesList.add(aService);
@@ -187,6 +197,10 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
         }
     }
 
+    /**
+     *
+     */
+
     @Override
     protected void onCancelled() {
         super.onCancelled();
@@ -194,10 +208,16 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
         serviceTaskListener.getServicesError(context.getResources().getString(R.string.connection_error));
     }
 
+    /**
+     * @param getServiceTaskListener
+     */
     public void setServiceTaskListener(ServiceTaskListener getServiceTaskListener) {
         this.serviceTaskListener = getServiceTaskListener;
     }
 
+    /**
+     *
+     */
     public interface ServiceTaskListener {
         void getServicesError(String error);
 

@@ -34,5 +34,6 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.4'
     compile 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
+    compile 'com.github.Shashank02051997:FancyAlertDialog-Android:0.1'
     testCompile 'junit:junit:4.12'
 }

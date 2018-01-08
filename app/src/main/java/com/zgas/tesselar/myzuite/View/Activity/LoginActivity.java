@@ -59,9 +59,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initUi() {
         getSupportActionBar().hide();
-        mEmail = (TextInputEditText) findViewById(R.id.activity_login_et_email);
-        mPassword = (TextInputEditText) findViewById(R.id.activity_login_et_password);
-        mLogin = (Button) findViewById(R.id.activity_login_btn_login);
+        mEmail = findViewById(R.id.activity_login_et_email);
+        mPassword = findViewById(R.id.activity_login_et_password);
+        mLogin = findViewById(R.id.activity_login_btn_login);
         mLogin.setOnClickListener(this);
     }
 
@@ -100,12 +100,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return etText.getText().toString().trim().length() == 0;
     }
 
+    /**
+     *
+     * @param error
+     */
     @Override
     public void loginErrorResponse(String error) {
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     *
+     * @param login
+     */
     @Override
     public void loginSuccessResponse(Login login) {
         try {
@@ -131,12 +139,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+     *
+     * @param error
+     */
     @Override
     public void userInfoErrorResponse(String error) {
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     *
+     * @param user
+     */
     @Override
     public void userInfoSuccessResponse(User user) {
         mUserPreferences.setUserData(user);
@@ -153,6 +169,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.finish();
     }
 
+    /**
+     *
+     * @param userList
+     */
     @Override
     public void userSupervisedSuccessResponse(List<User> userList) {
 

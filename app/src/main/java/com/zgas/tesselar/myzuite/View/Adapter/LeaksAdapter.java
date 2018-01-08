@@ -1,8 +1,7 @@
 package com.zgas.tesselar.myzuite.View.Adapter;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,10 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
 import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -40,6 +43,11 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         this.mLeaksList = mLeaksList;
     }
 
+    /**
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public LeaksViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
@@ -47,6 +55,10 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         return new LeaksAdapter.LeaksViewHolder(v);
     }
 
+    /**
+     * @param viewHolder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         final LeaksViewHolder holder = (LeaksViewHolder) viewHolder;
@@ -177,37 +189,43 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
             @Override
             public void onClick(View v) {
 
-                new AlertDialog.Builder(context)
-                        .setIcon(context.getResources().getDrawable(R.drawable.icon_alert))
+                new FancyAlertDialog.Builder((Activity) context)
                         .setTitle(context.getResources().getString(R.string.dialog_delete_order))
+                        .setBackgroundColor(context.getResources().getColor(R.color.red))
                         .setMessage(context.getResources().getString(R.string.dialog_delete_order_prompt))
-                        .setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        .setNegativeBtnText(context.getResources().getString(R.string.no))
+                        .setPositiveBtnBackground(context.getResources().getColor(R.color.red))
+                        .setPositiveBtnText(context.getResources().getString(R.string.yes))
+                        .setNegativeBtnBackground(context.getResources().getColor(R.color.grey_300))
+                        .setAnimation(Animation.SIDE)
+                        .isCancellable(false)
+                        .setIcon(R.drawable.icon_alert, Icon.Visible)
+                        .OnPositiveClicked(new FancyAlertDialogListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
+                            public void OnClick() {
                                 mItemManger.removeShownLayouts(holder.swipeLayout);
                                 mLeaksList.remove(position);
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, mLeaksList.size());
                                 mItemManger.closeAllItems();
                                 Log.d(DEBUG_TAG, " Borrar la visita onClick id: " + mLeak.getLeakId());
-                                dialogInterface.dismiss();
                             }
-
                         })
-                        .setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+                        .OnNegativeClicked(new FancyAlertDialogListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mItemManger.closeItem(i);
-                                dialogInterface.dismiss();
+                            public void OnClick() {
+                                mItemManger.closeItem(position);
                             }
                         })
-                        .show();
+                        .build();
             }
         });
 
     }
 
+    /**
+     * @return
+     */
     @Override
     public int getItemCount() {
         if (mLeaksList.isEmpty()) {
@@ -217,6 +235,10 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         }
     }
 
+    /**
+     * @param position
+     * @return
+     */
     @Override
     public int getSwipeLayoutResourceId(int position) {
         return position;

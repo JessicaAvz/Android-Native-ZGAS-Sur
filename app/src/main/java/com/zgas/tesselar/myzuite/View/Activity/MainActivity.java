@@ -138,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     *
+     */
     private void initUiOperator() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -400,8 +403,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void animateFab(int pPosition) {
-        switch (pPosition) {
+    /**
+     *
+     * @param position
+     */
+    private void animateFab(int position) {
+        switch (position) {
             case 0:
                 mFabCall.show();
                 break;
@@ -414,8 +421,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void animateFabOperator(int pPosition) {
-        switch (pPosition) {
+    /**
+     *
+     * @param position
+     */
+    private void animateFabOperator(int position) {
+        switch (position) {
             case 0:
                 mFabCall.hide();
                 break;
@@ -494,6 +505,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     *
+     * @param user
+     */
     @Override
     public void userInfoSuccessResponse(User user) {
         Log.d(DEBUG_TAG, "User preference id: " + userPreferences.getUserObject().getUserId());
@@ -505,6 +520,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(DEBUG_TAG, "User preference status: " + userPreferences.getUserObject().getUserstatus());
     }
 
+    /**
+     *
+     * @param userList
+     */
     @Override
     public void userSupervisedSuccessResponse(List<User> userList) {
         mSupervisorAdapter = new SupervisorAdapter(this, (ArrayList<User>) userList);
@@ -515,13 +534,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
     }
 
-
+    /**
+     *
+     * @param error
+     */
     @Override
     public void refreshErrorResponse(String error) {
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     *
+     * @param login
+     */
     @Override
     public void refreshSuccessResponse(Login login) {
         userPreferences.setLoginData(login);

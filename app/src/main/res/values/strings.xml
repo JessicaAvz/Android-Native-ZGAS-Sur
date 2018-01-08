@@ -87,12 +87,12 @@
 
     <!-- Progress dialog -->
     <string name="dialog_in_progress_title">Pedido en curso</string>
-    <string name="dialog_in_progress_body">El pedido se encuentra en curso</string>
+    <string name="dialog_in_progress_body">¿Desea iniciar el curso del pedido?</string>
     <string name="dialog_in_progress_accept">Aceptar</string>
 
     <!-- Extra order dialog -->
-    <string name="dialog_extra_title">Pedido realizado</string>
-    <string name="dialog_extra_body">El pedido ha sido realizado correctamente.</string>
+    <string name="dialog_extra_title">Finalizar pedido</string>
+    <string name="dialog_extra_body">Ingresa los datos del pedido.</string>
     <string name="dialog_extra_accept">Aceptar</string>
 
     <!-- HelpOder dialog -->
@@ -152,7 +152,7 @@
     <string name="user_data_error">Error al obtener los datos del usuario.</string>
     <string name="cases_data_error">Error al obtener los casos.</string>
 
-    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
 
     <!-- Delete order -->
     <string name="dialog_delete_order">Cancelar pedido</string>

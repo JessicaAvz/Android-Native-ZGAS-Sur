@@ -81,10 +81,10 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         asyncTask();
     }
 
-    private void initUi(View pRootView) {
+    private void initUi(View rootview) {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerOrders = pRootView.findViewById(R.id.fragment_main_operator_recycler_view);
-        mRecyclerRefreshLayout = pRootView.findViewById(R.id.fragment_main_operator_refresh_layout);
+        mRecyclerOrders = rootview.findViewById(R.id.fragment_main_operator_recycler_view);
+        mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_operator_refresh_layout);
 
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override

@@ -35,12 +35,20 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private String adminToken;
     private boolean isError = false;
 
+    /**
+     * @param context
+     * @param params
+     */
     public LoginTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     * @param urls
+     * @return
+     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
         JSONObject jsonObject = null;
@@ -87,6 +95,9 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
@@ -126,16 +137,25 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     }
 
+    /**
+     *
+     */
     @Override
     protected void onCancelled() {
         super.onCancelled();
         loginTaskListener.loginErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
+    /**
+     * @param loginTaskListener
+     */
     public void setLoginTaskListener(LoginTaskListener loginTaskListener) {
         this.loginTaskListener = loginTaskListener;
     }
 
+    /**
+     *
+     */
     public interface LoginTaskListener {
         void loginErrorResponse(String error);
 

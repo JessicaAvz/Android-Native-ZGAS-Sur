@@ -58,10 +58,10 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
         }
     }
 
-    private void initUi(View pRootView) {
-        mUserName = pRootView.findViewById(R.id.fragment_order_operator_et_username);
-        mPhoneNumber = pRootView.findViewById(R.id.fragment_order_operator_et_phone);
-        mMakeOrder = pRootView.findViewById(R.id.fragment_order_operator_btn_make_order);
+    private void initUi(View rootview) {
+        mUserName = rootview.findViewById(R.id.fragment_order_operator_et_username);
+        mPhoneNumber = rootview.findViewById(R.id.fragment_order_operator_et_phone);
+        mMakeOrder = rootview.findViewById(R.id.fragment_order_operator_btn_make_order);
         mMakeOrder.setOnClickListener(this);
     }
 

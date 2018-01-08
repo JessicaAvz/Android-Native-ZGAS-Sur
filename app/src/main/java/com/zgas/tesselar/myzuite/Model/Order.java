@@ -5,41 +5,41 @@ package com.zgas.tesselar.myzuite.Model;
  */
 
 public class Order {
-    private String caseId;
-    private String caseUserId;
-    private String caseTimeAssignment;
-    private String caseTimeSeen;
-    private String caseTimeArrival;
-    private String caseTimeScheduled;
-    private String caseServiceType;
-    private String caseAccountName;
-    private String caseContactName;
-    private String caseAddress;
-    private String caseSubject;
-    private String casePaymentMethod;
-    private caseStatus caseStatus;
-    private caseTypes caseType;
-    private casePriority casePriority;
+    private String orderId;
+    private String orderUserId;
+    private String orderTimeAssignment;
+    private String orderTimeSeen;
+    private String orderTimeArrival;
+    private String orderTimeScheduled;
+    private String orderServiceType;
+    private String orderAccountName;
+    private String orderContactName;
+    private String orderAddress;
+    private String orderSubject;
+    private String orderPaymentMethod;
+    private caseStatus orderStatus;
+    private caseTypes orderType;
+    private casePriority orderPriority;
 
     public Order() {
     }
 
-    public Order(String caseId, String caseUserId, String caseTimeAssignment, String caseTimeSeen, String caseTimeArrival, String caseTimeScheduled, String caseServiceType, String caseAccountName, String caseContactName, String caseAddress, String caseSubject, String casePaymentMethod, Order.caseStatus caseStatus, caseTypes caseType, Order.casePriority casePriority) {
-        this.caseId = caseId;
-        this.caseUserId = caseUserId;
-        this.caseTimeAssignment = caseTimeAssignment;
-        this.caseTimeSeen = caseTimeSeen;
-        this.caseTimeArrival = caseTimeArrival;
-        this.caseTimeScheduled = caseTimeScheduled;
-        this.caseServiceType = caseServiceType;
-        this.caseAccountName = caseAccountName;
-        this.caseContactName = caseContactName;
-        this.caseAddress = caseAddress;
-        this.caseSubject = caseSubject;
-        this.casePaymentMethod = casePaymentMethod;
-        this.caseStatus = caseStatus;
-        this.caseType = caseType;
-        this.casePriority = casePriority;
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeArrival, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderPaymentMethod, Order.caseStatus orderStatus, caseTypes orderType, Order.casePriority orderPriority) {
+        this.orderId = orderId;
+        this.orderUserId = orderUserId;
+        this.orderTimeAssignment = orderTimeAssignment;
+        this.orderTimeSeen = orderTimeSeen;
+        this.orderTimeArrival = orderTimeArrival;
+        this.orderTimeScheduled = orderTimeScheduled;
+        this.orderServiceType = orderServiceType;
+        this.orderAccountName = orderAccountName;
+        this.orderContactName = orderContactName;
+        this.orderAddress = orderAddress;
+        this.orderSubject = orderSubject;
+        this.orderPaymentMethod = orderPaymentMethod;
+        this.orderStatus = orderStatus;
+        this.orderType = orderType;
+        this.orderPriority = orderPriority;
     }
 
     public enum casePriority {
@@ -109,124 +109,124 @@ public class Order {
         }
     }
 
-    public String getCaseId() {
-        return caseId;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public String getCaseUserId() {
-        return caseUserId;
+    public String getOrderUserId() {
+        return orderUserId;
     }
 
-    public void setCaseUserId(String caseUserId) {
-        this.caseUserId = caseUserId;
+    public void setOrderUserId(String orderUserId) {
+        this.orderUserId = orderUserId;
     }
 
-    public String getCaseTimeAssignment() {
-        return caseTimeAssignment;
+    public String getOrderTimeAssignment() {
+        return orderTimeAssignment;
     }
 
-    public void setCaseTimeAssignment(String caseTimeAssignment) {
-        this.caseTimeAssignment = caseTimeAssignment;
+    public void setOrderTimeAssignment(String orderTimeAssignment) {
+        this.orderTimeAssignment = orderTimeAssignment;
     }
 
-    public String getCaseTimeSeen() {
-        return caseTimeSeen;
+    public String getOrderTimeSeen() {
+        return orderTimeSeen;
     }
 
-    public void setCaseTimeSeen(String caseTimeSeen) {
-        this.caseTimeSeen = caseTimeSeen;
+    public void setOrderTimeSeen(String orderTimeSeen) {
+        this.orderTimeSeen = orderTimeSeen;
     }
 
-    public String getCaseTimeArrival() {
-        return caseTimeArrival;
+    public String getOrderTimeArrival() {
+        return orderTimeArrival;
     }
 
-    public void setCaseTimeArrival(String caseTimeArrival) {
-        this.caseTimeArrival = caseTimeArrival;
+    public void setOrderTimeArrival(String orderTimeArrival) {
+        this.orderTimeArrival = orderTimeArrival;
     }
 
-    public caseStatus getCaseStatus() {
-        return caseStatus;
+    public caseStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setCaseStatus(caseStatus caseStatus) {
-        this.caseStatus = caseStatus;
+    public void setOrderStatus(caseStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
-    public casePriority getCasePriority() {
-        return casePriority;
+    public casePriority getOrderPriority() {
+        return orderPriority;
     }
 
-    public void setCasePriority(casePriority casePriority) {
-        this.casePriority = casePriority;
+    public void setOrderPriority(casePriority orderPriority) {
+        this.orderPriority = orderPriority;
     }
 
-    public String getCaseAccountName() {
-        return caseAccountName;
+    public String getOrderAccountName() {
+        return orderAccountName;
     }
 
-    public void setCaseAccountName(String caseAccountName) {
-        this.caseAccountName = caseAccountName;
+    public void setOrderAccountName(String orderAccountName) {
+        this.orderAccountName = orderAccountName;
     }
 
-    public String getCaseAddress() {
-        return caseAddress;
+    public String getOrderAddress() {
+        return orderAddress;
     }
 
-    public void setCaseAddress(String caseAddress) {
-        this.caseAddress = caseAddress;
+    public void setOrderAddress(String orderAddress) {
+        this.orderAddress = orderAddress;
     }
 
-    public caseTypes getCaseType() {
-        return caseType;
+    public caseTypes getOrderType() {
+        return orderType;
     }
 
-    public void setCaseType(caseTypes caseType) {
-        this.caseType = caseType;
+    public void setOrderType(caseTypes orderType) {
+        this.orderType = orderType;
     }
 
-    public String getCaseTimeScheduled() {
-        return caseTimeScheduled;
+    public String getOrderTimeScheduled() {
+        return orderTimeScheduled;
     }
 
-    public void setCaseTimeScheduled(String caseTimeScheduled) {
-        this.caseTimeScheduled = caseTimeScheduled;
+    public void setOrderTimeScheduled(String orderTimeScheduled) {
+        this.orderTimeScheduled = orderTimeScheduled;
     }
 
-    public String getCaseServiceType() {
-        return caseServiceType;
+    public String getOrderServiceType() {
+        return orderServiceType;
     }
 
-    public void setCaseServiceType(String caseServiceType) {
-        this.caseServiceType = caseServiceType;
+    public void setOrderServiceType(String orderServiceType) {
+        this.orderServiceType = orderServiceType;
     }
 
-    public String getCaseContactName() {
-        return caseContactName;
+    public String getOrderContactName() {
+        return orderContactName;
     }
 
-    public void setCaseContactName(String caseContactName) {
-        this.caseContactName = caseContactName;
+    public void setOrderContactName(String orderContactName) {
+        this.orderContactName = orderContactName;
     }
 
-    public String getCaseSubject() {
-        return caseSubject;
+    public String getOrderSubject() {
+        return orderSubject;
     }
 
-    public void setCaseSubject(String caseSubject) {
-        this.caseSubject = caseSubject;
+    public void setOrderSubject(String orderSubject) {
+        this.orderSubject = orderSubject;
     }
 
-    public String getCasePaymentMethod() {
-        return casePaymentMethod;
+    public String getOrderPaymentMethod() {
+        return orderPaymentMethod;
     }
 
-    public void setCasePaymentMethod(String casePaymentMethod) {
-        this.casePaymentMethod = casePaymentMethod;
+    public void setOrderPaymentMethod(String orderPaymentMethod) {
+        this.orderPaymentMethod = orderPaymentMethod;
     }
 
 }

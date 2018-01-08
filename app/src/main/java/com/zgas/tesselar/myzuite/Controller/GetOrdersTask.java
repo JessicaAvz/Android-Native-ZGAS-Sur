@@ -46,16 +46,27 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private Order aOrder;
     private List<Order> casesList;
 
+    /**
+     * @param context
+     * @param params
+     */
     public GetOrdersTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     *
+     */
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
 
+    /**
+     * @param urls
+     * @return
+     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
         JSONObject jsonObject = null;
@@ -90,6 +101,9 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
@@ -114,66 +128,66 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 for (int i = 0; i < casesArray.length(); i++) {
                     JSONObject caseObject = casesArray.getJSONObject(i);
                     aOrder = new Order();
-                    aOrder.setCaseId(caseObject.get(JSON_OBJECT_ID).toString());
-                    Log.d(DEBUG_TAG, "Id del caso: " + aOrder.getCaseId());
-                    aOrder.setCaseUserId(userPreferences.getUserObject().getUserId());
-                    Log.d(DEBUG_TAG, "Id del operador: " + aOrder.getCaseUserId());
-                    aOrder.setCaseTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
-                    Log.d(DEBUG_TAG, "Hora programada: " + aOrder.getCaseTimeScheduled());
-                    //aOrder.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
-                    aOrder.setCaseTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
+                    aOrder.setOrderId(caseObject.get(JSON_OBJECT_ID).toString());
+                    Log.d(DEBUG_TAG, "Id del caso: " + aOrder.getOrderId());
+                    aOrder.setOrderUserId(userPreferences.getUserObject().getUserId());
+                    Log.d(DEBUG_TAG, "Id del operador: " + aOrder.getOrderUserId());
+                    aOrder.setOrderTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
+                    Log.d(DEBUG_TAG, "Hora programada: " + aOrder.getOrderTimeScheduled());
+                    //aOrder.setOrderTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                    aOrder.setOrderTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
                     Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
-                    aOrder.setCaseAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
-                    Log.d(DEBUG_TAG, "Cliente: " + aOrder.getCaseAccountName());
-                    aOrder.setCaseAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
-                    Log.d(DEBUG_TAG, "Dirección: " + aOrder.getCaseAddress());
-                    aOrder.setCaseContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
-                    Log.d(DEBUG_TAG, "Cuenta: " + aOrder.getCaseAccountName());
-                    aOrder.setCaseServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
-                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aOrder.getCaseServiceType());
-                    aOrder.setCasePaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
-                    Log.d(DEBUG_TAG, "Tipo de pago: " + aOrder.getCasePaymentMethod());
+                    aOrder.setOrderAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
+                    Log.d(DEBUG_TAG, "Cliente: " + aOrder.getOrderAccountName());
+                    aOrder.setOrderAddress(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
+                    Log.d(DEBUG_TAG, "Dirección: " + aOrder.getOrderAddress());
+                    aOrder.setOrderContactName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_CONTACT_NAME));
+                    Log.d(DEBUG_TAG, "Cuenta: " + aOrder.getOrderAccountName());
+                    aOrder.setOrderServiceType(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
+                    Log.d(DEBUG_TAG, "Tipo de servicio: " + aOrder.getOrderServiceType());
+                    aOrder.setOrderPaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
+                    Log.d(DEBUG_TAG, "Tipo de pago: " + aOrder.getOrderPaymentMethod());
 
                     String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
                     String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();
                     String casePriority = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString();
 
                     if (caseType.equals(Order.caseTypes.ORDER.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.ORDER);
+                        aOrder.setOrderType(Order.caseTypes.ORDER);
                     } else if (caseType.equals(Order.caseTypes.CUT.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.CUT);
+                        aOrder.setOrderType(Order.caseTypes.CUT);
                     } else if (caseType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        aOrder.setCaseType(Order.caseTypes.RECONNECTION);
+                        aOrder.setOrderType(Order.caseTypes.RECONNECTION);
                     }
-                    Log.d(DEBUG_TAG, "Tipo de caso: " + aOrder.getCaseType());
+                    Log.d(DEBUG_TAG, "Tipo de caso: " + aOrder.getOrderType());
 
                     if (caseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.INPROGRESS);
+                        aOrder.setOrderStatus(Order.caseStatus.INPROGRESS);
                     } else if (caseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.CANCELLED);
+                        aOrder.setOrderStatus(Order.caseStatus.CANCELLED);
                     } else if (caseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.FINISHED);
+                        aOrder.setOrderStatus(Order.caseStatus.FINISHED);
                     } else if (caseStatus.equals(Order.caseStatus.NEW.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.NEW);
+                        aOrder.setOrderStatus(Order.caseStatus.NEW);
                     } else if (caseStatus.equals(Order.caseStatus.ASSIGNED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.ASSIGNED);
+                        aOrder.setOrderStatus(Order.caseStatus.ASSIGNED);
                     } else if (caseStatus.equals(Order.caseStatus.ACCEPTED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.ACCEPTED);
+                        aOrder.setOrderStatus(Order.caseStatus.ACCEPTED);
                     } else if (caseStatus.equals(Order.caseStatus.RETIRED.toString())) {
-                        aOrder.setCaseStatus(Order.caseStatus.RETIRED);
+                        aOrder.setOrderStatus(Order.caseStatus.RETIRED);
                     } else if (caseStatus.equals(Order.caseStatus.CLOSED)) {
-                        aOrder.setCaseStatus(Order.caseStatus.CLOSED);
+                        aOrder.setOrderStatus(Order.caseStatus.CLOSED);
                     }
-                    Log.d(DEBUG_TAG, "Status del caso : " + aOrder.getCaseStatus());
+                    Log.d(DEBUG_TAG, "Status del caso : " + aOrder.getOrderStatus());
 
                     if (casePriority.equals(Order.casePriority.HIGH.toString())) {
-                        aOrder.setCasePriority(Order.casePriority.HIGH);
+                        aOrder.setOrderPriority(Order.casePriority.HIGH);
                     } else if (casePriority.equals(Order.casePriority.LOW.toString())) {
-                        aOrder.setCasePriority(Order.casePriority.LOW);
+                        aOrder.setOrderPriority(Order.casePriority.LOW);
                     } else if (casePriority.equals(Order.casePriority.MEDIUM.toString())) {
-                        aOrder.setCasePriority(Order.casePriority.MEDIUM);
+                        aOrder.setOrderPriority(Order.casePriority.MEDIUM);
                     }
-                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aOrder.getCasePriority());
+                    Log.d(DEBUG_TAG, "Prioridad del caso: " + aOrder.getOrderPriority());
 
                     isError = false;
                     casesList.add(aOrder);
@@ -188,6 +202,9 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         }
     }
 
+    /**
+     *
+     */
     @Override
     protected void onCancelled() {
         super.onCancelled();
@@ -195,10 +212,16 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         orderTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
+    /**
+     * @param getOrderTaskListener
+     */
     public void setOrderTaskListener(OrderTaskListener getOrderTaskListener) {
         this.orderTaskListener = getOrderTaskListener;
     }
 
+    /**
+     *
+     */
     public interface OrderTaskListener {
         void getCasesErrorResponse(String error);
 

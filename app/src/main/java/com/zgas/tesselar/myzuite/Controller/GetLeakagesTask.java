@@ -45,16 +45,27 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private ProgressDialog progressDialog;
     private boolean isError = false;
 
+    /**
+     * @param context
+     * @param params
+     */
     public GetLeakagesTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     *
+     */
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
 
+    /**
+     * @param urls
+     * @return
+     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
 
@@ -91,6 +102,9 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         return jsonObject;
     }
 
+    /**
+     * @param jsonObject
+     */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
@@ -121,7 +135,7 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Llegada del caso: " + leak.getLeakTimeDeparture());
                     leak.setLeakTimeScheduled(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED));
                     Log.d(DEBUG_TAG, "Hora programada del caso: " + leak.getLeakTimeScheduled());
-                    //leak.setCaseTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                    //leak.setOrderTimeSeen(caseObject.getString(CASE_TIME_SEEN));
                     leak.setLeakTimeAssignment(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN));
                     Log.d(DEBUG_TAG, "Hora de asignación del caso: " + leak.getLeakTimeAssignment());
                     leak.setLeakTimeEnd(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END));
@@ -199,6 +213,9 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         }
     }
 
+    /**
+     *
+     */
     @Override
     protected void onCancelled() {
         super.onCancelled();
@@ -206,10 +223,16 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         leakagesTaskListener.getLeakagesErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
+    /**
+     * @param leakagesTaskListener
+     */
     public void setLeakagesTaskListener(LeakagesTaskListener leakagesTaskListener) {
         this.leakagesTaskListener = leakagesTaskListener;
     }
 
+    /**
+     *
+     */
     public interface LeakagesTaskListener {
         void getLeakagesErrorResponse(String error);
 
