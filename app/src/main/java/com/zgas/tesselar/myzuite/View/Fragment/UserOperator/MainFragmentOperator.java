@@ -3,7 +3,6 @@ package com.zgas.tesselar.myzuite.View.Fragment.UserOperator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Controller.GetOrdersTask;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 
 import org.json.JSONObject;
 

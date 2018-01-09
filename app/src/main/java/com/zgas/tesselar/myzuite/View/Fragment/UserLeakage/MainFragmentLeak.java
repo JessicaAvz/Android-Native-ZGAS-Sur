@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Controller.GetLeakagesTask;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.GetLeakagesTask;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.View.Adapter.LeaksAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.LeaksAdapter;
 
 import org.json.JSONObject;
 

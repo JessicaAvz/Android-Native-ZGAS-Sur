@@ -21,12 +21,12 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 
 public class DetailActivityService extends AppCompatActivity implements View.OnClickListener {
 
@@ -188,9 +188,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
      */
     private void checkButtons() {
         if (isClicked == true) {
-            mFabFinished.setVisibility(View.VISIBLE);
-            mFabCanceled.setVisibility(View.VISIBLE);
-            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.show();
+            mFabCanceled.show();
+            mFabInProgress.hide();
         }
     }
 
@@ -312,7 +312,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
      */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
-        isClicked = true;
 
         new FancyAlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
@@ -328,18 +327,20 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
+                        isClicked = true;
+                        checkButtons();
                         //change order status
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-
+                        mFabCanceled.hide();
+                        mFabFinished.hide();
+                        mFabInProgress.show();
                     }
                 })
                 .build();
-
-        checkButtons();
     }
 
     /**

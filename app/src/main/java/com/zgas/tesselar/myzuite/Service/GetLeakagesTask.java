@@ -1,10 +1,11 @@
-package com.zgas.tesselar.myzuite.Controller;
+package com.zgas.tesselar.myzuite.Service;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.zgas.tesselar.myzuite.Controller.ConnectionController;
 import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;

@@ -21,13 +21,17 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 
+/**
+ * @author Jessica Arvizu
+ *         Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
+ */
 public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivityOperator";
@@ -77,13 +81,14 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     /**
-     *
+     * Método que muestra los botones de aceptar y cancelar, y esconde el botón de en progreso,
+     * una vez que la bandera = true.
      */
     private void checkButtons() {
         if (isClicked == true) {
-            mFabFinished.setVisibility(View.VISIBLE);
-            mFabCanceled.setVisibility(View.VISIBLE);
-            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.show();
+            mFabCanceled.show();
+            mFabInProgress.hide();
         }
     }
 
@@ -106,7 +111,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     /**
-     *
+     * Método que inicializa la interfaz de usuario, y obtiene los datos del bundle.
      */
     private void initUi() {
         bundle = getIntent().getExtras();
@@ -239,7 +244,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     /**
-     * @param address
+     * Método que abre la aplicación de Waze, recibe la dirección de la fuga y después
+     * la pinta en Waze.
+     *
+     * @param address - Dirección de la fuga.
      */
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
@@ -338,7 +346,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
      */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        isClicked = true;
 
         new FancyAlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
@@ -354,18 +361,20 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
+                        isClicked = true;
+                        checkButtons();
                         //change order status
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-
+                        mFabCanceled.hide();
+                        mFabFinished.hide();
+                        mFabInProgress.show();
                     }
                 })
                 .build();
-
-        checkButtons();
     }
 
     /**

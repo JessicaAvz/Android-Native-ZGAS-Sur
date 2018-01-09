@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller;
+package com.zgas.tesselar.myzuite.Service;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,16 +19,13 @@ public class UserPreferences {
     private static final String DEBUG_TAG = "UserPreferences";
     private static final String IS_LOGGED = "IsLoggedIn";
     private static final String KEY_EMAIL = "Email";
-    private static final String KEY_PASS = "Password";
     private static final String SHARED_PREFERENCES = "userPreferences";
-    private static final String LOGIN_EMAIL = "loginEmail";
-    private static final String LOGIN_TOKEN = "loginToken";
+
     private static final String API_TOKEN = "apiToken";
     private static final String LOGIN_DATA = "loginData";
     private static final String USER_DATA = "userData";
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     private Context context;
 
     public UserPreferences(Context context) {

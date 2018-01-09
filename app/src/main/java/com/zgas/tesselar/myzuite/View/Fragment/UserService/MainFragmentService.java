@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Controller.GetServiceTask;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.GetServiceTask;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.View.Adapter.OrdersAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 
 import org.json.JSONObject;
 
@@ -34,13 +34,11 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
     private static final String ADMIN_TOKEN = "access_token";
     private static final int REFRESH_DELAY = 1000;
 
-    private final ArrayList<Order> mOrderList = new ArrayList();
     private RecyclerView mRecyclerOrders;
     private RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LinearLayoutManager layoutManager;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
-    private Order mOrder;
     private UserPreferences mUserPreferences;
     private User mUser;
 

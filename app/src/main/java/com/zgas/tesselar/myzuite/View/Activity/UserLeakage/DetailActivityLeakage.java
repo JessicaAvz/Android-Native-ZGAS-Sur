@@ -22,13 +22,18 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.View.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 
+/**
+ * @author Jessica Arvizu
+ * Clase que muestra los detalles de los pedidos tipo fuga, cuando el Operador es tipo
+ * Fuga...
+ */
 public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener {
 
     private static final String DEBUG_TAG = "DetailActivityLeakage";
@@ -51,7 +56,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private String mStrChannel;
     private String mStrLeakAddress;
 
-    private TextView mUserId;
     private TextView mUserName;
     private TextView mLeakAddress;
     private TextView mLeakStatus;
@@ -89,18 +93,19 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     }
 
     /**
-     *
+     * Método que muestra los botones de aceptar y cancelar, y esconde el botón de en progreso,
+     * una vez que la bandera = true.
      */
     private void checkButtons() {
         if (isClicked == true) {
-            mFabFinished.setVisibility(View.VISIBLE);
-            mFabCanceled.setVisibility(View.VISIBLE);
-            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.show();
+            mFabCanceled.show();
+            mFabInProgress.hide();
         }
     }
 
     /**
-     *
+     * Método que inicializa la interfaz de usuario, y obtiene los datos del bundle.
      */
     private void initUi() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -248,7 +253,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * @param address
+     * Método que abre la aplicación de Waze, recibe la dirección de la fuga y después
+     * la pinta en Waze.
+     *
+     * @param address - Dirección de la fuga.
      */
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
@@ -257,11 +265,11 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     }
 
     /**
-     *
+     * Método que muestra un Dialog para aceptar o cancelar el progreso de un pedido,
+     * se usa la tarea asíncrona de cambiar estatus de pedido.
      */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        isClicked = true;
 
         new FancyAlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
@@ -277,22 +285,24 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        //change order status
+                        isClicked = true;
+                        checkButtons();
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-
+                        mFabCanceled.hide();
+                        mFabFinished.hide();
+                        mFabInProgress.show();
                     }
                 })
                 .build();
-
-        checkButtons();
     }
 
     /**
-     *
+     * Método que muestra un Dialog para finalizar un pedido,
+     * se usa la tarea asíncrona de cambiar estatus de pedido.
      */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
@@ -436,7 +446,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     }
 
     /**
-     *
+     * Método que muestra un Dialog para cancelar un pedido,
+     * se usa la tarea asíncrona de cambiar estatus de pedido.
      */
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);

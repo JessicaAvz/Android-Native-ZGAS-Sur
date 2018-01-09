@@ -17,7 +17,7 @@
     <string name="prompt_main_fragment_service">MIS SERVICIOS</string>
     <string name="btn_make_order">Realizar reporte</string>
 
-    <!-- Activity detail case-->
+    <!-- Activity detail order-->
     <string name="prompt_detail_operator_client_id">Número de cliente</string>
     <string name="prompt_detail_operator_client_name">Nombre del cliente</string>
     <string name="prompt_detail_operator_address">Dirección de la entrega</string>
@@ -124,6 +124,8 @@
     <string name="title_activity_detail_service">DetailActivityService</string>
 
     <!-- Finalization, cancellation, in progress strings-->
+    <string name="order_finish_report">Realizar reporte</string>
+    <string name="order_finish_report_correct">Reporte realizado exitosamente.</string>
     <string name="leak_finish_incorrect">Por favor, seleccione una opción para finalizar el reporte.</string>
     <string name="leak_finish_correct">Pedido finalizado correctamente.</string>
     <string name="leak_cancel_incorrect">Por favor, seleccione una opción para reportar una incidencia.</string>

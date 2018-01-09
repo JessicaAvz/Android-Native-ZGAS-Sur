@@ -1,10 +1,8 @@
 package com.zgas.tesselar.myzuite.View.Fragment.UserOperator;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.UserPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,20 +76,30 @@ public class OrderFragmentOperator extends Fragment implements View.OnClickListe
             mUserName.getText().clear();
             mPhoneNumber.getText().clear();
 
-            new AlertDialog.Builder(getContext())
-                    .setTitle(getResources().getString(R.string.dialog_extra_title))
-                    .setMessage(getResources().getString(R.string.dialog_extra_body))
-                    .setIcon(R.drawable.icon_dialog_finish)
-                    .setPositiveButton(getResources().getString(R.string.dialog_extra_accept), new DialogInterface.OnClickListener() {
+            new FancyAlertDialog.Builder(getActivity())
+                    .setTitle(getResources().getString(R.string.order_finish_report))
+                    .setBackgroundColor(getResources().getColor(R.color.light_green))
+                    .setMessage(getResources().getString(R.string.order_finish_report_correct))
+                    .setNegativeBtnText(getResources().getString(R.string.cancel))
+                    .setPositiveBtnBackground(getResources().getColor(R.color.light_green))
+                    .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
+                    .setNegativeBtnBackground(getResources().getColor(R.color.grey_300))
+                    .setAnimation(Animation.SIDE)
+                    .isCancellable(false)
+                    .setIcon(R.drawable.icon_check_circle, Icon.Visible)
+                    .OnPositiveClicked(new FancyAlertDialogListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialogInterface.dismiss();
+                        public void OnClick() {
+                            //change order status
                         }
-
                     })
-                    .setCancelable(false)
-                    .show();
+                    .OnNegativeClicked(new FancyAlertDialogListener() {
+                        @Override
+                        public void OnClick() {
 
+                        }
+                    })
+                    .build();
         }
     }
 

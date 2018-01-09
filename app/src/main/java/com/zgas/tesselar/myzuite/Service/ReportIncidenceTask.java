@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Controller;
+package com.zgas.tesselar.myzuite.Service;
 
 import android.content.Context;
 import android.os.AsyncTask;
