@@ -27,6 +27,7 @@ public class ExtrasHelper {
     /*Hora en que se programa el pedido. Si el cliente no especifica una hora, es al mismo tiempo que DateTimeAssignment*/
     public static final String ORDER_JSON_OBJECT_TIME_SCHEDULED = "ScheduledDate";
     public static final String ORDER_JSON_OBJECT_STATUS = "Status";
+    public static final String ORDER_JSON_OBJECT_STATUS_CODE = "StatusCode";
     public static final String ORDER_JSON_OBJECT_PRIORITY = "Priority";
     public static final String ORDER_JSON_OBJECT_USER_NAME = "AccountName";
     /*Tipo de servicio: estacionario, cilindro...*/

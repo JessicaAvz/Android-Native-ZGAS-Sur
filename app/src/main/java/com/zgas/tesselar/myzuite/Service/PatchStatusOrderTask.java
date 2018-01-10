@@ -91,8 +91,8 @@ public class PatchStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject>
                 isError = true;
             } else if (jsonObject.has(ExtrasHelper.LOGIN_JSON_OBJECT_TOKEN)) {
                 order = new Order();
-                order.setOrderStatus((Order.caseStatus) params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                Log.d(DEBUG_TAG, order.getOrderStatus().toString());
+                jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS_CODE).toString());
                 isError = false;
             }
 

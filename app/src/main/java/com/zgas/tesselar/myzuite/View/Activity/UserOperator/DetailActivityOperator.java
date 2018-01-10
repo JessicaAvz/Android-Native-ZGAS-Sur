@@ -85,6 +85,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + user.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + user.getUserType());
         initUi();
+        checkButtons();
     }
 
     /**
@@ -92,7 +93,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
      * una vez que la bandera = true.
      */
     private void checkButtons() {
-        if (isClicked == true) {
+        if (isClicked == true || mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
             mFabFinished.show();
             mFabCanceled.show();
             mFabInProgress.hide();
@@ -236,8 +237,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
-            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
-                    " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PatchStatusOrderTask patchStatusOrderTask = new PatchStatusOrderTask(this, params);
             patchStatusOrderTask.setStatusOrderTaskListener(this);
@@ -416,7 +416,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     @Override
     public void statusSuccessResponse(Order order) {
         Log.d(DEBUG_TAG, "Si jala");
-        isClicked = true;
         checkButtons();
     }
 }
