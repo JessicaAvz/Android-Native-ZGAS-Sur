@@ -82,6 +82,12 @@ public class ConnectionController {
                 httpURLConnection.setDoOutput(false);
                 Log.d(DEBUG_TAG, "Token admin GET : " + encodedAuth);
                 httpURLConnection.setRequestProperty("Authorization", encodedAuth);
+            } else if (httpURLConnection.getRequestMethod().equals("PATCH")) {
+                Log.d(DEBUG_TAG, "If de método PATCH");
+                httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+                httpURLConnection.setDoOutput(true);
+                Log.d(DEBUG_TAG, "Token admin PATCH : " + encodedAuth);
+                httpURLConnection.setRequestProperty("Authorization", encodedAuth);
             }
 
             httpURLConnection.setConnectTimeout(TIMEOUT);

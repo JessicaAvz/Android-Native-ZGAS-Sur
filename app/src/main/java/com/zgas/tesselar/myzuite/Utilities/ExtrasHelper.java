@@ -46,8 +46,6 @@ public class ExtrasHelper {
     public static final String EXTRA_USER_STATUS = "Status";
     public static final String EXTRA_USER_ROUTE = "Route";
     public static final String EXTRA_USER_ZONE = "Zone";
-    /*Rutas y zonas*/
-    public static final String EXTRA_USER_GEOGRAPHIES = "Geographies";
 
     //LeakObject
     public static final String LEAK_JSON_OBJECT_ID = "Id";

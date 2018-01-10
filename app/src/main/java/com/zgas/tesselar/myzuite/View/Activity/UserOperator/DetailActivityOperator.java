@@ -21,18 +21,21 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.PatchStatusOrderTask;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+
+import org.json.JSONObject;
 
 /**
  * @author Jessica Arvizu
  *         Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
  */
-public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener, PatchStatusOrderTask.StatusOrderTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityOperator";
 
@@ -48,6 +51,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String mStrCaseTimeArrived;
     private String mStrCaseTimeProgrammed;
     private String mStrCasePaymentMethod;
+    private String ticket;
+    private String quantity;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -57,6 +62,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private TextView mCaseTimeArrived;
     private TextView mCaseTimeProgrammed;
     private TextView mCasePaymentMethod;
+    public EditText etQuantity;
+    public EditText etTicket;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
@@ -224,6 +231,23 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         }
     }
 
+    private void callAsyncTask() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
+                    " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+
+            PatchStatusOrderTask patchStatusOrderTask = new PatchStatusOrderTask(this, params);
+            patchStatusOrderTask.setStatusOrderTaskListener(this);
+            patchStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -265,8 +289,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
-        final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
-        final EditText etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
+        etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
+        etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
 
         Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
@@ -361,9 +385,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        isClicked = true;
-                        checkButtons();
-                        //change order status
+                        callAsyncTask();
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
@@ -383,6 +405,19 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
      */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
+    }
+
+    @Override
+    public void statusErrorResponse(String error) {
+        Log.d(DEBUG_TAG, "Error response: " + error);
+        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void statusSuccessResponse(Order order) {
+        Log.d(DEBUG_TAG, "Si jala");
+        isClicked = true;
+        checkButtons();
     }
 }
 

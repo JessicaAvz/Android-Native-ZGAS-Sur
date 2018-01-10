@@ -153,6 +153,7 @@
     <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
     <string name="user_data_error">Error al obtener los datos del usuario.</string>
     <string name="cases_data_error">Error al obtener los casos.</string>
+    <string name="cases_status_error">Error al actualizar el pedido.</string>
 
     <string name="cancel">Cancelar</string>
 
