@@ -23,10 +23,10 @@ import java.util.Formatter;
  * Created by jarvizu on 09/01/2018.
  */
 
-public class PatchStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "PatchStatusOrderTask";
-    private static final String METHOD = "PATCH";
+    private static final String DEBUG_TAG = "PutStatusOrderTask";
+    private static final String METHOD = "PUT";
     private static final String JSON_OBJECT_ERROR = "StatusCode";
 
     private Context context;
@@ -36,7 +36,7 @@ public class PatchStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject>
     private String adminToken;
     private boolean isError = false;
 
-    public PatchStatusOrderTask(Context context, JSONObject params) {
+    public PutStatusOrderTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
@@ -89,7 +89,7 @@ public class PatchStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject>
             } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString().equals(null)) {
                 statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.has(ExtrasHelper.LOGIN_JSON_OBJECT_TOKEN)) {
+            } else if (jsonObject.has(ExtrasHelper.ORDER_JSON_OBJECT_ID)) {
                 order = new Order();
                 jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
                 Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS_CODE).toString());

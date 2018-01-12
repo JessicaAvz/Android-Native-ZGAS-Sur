@@ -21,12 +21,12 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 
 public class DetailActivityService extends AppCompatActivity implements View.OnClickListener {
 
@@ -229,15 +229,15 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
      */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_finish_case_operator);
+        dialog.setContentView(R.layout.dialog_finish_case_operator_stationary);
         dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
         Log.d(DEBUG_TAG, "Finish dialog " + getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
-        final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
-        final EditText etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
+        final EditText etQuantity = dialog.findViewById(R.id.dialog_finish_case_stationary_tv_quantity);
+        final EditText etTicket = dialog.findViewById(R.id.dialog_finish_case_stationary_tv_ticket_number);
 
-        Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_stationary_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,7 +256,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
             }
         });
 
-        Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_btn_cancel);
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_stationary_btn_cancel);
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -176,6 +176,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
+                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
 
                 Log.d(DEBUG_TAG, "Bundle - Id del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
                 Log.d(DEBUG_TAG, "Bundle - Dirección del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));

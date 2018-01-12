@@ -38,6 +38,14 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_CONTACT_NAME = "ContactName";
     public static final String ORDER_JSON_OBJECT_PAYMENT_METHOD = "PaymentMethod";
     public static final String ORDER_JSON_OBJECT_RECORD_TYPE = "RecordTypeName";
+    /*Finalizar pedidos:*/
+    public static final String ORDER_JSON_OBJECT_TICKET = "folio";
+    public static final String ORDER_JSON_OBJECT_QUANTITY = "quantity";
+    public static final String ORDER_JSON_OBJECT_CYLINDER_10 = "cylinder10";
+    public static final String ORDER_JSON_OBJECT_CYLINDER_20 = "cylinder20";
+    public static final String ORDER_JSON_OBJECT_CYLINDER_30 = "cylinder30";
+    public static final String ORDER_JSON_OBJECT_CYLINDER_45 = "cylinder45";
+
 
     //UserObject
     public static final String EXTRA_USER_ID = "Id";
@@ -66,4 +74,6 @@ public class ExtrasHelper {
     public static final String LEAK_JSON_OBJECT_COLOR = "Color";
     public static final String LEAK_JSON_OBJECT_CHANNEL = "Chanel";
     public static final String LEAK_JSON_OBJECT_ADDRESS = "Address";
+
+
 }

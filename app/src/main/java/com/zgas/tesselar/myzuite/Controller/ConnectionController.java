@@ -82,11 +82,11 @@ public class ConnectionController {
                 httpURLConnection.setDoOutput(false);
                 Log.d(DEBUG_TAG, "Token admin GET : " + encodedAuth);
                 httpURLConnection.setRequestProperty("Authorization", encodedAuth);
-            } else if (httpURLConnection.getRequestMethod().equals("PATCH")) {
-                Log.d(DEBUG_TAG, "If de método PATCH");
-                httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+            } else if (httpURLConnection.getRequestMethod().equals("PUT")) {
+                Log.d(DEBUG_TAG, "If de método PUT");
+                httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PUT");
                 httpURLConnection.setDoOutput(true);
-                Log.d(DEBUG_TAG, "Token admin PATCH : " + encodedAuth);
+                Log.d(DEBUG_TAG, "Token admin PUT : " + encodedAuth);
                 httpURLConnection.setRequestProperty("Authorization", encodedAuth);
             }
 

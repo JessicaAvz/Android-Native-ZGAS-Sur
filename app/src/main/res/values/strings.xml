@@ -164,5 +164,12 @@
     <string name="no">No</string>
 
 
+    <!--Dialog finish case Cylinder-->
+    <string name="cylinder_10_kg">10 kgs.</string>
+    <string name="cylinder_20_kg">20 kgs.</string>
+    <string name="cylinder_30_kg">30 kgs.</string>
+    <string name="cylinder_45_kg">45 kgs.</string>
+    <string name="cylinder_quantity_hint"># cilindros...</string>
+
 </resources>
 

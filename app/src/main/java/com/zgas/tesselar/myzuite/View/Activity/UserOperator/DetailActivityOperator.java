@@ -25,7 +25,7 @@ import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapte
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Service.PatchStatusOrderTask;
+import com.zgas.tesselar.myzuite.Service.PutStatusOrderTask;
 import com.zgas.tesselar.myzuite.Service.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @author Jessica Arvizu
  *         Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
  */
-public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener, PatchStatusOrderTask.StatusOrderTaskListener {
+public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener, PutStatusOrderTask.StatusOrderTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityOperator";
 
@@ -51,8 +51,15 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String mStrCaseTimeArrived;
     private String mStrCaseTimeProgrammed;
     private String mStrCasePaymentMethod;
-    private String ticket;
-    private String quantity;
+    private String mStrCaseRecordType;
+    private String mStrCaseServiceType;
+
+    private String strTicket;
+    private String strQuantity;
+    private String strCylinder10 = null;
+    private String strCylinder20 = null;
+    private String strCylinder30 = null;
+    private String strCylinder45 = null;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -62,8 +69,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private TextView mCaseTimeArrived;
     private TextView mCaseTimeProgrammed;
     private TextView mCasePaymentMethod;
-    public EditText etQuantity;
-    public EditText etTicket;
+    private EditText etQuantity;
+    private EditText etTicket;
     private FloatingActionButton mFabInProgress;
     private FloatingActionButton mFabFinished;
     private FloatingActionButton mFabCanceled;
@@ -72,6 +79,9 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private UserPreferences userPreferences;
     private User user;
     private boolean isClicked = false;
+
+    public DetailActivityOperator() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +144,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
         mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
         mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
+        mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
+        mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
 
         Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mStrCaseId));
         //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
@@ -232,16 +244,41 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         }
     }
 
-    private void callAsyncTask() {
+    private void callAsyncTaskInProgress() {
         JSONObject params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
-            PatchStatusOrderTask patchStatusOrderTask = new PatchStatusOrderTask(this, params);
-            patchStatusOrderTask.setStatusOrderTaskListener(this);
-            patchStatusOrderTask.execute();
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callAsyncTaskFinished() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.FINISHED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, strCylinder10);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20, strCylinder20);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30, strCylinder30);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45, strCylinder45);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
+                    "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
+                    "Cylinder 10: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10) +
+                    "Cylinder 20: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20) +
+                    "Cylinder 30: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30) +
+                    "Cylinder 45: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45));
+
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -284,41 +321,74 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
      */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_finish_case_operator);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
-        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        dialog.setCancelable(false);
+        if (mStrCaseServiceType.equals("Cilindro")) {
+            dialog.setContentView(R.layout.dialog_finish_case_operator_cylinder);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
+            Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+            dialog.setCancelable(false);
 
-        etQuantity = dialog.findViewById(R.id.dialog_finish_case_tv_quantity);
-        etTicket = dialog.findViewById(R.id.dialog_finish_case_tv_ticket_number);
+            final EditText et10Kilograms = findViewById(R.id.dialog_finish_case_cylinder_10_edit_text);
+            final EditText et20Kilograms = findViewById(R.id.dialog_finish_case_cylinder_20_edit_text);
+            final EditText et30Kilograms = findViewById(R.id.dialog_finish_case_cylinder_30_edit_text);
+            final EditText et45Kilograms = findViewById(R.id.dialog_finish_case_cylinder_45_edit_text);
 
-        Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_btn_accept);
-        mBtnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isEmpty(etQuantity) || isEmpty(etTicket)) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
-                } else {
-                    final String quantity = etQuantity.getText().toString();
-                    final String ticket = etTicket.getText().toString();
-                    Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
-                    Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
-                    etQuantity.getText().clear();
-                    etTicket.getText().clear();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
+            Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_cylinder_btn_accept);
+            mBtnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    strCylinder10 = et10Kilograms.getText().toString();
+                    strCylinder20 = et20Kilograms.getText().toString();
+                    strCylinder30 = et30Kilograms.getText().toString();
+                    strCylinder45 = et45Kilograms.getText().toString();
+                    callAsyncTaskFinished();
+                }
+            });
+
+            Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_cylinder_btn_cancel);
+            mBtnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     dialog.dismiss();
                 }
-            }
-        });
+            });
 
-        Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_btn_cancel);
-        mBtnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
 
+        } else if (mStrCaseServiceType.equals("Estacionario")) {
+            dialog.setContentView(R.layout.dialog_finish_case_operator_stationary);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
+            Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+            dialog.setCancelable(false);
+
+            etQuantity = dialog.findViewById(R.id.dialog_finish_case_stationary_tv_quantity);
+            etTicket = dialog.findViewById(R.id.dialog_finish_case_stationary_tv_ticket_number);
+
+            Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_stationary_btn_accept);
+            mBtnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isEmpty(etQuantity) || isEmpty(etTicket)) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
+                    } else {
+                        final String quantity = etQuantity.getText().toString();
+                        final String ticket = etTicket.getText().toString();
+                        Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
+                        Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
+                        etQuantity.getText().clear();
+                        etTicket.getText().clear();
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                }
+            });
+
+            Button mBtnCancel = dialog.findViewById(R.id.dialog_finish_case_stationary_btn_cancel);
+            mBtnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }
         dialog.show();
     }
 
@@ -385,7 +455,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        callAsyncTask();
+                        callAsyncTaskInProgress();
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
@@ -416,6 +486,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     @Override
     public void statusSuccessResponse(Order order) {
         Log.d(DEBUG_TAG, "Si jala");
+        isClicked = true;
         checkButtons();
     }
 }
