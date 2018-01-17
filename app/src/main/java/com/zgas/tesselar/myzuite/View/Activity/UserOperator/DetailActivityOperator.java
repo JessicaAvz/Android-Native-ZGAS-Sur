@@ -56,10 +56,11 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
 
     private String strTicket;
     private String strQuantity;
-    private String strCylinder10 = null;
-    private String strCylinder20 = null;
-    private String strCylinder30 = null;
-    private String strCylinder45 = null;
+    private String strCylinder10;
+    private String strCylinder20;
+    private String strCylinder30;
+    private String strCylinder45;
+    private String srtCancellationReason;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -79,6 +80,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private UserPreferences userPreferences;
     private User user;
     private boolean isClicked = false;
+    private JSONObject params;
 
     public DetailActivityOperator() {
     }
@@ -91,21 +93,15 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         userPreferences = new UserPreferences(this);
         user = userPreferences.getUserObject();
-        Log.d(DEBUG_TAG, "Usuario logeado id: " + user.getUserId());
-        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + user.getUserName());
-        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + user.getUserType());
         initUi();
         checkButtons();
     }
 
-    /**
-     * Método que muestra los botones de aceptar y cancelar, y esconde el botón de en progreso,
-     * una vez que la bandera = true.
-     */
     private void checkButtons() {
         if (isClicked == true || mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
             mFabFinished.show();
             mFabCanceled.show();
+            mFabWaze.show();
             mFabInProgress.hide();
         }
     }
@@ -128,9 +124,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         }
     }
 
-    /**
-     * Método que inicializa la interfaz de usuario, y obtiene los datos del bundle.
-     */
     private void initUi() {
         bundle = getIntent().getExtras();
         mStrCaseId = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
@@ -146,19 +139,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
         mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
         mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
-
-        Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mStrCaseId));
-        //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
-        Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
-        Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus);
-        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType);
-        Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority);
-        Log.d(DEBUG_TAG, "Hora de pedido: " + mStrCaseTimeIn);
-        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + mStrCaseTimeSeen);
-        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + mStrCaseTimeArrived);
-        Log.d(DEBUG_TAG, "Hora programada del pedido: " + mStrCaseTimeProgrammed);
-        Log.d(DEBUG_TAG, "Tipo de pago del pedido: " + mStrCasePaymentMethod);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -224,28 +204,14 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mFabCanceled.setVisibility(View.GONE);
         mFabWaze = findViewById(R.id.activity_detail_operator_fab_waze);
         mFabWaze.setOnClickListener(this);
+        mFabWaze.setVisibility(View.GONE);
+        mCaseStatus.setTextColor(getResources().getColor(R.color.orange));
 
-        if (mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
-        } else if (mStrCaseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
-        } else if (mStrCaseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.red));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
-        } else {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.orange));
-        }
+
     }
 
     private void callAsyncTaskInProgress() {
-        JSONObject params = new JSONObject();
+        params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
@@ -265,16 +231,41 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.FINISHED);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, strCylinder10);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20, strCylinder20);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30, strCylinder30);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45, strCylinder45);
-            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
-                    "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
-                    "Cylinder 10: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10) +
-                    "Cylinder 20: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20) +
-                    "Cylinder 30: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30) +
-                    "Cylinder 45: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45));
+            if (mStrCaseServiceType.equals("Cilindro")) {
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, strCylinder10);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20, strCylinder20);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30, strCylinder30);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45, strCylinder45);
+                Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
+                        "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
+                        "Cylinder 10: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10) +
+                        "Cylinder 20: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20) +
+                        "Cylinder 30: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30) +
+                        "Cylinder 45: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45));
+            } else if (mStrCaseServiceType.equals("Estacionario")) {
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_TICKET, strTicket);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY, strQuantity);
+                Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
+                        "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
+                        "Ticket: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_TICKET) +
+                        "Quantity: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY));
+            }
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callAsyncTaskCancelled() {
+        params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.CANCELLED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, srtCancellationReason);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
             putStatusOrderTask.setStatusOrderTaskListener(this);
@@ -304,21 +295,12 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 
-    /**
-     * Método que abre la aplicación de Waze, recibe la dirección de la fuga y después
-     * la pinta en Waze.
-     *
-     * @param address - Dirección de la fuga.
-     */
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
 
-    /**
-     *
-     */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         if (mStrCaseServiceType.equals("Cilindro")) {
@@ -327,10 +309,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
             Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
             dialog.setCancelable(false);
 
-            final EditText et10Kilograms = findViewById(R.id.dialog_finish_case_cylinder_10_edit_text);
-            final EditText et20Kilograms = findViewById(R.id.dialog_finish_case_cylinder_20_edit_text);
-            final EditText et30Kilograms = findViewById(R.id.dialog_finish_case_cylinder_30_edit_text);
-            final EditText et45Kilograms = findViewById(R.id.dialog_finish_case_cylinder_45_edit_text);
+            final EditText et10Kilograms = dialog.findViewById(R.id.dialog_finish_case_cylinder_10_edit_text);
+            final EditText et20Kilograms = dialog.findViewById(R.id.dialog_finish_case_cylinder_20_edit_text);
+            final EditText et30Kilograms = dialog.findViewById(R.id.dialog_finish_case_cylinder_30_edit_text);
+            final EditText et45Kilograms = dialog.findViewById(R.id.dialog_finish_case_cylinder_45_edit_text);
 
             Button mBtnAccept = dialog.findViewById(R.id.dialog_finish_case_cylinder_btn_accept);
             mBtnAccept.setOnClickListener(new View.OnClickListener() {
@@ -341,6 +323,8 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                     strCylinder30 = et30Kilograms.getText().toString();
                     strCylinder45 = et45Kilograms.getText().toString();
                     callAsyncTaskFinished();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
                 }
             });
 
@@ -351,7 +335,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                     dialog.dismiss();
                 }
             });
-
 
         } else if (mStrCaseServiceType.equals("Estacionario")) {
             dialog.setContentView(R.layout.dialog_finish_case_operator_stationary);
@@ -369,12 +352,13 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                     if (isEmpty(etQuantity) || isEmpty(etTicket)) {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
                     } else {
-                        final String quantity = etQuantity.getText().toString();
-                        final String ticket = etTicket.getText().toString();
-                        Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
-                        Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
+                        strQuantity = etQuantity.getText().toString();
+                        strTicket = etTicket.getText().toString();
+                        Log.d(DEBUG_TAG, "Cantidad surtida " + strQuantity);
+                        Log.d(DEBUG_TAG, "Folio del ticket " + strTicket);
                         etQuantity.getText().clear();
                         etTicket.getText().clear();
+                        callAsyncTaskFinished();
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
@@ -392,9 +376,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         dialog.show();
     }
 
-    /**
-     *
-     */
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_operator);
@@ -415,9 +396,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 if (mSpinnerOptions.getSelectedItem() == null) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
+                    srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
+                    callAsyncTaskCancelled();
                     dialog.dismiss();
                 }
             }
@@ -435,9 +417,6 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         dialog.show();
     }
 
-    /**
-     *
-     */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
 
@@ -467,12 +446,10 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                     }
                 })
                 .build();
+
+
     }
 
-    /**
-     * @param etText
-     * @return
-     */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }
@@ -488,6 +465,26 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         Log.d(DEBUG_TAG, "Si jala");
         isClicked = true;
         checkButtons();
+
+        String status = order.getOrderStatus().toString();
+
+        if (status.equals(Order.caseStatus.INPROGRESS.toString())) {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
+        } else if (status.equals(Order.caseStatus.FINISHED.toString())) {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
+        } else if (status.equals(Order.caseStatus.CANCELLED.toString())) {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.red));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
+        }
+
+        mCaseStatus.setText(order.getOrderStatus().toString());
     }
 }
 
