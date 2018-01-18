@@ -1,4 +1,4 @@
-package com.zgas.tesselar.myzuite.Service;
+package com.zgas.tesselar.myzuite.Utilities;
 
 import android.content.Context;
 import android.content.Intent;

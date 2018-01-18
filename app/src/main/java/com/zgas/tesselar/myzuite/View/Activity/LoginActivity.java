@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.LoginTask;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -119,13 +119,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             JSONObject params = new JSONObject();
             mUserPreferences.setLoginData(login);
-            Log.d(DEBUG_TAG, "Login preference token: " + mUserPreferences.getLoginObject().getLoginAccessToken());
-            Log.d(DEBUG_TAG, "Login preference id: " + mUserPreferences.getLoginObject().getLoginId());
-            Log.d(DEBUG_TAG, "Login preference instance url: " + mUserPreferences.getLoginObject().getLoginInstanceUrl());
-            Log.d(DEBUG_TAG, "Login preference issued at: " + mUserPreferences.getLoginObject().getLoginIssuedAt());
-            Log.d(DEBUG_TAG, "Login preference signature: " + mUserPreferences.getLoginObject().getLoginSignature());
-            Log.d(DEBUG_TAG, "Login preference token type: " + mUserPreferences.getLoginObject().getLoginTokenType());
-
             params.put(EMAIL_TAG, mEmail.getText().toString());
             params.put(ADMIN_TOKEN, mUserPreferences.getLoginObject().getLoginAccessToken());
             mUserPreferences.createLoginSession(email);
@@ -156,14 +149,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void userInfoSuccessResponse(User user) {
         mUserPreferences.setUserData(user);
-        Log.d(DEBUG_TAG, "User preference id: " + mUserPreferences.getUserObject().getUserId());
-        Log.d(DEBUG_TAG, "User preference name: " + mUserPreferences.getUserObject().getUserName());
-        Log.d(DEBUG_TAG, "User preference type: " + mUserPreferences.getUserObject().getUserType());
-        Log.d(DEBUG_TAG, "User preference email: " + mUserPreferences.getUserObject().getUserEmail());
-        Log.d(DEBUG_TAG, "User preference zone: " + mUserPreferences.getUserObject().getUserZone());
-        Log.d(DEBUG_TAG, "User preference route: " + mUserPreferences.getUserObject().getUserRoute());
-        Log.d(DEBUG_TAG, "User preference status: " + mUserPreferences.getUserObject().getUserstatus());
-
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         this.finish();

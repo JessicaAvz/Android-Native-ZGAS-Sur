@@ -25,10 +25,14 @@ import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapte
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.PutStatusOrderTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 
-public class DetailActivityService extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONObject;
+
+public class DetailActivityService extends AppCompatActivity implements View.OnClickListener,
+        PutStatusOrderTask.StatusOrderTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityService";
 
@@ -44,6 +48,9 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private String mStrCaseTimeArrived;
     private String mStrCaseTimeProgrammed;
     private String mStrCasePaymentMethod;
+    private String strTicket;
+    private String strQuantity;
+    private String strCancellationReason;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -61,6 +68,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private UserPreferences mUserPreferences;
     private User mUser;
     private boolean isClicked = false;
+    private JSONObject params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +82,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         initUi();
+        checkButtons();
     }
 
     /**
@@ -95,19 +104,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
         mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
         mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
-
-        Log.d(DEBUG_TAG, "Id del pedido: " + String.valueOf(mStrCaseId));
-        //Log.d(DEBUG_TAG, "Id del cliente: " + String.valueOf(mIntCaseUserId));
-        Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
-        Log.d(DEBUG_TAG, "Dirección de la entrega: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus del pedido: " + mStrCaseStatus);
-        Log.d(DEBUG_TAG, "Tipo de pedido: " + mStrCaseType);
-        Log.d(DEBUG_TAG, "Prioridad del pedido: " + mStrCasePriority);
-        Log.d(DEBUG_TAG, "Hora de pedido: " + mStrCaseTimeIn);
-        Log.d(DEBUG_TAG, "Hora de visualización del pedido: " + mStrCaseTimeSeen);
-        Log.d(DEBUG_TAG, "Hora de llegada del pedido: " + mStrCaseTimeArrived);
-        Log.d(DEBUG_TAG, "Hora programada del pedido: " + mStrCaseTimeProgrammed);
-        Log.d(DEBUG_TAG, "Tipo de pago del pedido: " + mStrCasePaymentMethod);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -133,28 +129,14 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         mFabInProgress.setOnClickListener(this);
         mFabFinished = findViewById(R.id.activity_detail_service_fab_finished);
         mFabFinished.setOnClickListener(this);
+        mFabFinished.setVisibility(View.GONE);
         mFabCanceled = findViewById(R.id.activity_detail_service_fab_cancel);
         mFabCanceled.setOnClickListener(this);
+        mFabCanceled.setVisibility(View.GONE);
         mFabWaze = findViewById(R.id.activity_detail_service_fab_waze);
         mFabWaze.setOnClickListener(this);
-
-        if (mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
-        } else if (mStrCaseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
-        } else if (mStrCaseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.red));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
-        } else {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.orange));
-        }
+        mFabWaze.setVisibility(View.GONE);
+        mCaseStatus.setTextColor(getResources().getColor(R.color.blue));
     }
 
     /**
@@ -173,9 +155,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         return super.onOptionsItemSelected(menuItem);
     }
 
-    /**
-     *
-     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -183,20 +162,15 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 
-    /**
-     *
-     */
     private void checkButtons() {
-        if (isClicked == true) {
+        if (isClicked == true || mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
             mFabFinished.show();
             mFabCanceled.show();
+            mFabWaze.show();
             mFabInProgress.hide();
         }
     }
 
-    /**
-     * @param view
-     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -215,18 +189,66 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         }
     }
 
-    /**
-     * @param address
-     */
+    private void callAsyncTaskInProgress() {
+        params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callAsyncTaskFinished() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.FINISHED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_TICKET, strTicket);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY, strQuantity);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
+                    "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
+                    "Ticket: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_TICKET) +
+                    "Quantity: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY));
+
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callAsyncTaskCancelled() {
+        params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.CANCELLED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
 
-    /**
-     *
-     */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_finish_case_operator_stationary);
@@ -244,13 +266,14 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                 if (isEmpty(etQuantity) || isEmpty(etTicket)) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_finish_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    final String quantity = etQuantity.getText().toString();
-                    final String ticket = etTicket.getText().toString();
-                    Log.d(DEBUG_TAG, "Cantidad surtida " + quantity);
-                    Log.d(DEBUG_TAG, "Folio del ticket " + ticket);
+                    strQuantity = etQuantity.getText().toString();
+                    strTicket = etTicket.getText().toString();
+                    Log.d(DEBUG_TAG, "Cantidad surtida " + strQuantity);
+                    Log.d(DEBUG_TAG, "Folio del ticket " + strTicket);
                     etQuantity.getText().clear();
                     etTicket.getText().clear();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_finish_correct), Toast.LENGTH_LONG).show();
+                    callAsyncTaskFinished();
                     dialog.dismiss();
                 }
             }
@@ -289,9 +312,10 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                 if (mSpinnerOptions.getSelectedItem() == null) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
+                    strCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_cancel_correct), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
+                    callAsyncTaskCancelled();
                     dialog.dismiss();
                 }
             }
@@ -327,9 +351,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        isClicked = true;
-                        checkButtons();
-                        //change order status
+                        callAsyncTaskInProgress();
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
@@ -349,5 +371,37 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
      */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
+    }
+
+    @Override
+    public void statusErrorResponse(String error) {
+        Log.d(DEBUG_TAG, "Error response: " + error);
+        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void statusSuccessResponse(Order order) {
+        Log.d(DEBUG_TAG, "Si jala");
+        isClicked = true;
+        checkButtons();
+
+        String status = order.getOrderStatus().toString();
+
+        if (status.equals(Order.caseStatus.INPROGRESS.toString())) {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
+        } else if (status.equals(Order.caseStatus.FINISHED.toString())) {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
+        } else if (status.equals(Order.caseStatus.CANCELLED.toString())) {
+            mCaseStatus.setTextColor(getResources().getColor(R.color.red));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
+        }
+        mCaseStatus.setText(order.getOrderStatus().toString());
     }
 }

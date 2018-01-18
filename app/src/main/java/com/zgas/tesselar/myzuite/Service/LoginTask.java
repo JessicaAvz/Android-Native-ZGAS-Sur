@@ -9,6 +9,7 @@ import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;

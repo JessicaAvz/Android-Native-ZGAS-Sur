@@ -1,6 +1,6 @@
 package com.zgas.tesselar.myzuite.Controller.Adapter;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
-import com.shashank.sony.fancydialoglib.Animation;
-import com.shashank.sony.fancydialoglib.FancyAlertDialog;
-import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
-import com.shashank.sony.fancydialoglib.Icon;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -51,10 +51,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         return new OrdersAdapter.OrderViewHolder(v);
     }
 
-    /**
-     * @param viewHolder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         final OrderViewHolder holder = (OrderViewHolder) viewHolder;
@@ -73,7 +69,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         TextView hourIn = holder.mOrderTimeIn;
         TextView type = holder.mOrderType;
 
-        Log.d(DEBUG_TAG, String.valueOf(Order.caseTypes.ORDER));
         id.setText("Pedido número: " + String.valueOf(caseId));
         address.setText("Dirección: " + caseAddress);
         type.setText("Tipo: " + caseType + " - " + serviceType);
@@ -86,16 +81,13 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
 
         TextView status = holder.mOrderStatus;
         if (caseStatus == Order.caseStatus.CANCELLED) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseStatus.CANCELLED));
             status.setTextColor(context.getResources().getColor(R.color.red));
         } else if (caseStatus == Order.caseStatus.FINISHED) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseStatus.FINISHED));
             status.setTextColor(context.getResources().getColor(R.color.light_green));
         } else if (caseStatus == Order.caseStatus.INPROGRESS) {
-            Log.d(DEBUG_TAG, String.valueOf(Order.caseStatus.INPROGRESS));
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
-            status.setTextColor(context.getResources().getColor(R.color.orange));
+            status.setTextColor(context.getResources().getColor(R.color.blue));
         }
         status.setText(caseStatus.toString());
         holder.itemView.setTag(mOrderList.get(position));
@@ -150,19 +142,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 String serviceType = mOrder.getOrderServiceType();
                 String recordType = mOrder.getOrderType().toString();
 
-                Log.d(DEBUG_TAG, "Id del caso: " + id);
-                Log.d(DEBUG_TAG, "Dirección del caso: " + address);
-                Log.d(DEBUG_TAG, "Status de caso: " + status);
-                Log.d(DEBUG_TAG, "Hora de asignación: " + timeAssignment);
-                Log.d(DEBUG_TAG, "Tipo de servicio: " + serviceType);
-                //Log.d(DEBUG_TAG, "Visto : " + timeSeen);
-                //Log.d(DEBUG_TAG, "Hora de llegada: " + timeArrival);
-                Log.d(DEBUG_TAG, "Hora programada: " + timeScheduled);
-                Log.d(DEBUG_TAG, "Prioridad del caso: " + priority);
-                Log.d(DEBUG_TAG, "Nombre del cliente: " + userName);
-                Log.d(DEBUG_TAG, "Método de pago: " + paymentMethod);
-                Log.d(DEBUG_TAG, "Tipo de record: " + recordType);
-
                 Bundle bundle = new Bundle();
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
@@ -178,19 +157,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
 
-                Log.d(DEBUG_TAG, "Bundle - Id del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
-                Log.d(DEBUG_TAG, "Bundle - Dirección del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
-                Log.d(DEBUG_TAG, "Bundle - Estatus del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                Log.d(DEBUG_TAG, "Bundle - Hora de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
-                Log.d(DEBUG_TAG, "Bundle - Hora de visualización de caso: " + String.valueOf(timeSeen));
-                Log.d(DEBUG_TAG, "Bundle - Hora de llegada del caso: " + String.valueOf(timeArrival));
-                Log.d(DEBUG_TAG, "Bundle - Hora programada del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
-                Log.d(DEBUG_TAG, "Bundle - Prioridad del caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY));
-                Log.d(DEBUG_TAG, "Bundle - Nombre del cliente: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
-                Log.d(DEBUG_TAG, "Bundle - Método de pago: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
-                Log.d(DEBUG_TAG, "Bundle - Tipo de Servicio: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE));
-                Log.d(DEBUG_TAG, "Bundle - Tipo de caso: " + bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE));
-
                 intent = new Intent();
                 if (serviceType.equals(Order.caseTypes.MEASURED.toString()) && recordType.equals(Order.caseTypes.ORDER.toString())) {
                     intent = new Intent(context, DetailActivityService.class);
@@ -204,39 +170,55 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             }
         });
 
-        holder.mOrderDelete.setOnClickListener(new View.OnClickListener() {
+        holder.mOrderContact.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                Toast.makeText(context, "TO-DO", Toast.LENGTH_LONG).show();
+            }
+        });
 
-                new FancyAlertDialog.Builder((Activity) context)
-                        .setTitle(context.getResources().getString(R.string.dialog_delete_order))
-                        .setBackgroundColor(context.getResources().getColor(R.color.red))
-                        .setMessage(context.getResources().getString(R.string.dialog_delete_order_prompt))
-                        .setNegativeBtnText(context.getResources().getString(R.string.no))
-                        .setPositiveBtnBackground(context.getResources().getColor(R.color.red))
-                        .setPositiveBtnText(context.getResources().getString(R.string.yes))
-                        .setNegativeBtnBackground(context.getResources().getColor(R.color.grey_300))
-                        .setAnimation(Animation.SIDE)
-                        .isCancellable(false)
-                        .setIcon(R.drawable.icon_alert, Icon.Visible)
-                        .OnPositiveClicked(new FancyAlertDialogListener() {
-                            @Override
-                            public void OnClick() {
-                                mItemManger.removeShownLayouts(holder.swipeLayout);
-                                mOrderList.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, mOrderList.size());
-                                mItemManger.closeAllItems();
-                                Log.d(DEBUG_TAG, " Borrar la visita onClick id: " + mOrder.getOrderId());
-                            }
-                        })
-                        .OnNegativeClicked(new FancyAlertDialogListener() {
-                            @Override
-                            public void OnClick() {
-                                mItemManger.closeItem(position);
-                            }
-                        })
-                        .build();
+        holder.mOrderReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialog_review_case);
+                dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
+
+                Log.d(DEBUG_TAG, context.getResources().getString(R.string.on_create));
+                dialog.setCancelable(false);
+
+                final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, context));
+
+                Button mBtnAccept = dialog.findViewById(R.id.dialog_review_case_button_accept);
+                mBtnAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mSpinnerOptions.getSelectedItem() == null) {
+                            Toast.makeText(context, context.getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
+                        } else {
+                            //srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
+                            mSpinnerOptions.setSelection(0);
+                            Toast.makeText(context, context.getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
+                            //callAsyncTaskCancelled();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+                Button mBtnCancel = dialog.findViewById(R.id.dialog_review_case_button_cancel);
+                mBtnCancel.setOnClickListener(new View.OnClickListener()
+
+                {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
     }
@@ -255,13 +237,11 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         return position;
     }
 
-    /**
-     *
-     */
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
         private SwipeLayout swipeLayout;
-        private TextView mOrderDelete;
+        private TextView mOrderReview;
+        private TextView mOrderContact;
         private TextView mOrderId;
         private TextView mOrderStatus;
         private TextView mOrderAddress;
@@ -274,7 +254,8 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
 
             //if de swipe layout si es order o service
             swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
-            mOrderDelete = itemView.findViewById(R.id.row_visit_recycler_tv_delete_visit);
+            mOrderReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
+            mOrderContact = itemView.findViewById(R.id.row_visit_recycler_tv_contact_visit);
             mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
             mOrderStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
             mOrderAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);

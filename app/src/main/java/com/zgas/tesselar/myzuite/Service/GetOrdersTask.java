@@ -10,6 +10,7 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;

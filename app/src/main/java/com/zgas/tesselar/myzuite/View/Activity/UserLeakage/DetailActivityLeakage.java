@@ -22,19 +22,23 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.PutStatusOrderTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+
+import org.json.JSONObject;
 
 /**
  * @author Jessica Arvizu
- * Clase que muestra los detalles de los pedidos tipo fuga, cuando el Operador es tipo
- * Fuga...
+ *         Clase que muestra los detalles de los pedidos tipo fuga, cuando el Operador es tipo
+ *         Fuga...
  */
-public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener,
+        PutStatusOrderTask.StatusOrderTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityLeakage";
     private Bundle mBundle;
@@ -55,6 +59,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private String mStrCylinderColor;
     private String mStrChannel;
     private String mStrLeakAddress;
+    private String strCancellationReason;
 
     private TextView mUserName;
     private TextView mLeakAddress;
@@ -76,6 +81,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
 
     private ArrayAdapter<CharSequence> adapter;
     private Context context;
+    private JSONObject params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,28 +91,20 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(this);
         mUser = mUserPreferences.getUserObject();
-        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
-        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
-        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
         context = this;
         initUi();
+        checkButtons();
     }
 
-    /**
-     * Método que muestra los botones de aceptar y cancelar, y esconde el botón de en progreso,
-     * una vez que la bandera = true.
-     */
     private void checkButtons() {
-        if (isClicked == true) {
+        if (isClicked == true || mStrLeakStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
             mFabFinished.show();
             mFabCanceled.show();
+            mFabWaze.show();
             mFabInProgress.hide();
         }
     }
 
-    /**
-     * Método que inicializa la interfaz de usuario, y obtiene los datos del bundle.
-     */
     private void initUi() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -129,23 +127,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         mStrCylinderCapacity = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY);
         mStrCylinderColor = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR);
         mStrChannel = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL);
-        mLeakChannel = (TextView) findViewById(R.id.activity_detail_leakage_tv_channel);
+        mLeakChannel = findViewById(R.id.activity_detail_leakage_tv_channel);
         mLeakChannel.setText(mStrChannel);
-        Log.d(DEBUG_TAG, "Bundle - Id de la fuga: " + mStrLeakId);
-        Log.d(DEBUG_TAG, "Bundle - WhoReports: " + mStrLeakClientName);
-        Log.d(DEBUG_TAG, "Bundle - Subject: " + mStrLeakSubject);
-        Log.d(DEBUG_TAG, "Bundle - Status: " + mStrLeakStatus);
-        Log.d(DEBUG_TAG, "Bundle - RecordTypeName: " + mStrLeakType);
-        Log.d(DEBUG_TAG, "Bundle - Priority: " + mStrLeakPriority);
-        Log.d(DEBUG_TAG, "Bundle - FolioSalesNote: " + mStrLeakFolioSalesNote);
-        Log.d(DEBUG_TAG, "Bundle - DateTimeTechnician: " + mStrLeakTimeTechnician);
-        Log.d(DEBUG_TAG, "Bundle - DateTimeScheduled: " + mStrLeakTimeScheduled);
-        Log.d(DEBUG_TAG, "Bundle - DateTimeEnd: " + mStrLeakTimeArrived);
-        Log.d(DEBUG_TAG, "Bundle - DateTimeDeparture: " + mStrLeakTimeDeparture);
-        Log.d(DEBUG_TAG, "Bundle - CylinderCapacity: " + mStrCylinderCapacity);
-        Log.d(DEBUG_TAG, "Bundle - CylinderColor: " + mStrCylinderColor);
-        Log.d(DEBUG_TAG, "Bundle - Channel: " + mStrChannel);
-        Log.d(DEBUG_TAG, "Bundle - Address: " + mStrLeakAddress);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -195,24 +178,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         } else {
             mLeakTimeScheduled.setText(mStrLeakTimeScheduled);
         }
-
-        if (mStrLeakStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
-        } else if (mStrLeakStatus.equals(Order.caseStatus.FINISHED.toString())) {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
-        } else if (mStrLeakStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.red));
-            mFabInProgress.setVisibility(View.GONE);
-            mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
-            mFabWaze.setVisibility(View.GONE);
-        } else {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.orange));
-        }
+        mLeakStatus.setTextColor(getResources().getColor(R.color.blue));
     }
 
     @Override
@@ -252,22 +218,45 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         }
     }
 
-    /**
-     * Método que abre la aplicación de Waze, recibe la dirección de la fuga y después
-     * la pinta en Waze.
-     *
-     * @param address - Dirección de la fuga.
-     */
+    private void callAsyncTaskInProgress() {
+        params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrLeakId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callAsyncTaskCancelled() {
+        params = new JSONObject();
+        try {
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrLeakId);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.CANCELLED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
+            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+
+            PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
+            putStatusOrderTask.setStatusOrderTaskListener(this);
+            putStatusOrderTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void wazeIntent(String address) {
         final String url = "waze://?q=" + address;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
 
-    /**
-     * Método que muestra un Dialog para aceptar o cancelar el progreso de un pedido,
-     * se usa la tarea asíncrona de cambiar estatus de pedido.
-     */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
 
@@ -285,8 +274,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        isClicked = true;
-                        checkButtons();
+                        callAsyncTaskInProgress();
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
@@ -300,10 +288,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
                 .build();
     }
 
-    /**
-     * Método que muestra un Dialog para finalizar un pedido,
-     * se usa la tarea asíncrona de cambiar estatus de pedido.
-     */
     private void finishDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_finish_case_leakage);
@@ -445,10 +429,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
 
     }
 
-    /**
-     * Método que muestra un Dialog para cancelar un pedido,
-     * se usa la tarea asíncrona de cambiar estatus de pedido.
-     */
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_leakage);
@@ -468,9 +448,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
                 if (mSpinnerOptions.getSelectedItem() == null) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.leak_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(DEBUG_TAG, "Spinner 1 " + mSpinnerOptions.getSelectedItem().toString());
+                    strCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.leak_cancel_correct), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
+                    callAsyncTaskCancelled();
                     dialog.dismiss();
                 }
             }
@@ -484,5 +465,38 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void statusErrorResponse(String error) {
+        Log.d(DEBUG_TAG, "Error response: " + error);
+        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void statusSuccessResponse(Order order) {
+        Log.d(DEBUG_TAG, "Si jala");
+        isClicked = true;
+        checkButtons();
+
+        String status = order.getOrderStatus().toString();
+
+        if (status.equals(Order.caseStatus.INPROGRESS.toString())) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
+        } else if (status.equals(Order.caseStatus.FINISHED.toString())) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
+        } else if (status.equals(Order.caseStatus.CANCELLED.toString())) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.red));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabCanceled.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
+        }
+
+        mLeakStatus.setText(order.getOrderStatus().toString());
     }
 }

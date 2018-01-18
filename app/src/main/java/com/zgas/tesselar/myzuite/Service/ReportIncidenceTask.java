@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.zgas.tesselar.myzuite.Model.Incidence;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 

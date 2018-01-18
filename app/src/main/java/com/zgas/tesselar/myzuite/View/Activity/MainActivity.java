@@ -18,17 +18,17 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
-import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
-import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
+import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisorAdapter;
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
+import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
-import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
-import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisorAdapter;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.HelpFragmentOperator;
@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject params = new JSONObject();
                 params.put(EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
                 params.put(PASS_TAG, UrlHelper.ADMIN_PASS);
-                Log.d(DEBUG_TAG, "Parámetro: " + params.getString(EMAIL_TAG) + " " + params.getString(PASS_TAG));
 
                 RefreshTokenTask refreshTokenTask = new RefreshTokenTask(this, params);
                 refreshTokenTask.setRefreshTokenListener(this);
@@ -95,30 +94,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        Log.d(DEBUG_TAG, "Admin token: " + userPreferences.getAdminToken());
-        Log.d(DEBUG_TAG, "Usuario logeado: " + userPreferences.getLoginObject().getLoginEmail());
-
         if (user.getUserType() == User.userType.OPERATOR) {
-            Log.d(DEBUG_TAG, "OnCreate Operator");
             setContentView(R.layout.activity_main);
             initUiOperator();
         } else if (user.getUserType() == User.userType.SERVICE) {
-            Log.d(DEBUG_TAG, "OnCreate Servicio medido");
             setContentView(R.layout.activity_main);
             initUiService();
         } else if (user.getUserType() == User.userType.SUPERVISOR) {
-            Log.d(DEBUG_TAG, "OnCreate Supervisor");
             setContentView(R.layout.activity_supervisor);
-
             getSupervisedCallAsyncTask();
-
             initUiSupervisor();
         } else if (user.getUserType() == User.userType.LEAKAGE) {
             setContentView(R.layout.activity_main);
-            Log.d(DEBUG_TAG, "OnCreate Técnico de fugas");
             initUiLeakage();
         } else {
-            Log.d(DEBUG_TAG, "OnCreate Default");
             setContentView(R.layout.activity_main);
             initUiOperator();
         }
@@ -128,11 +117,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_main_fab_call:
-                Log.d(DEBUG_TAG, "Llamada");
                 callIntent();
                 break;
             case R.id.ativity_supervisor_fab_call:
-                Log.d(DEBUG_TAG, "Llamada");
                 callIntent();
                 break;
         }
@@ -404,7 +391,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param position
      */
     private void animateFab(int position) {
@@ -422,7 +408,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param position
      */
     private void animateFabOperator(int position) {
@@ -506,7 +491,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param user
      */
     @Override
@@ -521,7 +505,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param userList
      */
     @Override
@@ -535,7 +518,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param error
      */
     @Override
@@ -545,17 +527,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param login
      */
     @Override
     public void refreshSuccessResponse(Login login) {
         userPreferences.setLoginData(login);
-        Log.d(DEBUG_TAG, "Login refresh token: " + userPreferences.getLoginObject().getLoginAccessToken());
-        Log.d(DEBUG_TAG, "Login refresh id: " + userPreferences.getLoginObject().getLoginId());
-        Log.d(DEBUG_TAG, "Login refresh instance url: " + userPreferences.getLoginObject().getLoginInstanceUrl());
-        Log.d(DEBUG_TAG, "Login refresh issued at: " + userPreferences.getLoginObject().getLoginIssuedAt());
-        Log.d(DEBUG_TAG, "Login refresh signature: " + userPreferences.getLoginObject().getLoginSignature());
-        Log.d(DEBUG_TAG, "Login refresh token type: " + userPreferences.getLoginObject().getLoginTokenType());
     }
 }

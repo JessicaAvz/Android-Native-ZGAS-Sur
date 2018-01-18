@@ -11,6 +11,9 @@
     <color name="sky_blue">#79d1e9</color>
     <color name="orange">#FF9800</color>
     <color name="teal">#009688</color>
+    <color name="blue">#2196F3</color>
+    <color name="blue_900">#0D47A1</color>
+    <color name="deep_purple">#673AB7</color>
 
     <!-- Black & white -->
     <color name="white">#FFFFFF</color>

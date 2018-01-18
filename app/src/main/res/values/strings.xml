@@ -155,11 +155,13 @@
     <string name="cases_data_error">Error al obtener los casos.</string>
     <string name="cases_status_error">Error al actualizar el pedido.</string>
 
+    <string name="review">Revisión</string>
     <string name="cancel">Cancelar</string>
+    <string name="contact">Contacto</string>
 
-    <!-- Delete order -->
-    <string name="dialog_delete_order">Cancelar pedido</string>
-    <string name="dialog_delete_order_prompt">¿Está seguro de que desea cancelar este pedido?</string>
+    <!-- Review order -->
+    <string name="dialog_review_order">Revisión del pedido</string>
+    <string name="dialog_review_order_prompt">Seleccione la opción de revisión</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
 

@@ -75,19 +75,15 @@ public class ConnectionController {
             httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
             if (httpURLConnection.getRequestMethod().equals("POST")) {
-                Log.d(DEBUG_TAG, "If de método POST");
                 httpURLConnection.setDoOutput(true);
             } else if (httpURLConnection.getRequestMethod().equals("GET")) {
-                Log.d(DEBUG_TAG, "If de método GET");
                 httpURLConnection.setDoOutput(false);
-                Log.d(DEBUG_TAG, "Token admin GET : " + encodedAuth);
                 httpURLConnection.setRequestProperty("Authorization", encodedAuth);
             } else if (httpURLConnection.getRequestMethod().equals("PUT")) {
-                Log.d(DEBUG_TAG, "If de método PUT");
-                httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PUT");
                 httpURLConnection.setDoOutput(true);
-                Log.d(DEBUG_TAG, "Token admin PUT : " + encodedAuth);
                 httpURLConnection.setRequestProperty("Authorization", encodedAuth);
+                httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PUT");
+
             }
 
             httpURLConnection.setConnectTimeout(TIMEOUT);

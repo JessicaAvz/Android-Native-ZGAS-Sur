@@ -11,6 +11,7 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,8 +77,6 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_LEAKS_URL, params.get(USER_ID)).toString();
             adminToken = userPreferences.getAdminToken();
-            Log.d(DEBUG_TAG, "Url del usuario: " + format);
-            Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
 
             URL url = new URL(format);
             ConnectionController connection = new ConnectionController(adminToken, url, METHOD);
@@ -124,7 +123,6 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     isError = true;
                 }
             } else if (jsonObject.has(CASES_ARRAY)) {
-                Log.d(DEBUG_TAG, "HOLA, SI SIRVE");
                 leaksArray = jsonObject.getJSONArray(CASES_ARRAY);
 
                 for (int i = 0; i < leaksArray.length(); i++) {

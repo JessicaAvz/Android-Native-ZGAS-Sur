@@ -26,16 +26,17 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutStatusOrderTask;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 
 import org.json.JSONObject;
 
 /**
  * @author Jessica Arvizu
- *         Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
+ * Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
  */
-public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener, PutStatusOrderTask.StatusOrderTaskListener {
+public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener,
+        PutStatusOrderTask.StatusOrderTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityOperator";
 
@@ -60,7 +61,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private String strCylinder20;
     private String strCylinder30;
     private String strCylinder45;
-    private String srtCancellationReason;
+    private String strCancellationReason;
 
     private TextView mUserName;
     private TextView mCaseAddress;
@@ -205,9 +206,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mFabWaze = findViewById(R.id.activity_detail_operator_fab_waze);
         mFabWaze.setOnClickListener(this);
         mFabWaze.setVisibility(View.GONE);
-        mCaseStatus.setTextColor(getResources().getColor(R.color.orange));
-
-
+        mCaseStatus.setTextColor(getResources().getColor(R.color.blue));
     }
 
     private void callAsyncTaskInProgress() {
@@ -264,7 +263,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.CANCELLED);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, srtCancellationReason);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
@@ -396,7 +395,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
                 if (mSpinnerOptions.getSelectedItem() == null) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
+                    strCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
                     callAsyncTaskCancelled();

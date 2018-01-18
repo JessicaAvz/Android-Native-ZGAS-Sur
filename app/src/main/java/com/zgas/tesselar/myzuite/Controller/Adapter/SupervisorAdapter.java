@@ -32,12 +32,6 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         this.mSupervisedList = mSupervisedList;
     }
 
-    /**
-     *
-     * @param parent
-     * @param viewType
-     * @return
-     */
     @Override
     public SupervisedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
@@ -45,11 +39,6 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         return new SupervisorAdapter.SupervisedViewHolder(v);
     }
 
-    /**
-     *
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(SupervisedViewHolder holder, int position) {
         User mUser = mSupervisedList.get(position);
@@ -114,14 +103,6 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     User.userType type = mUser.getUserType();
                     User.userStatus status = mUser.getUserstatus();
 
-                    Log.d(DEBUG_TAG, "Id del usuario: " + id);
-                    Log.d(DEBUG_TAG, "Nombre del usuario: " + name);
-                    Log.d(DEBUG_TAG, "Correo: " + email);
-                    Log.d(DEBUG_TAG, "Zona: " + zone);
-                    Log.d(DEBUG_TAG, "Ruta: " + route);
-                    Log.d(DEBUG_TAG, "Tipo de usuario: " + type);
-                    Log.d(DEBUG_TAG, "Estatus del usuario: " + status);
-
                     Bundle bundle = new Bundle();
                     bundle.putString(ExtrasHelper.EXTRA_USER_ID, id);
                     bundle.putString(ExtrasHelper.EXTRA_USER_NAME, name);
@@ -130,15 +111,6 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     bundle.putString(ExtrasHelper.EXTRA_USER_ROUTE, route);
                     bundle.putString(ExtrasHelper.EXTRA_USER_TYPE, String.valueOf(type));
                     bundle.putString(ExtrasHelper.EXTRA_USER_STATUS, String.valueOf(status));
-
-                    Log.d(DEBUG_TAG, "SupervisorAdapter itemView listener for adapter position: " + requestCode);
-                    Log.d(DEBUG_TAG, "Bundle - user id " + bundle.getString(ExtrasHelper.EXTRA_USER_ID));
-                    Log.d(DEBUG_TAG, "Bundle - user name " + bundle.getString(ExtrasHelper.EXTRA_USER_NAME));
-                    Log.d(DEBUG_TAG, "Bundle - user email " + bundle.getString(ExtrasHelper.EXTRA_USER_EMAIL));
-                    Log.d(DEBUG_TAG, "Bundle - user zone " + bundle.getString(ExtrasHelper.EXTRA_USER_ZONE));
-                    Log.d(DEBUG_TAG, "Bundle - user route " + bundle.getString(ExtrasHelper.EXTRA_USER_ROUTE));
-                    Log.d(DEBUG_TAG, "Bundle - user type " + bundle.getString(ExtrasHelper.EXTRA_USER_TYPE));
-                    Log.d(DEBUG_TAG, "Bundle - user status " + bundle.getString(ExtrasHelper.EXTRA_USER_STATUS));
 
                     Intent intent = new Intent(context, DetailActivitySupervisor.class);
                     intent.putExtras(bundle);

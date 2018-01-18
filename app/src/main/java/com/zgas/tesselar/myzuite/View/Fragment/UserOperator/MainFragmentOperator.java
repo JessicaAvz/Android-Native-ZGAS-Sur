@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
-import com.zgas.tesselar.myzuite.Service.UserPreferences;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -56,10 +56,6 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
-        Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
-        Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
-        Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
-
         initUi(mRootView);
         return mRootView;
     }
@@ -67,16 +63,12 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(DEBUG_TAG, "onStart");
-        Log.d(DEBUG_TAG, "Llamado de asyncTask onStart");
         asyncTask();
     }
 
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-        Log.d(DEBUG_TAG, "onResume");
-        Log.d(DEBUG_TAG, "Llamado de asyncTask onResume");
         asyncTask();
     }
 
