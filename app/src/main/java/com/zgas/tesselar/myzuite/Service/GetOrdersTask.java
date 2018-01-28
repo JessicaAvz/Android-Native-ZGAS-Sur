@@ -149,6 +149,8 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Tipo de servicio: " + aOrder.getOrderServiceType());
                     aOrder.setOrderPaymentMethod(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD));
                     Log.d(DEBUG_TAG, "Tipo de pago: " + aOrder.getOrderPaymentMethod());
+                    aOrder.setOrderNotice(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_NOTICE));
+                    Log.d(DEBUG_TAG, "Aviso: " + aOrder.getOrderNotice());
 
                     String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
                     String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();

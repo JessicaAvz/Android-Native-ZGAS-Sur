@@ -91,7 +91,6 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         } else {
             status.setTextColor(context.getResources().getColor(R.color.blue));
         }
-
         status.setText(leakStatus.toString());
         holder.itemView.setTag(mLeaksList.get(position));
 
@@ -142,13 +141,6 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
             }
         });
 
-        holder.mLeakContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "TO-DO", Toast.LENGTH_LONG).show();
-            }
-        });
-
         holder.mLeakReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +151,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
                 dialog.setCancelable(false);
 
                 final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, context));
 
@@ -168,11 +160,11 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
                     @Override
                     public void onClick(View view) {
                         if (mSpinnerOptions.getSelectedItem() == null) {
-                            Toast.makeText(context, context.getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect), Toast.LENGTH_LONG).show();
                         } else {
                             //srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                             mSpinnerOptions.setSelection(0);
-                            Toast.makeText(context, context.getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
                             //callAsyncTaskCancelled();
                             dialog.dismiss();
                         }
@@ -212,24 +204,25 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
 
         private SwipeLayout swipeLayout;
         private TextView mLeakReview;
-        private TextView mLeakContact;
         private TextView mLeakId;
         private TextView mLeakStatus;
         private TextView mLeakAddress;
         private TextView mLeakTimeIn;
         private TextView mLeakType;
+        private TextView mLeakNotice;
 
         public LeaksViewHolder(View itemView) {
             super(itemView);
 
             swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
             mLeakReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
-            mLeakContact = itemView.findViewById(R.id.row_visit_recycler_tv_contact_visit);
             mLeakId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
             mLeakStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
             mLeakAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
             mLeakTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
             mLeakType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
+            mLeakNotice = itemView.findViewById(R.id.row_main_fragment_tv_notice);
+            mLeakNotice.setVisibility(View.GONE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

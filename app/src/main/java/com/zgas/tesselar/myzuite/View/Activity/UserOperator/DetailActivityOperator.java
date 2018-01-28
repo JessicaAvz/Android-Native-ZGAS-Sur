@@ -26,14 +26,14 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutStatusOrderTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
 /**
  * @author Jessica Arvizu
- * Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
+ *         Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
  */
 public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener,
         PutStatusOrderTask.StatusOrderTaskListener {

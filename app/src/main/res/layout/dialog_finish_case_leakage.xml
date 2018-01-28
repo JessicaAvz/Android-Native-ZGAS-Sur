@@ -54,21 +54,10 @@
         android:layout_marginTop="24dp" />
 
     <Spinner
-        android:id="@+id/dialog_finish_case_leakage_sp_second_option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dialog_finish_case_leakage_sp_option"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp" />
-
-    <Spinner
         android:id="@+id/dialog_finish_case_leakage_sp_third_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dialog_finish_case_leakage_sp_second_option"
+        android:layout_below="@+id/dialog_finish_case_leakage_sp_option"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"

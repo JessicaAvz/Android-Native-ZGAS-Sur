@@ -133,7 +133,9 @@
     <string name="order_new_incorrect">Por favor, llene todos los campos para hacer un pedido.</string>
     <string name="order_finish_incorrect">Por favor, llene todos los campos para finalizar el pedido.</string>
     <string name="order_finish_correct">Pedido finalizado correctamente.</string>
-    <string name="order_cancel_incorrect">Por favor, seleccione una opción para reportar una incidencia.</string>
+    <string name="order_cancel_incorrect">Por favor, seleccione una opción para cancelar el pedido.</string>
+    <string name="order_review_correct">Revisión reportada correctamente.</string>
+    <string name="order_review_incorrect">Por favor, seleccione una opción para reportar una revisión.</string>
     <string name="order_cancel_correct">Pedido cancelado correctamente.</string>
     <string name="service_finish_incorrect">Por favor, llene todos los campos para finalizar el pedido.</string>
     <string name="service_finish_correct">Pedido finalizado correctamente.</string>

@@ -16,6 +16,7 @@ public class Order {
     private String orderContactName;
     private String orderAddress;
     private String orderSubject;
+    private String orderNotice;
     private String orderPaymentMethod;
     private caseStatus orderStatus;
     private caseTypes orderType;
@@ -24,7 +25,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeArrival, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderPaymentMethod, Order.caseStatus orderStatus, caseTypes orderType, Order.casePriority orderPriority) {
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeArrival, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, caseStatus orderStatus, caseTypes orderType, casePriority orderPriority) {
         this.orderId = orderId;
         this.orderUserId = orderUserId;
         this.orderTimeAssignment = orderTimeAssignment;
@@ -36,6 +37,7 @@ public class Order {
         this.orderContactName = orderContactName;
         this.orderAddress = orderAddress;
         this.orderSubject = orderSubject;
+        this.orderNotice = orderNotice;
         this.orderPaymentMethod = orderPaymentMethod;
         this.orderStatus = orderStatus;
         this.orderType = orderType;
@@ -229,4 +231,11 @@ public class Order {
         this.orderPaymentMethod = orderPaymentMethod;
     }
 
+    public String getOrderNotice() {
+        return orderNotice;
+    }
+
+    public void setOrderNotice(String orderNotice) {
+        this.orderNotice = orderNotice;
+    }
 }

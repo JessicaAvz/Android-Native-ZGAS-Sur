@@ -12,7 +12,7 @@
     <com.daimajia.swipe.SwipeLayout
         android:id="@+id/row_main_fragment_swipe_orders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:leftEdgeSwipeOffset="0dp"
         app:rightEdgeSwipeOffset="0dp">
@@ -20,21 +20,10 @@
         <!-- Button View For Right to Left -->
         <LinearLayout
             android:id="@+id/row_visit_recycler_bottom_wraper"
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="1">
-
-            <TextView
-                android:id="@+id/row_visit_recycler_tv_contact_visit"
-                android:layout_width="@dimen/delete_button_width"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/blue_900"
-                android:gravity="center"
-                android:text="@string/contact"
-                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/row_visit_recycler_tv_review_visit"
@@ -52,7 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
             android:elevation="5dp"
             android:gravity="center"
@@ -129,10 +118,7 @@
                     android:id="@+id/row_main_fragment_prompt_order_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginStart="30dp"
                     android:layout_marginTop="8dp"
                     android:drawableLeft="@drawable/icon_timer_sand"
                     android:drawablePadding="5dp"
@@ -140,17 +126,13 @@
                     android:gravity="center"
                     android:text="@string/prompt_order_status"
                     android:textColor="@color/grey_800"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_type"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_type" />
 
                 <TextView
                     android:id="@+id/row_main_fragment_tv_order_status"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="0dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
@@ -158,12 +140,10 @@
                     android:text="TextView"
                     android:textColor="@color/grey_800"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toRightOf="@+id/row_main_fragment_prompt_order_status"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_type"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_type" />
 
                 <TextView
                     android:id="@+id/row_main_fragment_tv_order_type"
@@ -182,6 +162,27 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_address" />
+
+                <TextView
+                    android:id="@+id/row_main_fragment_tv_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:drawableLeft="@drawable/icon_bell"
+                    android:drawablePadding="3dp"
+                    android:drawableTint="@color/dark_grey_300"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="@color/dark_grey_800"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.969"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/row_main_fragment_tv_order_status"
+                    app:layout_constraintVertical_bias="0.0" />
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </com.daimajia.swipe.SwipeLayout>

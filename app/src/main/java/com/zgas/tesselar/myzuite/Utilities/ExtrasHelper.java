@@ -32,6 +32,7 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_STATUS_CODE = "StatusCode";
     public static final String ORDER_JSON_OBJECT_PRIORITY = "Priority";
     public static final String ORDER_JSON_OBJECT_USER_NAME = "AccountName";
+    public static final String ORDER_JSON_OBJECT_NOTICE = "Notice";
     /*Tipo de servicio: estacionario, cilindro...*/
     public static final String ORDER_JSON_OBJECT_SERVICE_TYPE = "ServiceType";
     public static final String ORDER_JSON_OBJECT_ADDRESS = "Address";
@@ -77,5 +78,7 @@ public class ExtrasHelper {
     public static final String LEAK_JSON_OBJECT_CHANNEL = "Chanel";
     public static final String LEAK_JSON_OBJECT_ADDRESS = "Address";
 
-
+    public static final String LEAK_JSON_OBJECT_RESOLUTION_STATUS = "resolution";
+    public static final String LEAJ_JSON_OBJECT_CHANNEL_STATUS = "channel";
+    public static final String LEAK_JSON_OBJECT_STATUS_UPDATE ="StatusUpdate";
 }

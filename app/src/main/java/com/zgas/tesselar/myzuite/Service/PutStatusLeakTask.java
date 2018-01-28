@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.zgas.tesselar.myzuite.Controller.ConnectionController;
-import com.zgas.tesselar.myzuite.Model.Order;
+import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
@@ -21,23 +21,23 @@ import java.net.URL;
 import java.util.Formatter;
 
 /**
- * Created by jarvizu on 09/01/2018.
+ * Created by jarvizu on 27/01/2018.
  */
 
-public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "PutStatusOrderTask";
+    private static final String DEBUG_TAG = "PutStatusLeakTask";
     private static final String METHOD = "PUT";
     private static final String JSON_OBJECT_ERROR = "StatusCode";
 
     private Context context;
-    private StatusOrderTaskListener statusOrderTaskListener;
+    private StatusLeakTaskListener statusLeakTaskListener;
     private JSONObject params;
     private UserPreferences userPreferences;
     private String adminToken;
     private boolean isError = false;
 
-    public PutStatusOrderTask(Context context, JSONObject params) {
+    public PutStatusLeakTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
@@ -54,7 +54,7 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
             adminToken = userPreferences.getAdminToken();
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.PUT_ORDER_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID)).toString();
+            String format = formatter.format(UrlHelper.PUT_LEAK_STATUS, params.get(ExtrasHelper.LEAK_JSON_OBJECT_ID)).toString();
             Log.d(DEBUG_TAG, format);
             URL url = new URL(format);
             ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params);
@@ -67,11 +67,11 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -81,26 +81,26 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         Log.d(DEBUG_TAG, jsonObject.toString());
-        Order order = null;
+        Leak leak = null;
 
         try {
             if (jsonObject == null) {
-                statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+                statusLeakTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString().equals(null)) {
-                statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+            } else if (jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_ID).toString().equals(null)) {
+                statusLeakTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.has(ExtrasHelper.ORDER_JSON_OBJECT_ID)) {
-                order = new Order();
-                jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                order.setOrderStatus((Order.caseStatus) jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS_UPDATE).toString());
-                Log.d(DEBUG_TAG , order.getOrderStatus().toString());
+            } else if (jsonObject.has(ExtrasHelper.LEAK_JSON_OBJECT_ID)) {
+                leak = new Leak();
+                jsonObject.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, params.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS));
+                leak.setLeakStatus((Leak.leakStatus) jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS));
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS_UPDATE).toString());
+                Log.d(DEBUG_TAG, leak.getLeakStatus().toString());
                 isError = false;
             }
 
             if (isError == false) {
-                statusOrderTaskListener.statusSuccessResponse(order);
+                statusLeakTaskListener.statusSuccessResponse(leak);
             }
 
         } catch (JSONException e) {
@@ -111,16 +111,16 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.connection_error));
+        statusLeakTaskListener.statusErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    public void setStatusOrderTaskListener(StatusOrderTaskListener statusOrderTaskListener) {
-        this.statusOrderTaskListener = statusOrderTaskListener;
+    public void setStatusLeakTaskListener(StatusLeakTaskListener statusLeakTaskListener) {
+        this.statusLeakTaskListener = statusLeakTaskListener;
     }
 
-    public interface StatusOrderTaskListener {
+    public interface StatusLeakTaskListener {
         void statusErrorResponse(String error);
 
-        void statusSuccessResponse(Order order);
+        void statusSuccessResponse(Leak leak);
     }
 }

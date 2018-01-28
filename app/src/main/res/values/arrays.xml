@@ -21,40 +21,35 @@
     </string-array>
 
     <string-array name="leakage_prompts">
-        <item>Fuga cilindro</item>
-        <item>Fuga estacionario</item>
-        <item>Fuga servicio medido</item>
-        <item>Cliente</item>
-    </string-array>
-
-    <string-array name="leakage_state">
-        <item>Con gas</item>
-        <item>Sin gas</item>
+        <item>Cilindro con gas</item>
+        <item>Cilindro sin gas</item>
+        <item>Estacionario con gas</item>
+        <item>Estacionario sin gas</item>
+        <item>Servicio medido con gas</item>
+        <item>Servicio medido sin gas</item>
     </string-array>
 
     <string-array name="leakage_prompts_cilynder_no_gas">
+        <item>Fuga espiga</item>
         <item>Fuga fondo</item>
+        <item>Fuga poro</item>
+        <item>Fuga tronco</item>
         <item>Fuga válvula</item>
         <item>Recolección de cilindro</item>
-        <item>Fuga poro</item>
-        <item>Fuga espiga</item>
-        <item>Fuga tronco</item>
     </string-array>
 
     <string-array name="leakage_prompts_cilynder_gas">
-        <item>Fuga manguera del cliente</item>
         <item>Fuga boiler</item>
-        <item>Fuga poro</item>
-        <item>Recolección de cilindro</item>
-        <item>Tanque sin fuga</item>
-        <item>Fuga fondo</item>
-        <item>Fuga válvula</item>
-        <item>Fuga espiga</item>
-        <item>Fuga tuerca izquierda</item>
+        <item>Fuga en la línea de llenado</item>
+        <item>Fuga estufa</item>
+        <item>Fuga manguera del cliente</item>
         <item>Fuga punta pool</item>
-        <item>Fuga tronco</item>
-        <item>Fuga Pictel</item>
-
+        <item>Fuga válvula de llenad</item>
+        <item>Fuga válvula de seguridad</item>
+        <item>Fuga válvula de servicio</item>
+        <item>No procede</item>
+        <item>Tanque sin fuga</item>
+        <item>Tanque sobrellenado</item>
     </string-array>
 
     <string-array name="leakage_prompts_stationary_no_gas">
@@ -86,30 +81,25 @@
     <string-array name="leakage_prompts_service_gas">
         <item>Fuga en el medidor</item>
         <item>Fuga en la carátula</item>
+        <item>Fuga en la línea de llenado</item>
+        <item>Fuga en la línea de servicio</item>
+        <item>Fuga en la válvula check</item>
         <item>Fuga en la válvula de retorno hidrostático</item>
         <item>Fuga en la válvula globo</item>
-        <item>Fuga en la válvula check</item>
-        <item>Fuga en la línea de llenado</item>
-        <item>Fuga en la manguera del cliente</item>
-        <item>Fuga en la estufa</item>
-        <item>Fuga en la línea de servicio</item>
-        <item>Fuga válvula de servicio</item>
+        <item>Fuga estufa</item>
+        <item>Fuga manguera del cliente</item>
         <item>Fuga válvula de llenado</item>
+        <item>Fuga válvula de servicio</item>
     </string-array>
 
     <string-array name="leakage_prompts_client_no_gas">
-        <item>Se niega a la atención de fugas</item>
-        <item>No procede</item>
-        <item>Cancela reporte</item>
-        <item>Sin nota de venta</item>
+        <item>Tanque sin fuga</item>
     </string-array>
 
-    <string-array name="leakage_prompts_client_gas">
-        <item>Información incompleta</item>
-        <item>Devolución de dinero</item>
-        <item>No procede</item>
-        <item>Cancela reporte</item>
-        <item>Falla</item>
+    <string-array name="order_prompts_review">
+        <item>Dirección incompleta/incorrecta</item>
+        <item>Conflicto vial (tráfico, estacionamiento, escuelas, comensales, tamaño pipa, calles estrechas)</item>
+        <item>Dirección no pertenece a la ruta/mal asignada</item>
     </string-array>
-
 </resources>
+

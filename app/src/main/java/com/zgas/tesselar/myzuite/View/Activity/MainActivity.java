@@ -3,7 +3,6 @@ package com.zgas.tesselar.myzuite.View.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,10 +24,10 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.HelpFragmentOperator;
@@ -41,8 +40,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener,
         RefreshTokenTask.RefreshTokenListener {
@@ -81,6 +78,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         user = userPreferences.getUserObject();
 
         if (userPreferences.isLoggedIn()) {
+            if (user.getUserType() == User.userType.OPERATOR) {
+                setContentView(R.layout.activity_main);
+                initUiOperator();
+            } else if (user.getUserType() == User.userType.SERVICE) {
+                setContentView(R.layout.activity_main);
+                initUiService();
+            } else if (user.getUserType() == User.userType.SUPERVISOR) {
+                setContentView(R.layout.activity_supervisor);
+                getSupervisedCallAsyncTask();
+                initUiSupervisor();
+            } else if (user.getUserType() == User.userType.LEAKAGE) {
+                setContentView(R.layout.activity_main);
+                initUiLeakage();
+            } else {
+                setContentView(R.layout.activity_main);
+                initUiOperator();
+            }
+        } else {
             try {
                 JSONObject params = new JSONObject();
                 params.put(EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
@@ -92,24 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        if (user.getUserType() == User.userType.OPERATOR) {
-            setContentView(R.layout.activity_main);
-            initUiOperator();
-        } else if (user.getUserType() == User.userType.SERVICE) {
-            setContentView(R.layout.activity_main);
-            initUiService();
-        } else if (user.getUserType() == User.userType.SUPERVISOR) {
-            setContentView(R.layout.activity_supervisor);
-            getSupervisedCallAsyncTask();
-            initUiSupervisor();
-        } else if (user.getUserType() == User.userType.LEAKAGE) {
-            setContentView(R.layout.activity_main);
-            initUiLeakage();
-        } else {
-            setContentView(R.layout.activity_main);
-            initUiOperator();
         }
     }
 
@@ -174,10 +171,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_supervised);
-        mFabCallSupervisor = (FloatingActionButton) findViewById(R.id.ativity_supervisor_fab_call);
+        mFabCallSupervisor = findViewById(R.id.ativity_supervisor_fab_call);
         mFabCallSupervisor.setOnClickListener(this);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerViewSupervised = (RecyclerView) findViewById(R.id.activity_supervisor_recycler_view);
+        mRecyclerViewSupervised = findViewById(R.id.activity_supervisor_recycler_view);
     }
 
     private void initUiLeakage() {
@@ -430,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    private void getSupervisedAsynTask() {
+    private void getSupervisedAsyncTask() {
         try {
             JSONObject params = new JSONObject();
             params.put(ExtrasHelper.EMAIL_TAG, userPreferences.getLoginObject().getLoginEmail());
@@ -445,24 +442,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getSupervisedCallAsyncTask() {
-        final Handler handler = new Handler();
-        Timer timer = new Timer();
-        TimerTask doAsynchronousTask = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            getSupervisedAsynTask();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(doAsynchronousTask, 0, 300000); //execute in every 300000 ms = 5 min
-        //timer.schedule(doAsynchronousTask, 0, 5000); //executes in every 5000ms = 5 seconds
+        try {
+            getSupervisedAsyncTask();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

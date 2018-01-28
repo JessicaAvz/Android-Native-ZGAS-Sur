@@ -11,7 +11,8 @@ public class UrlHelper {
     public static final String GET_CASES_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/orders?operatorId=%1$s";
     public static final String GET_LEAKS_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/leaks?operatorId=%1$s ";
     public static final String GET_SERVICE_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/measured_orders?operatorId=%1$s";
-    public static final String PATCH_ORDER_STATUS = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/case_update?Id=%1$s";
+    public static final String PUT_ORDER_STATUS = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/case_update?Id=%1$s";
+    public static final String PUT_LEAK_STATUS = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/closed_leak?Id=%1$s";
     public static final String CALL = "tel:6241370525";
 
     public static final String ADMIN_EMAIL = "mbravo@grupozeta.biz.dev1";

@@ -57,17 +57,27 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         final Order mOrder = mOrderList.get(position);
         String caseId = mOrder.getOrderId();
         String caseAddress = mOrder.getOrderAddress();
+        String caseNotice = mOrder.getOrderNotice();
         Order.caseStatus caseStatus = mOrder.getOrderStatus();
         Order.caseTypes caseType = mOrder.getOrderType();
         String orderHourIn = mOrder.getOrderTimeAssignment();
-        final String serviceType = mOrder.getOrderServiceType();
+        String serviceType = mOrder.getOrderServiceType();
 
         TextView id = holder.mOrderId;
-        id.setText(caseId);
         TextView address = holder.mOrderAddress;
-        address.setText(caseAddress);
         TextView hourIn = holder.mOrderTimeIn;
         TextView type = holder.mOrderType;
+        TextView notice = holder.mOrderNotice;
+
+        if (caseNotice.equals("Sin aviso")) {
+            notice.setVisibility(View.GONE);
+        } else {
+            notice.setText("Avisar al cliente: " + caseNotice);
+        }
+
+        id.setText(caseId);
+        address.setText(caseAddress);
+
 
         id.setText("Pedido número: " + String.valueOf(caseId));
         address.setText("Dirección: " + caseAddress);
@@ -170,13 +180,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             }
         });
 
-        holder.mOrderContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "TO-DO", Toast.LENGTH_LONG).show();
-            }
-        });
-
         holder.mOrderReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,7 +192,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 dialog.setCancelable(false);
 
                 final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, context));
 
@@ -198,11 +201,11 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                     @Override
                     public void onClick(View view) {
                         if (mSpinnerOptions.getSelectedItem() == null) {
-                            Toast.makeText(context, context.getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect), Toast.LENGTH_LONG).show();
                         } else {
                             //srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                             mSpinnerOptions.setSelection(0);
-                            Toast.makeText(context, context.getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
                             //callAsyncTaskCancelled();
                             dialog.dismiss();
                         }
@@ -241,13 +244,12 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
 
         private SwipeLayout swipeLayout;
         private TextView mOrderReview;
-        private TextView mOrderContact;
         private TextView mOrderId;
         private TextView mOrderStatus;
         private TextView mOrderAddress;
         private TextView mOrderTimeIn;
         private TextView mOrderType;
-        private TextView mOrderPayment;
+        private TextView mOrderNotice;
 
         public OrderViewHolder(final View itemView) {
             super(itemView);
@@ -255,12 +257,12 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             //if de swipe layout si es order o service
             swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
             mOrderReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
-            mOrderContact = itemView.findViewById(R.id.row_visit_recycler_tv_contact_visit);
             mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
             mOrderStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
             mOrderAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
             mOrderTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
             mOrderType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
+            mOrderNotice = itemView.findViewById(R.id.row_main_fragment_tv_notice);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
