@@ -15,9 +15,9 @@ import java.net.URL;
  * Created by jarvizu on 04/01/2018.
  */
 
-public class ReportIncidenceTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class PutReportIncidenceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "ReportIncidenceTask";
+    private static final String DEBUG_TAG = "PutReportIncidenceTask";
     private static final String METHOD = "POST";
     private static final String JSON_OBJECT_ERROR = "error";
 
@@ -32,7 +32,7 @@ public class ReportIncidenceTask extends AsyncTask<URL, JSONObject, JSONObject> 
      * @param context
      * @param params
      */
-    public ReportIncidenceTask(Context context, JSONObject params) {
+    public PutReportIncidenceTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);

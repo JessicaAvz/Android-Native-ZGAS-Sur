@@ -23,6 +23,7 @@ import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
+import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
 import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 initUiOperator();
             }
         } else {
-            try {
+
+            /*try {
                 JSONObject params = new JSONObject();
                 params.put(EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
                 params.put(PASS_TAG, UrlHelper.ADMIN_PASS);
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 refreshTokenTask.execute();
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
