@@ -166,11 +166,11 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                         Log.d(DEBUG_TAG, "Tipo de supervisado: " + supervisedUser.getUserType());
 
                         if (supervisedStatus.equals(User.userStatus.ACTIVE.toString())) {
-                            supervisedUser.setUserstatus(User.userStatus.ACTIVE);
+                            supervisedUser.setUserStatus(User.userStatus.ACTIVE);
                         } else if (supervisedStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                            supervisedUser.setUserstatus(User.userStatus.NOTACTIVE);
+                            supervisedUser.setUserStatus(User.userStatus.NOTACTIVE);
                         }
-                        Log.d(DEBUG_TAG, "Estatus del supervisado: " + supervisedUser.getUserstatus());
+                        Log.d(DEBUG_TAG, "Estatus del supervisado: " + supervisedUser.getUserStatus());
 
                         usersList.add(supervisedUser);
                     }
@@ -182,9 +182,9 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 }
 
                 if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
-                    user.setUserstatus(User.userStatus.ACTIVE);
+                    user.setUserStatus(User.userStatus.ACTIVE);
                 } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                    user.setUserstatus(User.userStatus.NOTACTIVE);
+                    user.setUserStatus(User.userStatus.NOTACTIVE);
                 }
 
                 isError = false;
@@ -195,7 +195,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Email del usuario: " + user.getUserEmail());
                 Log.d(DEBUG_TAG, "Zona del usuario: " + user.getUserZone());
                 Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
-                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserstatus());
+                Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserStatus());
             }
 
             if (isError == false) {

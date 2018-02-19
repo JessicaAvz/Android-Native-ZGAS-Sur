@@ -11,7 +11,7 @@ public class User {
     private String userEmail;
     private String userRoute;
     private String userZone;
-    private userStatus userstatus;
+    private userStatus userStatus;
 
     public enum userStatus {
         ACTIVE("Activo"),
@@ -105,11 +105,11 @@ public class User {
         this.userZone = userZone;
     }
 
-    public userStatus getUserstatus() {
-        return userstatus;
+    public userStatus getUserStatus() {
+        return userStatus;
     }
 
-    public void setUserstatus(userStatus userstatus) {
-        this.userstatus = userstatus;
+    public void setUserStatus(userStatus userStatus) {
+        this.userStatus = userStatus;
     }
 }

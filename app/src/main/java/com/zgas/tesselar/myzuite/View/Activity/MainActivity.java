@@ -23,7 +23,6 @@ import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
-import com.zgas.tesselar.myzuite.Service.LoginTask;
 import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
 import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
@@ -487,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(DEBUG_TAG, "User preference email: " + userPreferences.getUserObject().getUserEmail());
         Log.d(DEBUG_TAG, "User preference zone: " + userPreferences.getUserObject().getUserZone());
         Log.d(DEBUG_TAG, "User preference route: " + userPreferences.getUserObject().getUserRoute());
-        Log.d(DEBUG_TAG, "User preference status: " + userPreferences.getUserObject().getUserstatus());
+        Log.d(DEBUG_TAG, "User preference status: " + userPreferences.getUserObject().getUserStatus());
     }
 
     /**

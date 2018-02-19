@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         User mUser = mSupervisedList.get(position);
         String id = mUser.getUserId();
         String userName = mUser.getUserName();
-        User.userStatus userStatus = mUser.getUserstatus();
+        User.userStatus userStatus = mUser.getUserStatus();
         TextView name = holder.supervisedName;
         TextView status = holder.supervisedStatus;
 
@@ -101,7 +100,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     String zone = mUser.getUserZone();
                     String route = mUser.getUserRoute();
                     User.userType type = mUser.getUserType();
-                    User.userStatus status = mUser.getUserstatus();
+                    User.userStatus status = mUser.getUserStatus();
 
                     Bundle bundle = new Bundle();
                     bundle.putString(ExtrasHelper.EXTRA_USER_ID, id);

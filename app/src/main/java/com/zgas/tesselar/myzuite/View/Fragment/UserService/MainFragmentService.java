@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Service.GetServiceTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.ServiceAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
+import com.zgas.tesselar.myzuite.Service.GetServiceTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
@@ -34,10 +34,10 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
     private static final String ADMIN_TOKEN = "access_token";
     private static final int REFRESH_DELAY = 1000;
 
-    private RecyclerView mRecyclerOrders;
+    private RecyclerView mRecyclerServices;
     private RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LinearLayoutManager layoutManager;
-    private OrdersAdapter mOrderAdapter;
+    private ServiceAdapter mServiceAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
@@ -87,6 +87,10 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
             GetServiceTask getServiceTask = new GetServiceTask(getContext(), params);
             getServiceTask.setServiceTaskListener(this);
             getServiceTask.execute();
+
+            /*GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), params);
+            getOrdersTask.setOrderTaskListener(this);
+            getOrdersTask.execute();*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,7 +98,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
 
     private void initUi(View rootview) {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerOrders = rootview.findViewById(R.id.fragment_main_service_recycler_view);
+        mRecyclerServices = rootview.findViewById(R.id.fragment_main_service_recycler_view);
         mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_service_refresh_layout);
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override
@@ -103,7 +107,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
                     @Override
                     public void run() {
                         mRecyclerRefreshLayout.setRefreshing(false);
-                        //asyncTask();
+                        asyncTask();
                     }
                 }, REFRESH_DELAY);
             }
@@ -118,11 +122,11 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
 
     @Override
     public void getServicesSuccessResponse(List<Order> serviceList) {
-        mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) serviceList);
-        mRecyclerOrders.setHasFixedSize(true);
-        mRecyclerOrders.setItemViewCacheSize(20);
-        mRecyclerOrders.setDrawingCacheEnabled(true);
-        mRecyclerOrders.setLayoutManager(layoutManager);
-        mRecyclerOrders.setAdapter(mOrderAdapter);
+        mServiceAdapter = new ServiceAdapter(getContext(), (ArrayList<Order>) serviceList);
+        mRecyclerServices.setHasFixedSize(true);
+        mRecyclerServices.setItemViewCacheSize(20);
+        mRecyclerServices.setDrawingCacheEnabled(true);
+        mRecyclerServices.setLayoutManager(layoutManager);
+        mRecyclerServices.setAdapter(mServiceAdapter);
     }
 }

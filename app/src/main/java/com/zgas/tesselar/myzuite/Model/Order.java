@@ -5,11 +5,13 @@ package com.zgas.tesselar.myzuite.Model;
  */
 
 public class Order {
+
     private String orderId;
     private String orderUserId;
     private String orderTimeAssignment;
     private String orderTimeSeen;
-    private String orderTimeArrival;
+    private String orderTimeDeparture;
+    private String oderTimeEnd;
     private String orderTimeScheduled;
     private String orderServiceType;
     private String orderAccountName;
@@ -25,12 +27,13 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeArrival, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, caseStatus orderStatus, caseTypes orderType, casePriority orderPriority) {
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, caseStatus orderStatus, caseTypes orderType, casePriority orderPriority) {
         this.orderId = orderId;
         this.orderUserId = orderUserId;
         this.orderTimeAssignment = orderTimeAssignment;
         this.orderTimeSeen = orderTimeSeen;
-        this.orderTimeArrival = orderTimeArrival;
+        this.orderTimeDeparture = orderTimeDeparture;
+        this.oderTimeEnd = oderTimeEnd;
         this.orderTimeScheduled = orderTimeScheduled;
         this.orderServiceType = orderServiceType;
         this.orderAccountName = orderAccountName;
@@ -143,12 +146,12 @@ public class Order {
         this.orderTimeSeen = orderTimeSeen;
     }
 
-    public String getOrderTimeArrival() {
-        return orderTimeArrival;
+    public String getOrderTimeDeparture() {
+        return orderTimeDeparture;
     }
 
-    public void setOrderTimeArrival(String orderTimeArrival) {
-        this.orderTimeArrival = orderTimeArrival;
+    public void setOrderTimeDeparture(String orderTimeDeparture) {
+        this.orderTimeDeparture = orderTimeDeparture;
     }
 
     public caseStatus getOrderStatus() {
@@ -237,5 +240,13 @@ public class Order {
 
     public void setOrderNotice(String orderNotice) {
         this.orderNotice = orderNotice;
+    }
+
+    public String getOderTimeEnd() {
+        return oderTimeEnd;
+    }
+
+    public void setOderTimeEnd(String oderTimeEnd) {
+        this.oderTimeEnd = oderTimeEnd;
     }
 }

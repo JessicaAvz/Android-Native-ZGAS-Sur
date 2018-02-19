@@ -26,34 +26,34 @@ import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperat
 import java.util.ArrayList;
 
 /**
- * Created by jarvizu on 29/08/2017.
+ * Created by jarvizu on 19/02/2018.
  */
 
-public class OrdersAdapter extends RecyclerSwipeAdapter {
+public class ServiceAdapter extends RecyclerSwipeAdapter {
 
-    private static final String DEBUG_TAG = "OrdersAdapter";
+    private static final String DEBUG_TAG = "ServiceAdapter";
+
     protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
-
     private Context context;
-    private ArrayList<Order> mOrderList;
+    private ArrayList<Order> mServiceList;
     private Intent intent;
 
-    public OrdersAdapter(Context context, ArrayList<Order> mOrderList) {
+    public ServiceAdapter(Context context, ArrayList<Order> mServiceList) {
         this.context = context;
-        this.mOrderList = mOrderList;
+        this.mServiceList = mServiceList;
     }
 
     @Override
-    public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ServiceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         View v = li.inflate(R.layout.row_main_fragment_operator_my_orders, parent, false);
-        return new OrdersAdapter.OrderViewHolder(v);
+        return new ServiceAdapter.ServiceViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final OrderViewHolder holder = (OrderViewHolder) viewHolder;
-        final Order mOrder = mOrderList.get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        final ServiceAdapter.ServiceViewHolder holder = (ServiceAdapter.ServiceViewHolder) viewHolder;
+        final Order mOrder = mServiceList.get(position);
         String caseId = mOrder.getOrderId();
         String caseAddress = mOrder.getOrderAddress();
         String caseNotice = mOrder.getOrderNotice();
@@ -77,7 +77,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         id.setText(caseId);
         address.setText(caseAddress);
 
-
         id.setText("Pedido número: " + String.valueOf(caseId));
         address.setText("Dirección: " + caseAddress);
         type.setText("Tipo: " + caseType + " - " + serviceType);
@@ -99,7 +98,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             status.setTextColor(context.getResources().getColor(R.color.blue));
         }
         status.setText(caseStatus.toString());
-        holder.itemView.setTag(mOrderList.get(position));
+        holder.itemView.setTag(mServiceList.get(position));
 
         holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +137,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 intent = new Intent(context, DetailActivityOperator.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
-
             }
         });
 
@@ -190,19 +188,18 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
 
     @Override
     public int getItemCount() {
-        if (mOrderList.isEmpty()) {
+        if (mServiceList.isEmpty()) {
             return 0;
         } else {
-            return mOrderList.size();
+            return mServiceList.size();
         }
     }
 
-    @Override
     public int getSwipeLayoutResourceId(int position) {
         return position;
     }
 
-    public class OrderViewHolder extends RecyclerView.ViewHolder {
+    public class ServiceViewHolder extends RecyclerView.ViewHolder {
 
         private SwipeLayout swipeLayout;
         private TextView mOrderReview;
@@ -213,10 +210,9 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         private TextView mOrderType;
         private TextView mOrderNotice;
 
-        public OrderViewHolder(final View itemView) {
+        public ServiceViewHolder(View itemView) {
             super(itemView);
 
-            //if de swipe layout si es order o service
             swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
             mOrderReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
             mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
@@ -236,4 +232,3 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         }
     }
 }
-
