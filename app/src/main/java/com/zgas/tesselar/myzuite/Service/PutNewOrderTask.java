@@ -21,61 +21,49 @@ import java.net.URL;
 import java.util.Formatter;
 
 /**
- * Class that communicates with the service and will push the result to the User model list.
+ * Class that communicates with the service and will push the result to the Leak model list.
  *
- * @author jarvizu on 09/01/2018.
+ * @author jarvizu on 26/02/2018.
  * @version 2018.0.9
  * @see AsyncTask
  * @see Order
  * @see JSONObject
  * @see UserPreferences
- * @see GetOrdersTask.OrderTaskListener
+ * @see PutReviewOrderTask
  */
-public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "PutStatusOrderTask";
+    private static final String DEBUG_TAG = "PutNewOrderTask";
     private static final String METHOD = "PUT";
     private static final String JSON_OBJECT_ERROR = "StatusCode";
 
     private Context context;
-    private StatusOrderTaskListener statusOrderTaskListener;
+    private PutNewOrderTask.NewOrderTaskListener newOrderTaskListener;
     private JSONObject params;
     private UserPreferences userPreferences;
     private String adminToken;
     private boolean isError = false;
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
     /**
-     * Constructor for the OrderTaskListener. Additionally, we have an UserPreferences class reference
+     * Constructor for the PutReviewOrderTask. Additionally, we have an UserPreferences class reference
      * so we can obtain the user data.
      *
      * @param context Current context of the application
      * @param params  Parameters that will be sent to the service.
      */
-    public PutStatusOrderTask(Context context, JSONObject params) {
+    public PutNewOrderTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
     }
 
-    /**
-     * This methods performs the connection between our URL and our service, passing the method we'll
-     * use and the params needed (if needed).
-     *
-     * @param urls
-     * @return JsonObject containing the connection.
-     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
         JSONObject jsonObject = null;
         try {
             adminToken = userPreferences.getAdminToken();
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.PUT_ORDER_STATUS_URL, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID)).toString();
+            String format = formatter.format(UrlHelper.PUT_EXTRA_ORDER, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID)).toString();
             Log.d(DEBUG_TAG, format);
             URL url = new URL(format);
             ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params);
@@ -88,11 +76,11 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -116,22 +104,25 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         try {
             if (jsonObject == null) {
-                statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+                newOrderTaskListener.newOrderErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
             } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString().equals(null)) {
-                statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+                newOrderTaskListener.newOrderErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
             } else if (jsonObject.has(ExtrasHelper.ORDER_JSON_OBJECT_ID)) {
                 order = new Order();
-                jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                order.setOrderStatus((Order.caseStatus) jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS_UPDATE).toString());
-                Log.d(DEBUG_TAG, order.getOrderStatus().toString());
+                jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID));
+                jsonObject.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME, params.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME));
+                jsonObject.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE, params.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE));
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString());
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME).toString());
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE).toString());
+
                 isError = false;
             }
 
             if (isError == false) {
-                statusOrderTaskListener.statusSuccessResponse(order);
+                newOrderTaskListener.newOrderSuccessResponse(order);
             }
 
         } catch (JSONException e) {
@@ -145,19 +136,19 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.connection_error));
+        newOrderTaskListener.newOrderErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    public void setStatusOrderTaskListener(StatusOrderTaskListener statusOrderTaskListener) {
-        this.statusOrderTaskListener = statusOrderTaskListener;
+    public void setNewOrderTaskListener(NewOrderTaskListener newOrderTaskListener) {
+        this.newOrderTaskListener = newOrderTaskListener;
     }
 
     /**
      * Interface for managing the different outputs of the AsyncTask
      */
-    public interface StatusOrderTaskListener {
-        void statusErrorResponse(String error);
+    public interface NewOrderTaskListener {
+        void newOrderErrorResponse(String error);
 
-        void statusSuccessResponse(Order order);
+        void newOrderSuccessResponse(Order order);
     }
 }

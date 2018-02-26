@@ -95,10 +95,15 @@
     <string name="dialog_extra_body">Ingresa los datos del pedido.</string>
     <string name="dialog_extra_accept">Aceptar</string>
 
-    <!-- HelpOder dialog -->
+    <!-- HelpOrder dialog -->
     <string name="dialog_help_order_title">Incidencia reportada</string>
     <string name="dialog_help_order_body">La incidencia ha sido reportada correctamente.</string>
     <string name="dialog_help_order_accept">Aceptar</string>
+
+    <!-- NewOrder dialog -->
+    <string name="dialog_new_order_title">Pedido registrado</string>
+    <string name="dialog_new_order_body">El pedido ha sido registrado correctamente.</string>
+    <string name="dialog_new_order_accept">Aceptar</string>
 
     <!-- Fragment main row -->
     <string name="prompt_order_making">Hora del pedido:</string>

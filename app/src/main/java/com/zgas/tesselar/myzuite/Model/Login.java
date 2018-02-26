@@ -1,11 +1,11 @@
 package com.zgas.tesselar.myzuite.Model;
 
-import com.google.gson.Gson;
-
 /**
- * Created by jarvizu on 25/09/2017.
+ * Login model
+ *
+ * @author jarvizu on 28/08/2017
+ * @version 2018.0.9
  */
-
 public class Login {
     private String loginId;
     private String loginAccessToken;

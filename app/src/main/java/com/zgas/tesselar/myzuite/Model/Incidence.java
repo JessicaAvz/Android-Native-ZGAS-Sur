@@ -1,14 +1,19 @@
 package com.zgas.tesselar.myzuite.Model;
 
 /**
- * Created by jarvizu on 04/01/2018.
+ * Incidence model
+ *
+ * @author jarvizu on 28/08/2017
+ * @version 2018.0.9
  */
-
 public class Incidence {
     private String idUser;
     private String idIncidence;
     private String descriptionIncidence;
     private String timeIncidence;
+
+    public Incidence() {
+    }
 
     public Incidence(String idUser, String idIncidence, String descriptionIncidence, String timeIncidence) {
         this.idUser = idUser;

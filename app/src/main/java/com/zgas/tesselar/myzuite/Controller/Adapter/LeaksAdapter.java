@@ -26,7 +26,12 @@ import com.zgas.tesselar.myzuite.View.Activity.UserLeakage.DetailActivityLeakage
 import java.util.ArrayList;
 
 /**
- * Created by jarvizu on 24/10/2017.
+ * Class that provides access to the Leak model data items.
+ *
+ * @author jarvizu on 24/10/2017
+ * @version 2018.0.9
+ * @see Leak
+ * @see RecyclerSwipeAdapter
  */
 
 public class LeaksAdapter extends RecyclerSwipeAdapter {
@@ -38,11 +43,26 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
     private ArrayList<Leak> mLeaksList;
     private Intent intent;
 
+    /**
+     * Constructor for the LeaksAdapter class.
+     *
+     * @param context    Current context of the application.
+     * @param mLeaksList List that contains all the items(leaks] that will display on the
+     *                   RecyclerView.
+     */
     public LeaksAdapter(Context context, ArrayList<Leak> mLeaksList) {
         this.context = context;
         this.mLeaksList = mLeaksList;
     }
 
+    /**
+     * Method for initializing the viewholders, inflates the RowMainFragment layout.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an
+     *                 adapter position.
+     * @param viewType The type of the new view.
+     * @return LeaksAdapter view.
+     */
     @Override
     public LeaksViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
@@ -51,8 +71,21 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
     }
 
     /**
-     * @param viewHolder
-     * @param position
+     * Method that displays the data at an specified position. It Updates the contents of the
+     * itemView.
+     * This method manages, as well, the bundle object for the leaks model, and maps the
+     * components of the LeaksViewHolder class. Also, it opens a new intent for the leak object
+     * details.
+     * The holder uses the SwipeLayout component; this is for independent swiping on each item of
+     * the recyclerview, and manages the swipelistener and onClickListener separately.
+     *
+     * @param viewHolder The ViewHolder which contents should be updated to represent an item
+     *                   depending it's position.
+     * @param position   The position of the item within the data set.
+     * @see LeaksViewHolder
+     * @see DetailActivityLeakage
+     * @see Intent
+     * @see Bundle
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
@@ -151,20 +184,24 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
                 dialog.setCancelable(false);
 
                 final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review, android.R.layout.simple_spinner_item);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review,
+                        android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, context));
+                mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter,
+                        R.layout.contact_spinner_row_nothing_selected, context));
 
                 Button mBtnAccept = dialog.findViewById(R.id.dialog_review_case_button_accept);
                 mBtnAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mSpinnerOptions.getSelectedItem() == null) {
-                            Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect)
+                                    , Toast.LENGTH_LONG).show();
                         } else {
                             //srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                             mSpinnerOptions.setSelection(0);
-                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct),
+                                    Toast.LENGTH_LONG).show();
                             //callAsyncTaskCancelled();
                             dialog.dismiss();
                         }
@@ -186,6 +223,9 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
 
     }
 
+    /**
+     * Returns the total number of items in the data set held by the adapter.
+     */
     @Override
     public int getItemCount() {
         if (mLeaksList.isEmpty()) {
@@ -200,6 +240,12 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         return position;
     }
 
+    /**
+     * Class that describes an item view and its data, for its place within the RecyclerView.
+     * It maps the components between the layout resource and this adapter.
+     *
+     * @see android.support.v7.widget.RecyclerView.ViewHolder
+     */
     public class LeaksViewHolder extends RecyclerView.ViewHolder {
 
         private SwipeLayout swipeLayout;

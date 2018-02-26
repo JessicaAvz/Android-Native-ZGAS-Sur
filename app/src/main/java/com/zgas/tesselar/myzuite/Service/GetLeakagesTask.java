@@ -26,14 +26,20 @@ import java.util.Formatter;
 import java.util.List;
 
 /**
- * Created by jarvizu on 22/09/2017.
+ * Class that communicates with the service and will push the result to the Leak model list.
+ *
+ * @author jarvizu on 22/09/2017.
+ * @version 2018.0.9
+ * @see AsyncTask
+ * @see Leak
+ * @see JSONObject
+ * @see UserPreferences
+ * @see LeakagesTaskListener
  */
-
 public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetLeakagesTask";
     private static final String CASES_ARRAY = "Leaks";
-    private static final String CASE_ERROR = "error";
     private static final String METHOD = "GET";
     private static final String JSON_OBJECT_ERROR = "error";
     private static final String USER_ID = "Id";
@@ -48,8 +54,11 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private boolean isError = false;
 
     /**
-     * @param context
-     * @param params
+     * Constructor for the GetLeakagesTask. Additionally, we have an UserPreferences class reference
+     * so we can obtain the user data.
+     *
+     * @param context Current context of the application
+     * @param params  Parameters that will be sent to the service.
      */
     public GetLeakagesTask(Context context, JSONObject params) {
         this.context = context;
@@ -57,22 +66,20 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userPreferences = new UserPreferences(context);
     }
 
-    /**
-     *
-     */
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
 
     /**
+     * This methods performs the connection between our URL and our service, passing the method we'll
+     * use and the params needed (if needed).
+     *
      * @param urls
-     * @return
+     * @return JsonObject containing the connection.
      */
     @Override
     protected JSONObject doInBackground(URL... urls) {
-
         JSONObject jsonObject = null;
-
         try {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_LEAKS_URL, params.get(USER_ID)).toString();
@@ -103,7 +110,14 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     * @param jsonObject
+     * Method that will show the task result on the user interface. It will receive the jsonObject
+     * obtained on doInBackground method, and it will check if the jsonObject has an error or is
+     * correct.     *
+     * If an error occurs, the LeakagesTaskListener will manage it.
+     * Else, the json data will be mapped with our Leak object and it will be shown on the user
+     * interface.
+     *
+     * @param jsonObject The leak object that will be received.
      */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
@@ -213,7 +227,7 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     *
+     * If the AsyncTask is cancelled, it will show an error response.
      */
     @Override
     protected void onCancelled() {
@@ -222,15 +236,12 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         leakagesTaskListener.getLeakagesErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    /**
-     * @param leakagesTaskListener
-     */
     public void setLeakagesTaskListener(LeakagesTaskListener leakagesTaskListener) {
         this.leakagesTaskListener = leakagesTaskListener;
     }
 
     /**
-     *
+     * Interface for managing the different outputs of the AsyncTask
      */
     public interface LeakagesTaskListener {
         void getLeakagesErrorResponse(String error);

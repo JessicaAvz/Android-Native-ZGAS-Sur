@@ -48,6 +48,9 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_CYLINDER_20 = "cylinder20";
     public static final String ORDER_JSON_OBJECT_CYLINDER_30 = "cylinder30";
     public static final String ORDER_JSON_OBJECT_CYLINDER_45 = "cylinder45";
+    /*Extra order*/
+    public static final String ORDER_JSON_EXTRA_ORDER_NAME = "name";
+    public static final String ORDER_JSON_EXTRA_ORDER_PHONE = "phone";
 
 
     //UserObject
@@ -81,4 +84,14 @@ public class ExtrasHelper {
     public static final String LEAK_JSON_OBJECT_RESOLUTION_STATUS = "resolution";
     public static final String LEAJ_JSON_OBJECT_CHANNEL_STATUS = "channel";
     public static final String LEAK_JSON_OBJECT_STATUS_UPDATE ="StatusUpdate";
+
+    //Incidences
+    public static final String INCIDENCE_JSON_OBJECT_ID = "Id";
+    public static final String INCIDENCE_JSON_OBJECT_REASON = "reason";
+    public static final String INCIDENCE_JSON_OBJECT_TIME = "incidenceDT";
+
+    //Reviews
+    public static final String REVIEW_JSON_OBJECT_ORDER_ID = "orderId";
+    public static final String REVIEW_JSON_OBJECT_OPERATOR_ID = "operatorId";
+    public static final String REVIEW_JSON_OBJECT_REVIEW = "reasonReview";
 }

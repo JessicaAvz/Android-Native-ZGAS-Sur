@@ -21,9 +21,16 @@ import java.net.URL;
 import java.util.Formatter;
 
 /**
- * Created by jarvizu on 27/01/2018.
+ * Class that communicates with the service and will push the result to the User model list.
+ *
+ * @author jarvizu on 27/01/2018.
+ * @version 2018.0.9
+ * @see AsyncTask
+ * @see Leak
+ * @see JSONObject
+ * @see UserPreferences
+ * @see StatusLeakTaskListener
  */
-
 public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "PutStatusLeakTask";
@@ -37,6 +44,13 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private String adminToken;
     private boolean isError = false;
 
+    /**
+     * Constructor for the PutStatusLeakTask. Additionally, we have an UserPreferences class reference
+     * so we can obtain the user data.
+     *
+     * @param context Current context of the application
+     * @param params  Parameters that will be sent to the service.
+     */
     public PutStatusLeakTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
@@ -48,13 +62,20 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
         super.onPreExecute();
     }
 
+    /**
+     * This methods performs the connection between our URL and our service, passing the method we'll
+     * use and the params needed (if needed).
+     *
+     * @param urls
+     * @return JsonObject containing the connection.
+     */
     @Override
     protected JSONObject doInBackground(URL... urls) {
         JSONObject jsonObject = null;
         try {
             adminToken = userPreferences.getAdminToken();
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.PUT_LEAK_STATUS, params.get(ExtrasHelper.LEAK_JSON_OBJECT_ID)).toString();
+            String format = formatter.format(UrlHelper.PUT_LEAK_STATUS_URL, params.get(ExtrasHelper.LEAK_JSON_OBJECT_ID)).toString();
             Log.d(DEBUG_TAG, format);
             URL url = new URL(format);
             ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params);
@@ -77,6 +98,16 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
         return jsonObject;
     }
 
+    /**
+     * Method that will show the task result on the user interface. It will receive the jsonObject
+     * obtained on doInBackground method, and it will check if the jsonObject has an error or is
+     * correct.
+     * If an error occurs, the StatusLeakListener will manage it.
+     * Else, the json data will be mapped with our Leak object and a pop up will be shown
+     * on the user interface.
+     *
+     * @param jsonObject The user object that will be received.
+     */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
@@ -108,6 +139,9 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
         }
     }
 
+    /**
+     * If the AsyncTask is cancelled, it will show an error response.
+     */
     @Override
     protected void onCancelled() {
         super.onCancelled();
@@ -118,6 +152,9 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
         this.statusLeakTaskListener = statusLeakTaskListener;
     }
 
+    /**
+     * Interface for managing the different outputs of the AsyncTask
+     */
     public interface StatusLeakTaskListener {
         void statusErrorResponse(String error);
 

@@ -17,20 +17,41 @@ import com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupe
 import java.util.ArrayList;
 
 /**
- * Created by jarvizu on 04/09/2017.
+ * Class that provides access to the User model data items. This class is parameterized with the
+ * SupervisorViewHolder, because it does not need a SwiperAdapter like the other adapters.
+ *
+ * @author jarvizu on 04/09/2017
+ * @version 2018.0.9
+ * @see User
+ * @see RecyclerView
+ * @see SupervisedViewHolder
  */
-
 public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.SupervisedViewHolder> {
 
     private static final String DEBUG_TAG = "SupervisorAdapter";
     private Context context;
     private ArrayList<User> mSupervisedList;
 
+    /**
+     * Constructor for the SupervisorAdapter class
+     *
+     * @param context         Current context of the application.
+     * @param mSupervisedList List that contains all the items (users) that will display on the
+     *                        RecyclerView.
+     */
     public SupervisorAdapter(Context context, ArrayList<User> mSupervisedList) {
         this.context = context;
         this.mSupervisedList = mSupervisedList;
     }
 
+    /**
+     * Method for initializing the viewholders, inflates the RowSupervised layout.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an
+     *                 adapter position.
+     * @param viewType The type of the new view.
+     * @return SupervisorAdapter view
+     */
     @Override
     public SupervisedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
@@ -38,6 +59,15 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         return new SupervisorAdapter.SupervisedViewHolder(v);
     }
 
+    /**
+     * Method that displays the data at an specified position. It Updates the contents of the
+     * itemView.
+     *
+     * @param holder   The ViewHolder which contents should be updated to represent an item
+     *                 depending it's position.
+     * @param position The position of the item within the data set.
+     * @see SupervisedViewHolder
+     */
     @Override
     public void onBindViewHolder(SupervisedViewHolder holder, int position) {
         User mUser = mSupervisedList.get(position);
@@ -65,6 +95,9 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         holder.itemView.setTag(mSupervisedList.get(position));
     }
 
+    /**
+     * Returns the total number of items in the data set held by the adapter.
+     */
     @Override
     public int getItemCount() {
         if (mSupervisedList.isEmpty()) {
@@ -75,7 +108,16 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
     }
 
     /**
+     * Class that describes an item view and its data, for its place within the RecyclerView.
+     * It maps the components between the layout resource and this adapter.
+     * This class manages, as well, the bundle object for the leaks model, and maps the
+     * components of the LeaksViewHolder class. Also, it opens a new intent for the user object
+     * details.
      *
+     * @see android.support.v7.widget.RecyclerView.ViewHolder
+     * @see DetailActivitySupervisor
+     * @see Bundle
+     * @see Intent
      */
     public class SupervisedViewHolder extends RecyclerView.ViewHolder {
 

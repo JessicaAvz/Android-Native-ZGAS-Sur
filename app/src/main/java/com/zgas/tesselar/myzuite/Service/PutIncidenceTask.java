@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.zgas.tesselar.myzuite.Controller.ConnectionController;
-import com.zgas.tesselar.myzuite.Model.Order;
+import com.zgas.tesselar.myzuite.Model.Incidence;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
@@ -23,43 +23,43 @@ import java.util.Formatter;
 /**
  * Class that communicates with the service and will push the result to the User model list.
  *
- * @author jarvizu on 09/01/2018.
+ * @author jarvizu on 04/01/2018.
  * @version 2018.0.9
  * @see AsyncTask
- * @see Order
+ * @see Incidence
  * @see JSONObject
  * @see UserPreferences
- * @see GetOrdersTask.OrderTaskListener
+ * @see PutIncidenceListener
  */
-public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class PutIncidenceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "PutStatusOrderTask";
+    private static final String DEBUG_TAG = "PutIncidenceTask";
     private static final String METHOD = "PUT";
-    private static final String JSON_OBJECT_ERROR = "StatusCode";
+    private static final String JSON_OBJECT_ERROR = "statusCode";
 
     private Context context;
-    private StatusOrderTaskListener statusOrderTaskListener;
     private JSONObject params;
+    private PutIncidenceListener putIncidenceListener;
     private UserPreferences userPreferences;
     private String adminToken;
     private boolean isError = false;
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
     /**
-     * Constructor for the OrderTaskListener. Additionally, we have an UserPreferences class reference
+     * Constructor for the PutIncidenceTask. Additionally, we have an UserPreferences class reference
      * so we can obtain the user data.
      *
      * @param context Current context of the application
      * @param params  Parameters that will be sent to the service.
      */
-    public PutStatusOrderTask(Context context, JSONObject params) {
+    public PutIncidenceTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
     }
 
     /**
@@ -75,7 +75,7 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
             adminToken = userPreferences.getAdminToken();
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.PUT_ORDER_STATUS_URL, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID)).toString();
+            String format = formatter.format(UrlHelper.PUT_INCIDENCE_URL, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID)).toString();
             Log.d(DEBUG_TAG, format);
             URL url = new URL(format);
             ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params);
@@ -88,11 +88,11 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -102,36 +102,34 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
      * Method that will show the task result on the user interface. It will receive the jsonObject
      * obtained on doInBackground method, and it will check if the jsonObject has an error or is
      * correct.
-     * If an error occurs, the StatusLeakListener will manage it.
-     * Else, the json data will be mapped with our Leak object and a pop up will be shown
+     * If an error occurs, the PutIncidenceListener will manage it.
+     * Else, the json data will be mapped with our Incidence object and a pop up will be shown
      * on the user interface.
      *
      * @param jsonObject The user object that will be received.
      */
-    @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         Log.d(DEBUG_TAG, jsonObject.toString());
-        Order order = null;
+        Incidence incidence = null;
 
         try {
             if (jsonObject == null) {
-                statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+                putIncidenceListener.incidenceErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString().equals(null)) {
-                statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+            } else if (jsonObject.get(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID).toString().equals(null)) {
+                putIncidenceListener.incidenceErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.has(ExtrasHelper.ORDER_JSON_OBJECT_ID)) {
-                order = new Order();
-                jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                order.setOrderStatus((Order.caseStatus) jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
-                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS_UPDATE).toString());
-                Log.d(DEBUG_TAG, order.getOrderStatus().toString());
+            } else if (jsonObject.has(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID)) {
+                incidence = new Incidence();
+                jsonObject.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID, params.get(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID));
+                jsonObject.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_REASON, params.get(ExtrasHelper.INCIDENCE_JSON_OBJECT_REASON));
+                jsonObject.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_TIME, params.get(ExtrasHelper.INCIDENCE_JSON_OBJECT_TIME));
                 isError = false;
             }
 
             if (isError == false) {
-                statusOrderTaskListener.statusSuccessResponse(order);
+                putIncidenceListener.incidenceSuccessResponse(incidence);
             }
 
         } catch (JSONException e) {
@@ -145,19 +143,19 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.connection_error));
+        putIncidenceListener.incidenceErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    public void setStatusOrderTaskListener(StatusOrderTaskListener statusOrderTaskListener) {
-        this.statusOrderTaskListener = statusOrderTaskListener;
+    public void setPutIncidenceListener(PutIncidenceListener putIncidenceListener) {
+        this.putIncidenceListener = putIncidenceListener;
     }
 
     /**
      * Interface for managing the different outputs of the AsyncTask
      */
-    public interface StatusOrderTaskListener {
-        void statusErrorResponse(String error);
+    public interface PutIncidenceListener {
+        void incidenceErrorResponse(String error);
 
-        void statusSuccessResponse(Order order);
+        void incidenceSuccessResponse(Incidence incidence);
     }
 }

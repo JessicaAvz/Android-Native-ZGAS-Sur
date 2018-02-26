@@ -25,9 +25,16 @@ import java.util.Formatter;
 import java.util.List;
 
 /**
- * Created by jarvizu on 03/01/2018.
+ * Class that communicates with the service and will push the result to the Order model list.
+ *
+ * @author jarvizu on 03/01/2018
+ * @version 2018.0.9
+ * @see AsyncTask
+ * @see Order
+ * @see JSONObject
+ * @see UserPreferences
+ * @see ServiceTaskListener
  */
-
 public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetServiceTask";
@@ -47,15 +54,19 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private List<Order> servicesList;
     private UserPreferences userPreferences;
 
+    /**
+     * Constructor for the GetServiceTask. Additionally, we have an UserPreferences class reference
+     * so we can obtain the user data.
+     *
+     * @param context Current context of the application.
+     * @param params  Parameters that will be sent to the service.
+     */
     public GetServiceTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
     }
 
-    /**
-     *
-     */
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }

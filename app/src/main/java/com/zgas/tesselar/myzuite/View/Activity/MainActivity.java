@@ -30,9 +30,9 @@ import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
+import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.ExtraOrderFragmentOperator;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.HelpFragmentOperator;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.MainFragmentOperator;
-import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.OrderFragmentOperator;
 import com.zgas.tesselar.myzuite.View.Fragment.UserService.HelpFragmentService;
 import com.zgas.tesselar.myzuite.View.Fragment.UserService.MainFragmentService;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton mFabCallSupervisor;
     private HelpFragmentOperator mHelpFragmentOperator;
     private MainFragmentOperator mMainFragmentOperator;
-    private OrderFragmentOperator mOrderFragmentOperator;
+    private ExtraOrderFragmentOperator mExtraOrderFragmentOperator;
     private MainFragmentService mMainFragmentService;
     private HelpFragmentService mHelpFragmentService;
     private HelpFragmentLeak mHelpFragmentLeak;
@@ -138,10 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mHelpFragmentOperator = new HelpFragmentOperator();
         mMainFragmentOperator = new MainFragmentOperator();
-        mOrderFragmentOperator = new OrderFragmentOperator();
+        mExtraOrderFragmentOperator = new ExtraOrderFragmentOperator();
 
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        mPagerAdapter.addFragment(mOrderFragmentOperator);
+        mPagerAdapter.addFragment(mExtraOrderFragmentOperator);
         mPagerAdapter.addFragment(mMainFragmentOperator);
         mPagerAdapter.addFragment(mHelpFragmentOperator);
         customViewPager.setAdapter(mPagerAdapter);

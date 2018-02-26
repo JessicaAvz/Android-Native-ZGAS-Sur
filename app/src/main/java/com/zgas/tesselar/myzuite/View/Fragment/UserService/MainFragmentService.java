@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Controller.Adapter.ServiceAdapter;
+import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
@@ -37,7 +37,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
     private RecyclerView mRecyclerServices;
     private RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LinearLayoutManager layoutManager;
-    private ServiceAdapter mServiceAdapter;
+    private OrdersAdapter mServiceAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
@@ -122,7 +122,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
 
     @Override
     public void getServicesSuccessResponse(List<Order> serviceList) {
-        mServiceAdapter = new ServiceAdapter(getContext(), (ArrayList<Order>) serviceList);
+        mServiceAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) serviceList);
         mRecyclerServices.setHasFixedSize(true);
         mRecyclerServices.setItemViewCacheSize(20);
         mRecyclerServices.setDrawingCacheEnabled(true);

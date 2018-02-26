@@ -1,7 +1,10 @@
 package com.zgas.tesselar.myzuite.Model;
 
 /**
- * Created by jarvizu on 28/08/2017.
+ * User model
+ *
+ * @author jarvizu on 28/08/2017
+ * @version 2018.0.9
  */
 
 public class User {

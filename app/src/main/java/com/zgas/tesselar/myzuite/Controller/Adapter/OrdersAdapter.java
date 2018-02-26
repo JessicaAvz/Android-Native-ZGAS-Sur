@@ -20,15 +20,25 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.PutReviewOrderTask;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperator;
+import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
- * Created by jarvizu on 29/08/2017.
+ * Class that provides access to the Order model data items; This class works for both orders
+ * and service model objects (because they're both 'order' type).
+ *
+ * @author jarvizu on 24/10/2017
+ * @version 2018.0.9
+ * @see Order
+ * @see RecyclerSwipeAdapter
  */
-
 public class OrdersAdapter extends RecyclerSwipeAdapter {
 
     private static final String DEBUG_TAG = "OrdersAdapter";
@@ -37,12 +47,32 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
     private Context context;
     private ArrayList<Order> mOrderList;
     private Intent intent;
+    private JSONObject params;
+    private UserPreferences userPreferences;
+    private Order mOrder;
+    private Spinner mSpinnerOptions;
+    private Dialog dialog;
 
+    /**
+     * Constructor for the OrdersAdapter class.
+     *
+     * @param context    Current context of the application.
+     * @param mOrderList List that contains all the items(orders] that will display on the
+     *                   RecyclerView.
+     */
     public OrdersAdapter(Context context, ArrayList<Order> mOrderList) {
         this.context = context;
         this.mOrderList = mOrderList;
     }
 
+    /**
+     * Method for initializing the viewholders, inflates the RowMainFragment layout.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an
+     *                 adapter position.
+     * @param viewType The type of the new view.
+     * @return LeaksAdapter view.
+     */
     @Override
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
@@ -50,10 +80,28 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         return new OrdersAdapter.OrderViewHolder(v);
     }
 
+    /**
+     * Method that displays the data at an specified position. It Updates the contents of the
+     * itemView.
+     * This method manages, as well, the bundle object for the leaks model, and maps the
+     * components of the LeaksViewHolder class. Also, it opens a new intent for the leak object
+     * details.
+     * The holder uses the SwipeLayout component; this is for independent swiping on each item of
+     * the recyclerview, and manages the swipelistener and onClickListener separately.
+     *
+     * @param viewHolder The ViewHolder which contents should be updated to represent an item
+     *                   depending it's position.
+     * @param position   The position of the item within the data set.
+     * @see OrderViewHolder
+     * @see DetailActivityOperator
+     * @see DetailActivityService
+     * @see Intent
+     * @see Bundle
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         final OrderViewHolder holder = (OrderViewHolder) viewHolder;
-        final Order mOrder = mOrderList.get(position);
+        mOrder = mOrderList.get(position);
         String caseId = mOrder.getOrderId();
         String caseAddress = mOrder.getOrderAddress();
         String caseNotice = mOrder.getOrderNotice();
@@ -62,7 +110,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         String orderHourIn = mOrder.getOrderTimeAssignment();
         String serviceType = mOrder.getOrderServiceType();
 
-        TextView id = holder.mOrderId;
+        final TextView id = holder.mOrderId;
         TextView address = holder.mOrderAddress;
         TextView hourIn = holder.mOrderTimeIn;
         TextView type = holder.mOrderType;
@@ -106,7 +154,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             public void onClick(View v) {
 
                 Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrder.getOrderId());
-                String id = mOrder.getOrderId();
+                final String id = mOrder.getOrderId();
                 String address = mOrder.getOrderAddress();
                 String status = mOrder.getOrderStatus().toString();
                 String timeAssignment = mOrder.getOrderTimeAssignment();
@@ -135,9 +183,15 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
 
                 intent = new Intent();
-                intent = new Intent(context, DetailActivityOperator.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if (serviceType.equals(Order.caseTypes.MEASURED.toString()) && recordType.equals(Order.caseTypes.ORDER.toString())) {
+                    intent = new Intent(context, DetailActivityService.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                } else if (recordType.equals(Order.caseTypes.ORDER.toString())) {
+                    intent = new Intent(context, DetailActivityOperator.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
 
             }
         });
@@ -145,15 +199,14 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         holder.mOrderReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                final Dialog dialog = new Dialog(context);
+                dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_review_case);
                 dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
 
                 Log.d(DEBUG_TAG, context.getResources().getString(R.string.on_create));
                 dialog.setCancelable(false);
 
-                final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
+                mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, context));
@@ -165,10 +218,27 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                         if (mSpinnerOptions.getSelectedItem() == null) {
                             Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect), Toast.LENGTH_LONG).show();
                         } else {
-                            //srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
+
+                            params = new JSONObject();
+                            userPreferences = new UserPreferences(context);
+
+                            try {
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID, userPreferences.getUserObject().getUserId());
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, mOrder.getOrderId());
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW, mSpinnerOptions.getSelectedItem().toString());
+
+                                Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID).toString());
+                                Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID).toString());
+                                Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW).toString());
+
+                                new PutReviewOrderTask(context, params).execute();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                             mSpinnerOptions.setSelection(0);
                             Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
-                            //callAsyncTaskCancelled();
                             dialog.dismiss();
                         }
                     }
@@ -188,6 +258,9 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         });
     }
 
+    /**
+     * Returns the total number of items in the data set held by the adapter.
+     */
     @Override
     public int getItemCount() {
         if (mOrderList.isEmpty()) {
@@ -202,6 +275,12 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         return position;
     }
 
+    /**
+     * Class that describes an item view and its data, for its place within the RecyclerView.
+     * It maps the components between the layout resource and this adapter.
+     *
+     * @see android.support.v7.widget.RecyclerView.ViewHolder
+     */
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
         private SwipeLayout swipeLayout;

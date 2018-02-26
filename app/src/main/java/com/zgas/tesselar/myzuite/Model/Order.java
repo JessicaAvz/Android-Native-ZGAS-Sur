@@ -1,9 +1,11 @@
 package com.zgas.tesselar.myzuite.Model;
 
 /**
- * Created by jarvizu on 28/08/2017.
+ * Order model
+ *
+ * @author jarvizu on 28/08/2017
+ * @version 2018.0.9
  */
-
 public class Order {
 
     private String orderId;
@@ -20,6 +22,8 @@ public class Order {
     private String orderSubject;
     private String orderNotice;
     private String orderPaymentMethod;
+    private String orderClientName;
+    private String orderClientPhone;
     private caseStatus orderStatus;
     private caseTypes orderType;
     private casePriority orderPriority;
@@ -27,7 +31,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, caseStatus orderStatus, caseTypes orderType, casePriority orderPriority) {
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderClientPhone, caseStatus orderStatus, caseTypes orderType, casePriority orderPriority) {
         this.orderId = orderId;
         this.orderUserId = orderUserId;
         this.orderTimeAssignment = orderTimeAssignment;
@@ -42,6 +46,8 @@ public class Order {
         this.orderSubject = orderSubject;
         this.orderNotice = orderNotice;
         this.orderPaymentMethod = orderPaymentMethod;
+        this.orderClientName = orderClientName;
+        this.orderClientPhone = orderClientPhone;
         this.orderStatus = orderStatus;
         this.orderType = orderType;
         this.orderPriority = orderPriority;
@@ -248,5 +254,21 @@ public class Order {
 
     public void setOderTimeEnd(String oderTimeEnd) {
         this.oderTimeEnd = oderTimeEnd;
+    }
+
+    public String getOrderClientName() {
+        return orderClientName;
+    }
+
+    public void setOrderClientName(String orderClientName) {
+        this.orderClientName = orderClientName;
+    }
+
+    public String getOrderClientPhone() {
+        return orderClientPhone;
+    }
+
+    public void setOrderClientPhone(String orderClientPhone) {
+        this.orderClientPhone = orderClientPhone;
     }
 }

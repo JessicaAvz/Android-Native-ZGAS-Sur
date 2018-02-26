@@ -1,6 +1,7 @@
 package com.zgas.tesselar.myzuite.View.Fragment.UserService;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,19 +13,24 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.shashank.sony.fancydialoglib.Animation;
-import com.shashank.sony.fancydialoglib.FancyAlertDialog;
-import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
-import com.shashank.sony.fancydialoglib.Icon;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Model.Incidence;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
+import com.zgas.tesselar.myzuite.Service.PutIncidenceTask;
+import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HelpFragmentService extends Fragment implements View.OnClickListener {
+public class HelpFragmentService extends Fragment implements View.OnClickListener,
+        PutIncidenceTask.PutIncidenceListener {
 
     private static final String DEBUG_TAG = "HelpFragmentService";
     private Spinner mSpinnerOptions;
@@ -32,6 +38,9 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
+    private JSONObject params;
+    private String cancelationReason;
+    private Dialog dialog;
 
     public HelpFragmentService() {
         // Required empty public constructor
@@ -62,6 +71,32 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
         }
     }
 
+    private void callAsyncTask() {
+        params = new JSONObject();
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
+        String date = dateFormat.format(calendar.getTime());
+
+
+        try {
+            params.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID, mUserPreferences.getUserObject().getUserId());
+            params.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_REASON, cancelationReason);
+            params.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_TIME, date);
+
+            Log.d(DEBUG_TAG, "Id: " + params.getString(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID)
+                    + " Razón: " + params.getString(ExtrasHelper.INCIDENCE_JSON_OBJECT_REASON)
+                    + " Fecha: " + params.getString(ExtrasHelper.INCIDENCE_JSON_OBJECT_TIME));
+
+            PutIncidenceTask putIncidenceTask = new PutIncidenceTask(getContext(), params);
+            putIncidenceTask.setPutIncidenceListener(this);
+            putIncidenceTask.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initUi(View rootview) {
         mSpinnerOptions = rootview.findViewById(R.id.fragment_help_service_sp_options);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
@@ -76,32 +111,33 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
         if (mSpinnerOptions.getSelectedItem() == null) {
             Toast.makeText(getContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
         } else {
-            Log.d(DEBUG_TAG, mSpinnerOptions.getSelectedItem().toString());
-            mSpinnerOptions.setSelection(0);
-            new FancyAlertDialog.Builder(getActivity())
-                    .setTitle(getResources().getString(R.string.dialog_help_order_title))
-                    .setBackgroundColor(getResources().getColor(R.color.light_green))
-                    .setMessage(getResources().getString(R.string.dialog_help_order_body))
-                    .setNegativeBtnText(getResources().getString(R.string.cancel))
-                    .setPositiveBtnBackground(getResources().getColor(R.color.light_green))
-                    .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
-                    .setNegativeBtnBackground(getResources().getColor(R.color.grey_300))
-                    .setAnimation(Animation.SIDE)
-                    .isCancellable(false)
-                    .setIcon(R.drawable.icon_check_circle, Icon.Visible)
-                    .OnPositiveClicked(new FancyAlertDialogListener() {
-                        @Override
-                        public void OnClick() {
-                            //change order status
-                        }
-                    })
-                    .OnNegativeClicked(new FancyAlertDialogListener() {
-                        @Override
-                        public void OnClick() {
-
-                        }
-                    })
-                    .build();
+            cancelationReason = mSpinnerOptions.getSelectedItem().toString();
+            callAsyncTask();
         }
+    }
+
+    @Override
+    public void incidenceErrorResponse(String error) {
+        Log.d(DEBUG_TAG, error);
+        Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void incidenceSuccessResponse(Incidence incidence) {
+        mSpinnerOptions.setSelection(0);
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_report_incidence);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
+        Log.d(DEBUG_TAG, "Dialog " + getResources().getString(R.string.on_create));
+        dialog.setCancelable(false);
+
+        final Button mBtnAccept = dialog.findViewById(R.id.dialog_report_incidende_btn_accept);
+        mBtnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

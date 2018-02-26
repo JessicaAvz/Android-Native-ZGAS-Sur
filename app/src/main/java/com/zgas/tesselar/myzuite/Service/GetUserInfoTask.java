@@ -25,9 +25,16 @@ import java.util.Formatter;
 import java.util.List;
 
 /**
- * Created by jarvizu on 19/09/2017.
+ * Class that communicates with the service and will push the result to the User model list.
+ *
+ * @author jarvizu on 19/09/2017.
+ * @version 2018.0.9
+ * @see AsyncTask
+ * @see User
+ * @see JSONObject
+ * @see UserPreferences
+ * @see UserInfoListener
  */
-
 public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetUserInfoTask";
@@ -45,6 +52,13 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private User supervisedUser;
     private String adminToken;
 
+    /**
+     * Constructor for the GetUserInfoTask. Additionally, we have an UserPreferences class reference
+     * so we can obtain the user data.
+     *
+     * @param context Current context of the application
+     * @param params  Parameters that will be sent to the service.
+     */
     public GetUserInfoTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
@@ -54,8 +68,6 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     /**
      * progress dialog to show user that the backup is processing.
-     * <p>
-     * application context.
      */
     @Override
     protected void onPreExecute() {
@@ -63,8 +75,11 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
+     * This methods performs the connection between our URL and our service, passing the method we'll
+     * use and the params needed (if needed).
+     *
      * @param urls
-     * @return
+     * @return JsonObject containing the connection.
      */
     @Override
     protected JSONObject doInBackground(URL... urls) {
@@ -102,7 +117,14 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     * @param jsonObject
+     * Method that will show the task result on the user interface. It will receive the jsonObject
+     * obtained on doInBackground method, and it will check if the jsonObject has an error or is
+     * correct.
+     * If an error occurs, the UserInfoListener will manage it.
+     * Else, the json data will be mapped with our User object and it will be shown on the user
+     * interface.
+     *
+     * @param jsonObject The user object that will be received.
      */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
@@ -211,7 +233,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     *
+     * If the AsyncTask is cancelled, it will show an error response.
      */
     @Override
     protected void onCancelled() {
@@ -220,15 +242,13 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userInfoListener.userInfoErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    /**
-     * @param userInfoListener
-     */
+
     public void setUserInfoListener(UserInfoListener userInfoListener) {
         this.userInfoListener = userInfoListener;
     }
 
     /**
-     *
+     * Interface for managing the different outputs of the AsyncTask
      */
     public interface UserInfoListener {
         void userInfoErrorResponse(String error);

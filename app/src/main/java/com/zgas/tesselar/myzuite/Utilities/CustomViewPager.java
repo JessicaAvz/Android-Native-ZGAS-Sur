@@ -6,7 +6,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by project on 13/10/2016.
+ * Class that serves as a CustomViewPager for enabling or desabling paging.
+ *
+ * @author jarvizu on 13/10/2017.
+ * @version 2018.0.9
+ * @see ViewPager
  */
 public class CustomViewPager extends ViewPager {
 

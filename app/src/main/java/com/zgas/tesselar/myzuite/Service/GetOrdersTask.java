@@ -25,14 +25,20 @@ import java.util.Formatter;
 import java.util.List;
 
 /**
- * Created by jarvizu on 20/09/2017.
+ * Class that communicates with the service and will push the result to the Order model list.
+ *
+ * @author jarvizu on 20/09/2017
+ * @version 2018.0.9
+ * @see AsyncTask
+ * @see Order
+ * @see JSONObject
+ * @see UserPreferences
+ * @see OrderTaskListener
  */
-
 public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetOrdersTask";
     private static final String CASES_ARRAY = "Orders";
-    private static final String DETAIL_ARRAY = "Detail";
     private static final String METHOD = "GET";
     private static final String USER_ID = "Id";
     private static final String JSON_OBJECT_ID = "Id";
@@ -49,8 +55,11 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private List<Order> casesList;
 
     /**
-     * @param context
-     * @param params
+     * Constructor for the GetOrdersTask. Additionally, we have an UserPreferences class reference
+     * so we can obtain the user data.
+     *
+     * @param context Current context of the application.
+     * @param params  Parameters that will be sent to the service.
      */
     public GetOrdersTask(Context context, JSONObject params) {
         this.context = context;
@@ -58,16 +67,16 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userPreferences = new UserPreferences(context);
     }
 
-    /**
-     *
-     */
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
 
     /**
+     * This methods performs the connection between our URL and our service, passing the method we'll
+     * use and the params needed (if needed).
+     *
      * @param urls
-     * @return
+     * @return JsonObject containing the connection.
      */
     @Override
     protected JSONObject doInBackground(URL... urls) {
@@ -104,7 +113,14 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     * @param jsonObject
+     * Method that will show the task result on the user interface. It will receive the jsonObject
+     * obtained on doInBackground method, and it will check if the jsonObject has an error or is
+     * correct.
+     * If an error occurs, the OrderTaskListener will manage it.
+     * Else, the json data will be mapped with our Order object and it will be shown on the user
+     * interface.
+     *
+     * @param jsonObject The order object that will be received.
      */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
@@ -207,7 +223,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     *
+     * If the AsyncTask is cancelled, it will show an error response.
      */
     @Override
     protected void onCancelled() {
@@ -216,15 +232,12 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         orderTaskListener.getCasesErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    /**
-     * @param getOrderTaskListener
-     */
     public void setOrderTaskListener(OrderTaskListener getOrderTaskListener) {
         this.orderTaskListener = getOrderTaskListener;
     }
 
     /**
-     *
+     * Interface for managing the different outputs of the AsyncTask
      */
     public interface OrderTaskListener {
         void getCasesErrorResponse(String error);

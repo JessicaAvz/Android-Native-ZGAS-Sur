@@ -21,9 +21,16 @@ import java.net.URL;
 import java.util.Formatter;
 
 /**
- * Created by jarvizu on 25/09/2017.
+ * Class that communicates with the service and will push the result to the User model list.
+ *
+ * @author jarvizu on 19/09/2017.
+ * @version 2018.0.9
+ * @see AsyncTask
+ * @see Login
+ * @see JSONObject
+ * @see UserPreferences
+ * @see LoginTaskListener
  */
-
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "LoginTask";
@@ -38,8 +45,11 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private boolean isError = false;
 
     /**
-     * @param context
-     * @param params
+     * Constructor for the LoginTask. Additionally, we have an UserPreferences class reference
+     * so we can obtain the user data.
+     *
+     * @param context Current context of the application
+     * @param params  Parameters that will be sent to the service.
      */
     public LoginTask(Context context, JSONObject params) {
         this.context = context;
@@ -48,8 +58,17 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
+     * This methods performs the connection between our URL and our service, passing the method we'll
+     * use and the params needed (if needed).
+     * In this case, we make 2 different logins: the user login (the user that will be using the app)
+     * and the admin login (so we can get the Admin Token needed for all the other requests within
+     * the app).
+     * This because all the requests made with Salesforce need an access token that we only get after
+     * the Salesforce admin logs in. We take this admin token and we store it on the UserPreferences
+     * object.
+     *
      * @param urls
-     * @return
+     * @return JsonObject containing the connection.
      */
     @Override
     protected JSONObject doInBackground(URL... urls) {
@@ -98,7 +117,14 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     * @param jsonObject
+     * Method that will show the task result on the user interface. It will receive the jsonObject
+     * obtained on doInBackground method, and it will check if the jsonObject has an error or is
+     * correct.
+     * If an error occurs, the LoginTaskListener will manage it.
+     * Else, the json data will be mapped with our User object and it will be shown on the user
+     * interface.
+     *
+     * @param jsonObject The user object that will be received.
      */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
@@ -140,7 +166,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     }
 
     /**
-     *
+     * If the AsyncTask is cancelled, it will show an error response.
      */
     @Override
     protected void onCancelled() {
@@ -148,15 +174,12 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         loginTaskListener.loginErrorResponse(context.getResources().getString(R.string.connection_error));
     }
 
-    /**
-     * @param loginTaskListener
-     */
     public void setLoginTaskListener(LoginTaskListener loginTaskListener) {
         this.loginTaskListener = loginTaskListener;
     }
 
     /**
-     *
+     * Interface for managing the different outputs of the AsyncTask
      */
     public interface LoginTaskListener {
         void loginErrorResponse(String error);

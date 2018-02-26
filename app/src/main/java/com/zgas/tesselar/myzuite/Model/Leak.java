@@ -1,9 +1,11 @@
 package com.zgas.tesselar.myzuite.Model;
 
 /**
- * Created by jarvizu on 24/10/2017.
+ * Leak model
+ *
+ * @author jarvizu on 28/08/2017
+ * @version 2018.0.9
  */
-
 public class Leak {
 
     private String leakId;

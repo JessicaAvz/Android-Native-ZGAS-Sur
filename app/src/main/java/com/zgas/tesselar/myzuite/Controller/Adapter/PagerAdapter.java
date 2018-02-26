@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by project on 05/10/2016.
+ * Class that provides the adapter to populate pages inside of a ViewPager.
+ *
+ * @author jarvizu on 24/10/2017
+ * @version 2018.0.9
+ * @see FragmentPagerAdapter
  */
 public class PagerAdapter extends FragmentPagerAdapter {
 
@@ -19,10 +23,21 @@ public class PagerAdapter extends FragmentPagerAdapter {
         this.fragments = new ArrayList<Fragment>();
     }
 
+    /**
+     * Method for adding a new fragment to the ViewPager
+     *
+     * @param fragment Fragment to be added.
+     */
     public void addFragment(Fragment fragment) {
         this.fragments.add(fragment);
     }
 
+    /**
+     * Method for getting the fragment's  position.
+     *
+     * @param position
+     * @return The fragment's position.
+     */
     @Override
     public Fragment getItem(int position) {
         return this.fragments.get(position);

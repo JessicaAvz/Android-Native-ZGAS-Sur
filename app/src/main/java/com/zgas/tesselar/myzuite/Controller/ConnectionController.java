@@ -21,7 +21,15 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
+ * Class that manages the connection between services, database and the asynchronous tasks used
+ * within this project.
  *
+ * @author jarvizu on 24/10/2017
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see HttpURLConnection
+ * @see URL
+ * @see android.os.AsyncTask
  */
 public class ConnectionController {
 
@@ -37,9 +45,11 @@ public class ConnectionController {
     private static final int TIMEOUT = 10000;
 
     /**
-     * @param adminToken
-     * @param url
-     * @param method
+     * Constructor for the Connection Controller class.
+     *
+     * @param adminToken The token that will be used for all the petitions within this project.
+     * @param url        The service url that will be accessed.
+     * @param method     The method type that will be used for accesing the data (POST, GET, PUT...).
      */
     public ConnectionController(String adminToken, URL url, String method) {
         this.adminToken = adminToken;
@@ -48,10 +58,14 @@ public class ConnectionController {
     }
 
     /**
-     * @param adminToken
-     * @param url
-     * @param method
-     * @param params
+     * Constructor for the Connection Controller class, but that will need parameters in order to
+     * make the connection with the services.
+     *
+     * @param adminToken The token that will be used for all the petitions within this project.
+     * @param url        The service url that will be accessed.
+     * @param method     The method type that will be used for accesing the data (POST, GET, PUT...).
+     * @param params     JsonObject parameters that will be needed to make the conection
+     *                   (email, password, etc...).
      */
     public ConnectionController(String adminToken, URL url, String method, JSONObject params) {
         this.adminToken = adminToken;
@@ -61,9 +75,16 @@ public class ConnectionController {
     }
 
     /**
-     * @return
-     * @throws FileNotFoundException
-     * @throws SocketTimeoutException
+     * This method has been abstracted as much as possible. This method is used for receiving
+     * generic data, it doesn't ask what or how; just checks which method and parameters are
+     * received and send them directly to the server. It's a class to use inside a thread
+     * so we don't have to copy/paste this on all asyncTasks.
+     *
+     * @return The received JsonObject
+     * @throws FileNotFoundException  Will be thrown when a file with the specified pathname
+     *                                does not exist.
+     * @throws SocketTimeoutException Will be thrown when a timeout has occurred on a socket
+     *                                read or accept.
      */
     public JSONObject execute() throws FileNotFoundException, SocketTimeoutException {
 
@@ -75,6 +96,7 @@ public class ConnectionController {
             httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
             if (httpURLConnection.getRequestMethod().equals("POST")) {
+                //Set it to true if you want to send (output) a request body.
                 httpURLConnection.setDoOutput(true);
             } else if (httpURLConnection.getRequestMethod().equals("GET")) {
                 httpURLConnection.setDoOutput(false);
@@ -83,7 +105,6 @@ public class ConnectionController {
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestProperty("Authorization", encodedAuth);
                 httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PUT");
-
             }
 
             httpURLConnection.setConnectTimeout(TIMEOUT);
