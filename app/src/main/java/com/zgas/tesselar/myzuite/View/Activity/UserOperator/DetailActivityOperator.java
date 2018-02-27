@@ -151,6 +151,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
         mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
         mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
+        Log.d(DEBUG_TAG, bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

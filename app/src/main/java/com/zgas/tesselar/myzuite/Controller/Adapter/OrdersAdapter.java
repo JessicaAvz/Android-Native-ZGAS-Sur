@@ -28,7 +28,10 @@ import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Class that provides access to the Order model data items; This class works for both orders
@@ -149,6 +152,10 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         status.setText(caseStatus.toString());
         holder.itemView.setTag(mOrderList.get(position));
 
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        final String date = dateFormat.format(calendar.getTime());
+
         holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +188,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, date);
 
                 intent = new Intent();
                 if (serviceType.equals(Order.caseTypes.MEASURED.toString()) && recordType.equals(Order.caseTypes.ORDER.toString())) {
