@@ -25,7 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This class shows the list of all the orders of type 'custom service'
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Order
+ * @see UserPreferences
+ * @see android.os.AsyncTask
+ * @see GetServiceTask
+ * @see RecyclerRefreshLayout
+ * @see OrdersAdapter
  */
 public class MainFragmentService extends Fragment implements GetServiceTask.ServiceTaskListener {
 
@@ -88,9 +99,6 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
             getServiceTask.setServiceTaskListener(this);
             getServiceTask.execute();
 
-            /*GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), params);
-            getOrdersTask.setOrderTaskListener(this);
-            getOrdersTask.execute();*/
         } catch (Exception e) {
             e.printStackTrace();
         }

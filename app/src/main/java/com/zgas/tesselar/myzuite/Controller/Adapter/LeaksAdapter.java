@@ -20,8 +20,12 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.PutReviewLeakTask;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Activity.UserLeakage.DetailActivityLeakage;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,7 +37,6 @@ import java.util.ArrayList;
  * @see Leak
  * @see RecyclerSwipeAdapter
  */
-
 public class LeaksAdapter extends RecyclerSwipeAdapter {
 
     private static final String DEBUG_TAG = "LeaksAdapter";
@@ -42,6 +45,11 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
     private Context context;
     private ArrayList<Leak> mLeaksList;
     private Intent intent;
+    private JSONObject params;
+    private Spinner mSpinnerOptions;
+    private Dialog dialog;
+    private Leak mLeak;
+    private UserPreferences userPreferences;
 
     /**
      * Constructor for the LeaksAdapter class.
@@ -90,7 +98,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         final LeaksViewHolder holder = (LeaksViewHolder) viewHolder;
-        final Leak mLeak = mLeaksList.get(position);
+        mLeak = mLeaksList.get(position);
         String leakId = mLeak.getLeakId();
         String leakAddress = mLeak.getLeakAddress();
         Leak.leakStatus leakStatus = mLeak.getLeakStatus();
@@ -177,13 +185,13 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         holder.mLeakReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(context);
+                dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_review_case);
                 dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
 
                 dialog.setCancelable(false);
 
-                final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
+                mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review,
                         android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -198,11 +206,26 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
                             Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect)
                                     , Toast.LENGTH_LONG).show();
                         } else {
-                            //srtCancellationReason = mSpinnerOptions.getSelectedItem().toString();
+                            params = new JSONObject();
+                            userPreferences = new UserPreferences(context);
+
+                            try {
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID, userPreferences.getUserObject().getUserId());
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, mLeak.getLeakId());
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW, mSpinnerOptions.getSelectedItem().toString());
+
+                                Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID).toString());
+                                Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID).toString());
+                                Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW).toString());
+
+                                new PutReviewLeakTask(context, params).execute();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                             mSpinnerOptions.setSelection(0);
-                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct),
-                                    Toast.LENGTH_LONG).show();
-                            //callAsyncTaskCancelled();
+                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                     }

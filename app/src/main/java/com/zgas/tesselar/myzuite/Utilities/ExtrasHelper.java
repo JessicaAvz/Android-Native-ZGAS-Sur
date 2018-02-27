@@ -1,10 +1,16 @@
 package com.zgas.tesselar.myzuite.Utilities;
 
 /**
- * Created by jarvizu on 19/10/2017.
+ * This class contains all the strings that are used in the application - for mapping and
+ * references - so we only have the reference to this class.
+ *
+ * @author jarvizu on 19/10/2017.
+ * @version 2018.0.9
  */
 
 public class ExtrasHelper {
+
+    public static final String CALL = "tel:6241370525";
 
     //Login Object
     public static final String LOGIN_JSON_OBJECT_TOKEN = "access_token";
@@ -80,10 +86,9 @@ public class ExtrasHelper {
     public static final String LEAK_JSON_OBJECT_COLOR = "Color";
     public static final String LEAK_JSON_OBJECT_CHANNEL = "Chanel";
     public static final String LEAK_JSON_OBJECT_ADDRESS = "Address";
-
     public static final String LEAK_JSON_OBJECT_RESOLUTION_STATUS = "resolution";
     public static final String LEAJ_JSON_OBJECT_CHANNEL_STATUS = "channel";
-    public static final String LEAK_JSON_OBJECT_STATUS_UPDATE ="StatusUpdate";
+    public static final String LEAK_JSON_OBJECT_STATUS_UPDATE = "StatusUpdate";
 
     //Incidences
     public static final String INCIDENCE_JSON_OBJECT_ID = "Id";

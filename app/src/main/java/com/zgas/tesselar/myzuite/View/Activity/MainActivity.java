@@ -26,7 +26,6 @@ import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
 import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
-import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
 import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.HelpFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
@@ -41,12 +40,37 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that manages all the main fragments to be used by the application, it also separates them
+ * according to the userType of the user that's logged in.
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see UserPreferences
+ * @see Bundle
+ * @see android.os.AsyncTask
+ * @see RefreshTokenTask
+ * @see GetUserInfoTask
+ * @see MainFragmentLeak
+ * @see HelpFragmentLeak
+ * @see MainFragmentOperator
+ * @see HelpFragmentOperator
+ * @see ExtraOrderFragmentOperator
+ * @see MainFragmentService
+ * @see HelpFragmentService
+ * @see CustomViewPager
+ * @see PagerAdapter
+ * @see SupervisorAdapter
+ * @see RecyclerView
+ * @see LinearLayoutManager
+ * @see AHBottomNavigation
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener,
         RefreshTokenTask.RefreshTokenListener {
 
     private static final String DEBUG_TAG = "MainActivity";
-    private static final String EMAIL_TAG = "email";
-    private static final String PASS_TAG = "password";
 
     private AHBottomNavigation ahBottomNavigation;
     private CustomViewPager customViewPager;
@@ -77,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userPreferences = new UserPreferences(this);
         user = userPreferences.getUserObject();
 
+        /*If a user is logged in, it will check it's type so the app will show the correct
+        user interface.*/
         if (userPreferences.isLoggedIn()) {
             if (user.getUserType() == User.userType.OPERATOR) {
                 setContentView(R.layout.activity_main);
@@ -123,9 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /**
-     *
-     */
     private void initUiOperator() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -388,9 +411,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    /**
-     * @param position
-     */
     private void animateFab(int position) {
         switch (position) {
             case 0:
@@ -405,9 +425,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /**
-     * @param position
-     */
     private void animateFabOperator(int position) {
         switch (position) {
             case 0:
@@ -424,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void callIntent() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(UrlHelper.CALL));
+        intent.setData(Uri.parse(ExtrasHelper.CALL));
         startActivity(intent);
     }
 
@@ -475,9 +492,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * @param user
-     */
+
     @Override
     public void userInfoSuccessResponse(User user) {
         Log.d(DEBUG_TAG, "User preference id: " + userPreferences.getUserObject().getUserId());
@@ -489,9 +504,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(DEBUG_TAG, "User preference status: " + userPreferences.getUserObject().getUserStatus());
     }
 
-    /**
-     * @param userList
-     */
     @Override
     public void userSupervisedSuccessResponse(List<User> userList) {
         mSupervisorAdapter = new SupervisorAdapter(this, (ArrayList<User>) userList);
@@ -502,18 +514,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
     }
 
-    /**
-     * @param error
-     */
     @Override
     public void refreshErrorResponse(String error) {
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * @param login
-     */
     @Override
     public void refreshSuccessResponse(Login login) {
         userPreferences.setLoginData(login);

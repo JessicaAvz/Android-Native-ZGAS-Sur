@@ -22,8 +22,18 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
+
 /**
- * A simple {@link Fragment} subclass.
+ * This class is for requesting a new order when the userType is of 'operator'
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Order
+ * @see UserPreferences
+ * @see android.os.AsyncTask
+ * @see PutNewOrderTask
  */
 public class ExtraOrderFragmentOperator extends Fragment implements View.OnClickListener,
         PutNewOrderTask.NewOrderTaskListener {

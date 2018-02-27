@@ -11,7 +11,11 @@ import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.View.Activity.LoginActivity;
 
 /**
- * Created by jarvizu on 01/09/2017.
+ * Class that works as a helper to store user session and user data, and for this data to be
+ * stored in shared preferences and be used on the whole application.
+ *
+ * @author jarvizu on 01/09/2017.
+ * @version 2018.0.9
  */
 
 public class UserPreferences {
@@ -32,17 +36,11 @@ public class UserPreferences {
         this.context = context;
     }
 
-    /**
-     * @return
-     */
     public String getUserData() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString(USER_DATA, null);
     }
 
-    /**
-     * @param user
-     */
     public void setUserData(User user) {
         if (user != null) {
             Gson gson = new Gson();
@@ -59,26 +57,17 @@ public class UserPreferences {
         }
     }
 
-    /**
-     * @return
-     */
     public User getUserObject() {
         Gson gson = new Gson();
         User user = gson.fromJson(getUserData(), User.class);
         return user;
     }
 
-    /**
-     * @return
-     */
     public String getLoginData() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString(LOGIN_DATA, null);
     }
 
-    /**
-     * @param email
-     */
     public void createLoginSession(String email) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_LOGGED, true);
@@ -86,9 +75,6 @@ public class UserPreferences {
         editor.apply();
     }
 
-    /**
-     * @param login
-     */
     public void setLoginData(Login login) {
         if (login != null) {
             Gson gson = new Gson();
@@ -106,18 +92,12 @@ public class UserPreferences {
         }
     }
 
-    /**
-     * @return
-     */
     public Login getLoginObject() {
         Gson gson = new Gson();
         Login login = gson.fromJson(getLoginData(), Login.class);
         return login;
     }
 
-    /**
-     *
-     */
     public void checkLogin() {
         if (!this.isLoggedIn()) {
             Intent i = new Intent(context, LoginActivity.class);
@@ -127,9 +107,6 @@ public class UserPreferences {
         }
     }
 
-    /**
-     *
-     */
     public void logoutUser() {
         context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE).edit().clear().apply();
         Intent i = new Intent(context, LoginActivity.class);
@@ -139,17 +116,11 @@ public class UserPreferences {
         Log.d(DEBUG_TAG, "User has logged out.");
     }
 
-    /**
-     * @return
-     */
     public boolean isLoggedIn() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean(IS_LOGGED, false);
     }
 
-    /**
-     * @param token
-     */
     public void setAdminToken(String token) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -157,9 +128,6 @@ public class UserPreferences {
         editor.apply();
     }
 
-    /**
-     * @return
-     */
     public String getAdminToken() {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString(API_TOKEN, null);

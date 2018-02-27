@@ -1,7 +1,10 @@
 package com.zgas.tesselar.myzuite.Utilities;
 
 /**
- * Created by jarvizu on 25/09/2017.
+ * Class that contains all the web service URLs.
+ *
+ * @author jarvizu on 25/09/2017.
+ * @version 2018.0.9
  */
 
 public class UrlHelper {
@@ -16,7 +19,6 @@ public class UrlHelper {
     public static final String PUT_INCIDENCE_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/report_incidence?operatorId=1$s";
     public static final String PUT_EXTRA_ORDER = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/extra_order?operatorId=1$s ";
     public static final String PUT_REVIEW_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/order_review?orderId=1$s";
-    public static final String CALL = "tel:6241370525";
 
     public static final String ADMIN_EMAIL = "mbravo@grupozeta.biz.dev1";
     public static final String ADMIN_PASS = "sfgrupozeta2018";
@@ -24,5 +26,4 @@ public class UrlHelper {
     public static final String CLIENT_ID = "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003";
     public static final String CLIENT_SECRET = "631836681953146126";
     public static final String AUTH_KEY = "Bearer ";
-
 }

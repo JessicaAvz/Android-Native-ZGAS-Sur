@@ -31,6 +31,21 @@ import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 
 import org.json.JSONObject;
 
+/**
+ * Class that shows the details of the orders; it's used when the operator is of type
+ * 'Custom service'. In this class we can also modify the service status - in progress, cancelled,
+ * finished - and open the Waze app with the service address.
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see Order
+ * @see User
+ * @see UserPreferences
+ * @see Bundle
+ * @see android.os.AsyncTask
+ * @see PutStatusOrderTask
+ */
 public class DetailActivityService extends AppCompatActivity implements View.OnClickListener,
         PutStatusOrderTask.StatusOrderTaskListener {
 
@@ -289,9 +304,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         dialog.show();
     }
 
-    /**
-     *
-     */
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_cancel_case_operator);
@@ -331,9 +343,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         dialog.show();
     }
 
-    /**
-     *
-     */
     private void inProgressDialog() {
         Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
 
@@ -365,10 +374,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
                 .build();
     }
 
-    /**
-     * @param etText
-     * @return
-     */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }
@@ -381,7 +386,6 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
 
     @Override
     public void statusSuccessResponse(Order order) {
-        Log.d(DEBUG_TAG, "Si jala");
         isClicked = true;
         checkButtons();
 

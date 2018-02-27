@@ -11,20 +11,37 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
-import com.zgas.tesselar.myzuite.Service.LoginTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
+import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
+import com.zgas.tesselar.myzuite.Service.LoginTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginTask.LoginTaskListener,
-        GetUserInfoTask.UserInfoListener {
+/**
+ * This class manages the login of the user for its data to be used throught the application.
+ * In this case, we use two different users to login: the admin and the operator.
+ * We execute the login asynctask, we get the admin data, and then we execute the getuserinfo
+ * asynctask, to get the user information.
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Login
+ * @see UserPreferences
+ * @see Bundle
+ * @see android.os.AsyncTask
+ * @see LoginTask
+ * @see GetUserInfoTask
+ */
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
+        LoginTask.LoginTaskListener, GetUserInfoTask.UserInfoListener {
 
     private static final String DEBUG_TAG = "LoginActivity";
     private static final String EMAIL_TAG = "email";
@@ -100,20 +117,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return etText.getText().toString().trim().length() == 0;
     }
 
-    /**
-     *
-     * @param error
-     */
     @Override
     public void loginErrorResponse(String error) {
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     *
-     * @param login
-     */
     @Override
     public void loginSuccessResponse(Login login) {
         try {
@@ -132,20 +141,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    /**
-     *
-     * @param error
-     */
     @Override
     public void userInfoErrorResponse(String error) {
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     *
-     * @param user
-     */
     @Override
     public void userInfoSuccessResponse(User user) {
         mUserPreferences.setUserData(user);
@@ -154,10 +155,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.finish();
     }
 
-    /**
-     *
-     * @param userList
-     */
     @Override
     public void userSupervisedSuccessResponse(List<User> userList) {
 

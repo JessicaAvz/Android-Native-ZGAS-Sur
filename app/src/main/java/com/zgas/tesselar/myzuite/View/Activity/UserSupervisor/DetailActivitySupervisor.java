@@ -9,9 +9,25 @@ import android.widget.TextView;
 
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
+import org.json.JSONObject;
+
+/**
+ * Class that shows the details of all the users that a supervisor has under its care. This will show
+ * if the user is of type 'supervisor'
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see UserPreferences
+ * @see Bundle
+ * @see android.os.AsyncTask
+ * @see GetUserInfoTask
+ */
 public class DetailActivitySupervisor extends AppCompatActivity {
 
     private static final String DEBUG_TAG = "DetailActSuperv";
@@ -47,10 +63,6 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         initUi();
     }
 
-
-    /**
-     *
-     */
     private void initUi() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -27,7 +27,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This class is for requesting an incidence when the userType is of 'leak technician'
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Incidence
+ * @see UserPreferences
+ * @see android.os.AsyncTask
+ * @see PutIncidenceTask
  */
 public class HelpFragmentLeak extends Fragment implements View.OnClickListener,
         PutIncidenceTask.PutIncidenceListener {

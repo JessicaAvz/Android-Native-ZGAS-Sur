@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.Adapter.OrdersAdapter;
+import com.zgas.tesselar.myzuite.Service.GetOrdersTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
@@ -25,8 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * author: Jessica Arvizu
- * A simple {@link Fragment} subclass.
+ * This class shows the list of all the orders of type 'order'
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Order
+ * @see UserPreferences
+ * @see android.os.AsyncTask
+ * @see GetOrdersTask
+ * @see RecyclerRefreshLayout
+ * @see OrdersAdapter
  */
 public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
 

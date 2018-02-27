@@ -28,8 +28,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
 /**
- * A simple {@link Fragment} subclass.
+ * This class is for requesting an incidence when the userType is of 'operator'
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Incidence
+ * @see UserPreferences
+ * @see android.os.AsyncTask
+ * @see PutIncidenceTask
  */
 public class HelpFragmentOperator extends Fragment implements OnClickListener,
         PutIncidenceTask.PutIncidenceListener {
@@ -43,7 +53,6 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener,
     private UserPreferences mUserPreferences;
     private User mUser;
     private JSONObject params;
-    private Date currentTime;
     private Dialog dialog;
 
     public HelpFragmentOperator() {

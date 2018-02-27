@@ -24,7 +24,6 @@ import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
 import com.zgas.tesselar.myzuite.Controller.Adapter.NothingSelectedSpinnerAdapter;
 import com.zgas.tesselar.myzuite.Model.Leak;
-
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutStatusLeakTask;
@@ -34,9 +33,18 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import org.json.JSONObject;
 
 /**
- * @author Jessica Arvizu
- *         Clase que muestra los detalles de los pedidos tipo fuga, cuando el Operador es tipo
- *         Fuga...
+ * Class that shows the details of the leakages; it's used when the operator is of type 'Leak
+ * technician'. In this class we can also modify the leak status - in progress, cancelled, finished -
+ * and open the Waze app with the leak address.
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see UserPreferences
+ * @see Bundle
+ * @see android.os.AsyncTask
+ * @see PutStatusLeakTask
  */
 public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener,
         PutStatusLeakTask.StatusLeakTaskListener {

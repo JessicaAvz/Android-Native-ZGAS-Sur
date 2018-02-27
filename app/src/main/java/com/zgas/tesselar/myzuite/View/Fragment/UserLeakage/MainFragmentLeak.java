@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
-import com.zgas.tesselar.myzuite.Service.GetLeakagesTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
+import com.zgas.tesselar.myzuite.Controller.Adapter.LeaksAdapter;
 import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
-import com.zgas.tesselar.myzuite.Controller.Adapter.LeaksAdapter;
+import com.zgas.tesselar.myzuite.Service.GetLeakagesTask;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
@@ -25,7 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This class shows the list of all the leakages
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see User
+ * @see Leak
+ * @see UserPreferences
+ * @see android.os.AsyncTask
+ * @see GetLeakagesTask
+ * @see RecyclerRefreshLayout
+ * @see LeaksAdapter
  */
 public class MainFragmentLeak extends Fragment implements GetLeakagesTask.LeakagesTaskListener {
 

@@ -32,8 +32,19 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import org.json.JSONObject;
 
 /**
- * @author Jessica Arvizu
- *         Clase que muestra los detalles de un pedido, cuando el Operador es tipo Operador...
+ * Class that shows the details of the orders; it's used when the operator is of type 'Operator'.
+ * In this class we can also modify the order status - in progress, cancelled, finished -
+ * and open the Waze app with the order address.
+ *
+ * @author jarvizu
+ * @version 2018.0.9
+ * @see JSONObject
+ * @see Order
+ * @see User
+ * @see UserPreferences
+ * @see Bundle
+ * @see android.os.AsyncTask
+ * @see PutStatusOrderTask
  */
 public class DetailActivityOperator extends AppCompatActivity implements View.OnClickListener,
         PutStatusOrderTask.StatusOrderTaskListener {
