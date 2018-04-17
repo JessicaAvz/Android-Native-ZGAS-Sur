@@ -109,11 +109,14 @@ public class PutReviewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
         Log.d(DEBUG_TAG, jsonObject.toString());
         Order order = null;
 
+        if (orderReviewTaskListener == null) {
+            Log.d(DEBUG_TAG, "Listener nulo");
+        } else {
+            Log.d(DEBUG_TAG, "Listener no nulo");
+        }
+
         try {
             if (jsonObject == null) {
-                orderReviewTaskListener.reviewOrderErrorResponse(context.getResources().getString(R.string.cases_status_error));
-                isError = true;
-            } else if (jsonObject.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID).toString().equals(null)) {
                 orderReviewTaskListener.reviewOrderErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
             } else if (jsonObject.has(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID)) {

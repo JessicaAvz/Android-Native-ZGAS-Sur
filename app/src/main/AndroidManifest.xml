@@ -52,7 +52,7 @@
             android:name=".View.Activity.UserService.DetailActivityService"
             android:label="@string/title_activity_detail_service"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

@@ -7,50 +7,50 @@ package com.zgas.tesselar.myzuite.Model;
  * @version 2018.0.9
  */
 public class Incidence {
-    private String idUser;
-    private String idIncidence;
-    private String descriptionIncidence;
-    private String timeIncidence;
+    private String userId;
+    private String incidenceId;
+    private String incidenceDescription;
+    private String incidenceTime;
 
     public Incidence() {
     }
 
-    public Incidence(String idUser, String idIncidence, String descriptionIncidence, String timeIncidence) {
-        this.idUser = idUser;
-        this.idIncidence = idIncidence;
-        this.descriptionIncidence = descriptionIncidence;
-        this.timeIncidence = timeIncidence;
+    public Incidence(String userId, String incidenceId, String incidenceDescription, String incidenceTime) {
+        this.userId = userId;
+        this.incidenceId = incidenceId;
+        this.incidenceDescription = incidenceDescription;
+        this.incidenceTime = incidenceTime;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getIdIncidence() {
-        return idIncidence;
+    public String getIncidenceId() {
+        return incidenceId;
     }
 
-    public void setIdIncidence(String idIncidence) {
-        this.idIncidence = idIncidence;
+    public void setIncidenceId(String incidenceId) {
+        this.incidenceId = incidenceId;
     }
 
-    public String getDescriptionIncidence() {
-        return descriptionIncidence;
+    public String getIncidenceDescription() {
+        return incidenceDescription;
     }
 
-    public void setDescriptionIncidence(String descriptionIncidence) {
-        this.descriptionIncidence = descriptionIncidence;
+    public void setIncidenceDescription(String incidenceDescription) {
+        this.incidenceDescription = incidenceDescription;
     }
 
-    public String getTimeIncidence() {
-        return timeIncidence;
+    public String getIncidenceTime() {
+        return incidenceTime;
     }
 
-    public void setTimeIncidence(String timeIncidence) {
-        this.timeIncidence = timeIncidence;
+    public void setIncidenceTime(String incidenceTime) {
+        this.incidenceTime = incidenceTime;
     }
 }

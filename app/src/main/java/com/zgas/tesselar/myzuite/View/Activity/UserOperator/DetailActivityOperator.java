@@ -31,6 +31,9 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Class that shows the details of the orders; it's used when the operator is of type 'Operator'.
  * In this class we can also modify the order status - in progress, cancelled, finished -
@@ -93,9 +96,7 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     private User user;
     private boolean isClicked = false;
     private JSONObject params;
-
-    public DetailActivityOperator() {
-    }
+    private String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +138,15 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
     }
 
     private void initUi() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        date = dateFormat.format(calendar.getTime());
+        if (mStrCaseTimeSeen == null) {
+            Order order = new Order();
+            order.setOrderTimeSeen(date);
+            mStrCaseTimeSeen = date;
+        }
+
         bundle = getIntent().getExtras();
         mStrCaseId = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
         mStrCaseUserName = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
@@ -145,13 +155,11 @@ public class DetailActivityOperator extends AppCompatActivity implements View.On
         mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
         mStrCasePriority = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
         mStrCaseTimeIn = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
-        mStrCaseTimeSeen = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
         mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
         mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
         mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
         mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
         mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
-        Log.d(DEBUG_TAG, bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

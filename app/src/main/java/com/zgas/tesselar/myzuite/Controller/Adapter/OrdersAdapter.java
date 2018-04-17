@@ -28,10 +28,7 @@ import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Class that provides access to the Order model data items; This class works for both orders
@@ -152,10 +149,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         status.setText(caseStatus.toString());
         holder.itemView.setTag(mOrderList.get(position));
 
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-        final String date = dateFormat.format(calendar.getTime());
-
         holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +167,12 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 String serviceType = mOrder.getOrderServiceType();
                 String recordType = mOrder.getOrderType().toString();
 
+                /*
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+                final String date = dateFormat.format(calendar.getTime());
+                */
+
                 Bundle bundle = new Bundle();
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
@@ -188,7 +187,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, date);
 
                 intent = new Intent();
                 if (serviceType.equals(Order.caseTypes.MEASURED.toString()) && recordType.equals(Order.caseTypes.ORDER.toString())) {
@@ -239,7 +237,23 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                                 Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID).toString());
                                 Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW).toString());
 
-                                new PutReviewOrderTask(context, params).execute();
+                                //new PutReviewOrderTask(context, params).execute();
+                                PutReviewOrderTask.OrderReviewTaskListener listener = new PutReviewOrderTask.OrderReviewTaskListener() {
+                                    @Override
+                                    public void reviewOrderErrorResponse(String error) {
+                                        Log.d(DEBUG_TAG, "Daniel Come caca");
+                                    }
+
+                                    @Override
+                                    public void reviewOrderSuccessResponse(Order order) {
+                                        Log.d(DEBUG_TAG, "Jessica Come kk");
+                                    }
+                                };
+
+                                PutReviewOrderTask t = new PutReviewOrderTask(context, params);
+                                t.setOrderReviewTaskListener(listener);
+                                t.execute();
+
 
                             } catch (Exception e) {
                                 e.printStackTrace();
