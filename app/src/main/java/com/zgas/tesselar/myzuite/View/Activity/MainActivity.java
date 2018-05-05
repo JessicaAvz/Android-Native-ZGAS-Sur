@@ -40,6 +40,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Class that manages all the main fragments to be used by the application, it also separates them
  * according to the userType of the user that's logged in.
@@ -106,19 +109,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (userPreferences.isLoggedIn()) {
             if (user.getUserType() == User.userType.OPERATOR) {
                 setContentView(R.layout.activity_main);
+                ButterKnife.bind(this);
                 initUiOperator();
             } else if (user.getUserType() == User.userType.SERVICE) {
                 setContentView(R.layout.activity_main);
+                ButterKnife.bind(this);
                 initUiService();
             } else if (user.getUserType() == User.userType.SUPERVISOR) {
                 setContentView(R.layout.activity_supervisor);
+                ButterKnife.bind(this);
                 getSupervisedCallAsyncTask();
                 initUiSupervisor();
             } else if (user.getUserType() == User.userType.LEAKAGE) {
                 setContentView(R.layout.activity_main);
+                ButterKnife.bind(this);
                 initUiLeakage();
             } else {
                 setContentView(R.layout.activity_main);
+                ButterKnife.bind(this);
                 initUiOperator();
             }
         } else {

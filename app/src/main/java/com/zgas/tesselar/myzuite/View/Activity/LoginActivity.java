@@ -7,7 +7,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +22,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * This class manages the login of the user for its data to be used throught the application.
  * In this case, we use two different users to login: the admin and the operator.
@@ -36,6 +39,7 @@ import java.util.List;
  * @see Login
  * @see UserPreferences
  * @see Bundle
+ * @see ButterKnife
  * @see android.os.AsyncTask
  * @see LoginTask
  * @see GetUserInfoTask
@@ -48,9 +52,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String PASS_TAG = "password";
     private static final String ADMIN_TOKEN = "access_token";
 
-    private TextInputEditText mEmail;
-    private TextInputEditText mPassword;
-    private Button mLogin;
+    @BindView(R.id.activity_login_et_email)
+    TextInputEditText mEmail;
+    @BindView(R.id.activity_login_et_password)
+    TextInputEditText mPassword;
     private UserPreferences mUserPreferences;
     private Context context;
     private String email;
@@ -59,9 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         context = getApplicationContext();
-        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(this);
 
         if (mUserPreferences.isLoggedIn()) {
@@ -69,26 +72,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(mainIntent);
         } else {
             setContentView(R.layout.activity_login);
+            ButterKnife.bind(this);
             Log.d(DEBUG_TAG, "OnCreate");
-            initUi();
         }
     }
 
-    private void initUi() {
-        getSupportActionBar().hide();
-        mEmail = findViewById(R.id.activity_login_et_email);
-        mPassword = findViewById(R.id.activity_login_et_password);
-        mLogin = findViewById(R.id.activity_login_btn_login);
-        mLogin.setOnClickListener(this);
-    }
-
-    @Override
+    @OnClick(R.id.activity_login_btn_login)
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_login_btn_login:
-                callAsyncTask();
-                break;
-        }
+        Log.d(DEBUG_TAG, "Butterknife onClick");
+        callAsyncTask();
     }
 
     private void callAsyncTask() {

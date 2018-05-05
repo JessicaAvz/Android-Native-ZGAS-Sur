@@ -87,7 +87,18 @@ public class ConnectionController {
      *                                read or accept.
      */
     public JSONObject execute() throws FileNotFoundException, SocketTimeoutException {
+        boolean callSucceeded = false;
 
+        //while(!callSucceeded) {
+            /* ejecuta hasta que este pedo funcione. O sea, si el token expiro, ve por uno nuevo Y
+             * setealo donde va. Cuando hagas eso, vuelve a ejecutar el todo.
+             * puedes ponerle un contador para un máximo de intentos de traer el nuevo token para
+             * que no quede ciclado el programa y se eche a perder todo te demanden y pierdas tu
+             * trabajo y tu casa :) .
+             *
+             */
+
+        //}
         try {
             url = new URL(url.toString());
             httpURLConnection = (HttpURLConnection) url.openConnection();

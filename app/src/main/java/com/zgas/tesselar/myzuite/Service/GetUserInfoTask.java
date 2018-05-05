@@ -83,7 +83,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
      */
     @Override
     protected JSONObject doInBackground(URL... urls) {
-
+        //super.doInBackground(new URL(""));
         JSONObject jsonObject = null;
 
         try {
