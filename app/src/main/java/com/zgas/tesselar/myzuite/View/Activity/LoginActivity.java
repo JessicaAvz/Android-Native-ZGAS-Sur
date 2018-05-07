@@ -142,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void userInfoSuccessResponse(User user) {
         mUserPreferences.setUserData(user);
+        //mUserPreferences.setAdminToken("00D0x000000CmVa!ARgAQHp2tBkCoMc6oEWxR_V_8OPdxPjeBE.4ROc_4exCycGdj2lvViJkNTta721hE0oXyKr4qYe5N..GjZQ.yoDc4Zqik7a8");
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         this.finish();

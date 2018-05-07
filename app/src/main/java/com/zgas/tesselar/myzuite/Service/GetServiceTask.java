@@ -49,9 +49,6 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private ProgressDialog progressDialog;
     private JSONObject params;
     private boolean isError = false;
-    private String adminToken;
-    private Order aService;
-    private List<Order> servicesList;
     private UserPreferences userPreferences;
 
     /**
@@ -81,27 +78,24 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_SERVICE_URL, params.get(USER_ID)).toString();
-            adminToken = userPreferences.getAdminToken();
+            String adminToken = userPreferences.getAdminToken();
             Log.d(DEBUG_TAG, "Url del usuario: " + format);
             Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(adminToken, url, METHOD);
+            ConnectionController connection = new ConnectionController(adminToken, url, METHOD, null, context);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
                 cancel(true);
             }
 
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
         } catch (FileNotFoundException e) {
             cancel(true);
             e.printStackTrace();
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
-            cancel(true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -118,7 +112,7 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
         progressDialog.dismiss();
 
-        servicesList = new ArrayList<>();
+        List<Order> servicesList = new ArrayList<>();
         JSONArray servicesArray;
         try {
             if (jsonObject == null) {
@@ -135,7 +129,7 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 for (int i = 0; i < servicesArray.length(); i++) {
                     JSONObject caseObject = servicesArray.getJSONObject(i);
-                    aService = new Order();
+                    Order aService = new Order();
                     aService.setOrderId(caseObject.get(JSON_OBJECT_ID).toString());
                     Log.d(DEBUG_TAG, "Id del caso: " + aService.getOrderId());
                     aService.setOrderUserId(userPreferences.getUserObject().getUserId());

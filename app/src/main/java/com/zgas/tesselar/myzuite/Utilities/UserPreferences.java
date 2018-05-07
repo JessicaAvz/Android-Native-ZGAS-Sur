@@ -125,7 +125,7 @@ public class UserPreferences {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(API_TOKEN, token);
-        editor.apply();
+        editor.commit();
     }
 
     public String getAdminToken() {

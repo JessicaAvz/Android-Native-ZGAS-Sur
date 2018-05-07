@@ -23,7 +23,6 @@ import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
-import com.zgas.tesselar.myzuite.Service.RefreshTokenTask;
 import com.zgas.tesselar.myzuite.Utilities.CustomViewPager;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
@@ -40,7 +39,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -54,7 +52,6 @@ import butterknife.ButterKnife;
  * @see UserPreferences
  * @see Bundle
  * @see android.os.AsyncTask
- * @see RefreshTokenTask
  * @see GetUserInfoTask
  * @see MainFragmentLeak
  * @see HelpFragmentLeak
@@ -70,8 +67,7 @@ import butterknife.ButterKnife;
  * @see LinearLayoutManager
  * @see AHBottomNavigation
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener,
-        RefreshTokenTask.RefreshTokenListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener{
 
     private static final String DEBUG_TAG = "MainActivity";
 
@@ -131,17 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else {
 
-            /*try {
-                JSONObject params = new JSONObject();
-                params.put(EMAIL_TAG, UrlHelper.ADMIN_EMAIL);
-                params.put(PASS_TAG, UrlHelper.ADMIN_PASS);
-
-                RefreshTokenTask refreshTokenTask = new RefreshTokenTask(this, params);
-                refreshTokenTask.setRefreshTokenListener(this);
-                refreshTokenTask.execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
@@ -520,16 +505,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSupervised.setHasFixedSize(true);
         mRecyclerViewSupervised.setItemViewCacheSize(20);
         mRecyclerViewSupervised.setDrawingCacheEnabled(true);
-    }
-
-    @Override
-    public void refreshErrorResponse(String error) {
-        Log.d(DEBUG_TAG, "Error response: " + error);
-        Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void refreshSuccessResponse(Login login) {
-        userPreferences.setLoginData(login);
     }
 }

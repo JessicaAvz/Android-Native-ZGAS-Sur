@@ -39,6 +39,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private static final String DEBUG_TAG = "GetUserInfoTask";
     private static final String PARAMS_EMAIL = "email";
+    private static final String METHOD = "GET";
     private static final String JSON_OBJECT_ERROR = "errorCode";
     private static final String OPERATORS_ARRAY = "Operators";
 
@@ -48,9 +49,6 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private UserPreferences userPreferences;
     private ProgressDialog progressDialog;
     private boolean isError = false;
-    private User user;
-    private User supervisedUser;
-    private String adminToken;
 
     /**
      * Constructor for the GetUserInfoTask. Additionally, we have an UserPreferences class reference
@@ -90,26 +88,23 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_USER_DATA_URL, params.get(PARAMS_EMAIL)).toString();
             Log.d(DEBUG_TAG, "Url del usuario: " + format);
-            adminToken = userPreferences.getAdminToken();
+            String adminToken = userPreferences.getAdminToken();
             Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(adminToken, url, "GET");
+            ConnectionController connection = new ConnectionController(adminToken, url, METHOD, null, context);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
                 cancel(true);
             }
 
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
         } catch (FileNotFoundException e) {
             cancel(true);
             e.printStackTrace();
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
-            cancel(true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -130,7 +125,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
-        user = null;
+        User user = null;
         List<User> usersList = new ArrayList<>();
 
         try {
@@ -160,7 +155,7 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     JSONArray usersArray = jsonObject.getJSONArray(OPERATORS_ARRAY);
                     for (int i = 0; i < usersArray.length(); i++) {
                         JSONObject userObject = usersArray.getJSONObject(i);
-                        supervisedUser = new User();
+                        User supervisedUser = new User();
                         String supervisedType = userObject.get(ExtrasHelper.EXTRA_USER_TYPE).toString();
                         String supervisedStatus = userObject.get(ExtrasHelper.EXTRA_USER_STATUS).toString();
                         Log.d(DEBUG_TAG, "SupervisedStatus " + supervisedStatus);

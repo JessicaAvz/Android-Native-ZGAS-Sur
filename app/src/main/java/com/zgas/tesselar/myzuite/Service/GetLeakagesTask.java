@@ -48,8 +48,6 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private JSONObject params;
     private LeakagesTaskListener leakagesTaskListener;
     private UserPreferences userPreferences;
-    private String adminToken;
-    private Leak leak;
     private ProgressDialog progressDialog;
     private boolean isError = false;
 
@@ -83,25 +81,22 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_LEAKS_URL, params.get(USER_ID)).toString();
-            adminToken = userPreferences.getAdminToken();
+            String adminToken = userPreferences.getAdminToken();
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(adminToken, url, METHOD);
+            ConnectionController connection = new ConnectionController(adminToken, url, METHOD, null, context);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
                 cancel(true);
             }
 
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
         } catch (FileNotFoundException e) {
             cancel(true);
             e.printStackTrace();
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
-            cancel(true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -141,7 +136,7 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 for (int i = 0; i < leaksArray.length(); i++) {
                     JSONObject caseObject = leaksArray.getJSONObject(i);
-                    leak = new Leak();
+                    Leak leak = new Leak();
                     leak.setLeakId(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
                     Log.d(DEBUG_TAG, "Id del caso: " + leak.getLeakId());
                     leak.setLeakTimeDeparture(caseObject.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE));

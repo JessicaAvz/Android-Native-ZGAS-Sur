@@ -50,9 +50,6 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private OrderTaskListener orderTaskListener;
     private ProgressDialog progressDialog;
     private boolean isError = false;
-    private String adminToken;
-    private Order aOrder;
-    private List<Order> casesList;
 
     /**
      * Constructor for the GetOrdersTask. Additionally, we have an UserPreferences class reference
@@ -84,27 +81,24 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.GET_CASES_URL, params.get(USER_ID)).toString();
-            adminToken = userPreferences.getAdminToken();
+            String adminToken = userPreferences.getAdminToken();
             Log.d(DEBUG_TAG, "Url del usuario: " + format);
             Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
 
             URL url = new URL(format);
-            ConnectionController connection = new ConnectionController(adminToken, url, METHOD);
+            ConnectionController connection = new ConnectionController(adminToken, url, METHOD, null, context);
             jsonObject = connection.execute();
 
             if (jsonObject == null) {
                 cancel(true);
             }
 
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | SocketTimeoutException e) {
             e.printStackTrace();
             cancel(true);
         } catch (FileNotFoundException e) {
             cancel(true);
             e.printStackTrace();
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
-            cancel(true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -127,7 +121,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
 
-        casesList = new ArrayList<>();
+        List<Order> casesList = new ArrayList<>();
         JSONArray casesArray;
 
         try {
@@ -145,7 +139,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 for (int i = 0; i < casesArray.length(); i++) {
                     JSONObject caseObject = casesArray.getJSONObject(i);
-                    aOrder = new Order();
+                    Order aOrder = new Order();
                     aOrder.setOrderId(caseObject.get(JSON_OBJECT_ID).toString());
                     Log.d(DEBUG_TAG, "Id del caso: " + aOrder.getOrderId());
                     aOrder.setOrderUserId(userPreferences.getUserObject().getUserId());

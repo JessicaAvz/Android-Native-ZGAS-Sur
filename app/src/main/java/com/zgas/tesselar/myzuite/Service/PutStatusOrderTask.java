@@ -41,7 +41,6 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private StatusOrderTaskListener statusOrderTaskListener;
     private JSONObject params;
     private UserPreferences userPreferences;
-    private String adminToken;
     private boolean isError = false;
 
     @Override
@@ -73,12 +72,12 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected JSONObject doInBackground(URL... urls) {
         JSONObject jsonObject = null;
         try {
-            adminToken = userPreferences.getAdminToken();
+            String adminToken = userPreferences.getAdminToken();
             Formatter formatter = new Formatter();
             String format = formatter.format(UrlHelper.PUT_ORDER_STATUS_URL, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID)).toString();
             Log.d(DEBUG_TAG, format);
             URL url = new URL(format);
-            ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params);
+            ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params, context);
             Log.d(DEBUG_TAG, METHOD);
             jsonObject = connectionController.execute();
 
@@ -86,13 +85,7 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 cancel(true);
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (SocketTimeoutException e) {
+        } catch (MalformedURLException | JSONException | FileNotFoundException | SocketTimeoutException e) {
             e.printStackTrace();
         }
         return jsonObject;
