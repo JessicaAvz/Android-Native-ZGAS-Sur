@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +33,11 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Class that shows the details of the leakages; it's used when the operator is of type 'Leak
  * technician'. In this class we can also modify the leak status - in progress, cancelled, finished -
@@ -46,7 +52,7 @@ import org.json.JSONObject;
  * @see android.os.AsyncTask
  * @see PutStatusLeakTask
  */
-public class DetailActivityLeakage extends AppCompatActivity implements View.OnClickListener,
+public class DetailActivityLeakage extends AppCompatActivity implements
         PutStatusLeakTask.StatusLeakTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityLeakage";
@@ -73,24 +79,56 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     private String resolution;
     private String channel;
 
-    private TextView mUserName;
-    private TextView mLeakAddress;
-    private TextView mLeakStatus;
-    private TextView mLeakTimeIn;
-    private TextView mLeakTimeSeen;
-    private TextView mLeakTimeArrived;
-    private TextView mLeakTimeScheduled;
-    private TextView mLeakCylinderCapacity;
-    private TextView mLeakCylinderColor;
-    private TextView mLeakChannel;
-    private FloatingActionButton mFabInProgress;
-    private FloatingActionButton mFabFinished;
-    private FloatingActionButton mFabCanceled;
-    private FloatingActionButton mFabWaze;
+    @BindView(R.id.activity_detail_leakage_tv_client_name)
+    TextView mUserName;
+    @BindView(R.id.activity_detail_leakage_tv_case_address)
+    TextView mLeakAddress;
+    @BindView(R.id.activity_detail_leakage_tv_status)
+    TextView mLeakStatus;
+    @BindView(R.id.activity_detail_leakage_tv_time_in)
+    TextView mLeakTimeIn;
+    @BindView(R.id.activity_detail_leakage_tv_time_seen)
+    TextView mLeakTimeSeen;
+    @BindView(R.id.activity_detail_leakage_tv_time_arrived)
+    TextView mLeakTimeArrived;
+    @BindView(R.id.activity_detail_leakage_tv_time_programmed)
+    TextView mLeakTimeScheduled;
+    @BindView(R.id.activity_detail_leakage_tv_capacity)
+    TextView mLeakCylinderCapacity;
+    @BindView(R.id.activity_detail_leakage_tv_color)
+    TextView mLeakCylinderColor;
+    @BindView(R.id.activity_detail_leakage_tv_channel)
+    TextView mLeakChannel;
+    @Nullable
+    @BindView(R.id.activity_detail_leakage_fab_in_progress)
+    FloatingActionButton mFabInProgress;
+    @Nullable
+    @BindView(R.id.activity_detail_leakage_fab_finished)
+    FloatingActionButton mFabFinished;
+    @Nullable
+    @BindView(R.id.activity_detail_leakage_fab_cancel)
+    FloatingActionButton mFabCanceled;
+    @Nullable
+    @BindView(R.id.activity_detail_leakage_fab_waze)
+    FloatingActionButton mFabWaze;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindColor(R.color.blue)
+    int blue;
+    @BindColor(R.color.amber)
+    int amber;
+    @BindColor(R.color.red)
+    int red;
+    @BindColor(R.color.light_green)
+    int light_green;
+    @BindColor(R.color.grey_300)
+    int grey_300;
+
     private UserPreferences mUserPreferences;
     private User mUser;
     private boolean isClicked = false;
-
     private Context context;
     private JSONObject params;
 
@@ -98,6 +136,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_leakage);
+        ButterKnife.bind(this);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(this);
@@ -117,7 +156,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
     }
 
     private void initUi() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mBundle = getIntent().getExtras();
@@ -145,51 +183,36 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle de la fuga " + mStrLeakId);
 
-        mUserName = findViewById(R.id.activity_detail_leakage_tv_client_name);
         mUserName.setText(mStrLeakClientName);
-        mLeakAddress = findViewById(R.id.activity_detail_leakage_tv_case_address);
         mLeakAddress.setText(mStrLeakAddress);
-        mLeakStatus = findViewById(R.id.activity_detail_leakage_tv_status);
         mLeakStatus.setText(mStrLeakStatus);
-        mLeakCylinderColor = findViewById(R.id.activity_detail_leakage_tv_color);
         mLeakCylinderColor.setText(mStrCylinderColor);
-        mLeakCylinderCapacity = findViewById(R.id.activity_detail_leakage_tv_capacity);
         mLeakCylinderCapacity.setText(mStrCylinderCapacity);
 
-        mFabInProgress = findViewById(R.id.activity_detail_leakage_fab_in_progress);
-        mFabInProgress.setOnClickListener(this);
-        mFabFinished = findViewById(R.id.activity_detail_leakage_fab_finished);
-        mFabFinished.setOnClickListener(this);
-        mFabCanceled = findViewById(R.id.activity_detail_leakage_fab_cancel);
-        mFabCanceled.setOnClickListener(this);
-        mFabWaze = findViewById(R.id.activity_detail_leakage_fab_waze);
-        mFabWaze.setOnClickListener(this);
-
-        mLeakTimeIn = findViewById(R.id.activity_detail_leakage_tv_time_in);
         if (mStrLeakTimeTechnician == null || mStrLeakTimeTechnician.equals("")) {
             mLeakTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeIn.setText(mStrLeakTimeTechnician);
         }
-        mLeakTimeSeen = findViewById(R.id.activity_detail_leakage_tv_time_seen);
+
         if (mStrLeakTimeSeen == null || mStrLeakTimeSeen.equals("")) {
             mLeakTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeSeen.setText(mStrLeakTimeSeen);
         }
-        mLeakTimeArrived = findViewById(R.id.activity_detail_leakage_tv_arrived);
+
         if (mStrLeakTimeArrived == null || mStrLeakTimeArrived.equals("")) {
             mLeakTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeArrived.setText(mStrLeakTimeArrived);
         }
-        mLeakTimeScheduled = findViewById(R.id.activity_detail_leakage_tv_time_programmed);
+
         if (mStrLeakTimeScheduled == null || mStrLeakTimeScheduled.equals("")) {
             mLeakTimeScheduled.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeScheduled.setText(mStrLeakTimeScheduled);
         }
-        mLeakStatus.setTextColor(getResources().getColor(R.color.blue));
+        mLeakStatus.setTextColor(blue);
     }
 
     @Override
@@ -211,22 +234,24 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.no_change, R.anim.push_out_right);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_detail_leakage_fab_finished:
-                finishDialog();
-                break;
-            case R.id.activity_detail_leakage_fab_in_progress:
-                inProgressDialog();
-                break;
-            case R.id.activity_detail_leakage_fab_cancel:
-                cancelDialog();
-                break;
-            case R.id.activity_detail_leakage_fab_waze:
-                wazeIntent(mStrLeakAddress);
-                break;
-        }
+    @OnClick(R.id.activity_detail_leakage_fab_finished)
+    public void onClickFinished() {
+        finishDialog();
+    }
+
+    @OnClick(R.id.activity_detail_leakage_fab_in_progress)
+    public void onClickProgress() {
+        inProgressDialog();
+    }
+
+    @OnClick(R.id.activity_detail_leakage_fab_cancel)
+    public void onClickCanceled() {
+        cancelDialog();
+    }
+
+    @OnClick(R.id.activity_detail_leakage_fab_waze)
+    public void onClickWaze() {
+        wazeIntent(mStrLeakAddress);
     }
 
     private void callAsyncTaskInProgress() {
@@ -297,12 +322,12 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
 
         new FancyAlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
-                .setBackgroundColor(getResources().getColor(R.color.amber))
+                .setBackgroundColor(amber)
                 .setMessage(getResources().getString(R.string.dialog_in_progress_body))
                 .setNegativeBtnText(getResources().getString(R.string.cancel))
-                .setPositiveBtnBackground(getResources().getColor(R.color.amber))
+                .setPositiveBtnBackground(amber)
                 .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
-                .setNegativeBtnBackground(getResources().getColor(R.color.grey_300))
+                .setNegativeBtnBackground(grey_300)
                 .setAnimation(Animation.SIDE)
                 .isCancellable(false)
                 .setIcon(R.drawable.icon_progress, Icon.Visible)
@@ -478,15 +503,15 @@ public class DetailActivityLeakage extends AppCompatActivity implements View.OnC
         String status = leak.getLeakStatus().toString();
 
         if (status.equals(Leak.leakStatus.INPROGRESS.toString())) {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
+            mLeakStatus.setTextColor(amber);
         } else if (status.equals(Leak.leakStatus.FINISHED.toString())) {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
+            mLeakStatus.setTextColor(light_green);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
         } else if (status.equals(Leak.leakStatus.CANCELLED.toString())) {
-            mLeakStatus.setTextColor(getResources().getColor(R.color.red));
+            mLeakStatus.setTextColor(red);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);

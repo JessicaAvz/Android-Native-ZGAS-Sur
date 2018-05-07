@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,10 +27,15 @@ import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutStatusOrderTask;
-import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
+import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
+
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Class that shows the details of the orders; it's used when the operator is of type
@@ -46,7 +52,7 @@ import org.json.JSONObject;
  * @see android.os.AsyncTask
  * @see PutStatusOrderTask
  */
-public class DetailActivityService extends AppCompatActivity implements View.OnClickListener,
+public class DetailActivityService extends AppCompatActivity implements
         PutStatusOrderTask.StatusOrderTaskListener {
 
     private static final String DEBUG_TAG = "DetailActivityService";
@@ -67,18 +73,46 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     private String strQuantity;
     private String strCancellationReason;
 
-    private TextView mUserName;
-    private TextView mCaseAddress;
-    private TextView mCaseStatus;
-    private TextView mCaseTimeIn;
-    private TextView mCaseTimeSeen;
-    private TextView mCaseTimeArrived;
-    private TextView mCaseTimeProgrammed;
-    private TextView mCasePaymentMethod;
-    private FloatingActionButton mFabInProgress;
-    private FloatingActionButton mFabFinished;
-    private FloatingActionButton mFabCanceled;
-    private FloatingActionButton mFabWaze;
+    @BindView(R.id.activity_detail_service_tv_client_name)
+    TextView mUserName;
+    @BindView(R.id.activity_detail_service_tv_case_address)
+    TextView mCaseAddress;
+    @BindView(R.id.activity_detail_service_tv_status)
+    TextView mCaseStatus;
+    @BindView(R.id.activity_detail_service_tv_time_in)
+    TextView mCaseTimeIn;
+    @BindView(R.id.activity_detail_service_tv_time_seen)
+    TextView mCaseTimeSeen;
+    @BindView(R.id.activity_detail_service_tv_arrived)
+    TextView mCaseTimeArrived;
+    @BindView(R.id.activity_detail_service_tv_time_programmed)
+    TextView mCaseTimeProgrammed;
+    @BindView(R.id.activity_detail_service_tv_payment)
+    TextView mCasePaymentMethod;
+    @Nullable
+    @BindView(R.id.activity_detail_service_fab_in_progress)
+    FloatingActionButton mFabInProgress;
+    @Nullable
+    @BindView(R.id.activity_detail_service_fab_finished)
+    FloatingActionButton mFabFinished;
+    @Nullable
+    @BindView(R.id.activity_detail_service_fab_cancel)
+    FloatingActionButton mFabCanceled;
+    @Nullable
+    @BindView(R.id.activity_detail_service_fab_waze)
+    FloatingActionButton mFabWaze;
+
+    @BindColor(R.color.blue)
+    int blue;
+    @BindColor(R.color.amber)
+    int amber;
+    @BindColor(R.color.red)
+    int red;
+    @BindColor(R.color.light_green)
+    int light_green;
+    @BindColor(R.color.grey_300)
+    int grey_300;
+
 
     private UserPreferences mUserPreferences;
     private User mUser;
@@ -89,6 +123,7 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_service);
+        ButterKnife.bind(this);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(this);
@@ -124,34 +159,18 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Detalle del servicio " + mStrCaseId);
 
-        mUserName = findViewById(R.id.activity_detail_service_tv_client_name);
         mUserName.setText(mStrCaseUserName);
-        mCaseAddress = findViewById(R.id.activity_detail_service_tv_case_address);
         mCaseAddress.setText(mStrCaseAddress);
-        mCaseStatus = findViewById(R.id.activity_detail_service_tv_status);
         mCaseStatus.setText(mStrCaseStatus);
-        mCaseTimeIn = findViewById(R.id.activity_detail_service_tv_time_in);
         mCaseTimeIn.setText(String.valueOf(mStrCaseTimeIn));
-        mCaseTimeSeen = findViewById(R.id.activity_detail_service_tv_time_seen);
         mCaseTimeSeen.setText(String.valueOf(mStrCaseTimeSeen));
-        mCaseTimeArrived = findViewById(R.id.activity_detail_service_tv_arrived);
         mCaseTimeArrived.setText(String.valueOf(mStrCaseTimeArrived));
-        mCaseTimeProgrammed = findViewById(R.id.activity_detail_service_tv_time_programmed);
         mCaseTimeProgrammed.setText(String.valueOf(mStrCaseTimeProgrammed));
-        mFabInProgress = findViewById(R.id.activity_detail_service_fab_in_progress);
-        mCasePaymentMethod = findViewById(R.id.activity_detail_service_tv_payment);
         mCasePaymentMethod.setText(mStrCasePaymentMethod);
-        mFabInProgress.setOnClickListener(this);
-        mFabFinished = findViewById(R.id.activity_detail_service_fab_finished);
-        mFabFinished.setOnClickListener(this);
         mFabFinished.setVisibility(View.GONE);
-        mFabCanceled = findViewById(R.id.activity_detail_service_fab_cancel);
-        mFabCanceled.setOnClickListener(this);
         mFabCanceled.setVisibility(View.GONE);
-        mFabWaze = findViewById(R.id.activity_detail_service_fab_waze);
-        mFabWaze.setOnClickListener(this);
         mFabWaze.setVisibility(View.GONE);
-        mCaseStatus.setTextColor(getResources().getColor(R.color.blue));
+        mCaseStatus.setTextColor(blue);
     }
 
     /**
@@ -186,22 +205,24 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_detail_service_fab_in_progress:
-                inProgressDialog();
-                break;
-            case R.id.activity_detail_service_fab_finished:
-                finishDialog();
-                break;
-            case R.id.activity_detail_service_fab_cancel:
-                cancelDialog();
-                break;
-            case R.id.activity_detail_service_fab_waze:
-                wazeIntent(mStrCaseAddress);
-                break;
-        }
+    @OnClick(R.id.activity_detail_service_fab_in_progress)
+    public void onClickProgress() {
+        inProgressDialog();
+    }
+
+    @OnClick(R.id.activity_detail_service_fab_finished)
+    public void onClickFinished() {
+        finishDialog();
+    }
+
+    @OnClick(R.id.activity_detail_service_fab_cancel)
+    public void onClickCanceled() {
+        cancelDialog();
+    }
+
+    @OnClick(R.id.activity_detail_service_fab_waze)
+    public void onClickWaze() {
+        wazeIntent(mStrCaseAddress);
     }
 
     private void callAsyncTaskInProgress() {
@@ -348,12 +369,12 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
 
         new FancyAlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.dialog_in_progress_title))
-                .setBackgroundColor(getResources().getColor(R.color.amber))
+                .setBackgroundColor(amber)
                 .setMessage(getResources().getString(R.string.dialog_in_progress_body))
                 .setNegativeBtnText(getResources().getString(R.string.cancel))
-                .setPositiveBtnBackground(getResources().getColor(R.color.amber))
+                .setPositiveBtnBackground(amber)
                 .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
-                .setNegativeBtnBackground(getResources().getColor(R.color.grey_300))
+                .setNegativeBtnBackground(grey_300)
                 .setAnimation(Animation.SIDE)
                 .isCancellable(false)
                 .setIcon(R.drawable.icon_progress, Icon.Visible)
@@ -392,15 +413,15 @@ public class DetailActivityService extends AppCompatActivity implements View.OnC
         String status = order.getOrderStatus().toString();
 
         if (status.equals(Order.caseStatus.INPROGRESS.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
+            mCaseStatus.setTextColor(amber);
         } else if (status.equals(Order.caseStatus.FINISHED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
+            mCaseStatus.setTextColor(light_green);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
         } else if (status.equals(Order.caseStatus.CANCELLED.toString())) {
-            mCaseStatus.setTextColor(getResources().getColor(R.color.red));
+            mCaseStatus.setTextColor(red);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);

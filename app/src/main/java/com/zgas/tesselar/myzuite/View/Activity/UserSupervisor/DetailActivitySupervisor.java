@@ -15,6 +15,10 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Class that shows the details of all the users that a supervisor has under its care. This will show
  * if the user is of type 'supervisor'
@@ -41,13 +45,25 @@ public class DetailActivitySupervisor extends AppCompatActivity {
     private String mStrUserStatus;
     private String mStrUserType;
 
-    private TextView mUserId;
-    private TextView mUserName;
-    private TextView mUserEmail;
-    private TextView mUserRoute;
-    private TextView mUserZone;
-    private TextView mUserStatus;
-    private TextView mUserType;
+    @BindView(R.id.activity_detail_supervisor_tv_user_id)
+    TextView mUserId;
+    @BindView(R.id.activity_detail_supervisor_tv_user_name)
+    TextView mUserName;
+    @BindView(R.id.activity_detail_supervisor_tv_user_email)
+    TextView mUserEmail;
+    @BindView(R.id.activity_detail_supervisor_tv_user_route)
+    TextView mUserRoute;
+    @BindView(R.id.activity_detail_supervisor_tv_user_zone)
+    TextView mUserZone;
+    @BindView(R.id.activity_detail_supervisor_tv_user_status)
+    TextView mUserStatus;
+    @BindView(R.id.activity_detail_supervisor_tv_user_type)
+    TextView mUserType;
+
+    @BindColor(R.color.light_green)
+    int light_green;
+    @BindColor(R.color.red)
+    int red;
 
     private UserPreferences mUserPreferences;
     private User mUser;
@@ -56,6 +72,7 @@ public class DetailActivitySupervisor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_supervisor);
+        ButterKnife.bind(this);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(this);
@@ -80,50 +97,49 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mUserId = findViewById(R.id.activity_detail_supervisor_tv_user_id);
         if (mStrUserId != null) {
             mUserId.setText(String.valueOf(mStrUserId));
         } else {
             mUserId.setText(getResources().getString(R.string.no_data));
         }
-        mUserName = findViewById(R.id.activity_detail_supervisor_tv_user_name);
+
         if (mStrUserName != null) {
             mUserName.setText(mStrUserName);
         } else {
             mUserName.setText(getResources().getString(R.string.no_data));
         }
-        mUserEmail = findViewById(R.id.activity_detail_supervisor_tv_user_email);
+
         if (mStrUserEmail != null) {
             mUserEmail.setText(mStrUserEmail);
         } else {
             mUserEmail.setText(getResources().getString(R.string.no_data));
         }
-        mUserRoute = findViewById(R.id.activity_detail_supervisor_tv_user_route);
+
         if (mStrUserRoute != null) {
             mUserRoute.setText(mStrUserRoute);
         } else {
             mUserRoute.setText(getResources().getString(R.string.no_data));
         }
-        mUserZone = findViewById(R.id.activity_detail_supervisor_tv_user_zone);
+
         if (mStrUserZone != null) {
             mUserZone.setText(mStrUserZone);
         } else {
             mUserZone.setText(getResources().getString(R.string.no_data));
         }
-        mUserStatus = findViewById(R.id.activity_detail_supervisor_tv_user_status);
+
         if (mStrUserStatus != null) {
             if (mStrUserStatus.equals(User.userStatus.ACTIVE.toString())) {
-                mUserStatus.setTextColor(getResources().getColor(R.color.light_green));
+                mUserStatus.setTextColor(light_green);
                 mUserStatus.setText(String.valueOf(mStrUserStatus));
             } else if (mStrUserStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                mUserStatus.setTextColor(getResources().getColor(R.color.red));
+                mUserStatus.setTextColor(red);
                 mUserStatus.setText(String.valueOf(mStrUserStatus));
             }
         } else {
             mUserStatus.setText(getResources().getString(R.string.no_data));
         }
 
-        mUserType = findViewById(R.id.activity_detail_supervisor_tv_user_type);
+
         if (mStrUserType != null) {
             mUserType.setText(String.valueOf(mStrUserType));
         } else {

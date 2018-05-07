@@ -1,8 +1,10 @@
 package com.zgas.tesselar.myzuite.View.Activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +21,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.zgas.tesselar.myzuite.Controller.Adapter.PagerAdapter;
 import com.zgas.tesselar.myzuite.Controller.Adapter.SupervisorAdapter;
-import com.zgas.tesselar.myzuite.Model.Login;
 import com.zgas.tesselar.myzuite.Model.User;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.GetUserInfoTask;
@@ -39,7 +40,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindColor;
+import butterknife.BindDrawable;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 
 /**
  * Class that manages all the main fragments to be used by the application, it also separates them
@@ -51,6 +57,7 @@ import butterknife.ButterKnife;
  * @see User
  * @see UserPreferences
  * @see Bundle
+ * @see ButterKnife
  * @see android.os.AsyncTask
  * @see GetUserInfoTask
  * @see MainFragmentLeak
@@ -67,14 +74,27 @@ import butterknife.ButterKnife;
  * @see LinearLayoutManager
  * @see AHBottomNavigation
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener {
 
     private static final String DEBUG_TAG = "MainActivity";
 
-    private AHBottomNavigation ahBottomNavigation;
-    private CustomViewPager customViewPager;
-    private FloatingActionButton mFabCall;
-    private FloatingActionButton mFabCallSupervisor;
+    @Nullable
+    @BindView(R.id.activity_main_cv_bottom_navigation)
+    AHBottomNavigation ahBottomNavigation;
+    @Nullable
+    @BindView(R.id.activity_main_cv_view_pager)
+    CustomViewPager customViewPager;
+    @Nullable
+    @BindView(R.id.activity_main_fab_call)
+    FloatingActionButton mFabCall;
+    @Nullable
+    @BindView(R.id.ativity_supervisor_fab_call)
+    FloatingActionButton mFabCallSupervisor;
+    @Nullable
+    @BindView(R.id.activity_supervisor_recycler_view)
+    RecyclerView mRecyclerViewSupervised;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private HelpFragmentOperator mHelpFragmentOperator;
     private MainFragmentOperator mMainFragmentOperator;
     private ExtraOrderFragmentOperator mExtraOrderFragmentOperator;
@@ -84,78 +104,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MainFragmentLeak mMainFragmentLeak;
     private PagerAdapter mPagerAdapter;
     private SupervisorAdapter mSupervisorAdapter;
-
-    private RecyclerView mRecyclerViewSupervised;
-    private Toolbar toolbar;
     private UserPreferences userPreferences;
     private LinearLayoutManager linearLayoutManager;
     private User user;
 
+    @BindColor(R.color.pink_500)
+    int pink_500;
+    @BindColor(R.color.pink_50)
+    int pink_50;
+    @BindColor(R.color.white)
+    int white;
+
+    @BindDrawable(R.drawable.icon_check)
+    Drawable icon_check;
+    @BindDrawable(R.drawable.icon_help)
+    Drawable icon_help;
+    @BindDrawable(R.drawable.icon_gas_cylinder_menu)
+    Drawable icon_gas_cylinder_menu;
+    @BindDrawable(R.drawable.icon_truck_fast)
+    Drawable icon_truck_fast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-
         userPreferences = new UserPreferences(this);
         user = userPreferences.getUserObject();
-
         /*If a user is logged in, it will check it's type so the app will show the correct
         user interface.*/
         if (userPreferences.isLoggedIn()) {
             if (user.getUserType() == User.userType.OPERATOR) {
+                Log.d(DEBUG_TAG, "User operator" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiOperator();
             } else if (user.getUserType() == User.userType.SERVICE) {
+                Log.d(DEBUG_TAG, "User service" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiService();
             } else if (user.getUserType() == User.userType.SUPERVISOR) {
+                Log.d(DEBUG_TAG, "User supervisor" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_supervisor);
                 ButterKnife.bind(this);
                 getSupervisedCallAsyncTask();
                 initUiSupervisor();
             } else if (user.getUserType() == User.userType.LEAKAGE) {
+                Log.d(DEBUG_TAG, "User leakages" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiLeakage();
             } else {
+                Log.d(DEBUG_TAG, "User operator default" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiOperator();
             }
-        } else {
-
         }
     }
 
-    @Override
+    @Optional
+    @OnClick({R.id.activity_main_fab_call, R.id.ativity_supervisor_fab_call})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.activity_main_fab_call:
-                callIntent();
-                break;
-            case R.id.ativity_supervisor_fab_call:
-                callIntent();
-                break;
-        }
+        Log.d(DEBUG_TAG, "Butterknife onClick");
+        callIntent();
     }
 
     private void initUiOperator() {
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_main_fragment);
-
-        customViewPager = findViewById(R.id.activity_main_cv_view_pager);
         customViewPager.setPagingEnabled(false);
-        mFabCall = findViewById(R.id.activity_main_fab_call);
-        mFabCall.setOnClickListener(this);
-
         mHelpFragmentOperator = new HelpFragmentOperator();
         mMainFragmentOperator = new MainFragmentOperator();
         mExtraOrderFragmentOperator = new ExtraOrderFragmentOperator();
-
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mExtraOrderFragmentOperator);
         mPagerAdapter.addFragment(mMainFragmentOperator);
@@ -165,18 +185,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initUiService() {
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
-
-        customViewPager = findViewById(R.id.activity_main_cv_view_pager);
         customViewPager.setPagingEnabled(false);
-        mFabCall = findViewById(R.id.activity_main_fab_call);
-        mFabCall.setOnClickListener(this);
-
         mMainFragmentService = new MainFragmentService();
         mHelpFragmentService = new HelpFragmentService();
-
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mMainFragmentService);
         mPagerAdapter.addFragment(mHelpFragmentService);
@@ -185,28 +198,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initUiSupervisor() {
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_supervised);
-        mFabCallSupervisor = findViewById(R.id.ativity_supervisor_fab_call);
-        mFabCallSupervisor.setOnClickListener(this);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerViewSupervised = findViewById(R.id.activity_supervisor_recycler_view);
     }
 
     private void initUiLeakage() {
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_order_leak);
-
-        customViewPager = findViewById(R.id.activity_main_cv_view_pager);
         customViewPager.setPagingEnabled(false);
-        mFabCall = findViewById(R.id.activity_main_fab_call);
-        mFabCall.setOnClickListener(this);
-
         mMainFragmentLeak = new MainFragmentLeak();
         mHelpFragmentLeak = new HelpFragmentLeak();
-
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mMainFragmentLeak);
         mPagerAdapter.addFragment(mHelpFragmentLeak);
@@ -215,20 +217,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomNavigationOperator() {
-        ahBottomNavigation = findViewById(R.id.activity_main_cv_bottom_navigation);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_fragment), R.drawable.icon_check, R.color.pink_500);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_fragment), icon_check, pink_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment), icon_gas_cylinder_menu, pink_500);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), icon_help, pink_500);
 
         ahBottomNavigation.addItem(item1);
         ahBottomNavigation.addItem(item2);
         ahBottomNavigation.addItem(item3);
 
-        ahBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        ahBottomNavigation.setDefaultBackgroundColor(white);
         ahBottomNavigation.setBehaviorTranslationEnabled(false);
         ahBottomNavigation.setBehaviorTranslationEnabled(false);
-        ahBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
-        ahBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        ahBottomNavigation.setAccentColor(pink_500);
+        ahBottomNavigation.setInactiveColor(pink_50);
         ahBottomNavigation.setForceTint(true);
         ahBottomNavigation.setTranslucentNavigationEnabled(true);
         ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
@@ -283,18 +284,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomNavigationService() {
-        ahBottomNavigation = findViewById(R.id.activity_main_cv_bottom_navigation);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment_service), R.drawable.icon_gas_cylinder_menu, R.color.pink_500);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment_service), icon_gas_cylinder_menu, pink_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), icon_help, pink_500);
 
         ahBottomNavigation.addItem(item1);
         ahBottomNavigation.addItem(item2);
 
-        ahBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        ahBottomNavigation.setDefaultBackgroundColor(white);
         ahBottomNavigation.setBehaviorTranslationEnabled(false);
         ahBottomNavigation.setBehaviorTranslationEnabled(false);
-        ahBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
-        ahBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        ahBottomNavigation.setAccentColor(pink_500);
+        ahBottomNavigation.setInactiveColor(pink_50);
         ahBottomNavigation.setForceTint(true);
         ahBottomNavigation.setTranslucentNavigationEnabled(true);
         ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
@@ -344,18 +344,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomNavigationLeakage() {
-        ahBottomNavigation = findViewById(R.id.activity_main_cv_bottom_navigation);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_leak), R.drawable.icon_truck_fast, R.color.pink_500);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), R.drawable.icon_help, R.color.pink_500);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_order_leak), icon_truck_fast, pink_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), icon_help, pink_500);
 
         ahBottomNavigation.addItem(item1);
         ahBottomNavigation.addItem(item2);
 
-        ahBottomNavigation.setDefaultBackgroundColor(getResources().getColor(R.color.white));
+        ahBottomNavigation.setDefaultBackgroundColor(white);
         ahBottomNavigation.setBehaviorTranslationEnabled(false);
         ahBottomNavigation.setBehaviorTranslationEnabled(false);
-        ahBottomNavigation.setAccentColor(getResources().getColor(R.color.pink_500));
-        ahBottomNavigation.setInactiveColor(getResources().getColor(R.color.pink_50));
+        ahBottomNavigation.setAccentColor(pink_500);
+        ahBottomNavigation.setInactiveColor(pink_50);
         ahBottomNavigation.setForceTint(true);
         ahBottomNavigation.setTranslucentNavigationEnabled(true);
         ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
@@ -484,7 +483,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(DEBUG_TAG, "Error response: " + error);
         Toast.makeText(this, "Error " + error, Toast.LENGTH_LONG).show();
     }
-
 
     @Override
     public void userInfoSuccessResponse(User user) {
