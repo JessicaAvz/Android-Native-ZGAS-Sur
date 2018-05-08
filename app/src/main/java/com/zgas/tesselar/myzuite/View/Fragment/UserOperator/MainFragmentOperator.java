@@ -24,6 +24,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * This class shows the list of all the orders of type 'order'
  *
@@ -37,6 +41,7 @@ import java.util.List;
  * @see GetOrdersTask
  * @see RecyclerRefreshLayout
  * @see OrdersAdapter
+ * @see ButterKnife
  */
 public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
 
@@ -45,13 +50,16 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     private static final String ADMIN_TOKEN = "access_token";
     private static final int REFRESH_DELAY = 1000;
 
-    private RecyclerView mRecyclerOrders;
-    private RecyclerRefreshLayout mRecyclerRefreshLayout;
+    @BindView(R.id.fragment_main_operator_recycler_view)
+    RecyclerView mRecyclerOrders;
+    @BindView(R.id.fragment_main_operator_refresh_layout)
+    RecyclerRefreshLayout mRecyclerRefreshLayout;
     private OrdersAdapter mOrderAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
     LinearLayoutManager layoutManager;
     private User mUser;
+    private Unbinder unbinder;
 
     public MainFragmentOperator() {
         // Required empty public constructor
@@ -61,12 +69,12 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
-        initUi(mRootView);
+        initUi();
         return mRootView;
     }
 
@@ -82,11 +90,8 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         asyncTask();
     }
 
-    private void initUi(View rootview) {
+    private void initUi() {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerOrders = rootview.findViewById(R.id.fragment_main_operator_recycler_view);
-        mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_operator_refresh_layout);
-
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -129,5 +134,11 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         mRecyclerOrders.setDrawingCacheEnabled(true);
         mRecyclerOrders.setLayoutManager(layoutManager);
         mRecyclerOrders.setAdapter(mOrderAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

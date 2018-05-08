@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,7 +25,11 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 /**
@@ -41,46 +44,59 @@ import java.util.Date;
  * @see android.os.AsyncTask
  * @see PutIncidenceTask
  */
-public class HelpFragmentOperator extends Fragment implements OnClickListener,
+public class HelpFragmentOperator extends Fragment implements
         PutIncidenceTask.PutIncidenceListener {
 
     private static final String DEBUG_TAG = "HelpFragmentOperator";
 
-    private Spinner mSpinnerOptions;
+    @BindView(R.id.fragment_help_operator_sp_options)
+    Spinner mSpinnerOptions;
     private String cancelationReason;
-    private Button mSendProblem;
+    @BindView(R.id.fragment_help_operator_btn_send_problem)
+    Button mSendProblem;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
     private JSONObject params;
     private Dialog dialog;
+    private Unbinder unbinder;
 
     public HelpFragmentOperator() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_help_operator, container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
-        initUi(mRootView);
+        initUi();
         return mRootView;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_help_operator_btn_send_problem:
-                selectOption();
-                break;
+    @OnClick(R.id.fragment_help_operator_btn_send_problem)
+    public void onClick() {
+        selectOption();
+    }
+
+    public void initUi() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
+    }
+
+    private void selectOption() {
+        if (mSpinnerOptions.getSelectedItem() == null) {
+            Toast.makeText(getContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
+        } else {
+            cancelationReason = mSpinnerOptions.getSelectedItem().toString();
+            callAsyncTask();
         }
     }
 
@@ -90,7 +106,6 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener,
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
         String date = dateFormat.format(calendar.getTime());
-
 
         try {
             params.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_ID, mUserPreferences.getUserObject().getUserId());
@@ -110,24 +125,6 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener,
         }
     }
 
-    public void initUi(View rootview) {
-        mSpinnerOptions = rootview.findViewById(R.id.fragment_help_operator_sp_options);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
-
-        mSendProblem = rootview.findViewById(R.id.fragment_help_operator_btn_send_problem);
-        mSendProblem.setOnClickListener(this);
-    }
-
-    private void selectOption() {
-        if (mSpinnerOptions.getSelectedItem() == null) {
-            Toast.makeText(getContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
-        } else {
-            cancelationReason = mSpinnerOptions.getSelectedItem().toString();
-            callAsyncTask();
-        }
-    }
 
     @Override
     public void incidenceErrorResponse(String error) {
@@ -152,5 +149,11 @@ public class HelpFragmentOperator extends Fragment implements OnClickListener,
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

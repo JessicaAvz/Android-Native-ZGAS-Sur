@@ -26,6 +26,11 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 /**
  * This class is for requesting an incidence when the userType is of 'custom service'
  *
@@ -37,19 +42,21 @@ import java.util.Calendar;
  * @see UserPreferences
  * @see android.os.AsyncTask
  * @see PutIncidenceTask
+ * @see ButterKnife
  */
-public class HelpFragmentService extends Fragment implements View.OnClickListener,
+public class HelpFragmentService extends Fragment implements
         PutIncidenceTask.PutIncidenceListener {
 
     private static final String DEBUG_TAG = "HelpFragmentService";
-    private Spinner mSpinnerOptions;
-    private Button mSendProblem;
+    @BindView(R.id.fragment_help_service_sp_options)
+    Spinner mSpinnerOptions;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
     private JSONObject params;
     private String cancelationReason;
     private Dialog dialog;
+    private Unbinder unbinder;
 
     public HelpFragmentService() {
         // Required empty public constructor
@@ -61,6 +68,7 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_help_service, container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
@@ -71,12 +79,23 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
         return mRootView;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_help_service_btn_send_problem:
-                selectOption();
-                break;
+    @OnClick(R.id.fragment_help_service_btn_send_problem)
+    public void onClick() {
+        selectOption();
+    }
+
+    private void initUi(View rootview) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
+    }
+
+    private void selectOption() {
+        if (mSpinnerOptions.getSelectedItem() == null) {
+            Toast.makeText(getContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
+        } else {
+            cancelationReason = mSpinnerOptions.getSelectedItem().toString();
+            callAsyncTask();
         }
     }
 
@@ -106,25 +125,6 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
         }
     }
 
-    private void initUi(View rootview) {
-        mSpinnerOptions = rootview.findViewById(R.id.fragment_help_service_sp_options);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.help_prompts, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, getContext()));
-
-        mSendProblem = rootview.findViewById(R.id.fragment_help_service_btn_send_problem);
-        mSendProblem.setOnClickListener(this);
-    }
-
-    private void selectOption() {
-        if (mSpinnerOptions.getSelectedItem() == null) {
-            Toast.makeText(getContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
-        } else {
-            cancelationReason = mSpinnerOptions.getSelectedItem().toString();
-            callAsyncTask();
-        }
-    }
-
     @Override
     public void incidenceErrorResponse(String error) {
         Log.d(DEBUG_TAG, error);
@@ -148,5 +148,11 @@ public class HelpFragmentService extends Fragment implements View.OnClickListene
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

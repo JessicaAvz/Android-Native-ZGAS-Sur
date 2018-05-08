@@ -24,6 +24,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * This class shows the list of all the orders of type 'custom service'
  *
@@ -45,13 +49,16 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
     private static final String ADMIN_TOKEN = "access_token";
     private static final int REFRESH_DELAY = 1000;
 
-    private RecyclerView mRecyclerServices;
-    private RecyclerRefreshLayout mRecyclerRefreshLayout;
+    @BindView(R.id.fragment_main_service_recycler_view)
+    RecyclerView mRecyclerServices;
+    @BindView(R.id.fragment_main_service_refresh_layout)
+    RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LinearLayoutManager layoutManager;
     private OrdersAdapter mServiceAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
     private User mUser;
+    private Unbinder unbinder;
 
     public MainFragmentService() {
         // Required empty public constructor
@@ -63,6 +70,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main_service, container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
@@ -106,8 +114,6 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
 
     private void initUi(View rootview) {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerServices = rootview.findViewById(R.id.fragment_main_service_recycler_view);
-        mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_service_refresh_layout);
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -136,5 +142,11 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
         mRecyclerServices.setDrawingCacheEnabled(true);
         mRecyclerServices.setLayoutManager(layoutManager);
         mRecyclerServices.setAdapter(mServiceAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

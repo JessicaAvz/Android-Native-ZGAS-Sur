@@ -30,6 +30,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Class that provides access to the Order model data items; This class works for both orders
  * and service model objects (because they're both 'order' type).
@@ -37,6 +40,7 @@ import java.util.ArrayList;
  * @author jarvizu on 24/10/2017
  * @version 2018.0.9
  * @see Order
+ * @see ButterKnife
  * @see RecyclerSwipeAdapter
  */
 public class OrdersAdapter extends RecyclerSwipeAdapter {
@@ -167,12 +171,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 String serviceType = mOrder.getOrderServiceType();
                 String recordType = mOrder.getOrderType().toString();
 
-                /*
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-                final String date = dateFormat.format(calendar.getTime());
-                */
-
                 Bundle bundle = new Bundle();
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
@@ -237,7 +235,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                                 Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID).toString());
                                 Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW).toString());
 
-                                //new PutReviewOrderTask(context, params).execute();
                                 PutReviewOrderTask.OrderReviewTaskListener listener = new PutReviewOrderTask.OrderReviewTaskListener() {
                                     @Override
                                     public void reviewOrderErrorResponse(String error) {
@@ -253,7 +250,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                                 PutReviewOrderTask t = new PutReviewOrderTask(context, params);
                                 t.setOrderReviewTaskListener(listener);
                                 t.execute();
-
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -305,33 +301,32 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
      */
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
-        private SwipeLayout swipeLayout;
-        private TextView mOrderReview;
-        private TextView mOrderId;
-        private TextView mOrderStatus;
-        private TextView mOrderAddress;
-        private TextView mOrderTimeIn;
-        private TextView mOrderType;
-        private TextView mOrderNotice;
+        @BindView(R.id.row_main_fragment_swipe_orders)
+        SwipeLayout swipeLayout;
+        @BindView(R.id.row_visit_recycler_tv_review_visit)
+        TextView mOrderReview;
+        @BindView(R.id.row_main_fragment_tv_order_id)
+        TextView mOrderId;
+        @BindView(R.id.row_main_fragment_tv_order_status)
+        TextView mOrderStatus;
+        @BindView(R.id.row_main_fragment_tv_order_address)
+        TextView mOrderAddress;
+        @BindView(R.id.row_main_fragment_tv_order_in)
+        TextView mOrderTimeIn;
+        @BindView(R.id.row_main_fragment_tv_order_type)
+        TextView mOrderType;
+        @BindView(R.id.row_main_fragment_tv_notice)
+        TextView mOrderNotice;
 
-        public OrderViewHolder(final View itemView) {
-            super(itemView);
+        public OrderViewHolder(final View view) {
+            super(view);
+            ButterKnife.bind(this, view);
 
-            //if de swipe layout si es order o service
-            swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
-            mOrderReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
-            mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
-            mOrderStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
-            mOrderAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
-            mOrderTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
-            mOrderType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
-            mOrderNotice = itemView.findViewById(R.id.row_main_fragment_tv_notice);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();
-                    Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
+                    Log.d(DEBUG_TAG, "OrdersAdapter view listener for adapter position: " + requestCode);
                 }
             });
         }

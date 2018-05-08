@@ -24,6 +24,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * This class shows the list of all the leakages
  *
@@ -37,14 +41,17 @@ import java.util.List;
  * @see GetLeakagesTask
  * @see RecyclerRefreshLayout
  * @see LeaksAdapter
+ * @see ButterKnife
  */
 public class MainFragmentLeak extends Fragment implements GetLeakagesTask.LeakagesTaskListener {
 
     private static final String DEBUG_TAG = "MainFragmentLeak";
     private static final int REFRESH_DELAY = 1000;
 
-    private RecyclerView mRecyclerOrders;
-    private RecyclerRefreshLayout mRecyclerRefreshLayout;
+    @BindView(R.id.fragment_main_leak_recycler_view)
+    RecyclerView mRecyclerOrders;
+    @BindView(R.id.fragment_main_leakage_refresh_layout)
+    RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LeaksAdapter leaksAdapter;
     private View mRootView;
     private UserPreferences mUserPreferences;
@@ -52,6 +59,7 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
     private static final String USER_ID = "Id";
     private static final String ADMIN_TOKEN = "access_token";
     private LinearLayoutManager linearLayoutManager;
+    private Unbinder unbinder;
 
     public MainFragmentLeak() {
         // Required empty public constructor
@@ -63,6 +71,7 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_main_leak, container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
@@ -70,7 +79,7 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
 
-        initUi(mRootView);
+        initUi();
         return mRootView;
     }
 
@@ -100,11 +109,8 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         }
     }
 
-    private void initUi(View rootview) {
+    private void initUi() {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerOrders = rootview.findViewById(R.id.fragment_main_leak_recycler_view);
-
-        mRecyclerRefreshLayout = rootview.findViewById(R.id.fragment_main_leakage_refresh_layout);
         mRecyclerRefreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,5 +139,11 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
         mRecyclerOrders.setDrawingCacheEnabled(true);
         mRecyclerOrders.setLayoutManager(linearLayoutManager);
         mRecyclerOrders.setAdapter(leaksAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

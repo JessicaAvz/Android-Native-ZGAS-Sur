@@ -22,6 +22,11 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 
 /**
  * This class is for requesting a new order when the userType is of 'operator'
@@ -34,14 +39,18 @@ import org.json.JSONObject;
  * @see UserPreferences
  * @see android.os.AsyncTask
  * @see PutNewOrderTask
+ * @see ButterKnife
  */
-public class ExtraOrderFragmentOperator extends Fragment implements View.OnClickListener,
+public class ExtraOrderFragmentOperator extends Fragment implements
         PutNewOrderTask.NewOrderTaskListener {
 
     private static final String DEBUG_TAG = "ExtraOrderFragmentOperator";
     private View mRootView;
-    private EditText mUserName;
-    private EditText mPhoneNumber;
+
+    @BindView(R.id.fragment_order_operator_et_username)
+    EditText mUserName;
+    @BindView(R.id.fragment_order_operator_et_phone)
+    EditText mPhoneNumber;
     private String userName;
     private String userPhone;
     private Button mMakeOrder;
@@ -49,6 +58,7 @@ public class ExtraOrderFragmentOperator extends Fragment implements View.OnClick
     private User mUser;
     private JSONObject params;
     private Dialog dialog;
+    private Unbinder unbinder;
 
     public ExtraOrderFragmentOperator() {
         // Required empty public constructor
@@ -60,30 +70,21 @@ public class ExtraOrderFragmentOperator extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_order_operator, container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
         mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
-        initUi(mRootView);
         return mRootView;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_order_operator_btn_make_order:
-                makeOrder();
-                break;
-        }
-    }
-
-    private void initUi(View rootview) {
-        mUserName = rootview.findViewById(R.id.fragment_order_operator_et_username);
-        mPhoneNumber = rootview.findViewById(R.id.fragment_order_operator_et_phone);
-        mMakeOrder = rootview.findViewById(R.id.fragment_order_operator_btn_make_order);
-        mMakeOrder.setOnClickListener(this);
+    @SuppressLint("LongLogTag")
+    @OnClick(R.id.fragment_order_operator_btn_make_order)
+    public void onClick() {
+        Log.d(DEBUG_TAG, "Butterknife onclick");
+        makeOrder();
     }
 
     @SuppressLint("LongLogTag")
@@ -150,5 +151,11 @@ public class ExtraOrderFragmentOperator extends Fragment implements View.OnClick
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

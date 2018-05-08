@@ -29,12 +29,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Class that provides access to the Leak model data items.
  *
  * @author jarvizu on 24/10/2017
  * @version 2018.0.9
  * @see Leak
+ * @see ButterKnife
  * @see RecyclerSwipeAdapter
  */
 public class LeaksAdapter extends RecyclerSwipeAdapter {
@@ -270,34 +275,33 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
      * @see android.support.v7.widget.RecyclerView.ViewHolder
      */
     public class LeaksViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.row_main_fragment_swipe_orders)
+        SwipeLayout swipeLayout;
+        @BindView(R.id.row_visit_recycler_tv_review_visit)
+        TextView mLeakReview;
+        @BindView(R.id.row_main_fragment_tv_order_id)
+        TextView mLeakId;
+        @BindView(R.id.row_main_fragment_tv_order_status)
+        TextView mLeakStatus;
+        @BindView(R.id.row_main_fragment_tv_order_address)
+        TextView mLeakAddress;
+        @BindView(R.id.row_main_fragment_tv_order_in)
+        TextView mLeakTimeIn;
+        @BindView(R.id.row_main_fragment_tv_order_type)
+        TextView mLeakType;
+        @BindView(R.id.row_main_fragment_tv_notice)
+        TextView mLeakNotice;
 
-        private SwipeLayout swipeLayout;
-        private TextView mLeakReview;
-        private TextView mLeakId;
-        private TextView mLeakStatus;
-        private TextView mLeakAddress;
-        private TextView mLeakTimeIn;
-        private TextView mLeakType;
-        private TextView mLeakNotice;
-
-        public LeaksViewHolder(View itemView) {
-            super(itemView);
-
-            swipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
-            mLeakReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
-            mLeakId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
-            mLeakStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
-            mLeakAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
-            mLeakTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
-            mLeakType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
-            mLeakNotice = itemView.findViewById(R.id.row_main_fragment_tv_notice);
+        public LeaksViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
             mLeakNotice.setVisibility(View.GONE);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();
-                    Log.d(DEBUG_TAG, "OrdersAdapter itemView listener for adapter position: " + requestCode);
+                    Log.d(DEBUG_TAG, "OrdersAdapter view listener for adapter position: " + requestCode);
                 }
             });
         }

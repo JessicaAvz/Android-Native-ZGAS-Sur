@@ -16,6 +16,9 @@ import com.zgas.tesselar.myzuite.View.Activity.UserSupervisor.DetailActivitySupe
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Class that provides access to the User model data items. This class is parameterized with the
  * SupervisorViewHolder, because it does not need a SwiperAdapter like the other adapters.
@@ -23,6 +26,7 @@ import java.util.ArrayList;
  * @author jarvizu on 04/09/2017
  * @version 2018.0.9
  * @see User
+ * @see ButterKnife
  * @see RecyclerView
  * @see SupervisedViewHolder
  */
@@ -121,16 +125,15 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
      */
     public class SupervisedViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView supervisedName;
-        private TextView supervisedStatus;
+        @BindView(R.id.row_activity_supervisor_tv_supervised_name)
+        TextView supervisedName;
+        @BindView(R.id.row_activity_supervisor_tv_supervised_status)
+        TextView supervisedStatus;
 
-        public SupervisedViewHolder(View itemView) {
-            super(itemView);
-
-            supervisedName = itemView.findViewById(R.id.row_activity_supervisor_tv_supervised_name);
-            supervisedStatus = itemView.findViewById(R.id.row_activity_supervisor_tv_supervised_status);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+        public SupervisedViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();

@@ -42,8 +42,8 @@ public class ConnectionController {
     private String adminToken;
     private JSONObject params;
     private JSONObject jsonObject;
-    private Context context;
     private UserPreferences userPreferences;
+    private Context context;
     private HttpURLConnection httpURLConnection;
     private boolean isRefreshing;
     private static final int TIMEOUT = 10000;
@@ -169,10 +169,8 @@ public class ConnectionController {
                         jsonObject = new JSONObject();
                         jsonObject.put("jsonArray", new JSONArray(stringBuffer.toString()));
                     }
-
                 } else if (status == 401) {
                     new GetNewTokenTask(context).getNewToken();
-
                 } else if (status >= 500) {
                     jsonObject = new JSONObject();
                     jsonObject.put("error", "Error en el servidor.");
@@ -190,12 +188,8 @@ public class ConnectionController {
                 }
             }
         }
-
-
-        //httpURLConnection.disconnect();
         return jsonObject;
     }
-
     public void setRefreshing(boolean isRefreshing) {
         this.isRefreshing = isRefreshing;
     }
