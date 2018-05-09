@@ -20,8 +20,8 @@ public class UrlHelper {
     public static final String PUT_EXTRA_ORDER = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/extra_order?operatorId=1$s ";
     public static final String PUT_REVIEW_URL = "https://grupozeta--Dev1.cs95.my.salesforce.com/services/apexrest/mobile/order_review?orderId=1$s";
 
-    public static final String ADMIN_EMAIL = "android@zgas.biz.dev1";
-    public static final String ADMIN_PASS = "Jessicatl1";
+    public static final String ADMIN_EMAIL = "mbravo@grupozeta.biz.dev1";
+    public static final String ADMIN_PASS = "sfgrupozeta2018";
     public static final String GRANT_TYPE = "password";
     public static final String CLIENT_ID = "3MVG9Yb5IgqnkB4rDrl.nCuWZCFro49RPeNHPvoEZPXLlDMohYAWKqjwyclFpyDIbQ8umQ6qrv6wqps7rl003";
     public static final String CLIENT_SECRET = "631836681953146126";

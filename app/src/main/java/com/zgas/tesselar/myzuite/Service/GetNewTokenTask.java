@@ -41,7 +41,7 @@ public class GetNewTokenTask {
             Log.d(DEBUG_TAG, "Token del admin: " + adminToken);
             userPreferences.setAdminToken(adminToken);
             Log.d(DEBUG_TAG, "Token del admin userPreferences: " + userPreferences.getAdminToken());
-        } catch (MalformedURLException | FileNotFoundException | SocketTimeoutException | JSONException e) {
+        } catch (MalformedURLException | JSONException | SocketTimeoutException | FileNotFoundException e) {
             e.printStackTrace();
         }
     }

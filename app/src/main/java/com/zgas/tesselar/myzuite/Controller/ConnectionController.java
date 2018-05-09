@@ -176,6 +176,7 @@ public class ConnectionController {
                     jsonObject.put("error", "Error en el servidor.");
                     Log.d(DEBUG_TAG, "Server Error");
                 } else {
+                    callSucceeded = true;
                     jsonObject = new JSONObject();
                     jsonObject.put("error", status);
                     Log.d(DEBUG_TAG, "Status: " + status);
@@ -190,6 +191,7 @@ public class ConnectionController {
         }
         return jsonObject;
     }
+
     public void setRefreshing(boolean isRefreshing) {
         this.isRefreshing = isRefreshing;
     }
