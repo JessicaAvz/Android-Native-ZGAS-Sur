@@ -120,13 +120,12 @@ public class PutIncidenceTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 jsonObject.put(ExtrasHelper.INCIDENCE_JSON_OBJECT_TIME, params.get(ExtrasHelper.INCIDENCE_JSON_OBJECT_TIME));
                 isError = false;
             }
-
-            if (isError == false) {
-                putIncidenceListener.incidenceSuccessResponse(incidence);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (putIncidenceListener != null) {
+                putIncidenceListener.incidenceSuccessResponse(incidence);
+            }
         }
     }
 

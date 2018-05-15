@@ -120,7 +120,6 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
-
         List<Order> casesList = new ArrayList<>();
         JSONArray casesArray;
 
@@ -162,44 +161,44 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     aOrder.setOrderNotice(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_NOTICE));
                     Log.d(DEBUG_TAG, "Aviso: " + aOrder.getOrderNotice());
 
-                    String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
-                    String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();
-                    String casePriority = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString();
+                    aOrder.setOrderType(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString());
+                    aOrder.setOrderStatus(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString());
+                    aOrder.setOrderPriority(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString());
 
-                    if (caseType.equals(Order.caseTypes.ORDER.toString())) {
-                        aOrder.setOrderType(Order.caseTypes.ORDER);
-                    } else if (caseType.equals(Order.caseTypes.CUT.toString())) {
-                        aOrder.setOrderType(Order.caseTypes.CUT);
-                    } else if (caseType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        aOrder.setOrderType(Order.caseTypes.RECONNECTION);
+                    if (aOrder.getOrderType().equals(String.valueOf(R.string.order_type_order))) {
+                        aOrder.setOrderType(String.valueOf(R.string.order_type_order));
+                    } else if (aOrder.getOrderType().equals(String.valueOf(R.string.order_type_cut))) {
+                        aOrder.setOrderType(String.valueOf(R.string.order_type_cut));
+                    } else if (aOrder.getOrderType().equals(String.valueOf(R.string.order_type_reconnection))) {
+                        aOrder.setOrderType(String.valueOf(R.string.order_type_reconnection));
                     }
                     Log.d(DEBUG_TAG, "Tipo de caso: " + aOrder.getOrderType());
 
-                    if (caseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.INPROGRESS);
-                    } else if (caseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.CANCELLED);
-                    } else if (caseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.FINISHED);
-                    } else if (caseStatus.equals(Order.caseStatus.NEW.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.NEW);
-                    } else if (caseStatus.equals(Order.caseStatus.ASSIGNED.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.ASSIGNED);
-                    } else if (caseStatus.equals(Order.caseStatus.ACCEPTED.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.ACCEPTED);
-                    } else if (caseStatus.equals(Order.caseStatus.RETIRED.toString())) {
-                        aOrder.setOrderStatus(Order.caseStatus.RETIRED);
-                    } else if (caseStatus.equals(Order.caseStatus.CLOSED)) {
-                        aOrder.setOrderStatus(Order.caseStatus.CLOSED);
+                    if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_in_progress))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_in_progress));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_canceled))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_canceled));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_finished))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_finished));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_new))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_new));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_assigned))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_assigned));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_accepted))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_accepted));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_retired))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_retired));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_closed))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_closed));
                     }
                     Log.d(DEBUG_TAG, "Status del caso : " + aOrder.getOrderStatus());
 
-                    if (casePriority.equals(Order.casePriority.HIGH.toString())) {
-                        aOrder.setOrderPriority(Order.casePriority.HIGH);
-                    } else if (casePriority.equals(Order.casePriority.LOW.toString())) {
-                        aOrder.setOrderPriority(Order.casePriority.LOW);
-                    } else if (casePriority.equals(Order.casePriority.MEDIUM.toString())) {
-                        aOrder.setOrderPriority(Order.casePriority.MEDIUM);
+                    if (aOrder.getOrderPriority().equals(String.valueOf(R.string.order_priority_high))) {
+                        aOrder.setOrderPriority(String.valueOf(R.string.order_priority_high));
+                    } else if (aOrder.getOrderPriority().equals(String.valueOf(R.string.order_priority_medium))) {
+                        aOrder.setOrderPriority(String.valueOf(R.string.order_priority_medium));
+                    } else if (aOrder.getOrderPriority().equals(String.valueOf(R.string.order_priority_low))) {
+                        aOrder.setOrderPriority(String.valueOf(R.string.order_priority_low));
                     }
                     Log.d(DEBUG_TAG, "Prioridad del caso: " + aOrder.getOrderPriority());
 

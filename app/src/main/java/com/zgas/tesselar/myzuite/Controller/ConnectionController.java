@@ -71,14 +71,8 @@ public class ConnectionController {
      * @param method     The method type that will be used for accesing the data (POST, GET, PUT...).
      * @param params     JsonObject parameters that will be needed to make the conection
      *                   (email, password, etc...).
+     * @param context    The application context.
      */
-    public ConnectionController(String adminToken, URL url, String method, JSONObject params) {
-        this.adminToken = adminToken;
-        this.url = url;
-        this.method = method;
-        this.params = params;
-        this.isRefreshing = false;
-    }
 
     public ConnectionController(String adminToken, URL url, String method, JSONObject params, Context context) {
         this.adminToken = adminToken;
@@ -121,16 +115,20 @@ public class ConnectionController {
                 String encodedAuth = UrlHelper.AUTH_KEY + adminToken;
                 httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
-                if (httpURLConnection.getRequestMethod().equals("POST")) {
-                    //Set it to true if you want to send (output) a request body.
-                    httpURLConnection.setDoOutput(true);
-                } else if (httpURLConnection.getRequestMethod().equals("GET")) {
-                    httpURLConnection.setDoOutput(false);
-                    httpURLConnection.setRequestProperty("Authorization", encodedAuth);
-                } else if (httpURLConnection.getRequestMethod().equals("PUT")) {
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setRequestProperty("Authorization", encodedAuth);
-                    httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PUT");
+                switch (httpURLConnection.getRequestMethod()) {
+                    case "POST":
+                        //Set it to true if you want to send (output) a request body.
+                        httpURLConnection.setDoOutput(true);
+                        break;
+                    case "GET":
+                        httpURLConnection.setDoOutput(false);
+                        httpURLConnection.setRequestProperty("Authorization", encodedAuth);
+                        break;
+                    case "PUT":
+                        httpURLConnection.setDoOutput(true);
+                        httpURLConnection.setRequestProperty("Authorization", encodedAuth);
+                        httpURLConnection.setRequestProperty("X-HTTP-Method-Override", "PUT");
+                        break;
                 }
 
                 httpURLConnection.setConnectTimeout(TIMEOUT);

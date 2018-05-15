@@ -152,7 +152,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
     }
 
     private void checkButtons() {
-        if (isClicked == true || mStrCaseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
+        if (isClicked || mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mFabFinished.show();
             mFabCanceled.show();
             mFabWaze.show();
@@ -267,7 +267,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.INPROGRESS);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_in_progress));
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
@@ -283,7 +283,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
         JSONObject params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.FINISHED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_finished));
             if (mStrCaseServiceType.equals("Cilindro")) {
                 params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, strCylinder10);
                 params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20, strCylinder20);
@@ -316,7 +316,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, Order.caseStatus.CANCELLED);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_canceled));
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
@@ -521,15 +521,15 @@ public class DetailActivityOperator extends AppCompatActivity implements
 
         String status = order.getOrderStatus().toString();
 
-        if (status.equals(Order.caseStatus.INPROGRESS.toString())) {
+        if (status.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mCaseStatus.setTextColor(amber);
-        } else if (status.equals(Order.caseStatus.FINISHED.toString())) {
+        } else if (status.equals(this.getResources().getString(R.string.order_status_finished))) {
             mCaseStatus.setTextColor(light_green);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (status.equals(Order.caseStatus.CANCELLED.toString())) {
+        } else if (status.equals(this.getResources().getString(R.string.order_status_canceled))) {
             mCaseStatus.setTextColor(red);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);

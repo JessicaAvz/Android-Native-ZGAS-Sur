@@ -123,13 +123,12 @@ public class PutReviewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 isError = false;
             }
-
-            if (isError == false) {
-                orderReviewTaskListener.reviewOrderSuccessResponse(order);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (orderReviewTaskListener != null) {
+                orderReviewTaskListener.reviewOrderSuccessResponse(order);
+            }
         }
 
     }

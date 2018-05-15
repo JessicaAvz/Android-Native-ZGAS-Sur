@@ -21,7 +21,7 @@ public class NetServices {
     //Post
     public String Post(String ... sParams) throws IOException {
 
-        URL url = new URL(sParams[0].toString());//URL(sParams[0].toString());
+        URL url = new URL(sParams[0]);//URL(sParams[0].toString());
         URLConnection urlConnection = url.openConnection();
         String sRes = "";
 
@@ -29,7 +29,7 @@ public class NetServices {
             HttpURLConnection httpurlconnection = (HttpURLConnection) urlConnection;
             httpurlconnection.setRequestMethod("POST");
             httpurlconnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            httpurlconnection.setRequestProperty("Token", sParams[1].toString());
+            httpurlconnection.setRequestProperty("Token", sParams[1]);
             httpurlconnection.setDoOutput(true);
             httpurlconnection.connect();
 
@@ -37,7 +37,7 @@ public class NetServices {
             //Parametros
             OutputStreamWriter writer = new OutputStreamWriter(httpurlconnection.getOutputStream());
 
-            writer.write(sParams[2].toString());
+            writer.write(sParams[2]);
             writer.flush();
 
             if(httpurlconnection.getResponseCode() == HttpURLConnection.HTTP_OK)

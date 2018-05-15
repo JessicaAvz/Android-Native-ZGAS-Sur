@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.zgas.tesselar.myzuite.Controller.ConnectionController;
 import com.zgas.tesselar.myzuite.Model.Leak;
-import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
@@ -164,47 +163,47 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Folio: " + leak.getLeakFolioSalesNote());
 
                     //<-------------------------Agregar tipo de fuga --------------------------------------------->
-                    String leakType = caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_SERVICE_TYPE).toString();
-                    Log.d(DEBUG_TAG, "CaseType " + leakType);
-                    String leakStatus = caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS).toString();
-                    Log.d(DEBUG_TAG, "CaseStatus " + leakStatus);
-                    String leakPriority = caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY).toString();
-                    Log.d(DEBUG_TAG, "CasePriority " + leakPriority);
+                    leak.setLeakType(caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_SERVICE_TYPE).toString());
+                    Log.d(DEBUG_TAG, "CaseType " + leak.getLeakType());
+                    leak.setLeakStatus(caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS).toString());
+                    Log.d(DEBUG_TAG, "CaseStatus " + leak.getLeakStatus());
+                    leak.setLeakPriority(caseObject.get(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY).toString());
+                    Log.d(DEBUG_TAG, "CasePriority " + leak.getLeakPriority());
 
-                    if (leakType.equals(Leak.leakType.ORDER.toString())) {
-                        leak.setLeakType(Leak.leakType.ORDER);
-                    } else if (leakType.equals(Order.caseTypes.CUT.toString())) {
-                        leak.setLeakType(Leak.leakType.CUT);
-                    } else if (leakType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        leak.setLeakType(Leak.leakType.RECONNECTION);
+                    if (leak.getLeakType().equals(context.getResources().getString(R.string.order_type_order))) {
+                        leak.setLeakType("Orden");
+                    } else if (leak.getLeakType().equals(context.getResources().getString(R.string.order_type_cut))) {
+                        leak.setLeakType("Corte");
+                    } else if (leak.getLeakType().equals(context.getResources().getString(R.string.order_type_reconnection))) {
+                        leak.setLeakType("Re-conexión");
                     }
                     Log.d(DEBUG_TAG, "Tipo del caso: " + leak.getLeakType());
 
-                    if (leakStatus.equals(Leak.leakStatus.INPROGRESS.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.INPROGRESS);
-                    } else if (leakStatus.equals(Leak.leakStatus.CANCELLED.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.CANCELLED);
-                    } else if (leakStatus.equals(Leak.leakStatus.FINISHED.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.FINISHED);
-                    } else if (leakStatus.equals(Leak.leakStatus.NEW.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.NEW);
-                    } else if (leakStatus.equals(Leak.leakStatus.ASSIGNED.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.ASSIGNED);
-                    } else if (leakStatus.equals(Leak.leakStatus.ACCEPTED.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.ACCEPTED);
-                    } else if (leakStatus.equals(Leak.leakStatus.RETIRED.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.RETIRED);
-                    } else if (leakStatus.equals(Leak.leakStatus.CLOSED.toString())) {
-                        leak.setLeakStatus(Leak.leakStatus.CLOSED);
+                    if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_in_progress))) {
+                        leak.setLeakStatus("En curso");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_canceled))) {
+                        leak.setLeakStatus("Cancelado");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_finished))) {
+                        leak.setLeakStatus("Entregado");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_new))) {
+                        leak.setLeakStatus("New");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_assigned))) {
+                        leak.setLeakStatus("Asignado");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_accepted))) {
+                        leak.setLeakStatus("Aceptado");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_retired))) {
+                        leak.setLeakStatus("Cilindro retirado");
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_closed))) {
+                        leak.setLeakStatus("Closed");
                     }
                     Log.d(DEBUG_TAG, "Status del caso: " + leak.getLeakStatus());
 
-                    if (leakPriority.equals(Leak.leakPriority.HIGH.toString())) {
-                        leak.setLeakPriority(Leak.leakPriority.HIGH);
-                    } else if (leakPriority.equals(Leak.leakPriority.LOW.toString())) {
-                        leak.setLeakPriority(Leak.leakPriority.LOW);
-                    } else if (leakPriority.equals(Leak.leakPriority.MEDIUM.toString())) {
-                        leak.setLeakPriority(Leak.leakPriority.MEDIUM);
+                    if (leak.getLeakPriority().equals(context.getResources().getString(R.string.order_priority_high))) {
+                        leak.setLeakPriority("High");
+                    } else if (leak.getLeakPriority().equals(context.getResources().getString(R.string.order_priority_medium))) {
+                        leak.setLeakPriority("Medium");
+                    } else if (leak.getLeakPriority().equals(context.getResources().getString(R.string.order_priority_low))) {
+                        leak.setLeakPriority("Low");
                     }
                     Log.d(DEBUG_TAG, "Prioridad del caso: " + leak.getLeakPriority());
 
@@ -216,7 +215,9 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
             e.printStackTrace();
         } finally {
             if (leakagesTaskListener != null) {
-                leakagesTaskListener.getLeakagesSuccessResponse(leaksList);
+                if (leakagesTaskListener != null) {
+                    leakagesTaskListener.getLeakagesSuccessResponse(leaksList);
+                }
             }
         }
     }

@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -106,8 +105,8 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         mLeak = mLeaksList.get(position);
         String leakId = mLeak.getLeakId();
         String leakAddress = mLeak.getLeakAddress();
-        Leak.leakStatus leakStatus = mLeak.getLeakStatus();
-        Leak.leakType leakType = mLeak.getLeakType();
+        String leakStatus = mLeak.getLeakStatus();
+        String leakType = mLeak.getLeakType();
         String leakHourIn = mLeak.getLeakTimeAssignment();
         String serviceType = mLeak.getLeakServiceType();
 
@@ -128,16 +127,16 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         }
 
         TextView status = holder.mLeakStatus;
-        if (leakStatus == Leak.leakStatus.CANCELLED) {
+        if (leakStatus.equals(context.getResources().getString(R.string.order_status_canceled))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (leakStatus == Leak.leakStatus.FINISHED) {
+        } else if (leakStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
-        } else if (leakStatus == Leak.leakStatus.INPROGRESS) {
+        } else if (leakStatus.equals(context.getResources().getString(R.string.order_status_in_progress))) {
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
             status.setTextColor(context.getResources().getColor(R.color.blue));
         }
-        status.setText(leakStatus.toString());
+        status.setText(leakStatus);
         holder.itemView.setTag(mLeaksList.get(position));
 
         holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
@@ -292,7 +291,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         @BindView(R.id.row_main_fragment_tv_notice)
         TextView mLeakNotice;
 
-        public LeaksViewHolder(View view) {
+        LeaksViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             mLeakNotice.setVisibility(View.GONE);

@@ -52,10 +52,7 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
     RecyclerView mRecyclerOrders;
     @BindView(R.id.fragment_main_leakage_refresh_layout)
     RecyclerRefreshLayout mRecyclerRefreshLayout;
-    private LeaksAdapter leaksAdapter;
-    private View mRootView;
     private UserPreferences mUserPreferences;
-    private User mUser;
     private static final String USER_ID = "Id";
     private static final String ADMIN_TOKEN = "access_token";
     private LinearLayoutManager linearLayoutManager;
@@ -70,11 +67,11 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_main_leak, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_main_leak, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserObject();
+        User mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
@@ -133,7 +130,7 @@ public class MainFragmentLeak extends Fragment implements GetLeakagesTask.Leakag
 
     @Override
     public void getLeakagesSuccessResponse(List<Leak> leakList) {
-        leaksAdapter = new LeaksAdapter(getActivity(), (ArrayList<Leak>) leakList);
+        LeaksAdapter leaksAdapter = new LeaksAdapter(getActivity(), (ArrayList<Leak>) leakList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);

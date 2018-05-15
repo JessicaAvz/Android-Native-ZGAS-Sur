@@ -109,8 +109,8 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         String caseId = mOrder.getOrderId();
         String caseAddress = mOrder.getOrderAddress();
         String caseNotice = mOrder.getOrderNotice();
-        Order.caseStatus caseStatus = mOrder.getOrderStatus();
-        Order.caseTypes caseType = mOrder.getOrderType();
+        String caseStatus = mOrder.getOrderStatus();
+        String caseType = mOrder.getOrderType();
         String orderHourIn = mOrder.getOrderTimeAssignment();
         String serviceType = mOrder.getOrderServiceType();
 
@@ -141,11 +141,11 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         }
 
         TextView status = holder.mOrderStatus;
-        if (caseStatus == Order.caseStatus.CANCELLED) {
+        if (caseStatus.equals(context.getResources().getString(R.string.order_status_canceled))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (caseStatus == Order.caseStatus.FINISHED) {
+        } else if (caseStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
-        } else if (caseStatus == Order.caseStatus.INPROGRESS) {
+        } else if (caseStatus.equals(context.getResources().getString(R.string.order_status_in_progress))) {
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
             status.setTextColor(context.getResources().getColor(R.color.blue));
@@ -160,16 +160,16 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrder.getOrderId());
                 final String id = mOrder.getOrderId();
                 String address = mOrder.getOrderAddress();
-                String status = mOrder.getOrderStatus().toString();
+                String status = mOrder.getOrderStatus();
                 String timeAssignment = mOrder.getOrderTimeAssignment();
                 String timeSeen = mOrder.getOrderTimeSeen();
                 String timeArrival = mOrder.getOrderTimeDeparture();
                 String timeScheduled = mOrder.getOrderTimeScheduled();
-                String priority = mOrder.getOrderPriority().toString();
+                String priority = mOrder.getOrderPriority();
                 String userName = mOrder.getOrderAccountName();
                 String paymentMethod = mOrder.getOrderPaymentMethod();
                 String serviceType = mOrder.getOrderServiceType();
-                String recordType = mOrder.getOrderType().toString();
+                String recordType = mOrder.getOrderType();
 
                 Bundle bundle = new Bundle();
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
@@ -187,11 +187,11 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
 
                 intent = new Intent();
-                if (serviceType.equals(Order.caseTypes.MEASURED.toString()) && recordType.equals(Order.caseTypes.ORDER.toString())) {
+                if (serviceType.equals(context.getResources().getString(R.string.order_type_measured)) && recordType.equals(context.getResources().getString(R.string.order_type_order))) {
                     intent = new Intent(context, DetailActivityService.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
-                } else if (recordType.equals(Order.caseTypes.ORDER.toString())) {
+                } else if (recordType.equals(context.getResources().getString(R.string.order_type_order))) {
                     intent = new Intent(context, DetailActivityOperator.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -318,7 +318,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
         @BindView(R.id.row_main_fragment_tv_notice)
         TextView mOrderNotice;
 
-        public OrderViewHolder(final View view) {
+        OrderViewHolder(final View view) {
             super(view);
             ButterKnife.bind(this, view);
 

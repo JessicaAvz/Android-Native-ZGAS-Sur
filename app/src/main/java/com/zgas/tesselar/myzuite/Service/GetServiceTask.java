@@ -152,44 +152,44 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     aService.setOrderNotice(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_NOTICE));
                     Log.d(DEBUG_TAG, "Aviso: " + aService.getOrderNotice());
 
-                    String caseType = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString();
-                    String caseStatus = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString();
-                    String casePriority = caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString();
+                    aService.setOrderType(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString());
+                    aService.setOrderStatus(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString());
+                    aService.setOrderPriority(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY).toString());
 
-                    if (caseType.equals(Order.caseTypes.ORDER.toString())) {
-                        aService.setOrderType(Order.caseTypes.ORDER);
-                    } else if (caseType.equals(Order.caseTypes.CUT.toString())) {
-                        aService.setOrderType(Order.caseTypes.CUT);
-                    } else if (caseType.equals(Order.caseTypes.RECONNECTION.toString())) {
-                        aService.setOrderType(Order.caseTypes.RECONNECTION);
+                    if (aService.getOrderType().equals(String.valueOf(R.string.order_type_order))) {
+                        aService.setOrderType(String.valueOf(R.string.order_type_order));
+                    } else if (aService.getOrderType().equals(String.valueOf(R.string.order_type_cut))) {
+                        aService.setOrderType(String.valueOf(R.string.order_type_cut));
+                    } else if (aService.getOrderType().equals(String.valueOf(R.string.order_type_reconnection))) {
+                        aService.setOrderType(String.valueOf(R.string.order_type_reconnection));
                     }
                     Log.d(DEBUG_TAG, "Tipo de caso: " + aService.getOrderType());
 
-                    if (caseStatus.equals(Order.caseStatus.INPROGRESS.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.INPROGRESS);
-                    } else if (caseStatus.equals(Order.caseStatus.CANCELLED.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.CANCELLED);
-                    } else if (caseStatus.equals(Order.caseStatus.FINISHED.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.FINISHED);
-                    } else if (caseStatus.equals(Order.caseStatus.NEW.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.NEW);
-                    } else if (caseStatus.equals(Order.caseStatus.ASSIGNED.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.ASSIGNED);
-                    } else if (caseStatus.equals(Order.caseStatus.ACCEPTED.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.ACCEPTED);
-                    } else if (caseStatus.equals(Order.caseStatus.RETIRED.toString())) {
-                        aService.setOrderStatus(Order.caseStatus.RETIRED);
-                    } else if (caseStatus.equals(Order.caseStatus.CLOSED)) {
-                        aService.setOrderStatus(Order.caseStatus.CLOSED);
+                    if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_in_progress))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_in_progress));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_canceled))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_canceled));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_finished))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_finished));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_new))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_new));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_assigned))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_assigned));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_accepted))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_accepted));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_retired))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_retired));
+                    } else if (aService.getOrderStatus().equals(String.valueOf(R.string.order_status_closed))) {
+                        aService.setOrderStatus(String.valueOf(R.string.order_status_closed));
                     }
                     Log.d(DEBUG_TAG, "Status del caso : " + aService.getOrderStatus());
 
-                    if (casePriority.equals(Order.casePriority.HIGH.toString())) {
-                        aService.setOrderPriority(Order.casePriority.HIGH);
-                    } else if (casePriority.equals(Order.casePriority.LOW.toString())) {
-                        aService.setOrderPriority(Order.casePriority.LOW);
-                    } else if (casePriority.equals(Order.casePriority.MEDIUM.toString())) {
-                        aService.setOrderPriority(Order.casePriority.MEDIUM);
+                    if (aService.getOrderPriority().equals(String.valueOf(R.string.order_priority_high))) {
+                        aService.setOrderPriority(String.valueOf(R.string.order_priority_high));
+                    } else if (aService.getOrderPriority().equals(String.valueOf(R.string.order_priority_medium))) {
+                        aService.setOrderPriority(String.valueOf(R.string.order_priority_medium));
+                    } else if (aService.getOrderPriority().equals(String.valueOf(R.string.order_priority_low))) {
+                        aService.setOrderPriority(String.valueOf(R.string.order_priority_low));
                     }
                     Log.d(DEBUG_TAG, "Prioridad del caso: " + aService.getOrderPriority());
 
@@ -201,7 +201,9 @@ public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
             e.printStackTrace();
         } finally {
             if (serviceTaskListener != null) {
-                serviceTaskListener.getServicesSuccessResponse(servicesList);
+                if (serviceTaskListener != null) {
+                    serviceTaskListener.getServicesSuccessResponse(servicesList);
+                }
             }
         }
     }

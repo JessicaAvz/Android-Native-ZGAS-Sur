@@ -113,13 +113,12 @@ public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 isError = false;
             }
-
-            if (isError == false) {
-                newOrderTaskListener.newOrderSuccessResponse(order);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (newOrderTaskListener != null) {
+                newOrderTaskListener.newOrderSuccessResponse(order);
+            }
         }
     }
 

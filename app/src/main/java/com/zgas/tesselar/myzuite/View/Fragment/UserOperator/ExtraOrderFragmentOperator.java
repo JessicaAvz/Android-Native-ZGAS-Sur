@@ -45,8 +45,6 @@ public class ExtraOrderFragmentOperator extends Fragment implements
         PutNewOrderTask.NewOrderTaskListener {
 
     private static final String DEBUG_TAG = "ExtraOrderFragmentOperator";
-    private View mRootView;
-
     @BindView(R.id.fragment_order_operator_et_username)
     EditText mUserName;
     @BindView(R.id.fragment_order_operator_et_phone)
@@ -55,8 +53,6 @@ public class ExtraOrderFragmentOperator extends Fragment implements
     private String userPhone;
     private Button mMakeOrder;
     private UserPreferences mUserPreferences;
-    private User mUser;
-    private JSONObject params;
     private Dialog dialog;
     private Unbinder unbinder;
 
@@ -69,11 +65,11 @@ public class ExtraOrderFragmentOperator extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_order_operator, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_order_operator, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserObject();
+        User mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
@@ -89,7 +85,7 @@ public class ExtraOrderFragmentOperator extends Fragment implements
 
     @SuppressLint("LongLogTag")
     private void callAsyncTask() {
-        params = new JSONObject();
+        JSONObject params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mUserPreferences.getUserObject().getUserId());
             params.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME, userName);

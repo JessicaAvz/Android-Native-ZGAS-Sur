@@ -128,10 +128,10 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         }
 
         if (mStrUserStatus != null) {
-            if (mStrUserStatus.equals(User.userStatus.ACTIVE.toString())) {
+            if (mStrUserStatus.equals(this.getResources().getString(R.string.user_active))) {
                 mUserStatus.setTextColor(light_green);
                 mUserStatus.setText(String.valueOf(mStrUserStatus));
-            } else if (mStrUserStatus.equals(User.userStatus.NOTACTIVE.toString())) {
+            } else if (mStrUserStatus.equals(this.getResources().getString(R.string.user_not_active))) {
                 mUserStatus.setTextColor(red);
                 mUserStatus.setText(String.valueOf(mStrUserStatus));
             }

@@ -9,14 +9,24 @@ package com.zgas.tesselar.myzuite.Model;
 
 public class User {
     private String userId;
-    private userType userType;
+    private String userType;
     private String userName;
     private String userEmail;
     private String userRoute;
     private String userZone;
-    private userStatus userStatus;
+    private String userStatus;
 
-    public enum userStatus {
+    public User(String userId, String userType, String userName, String userEmail, String userRoute, String userZone, String userStatus) {
+        this.userId = userId;
+        this.userType = userType;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userRoute = userRoute;
+        this.userZone = userZone;
+        this.userStatus = userStatus;
+    }
+
+    /*public enum userStatus {
         ACTIVE("Activo"),
         NOTACTIVE("No activo");
 
@@ -33,10 +43,9 @@ public class User {
         public String toString() {
             return this.name;
         }
+    }*/
 
-    }
-
-    public enum userType {
+    /*public enum userType {
         OPERATOR("Operador"),
         SERVICE("Servicio Medido"),
         SUPERVISOR("Supervisor"),
@@ -55,7 +64,7 @@ public class User {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
     public User() {
     }
@@ -68,11 +77,11 @@ public class User {
         this.userId = userId;
     }
 
-    public User.userType getUserType() {
+    public String getUserType() {
         return userType;
     }
 
-    public void setUserType(User.userType userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
 
@@ -108,11 +117,11 @@ public class User {
         this.userZone = userZone;
     }
 
-    public userStatus getUserStatus() {
+    public String getUserStatus() {
         return userStatus;
     }
 
-    public void setUserStatus(userStatus userStatus) {
+    public void setUserStatus(String userStatus) {
         this.userStatus = userStatus;
     }
 }

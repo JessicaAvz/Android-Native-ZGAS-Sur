@@ -117,18 +117,17 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
             } else if (jsonObject.has(ExtrasHelper.LEAK_JSON_OBJECT_ID)) {
                 leak = new Leak();
                 jsonObject.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, params.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS));
-                leak.setLeakStatus((Leak.leakStatus) jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS));
+                leak.setLeakStatus(jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS).toString());
                 Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS_UPDATE).toString());
                 Log.d(DEBUG_TAG, leak.getLeakStatus().toString());
                 isError = false;
             }
-
-            if (isError == false) {
-                statusLeakTaskListener.statusSuccessResponse(leak);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (statusLeakTaskListener != null) {
+                statusLeakTaskListener.statusSuccessResponse(leak);
+            }
         }
     }
 

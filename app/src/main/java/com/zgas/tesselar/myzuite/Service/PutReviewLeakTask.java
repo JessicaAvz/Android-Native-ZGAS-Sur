@@ -120,13 +120,12 @@ public class PutReviewLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                 isError = false;
             }
-
-            if (isError == false) {
-                leakReviewTaskListener.reviewLeakSuccessResponse(leak);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (leakReviewTaskListener != null) {
+                leakReviewTaskListener.reviewLeakSuccessResponse(leak);
+            }
         }
 
     }

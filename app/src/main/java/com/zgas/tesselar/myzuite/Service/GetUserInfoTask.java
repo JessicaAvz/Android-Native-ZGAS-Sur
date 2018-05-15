@@ -140,26 +140,25 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
             } else if (jsonObject.has(ExtrasHelper.EXTRA_USER_ID)) {
                 Log.d(DEBUG_TAG, "HOLA, SI SIRVE");
                 user = new User();
-                String userStatus = jsonObject.get(ExtrasHelper.EXTRA_USER_STATUS).toString();
-                String userType = jsonObject.get(ExtrasHelper.EXTRA_USER_TYPE).toString();
+                user.setUserStatus(jsonObject.get(ExtrasHelper.EXTRA_USER_STATUS).toString());
+                user.setUserType(jsonObject.get(ExtrasHelper.EXTRA_USER_TYPE).toString());
                 user.setUserName(jsonObject.get(ExtrasHelper.EXTRA_USER_NAME).toString());
                 user.setUserId(jsonObject.get(ExtrasHelper.EXTRA_USER_ID).toString());
                 user.setUserZone(jsonObject.get(ExtrasHelper.EXTRA_USER_ZONE).toString());
                 user.setUserEmail(jsonObject.get(ExtrasHelper.EXTRA_USER_EMAIL).toString());
 
-                if (userType.equals(User.userType.OPERATOR.toString())) {
-                    user.setUserType(User.userType.OPERATOR);
+                if (user.getUserType().equals(String.valueOf(R.string.user_type_operator))) {
+                    user.setUserType(String.valueOf(R.string.user_type_operator));
                     user.setUserRoute(jsonObject.get(ExtrasHelper.EXTRA_USER_ROUTE).toString());
-                } else if (userType.equals(User.userType.SUPERVISOR.toString())) {
-                    user.setUserType(User.userType.SUPERVISOR);
+                } else if (user.getUserType().equals(String.valueOf(R.string.user_type_supervisor))) {
+                    user.setUserType(String.valueOf(R.string.user_type_supervisor));
                     JSONArray usersArray = jsonObject.getJSONArray(OPERATORS_ARRAY);
                     for (int i = 0; i < usersArray.length(); i++) {
                         JSONObject userObject = usersArray.getJSONObject(i);
                         User supervisedUser = new User();
-                        String supervisedType = userObject.get(ExtrasHelper.EXTRA_USER_TYPE).toString();
-                        String supervisedStatus = userObject.get(ExtrasHelper.EXTRA_USER_STATUS).toString();
-                        Log.d(DEBUG_TAG, "SupervisedStatus " + supervisedStatus);
-
+                        supervisedUser.setUserType(userObject.get(ExtrasHelper.EXTRA_USER_TYPE).toString());
+                        supervisedUser.setUserStatus(userObject.get(ExtrasHelper.EXTRA_USER_STATUS).toString());
+                        Log.d(DEBUG_TAG, "SupervisedStatus " + supervisedUser.getUserStatus());
                         supervisedUser.setUserId(userObject.getString(ExtrasHelper.EXTRA_USER_ID));
                         Log.d(DEBUG_TAG, "Id del supervisado: " + supervisedUser.getUserId());
                         supervisedUser.setUserName(userObject.getString(ExtrasHelper.EXTRA_USER_NAME));
@@ -171,41 +170,39 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                         supervisedUser.setUserRoute(userObject.getString(ExtrasHelper.EXTRA_USER_ROUTE));
                         Log.d(DEBUG_TAG, "Ruta del supervisado: " + supervisedUser.getUserRoute());
 
-                        if (supervisedType.equals(User.userType.OPERATOR.toString())) {
-                            supervisedUser.setUserType(User.userType.OPERATOR);
-                        } else if (supervisedType.equals(User.userType.LEAKAGE.toString())) {
-                            supervisedUser.setUserType(User.userType.LEAKAGE);
-                        } else if (supervisedType.equals(User.userType.SUPERVISOR.toString())) {
-                            supervisedUser.setUserType(User.userType.SUPERVISOR);
-                        } else if (supervisedType.equals(User.userType.SERVICE.toString())) {
-                            supervisedUser.setUserType(User.userType.SERVICE);
+                        if (supervisedUser.getUserType().equals(String.valueOf(R.string.user_type_operator))) {
+                            supervisedUser.setUserType(String.valueOf(R.string.user_type_operator));
+                        } else if (supervisedUser.getUserType().equals(String.valueOf(R.string.user_type_technician))) {
+                            supervisedUser.setUserType(String.valueOf(R.string.user_type_technician));
+                        } else if (supervisedUser.getUserType().equals(String.valueOf(R.string.user_type_supervisor))) {
+                            supervisedUser.setUserType(String.valueOf(R.string.user_type_supervisor));
+                        } else if (supervisedUser.getUserType().equals(String.valueOf(R.string.user_type_service))) {
+                            supervisedUser.setUserType(String.valueOf(R.string.user_type_service));
                         }
                         Log.d(DEBUG_TAG, "Tipo de supervisado: " + supervisedUser.getUserType());
 
-                        if (supervisedStatus.equals(User.userStatus.ACTIVE.toString())) {
-                            supervisedUser.setUserStatus(User.userStatus.ACTIVE);
-                        } else if (supervisedStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                            supervisedUser.setUserStatus(User.userStatus.NOTACTIVE);
+                        if (supervisedUser.getUserStatus().equals(String.valueOf(R.string.user_active))) {
+                            supervisedUser.setUserStatus(String.valueOf(R.string.user_active));
+                        } else if (supervisedUser.getUserStatus().equals(String.valueOf(R.string.user_not_active))) {
+                            supervisedUser.setUserStatus(String.valueOf(R.string.user_not_active));
                         }
                         Log.d(DEBUG_TAG, "Estatus del supervisado: " + supervisedUser.getUserStatus());
 
                         usersList.add(supervisedUser);
                     }
 
-                } else if (userType.equals(User.userType.SERVICE.toString())) {
-                    user.setUserType(User.userType.SERVICE);
-                } else if (userType.equals(User.userType.LEAKAGE.toString())) {
-                    user.setUserType(User.userType.LEAKAGE);
+                } else if (user.getUserType().equals(String.valueOf(R.string.user_type_service))) {
+                    user.setUserType(String.valueOf(R.string.user_type_service));
+                } else if (user.getUserType().equals(String.valueOf(R.string.user_type_technician))) {
+                    user.setUserType(String.valueOf(R.string.user_type_technician));
                 }
 
-                if (userStatus.equals(User.userStatus.ACTIVE.toString())) {
-                    user.setUserStatus(User.userStatus.ACTIVE);
-                } else if (userStatus.equals(User.userStatus.NOTACTIVE.toString())) {
-                    user.setUserStatus(User.userStatus.NOTACTIVE);
+                if (user.getUserStatus().equals(String.valueOf(R.string.user_active))) {
+                    user.setUserStatus(String.valueOf(R.string.user_active));
+                } else if (user.getUserStatus().equals(String.valueOf(R.string.user_not_active))) {
+                    user.setUserStatus(String.valueOf(R.string.user_not_active));
                 }
-
                 isError = false;
-
                 Log.d(DEBUG_TAG, "Id del usuario: " + user.getUserId());
                 Log.d(DEBUG_TAG, "Nombre de usuario: " + user.getUserName());
                 Log.d(DEBUG_TAG, "Tipo de usuario: " + user.getUserType());
@@ -214,16 +211,13 @@ public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 Log.d(DEBUG_TAG, "Ruta del usuario: " + user.getUserRoute());
                 Log.d(DEBUG_TAG, "Estatus del usuario: " + user.getUserStatus());
             }
-
-            if (isError == false) {
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (userInfoListener != null) {
                 userInfoListener.userInfoSuccessResponse(user);
                 userInfoListener.userSupervisedSuccessResponse(usersList);
             }
-        } catch (
-                JSONException e)
-
-        {
-            e.printStackTrace();
         }
     }
 

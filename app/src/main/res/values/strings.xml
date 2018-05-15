@@ -180,5 +180,33 @@
     <string name="cylinder_45_kg">45 kgs.</string>
     <string name="cylinder_quantity_hint"># cilindros...</string>
 
+    <string name="user_active">Activo</string>
+    <string name="user_not_active">No activo</string>
+
+    <string name="user_type_operator">Operador</string>
+    <string name="user_type_service">Servicio Medido</string>
+    <string name="user_type_supervisor">Supervisor</string>
+    <string name="user_type_technician">Técnico de Fugas</string>
+
+    <string name="order_status_new">New</string>
+    <string name="order_status_assigned">Asignado</string>
+    <string name="order_status_seen">Visto</string>
+    <string name="order_status_accepted">Aceptado</string>
+    <string name="order_status_in_progress">En curso</string>
+    <string name="order_status_retired">Cilindro retirado</string>
+    <string name="order_status_finished">Entregado</string>
+    <string name="order_status_closed">Closed</string>
+    <string name="order_status_canceled">Cancelado</string>
+
+    <string name="order_priority_high">High</string>
+    <string name="order_priority_medium">Medium</string>
+    <string name="order_priority_low">Low</string>
+
+    <string name="order_type_cut">Corte</string>
+    <string name="order_type_measured">Medido</string>
+    <string name="order_type_order">Pedido</string>
+    <string name="order_type_reconnection">Re-conexión</string>
+
 </resources>
+
 

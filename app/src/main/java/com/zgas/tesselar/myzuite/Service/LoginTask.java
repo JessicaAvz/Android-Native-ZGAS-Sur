@@ -74,7 +74,6 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         JSONObject jsonObject = null;
 
         try {
-
             Formatter formatter_admin = new Formatter();
             String format_admin = formatter_admin.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, UrlHelper.ADMIN_EMAIL, UrlHelper.ADMIN_PASS).toString();
             Log.d(DEBUG_TAG, format_admin);
@@ -108,7 +107,6 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return jsonObject;
     }
 
@@ -149,13 +147,12 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 login.setLoginSignature(jsonObject.get(ExtrasHelper.LOGIN_JSON_OBJECT_SIGNATURE).toString());
                 isError = false;
             }
-
-            if (isError == false) {
-                loginTaskListener.loginSuccessResponse(login);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (loginTaskListener != null) {
+                loginTaskListener.loginSuccessResponse(login);
+            }
         }
 
 

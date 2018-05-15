@@ -147,7 +147,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     }
 
     private void checkButtons() {
-        if (isClicked == true || mStrLeakStatus.equals(Leak.leakStatus.INPROGRESS.toString())) {
+        if (isClicked == true || mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mFabFinished.show();
             mFabCanceled.show();
             mFabWaze.show();
@@ -258,7 +258,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, Leak.leakStatus.INPROGRESS);
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_in_progress));
 
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
@@ -276,7 +276,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         JSONObject params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, Leak.leakStatus.FINISHED);
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_finished));
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS, resolution);
             params.put(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS, channel);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS) +
@@ -297,7 +297,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, Leak.leakStatus.CANCELLED);
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_canceled));
             //params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
@@ -502,15 +502,15 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
         String status = leak.getLeakStatus().toString();
 
-        if (status.equals(Leak.leakStatus.INPROGRESS.toString())) {
+        if (status.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mLeakStatus.setTextColor(amber);
-        } else if (status.equals(Leak.leakStatus.FINISHED.toString())) {
+        } else if (status.equals(this.getResources().getString(R.string.order_status_finished))) {
             mLeakStatus.setTextColor(light_green);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
             mFabCanceled.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (status.equals(Leak.leakStatus.CANCELLED.toString())) {
+        } else if (status.equals(this.getResources().getString(R.string.order_status_canceled))) {
             mLeakStatus.setTextColor(red);
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);

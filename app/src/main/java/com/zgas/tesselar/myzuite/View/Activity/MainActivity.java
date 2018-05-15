@@ -46,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
+import io.realm.Realm;
 
 /**
  * Class that manages all the main fragments to be used by the application, it also separates them
@@ -95,18 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView mRecyclerViewSupervised;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    private HelpFragmentOperator mHelpFragmentOperator;
-    private MainFragmentOperator mMainFragmentOperator;
-    private ExtraOrderFragmentOperator mExtraOrderFragmentOperator;
-    private MainFragmentService mMainFragmentService;
-    private HelpFragmentService mHelpFragmentService;
-    private HelpFragmentLeak mHelpFragmentLeak;
-    private MainFragmentLeak mMainFragmentLeak;
     private PagerAdapter mPagerAdapter;
-    private SupervisorAdapter mSupervisorAdapter;
     private UserPreferences userPreferences;
     private LinearLayoutManager linearLayoutManager;
-    private User user;
 
     @BindColor(R.color.pink_500)
     int pink_500;
@@ -127,28 +119,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Realm.init(this);
         userPreferences = new UserPreferences(this);
-        user = userPreferences.getUserObject();
+        User user = userPreferences.getUserObject();
+        Log.d(DEBUG_TAG, user.getUserType());
         /*If a user is logged in, it will check it's type so the app will show the correct
         user interface.*/
         if (userPreferences.isLoggedIn()) {
-            if (user.getUserType() == User.userType.OPERATOR) {
+            if (user.getUserType().equals(this.getResources().getString(R.string.user_type_operator))) {
                 Log.d(DEBUG_TAG, "User operator" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiOperator();
-            } else if (user.getUserType() == User.userType.SERVICE) {
+            } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_service))) {
                 Log.d(DEBUG_TAG, "User service" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiService();
-            } else if (user.getUserType() == User.userType.SUPERVISOR) {
+            } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_supervisor))) {
                 Log.d(DEBUG_TAG, "User supervisor" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_supervisor);
                 ButterKnife.bind(this);
                 getSupervisedCallAsyncTask();
                 initUiSupervisor();
-            } else if (user.getUserType() == User.userType.LEAKAGE) {
+            } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_technician))) {
                 Log.d(DEBUG_TAG, "User leakages" + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
@@ -173,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_main_fragment);
         customViewPager.setPagingEnabled(false);
-        mHelpFragmentOperator = new HelpFragmentOperator();
-        mMainFragmentOperator = new MainFragmentOperator();
-        mExtraOrderFragmentOperator = new ExtraOrderFragmentOperator();
+        HelpFragmentOperator mHelpFragmentOperator = new HelpFragmentOperator();
+        MainFragmentOperator mMainFragmentOperator = new MainFragmentOperator();
+        ExtraOrderFragmentOperator mExtraOrderFragmentOperator = new ExtraOrderFragmentOperator();
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mExtraOrderFragmentOperator);
         mPagerAdapter.addFragment(mMainFragmentOperator);
@@ -188,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
         customViewPager.setPagingEnabled(false);
-        mMainFragmentService = new MainFragmentService();
-        mHelpFragmentService = new HelpFragmentService();
+        MainFragmentService mMainFragmentService = new MainFragmentService();
+        HelpFragmentService mHelpFragmentService = new HelpFragmentService();
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mMainFragmentService);
         mPagerAdapter.addFragment(mHelpFragmentService);
@@ -207,8 +201,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.prompt_order_leak);
         customViewPager.setPagingEnabled(false);
-        mMainFragmentLeak = new MainFragmentLeak();
-        mHelpFragmentLeak = new HelpFragmentLeak();
+        MainFragmentLeak mMainFragmentLeak = new MainFragmentLeak();
+        HelpFragmentLeak mHelpFragmentLeak = new HelpFragmentLeak();
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(mMainFragmentLeak);
         mPagerAdapter.addFragment(mHelpFragmentLeak);
@@ -497,7 +491,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void userSupervisedSuccessResponse(List<User> userList) {
-        mSupervisorAdapter = new SupervisorAdapter(this, (ArrayList<User>) userList);
+        SupervisorAdapter mSupervisorAdapter = new SupervisorAdapter(this, (ArrayList<User>) userList);
         mRecyclerViewSupervised.setLayoutManager(linearLayoutManager);
         mRecyclerViewSupervised.setAdapter(mSupervisorAdapter);
         mRecyclerViewSupervised.setHasFixedSize(true);

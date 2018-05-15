@@ -24,14 +24,14 @@ public class Leak {
     private String leakCylinderColor;
     private String leakChannel;
     private String leakFolioSalesNote;
-    private Leak.leakStatus leakStatus;
-    private Leak.leakType leakType;
-    private Leak.leakPriority leakPriority;
+    private String leakStatus;
+    private String leakType;
+    private String leakPriority;
 
     public Leak() {
     }
 
-    public Leak(String leakId, String leakUserId, String leakTimeAssignment, String leakTimeSeen, String leakTimeDeparture, String leakTimeEnd, String leakTimeScheduled, String leakServiceType, String leakAccountName, String leakContactName, String leakAddress, String leakSubject, String leakCylinderCapacity, String leakCylinderColor, String leakChannel, String leakFolioSalesNote, Leak.leakStatus leakStatus, Leak.leakType leakType, Leak.leakPriority leakPriority) {
+    public Leak(String leakId, String leakUserId, String leakTimeAssignment, String leakTimeSeen, String leakTimeDeparture, String leakTimeEnd, String leakTimeScheduled, String leakServiceType, String leakAccountName, String leakContactName, String leakAddress, String leakSubject, String leakCylinderCapacity, String leakCylinderColor, String leakChannel, String leakFolioSalesNote, String leakStatus, String leakType, String leakPriority) {
         this.leakId = leakId;
         this.leakUserId = leakUserId;
         this.leakTimeAssignment = leakTimeAssignment;
@@ -53,7 +53,7 @@ public class Leak {
         this.leakPriority = leakPriority;
     }
 
-    public enum leakPriority {
+    /*public enum leakPriority {
         HIGH("High"),
         MEDIUM("Medium"),
         LOW("Low");
@@ -71,9 +71,9 @@ public class Leak {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
-    public enum leakStatus {
+    /*public enum leakStatus {
         NEW("New"),
         ASSIGNED("Asignado"),
         SEEN("Visto"),
@@ -97,9 +97,9 @@ public class Leak {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
-    public enum leakType {
+    /*public enum leakType {
         LEAKAGE("Fugas"),
         CUT("Corte"),
         ORDER("Pedido"),
@@ -119,29 +119,29 @@ public class Leak {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
-    public Leak.leakStatus getLeakStatus() {
+    public String getLeakStatus() {
         return leakStatus;
     }
 
-    public void setLeakStatus(Leak.leakStatus leakStatus) {
+    public void setLeakStatus(String leakStatus) {
         this.leakStatus = leakStatus;
     }
 
-    public Leak.leakType getLeakType() {
+    public String getLeakType() {
         return leakType;
     }
 
-    public void setLeakType(Leak.leakType leakType) {
+    public void setLeakType(String leakType) {
         this.leakType = leakType;
     }
 
-    public Leak.leakPriority getLeakPriority() {
+    public String getLeakPriority() {
         return leakPriority;
     }
 
-    public void setLeakPriority(Leak.leakPriority leakPriority) {
+    public void setLeakPriority(String leakPriority) {
         this.leakPriority = leakPriority;
     }
 

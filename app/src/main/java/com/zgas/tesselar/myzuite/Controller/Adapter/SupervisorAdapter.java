@@ -77,7 +77,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         User mUser = mSupervisedList.get(position);
         String id = mUser.getUserId();
         String userName = mUser.getUserName();
-        User.userStatus userStatus = mUser.getUserStatus();
+        String userStatus = mUser.getUserStatus();
         TextView name = holder.supervisedName;
         TextView status = holder.supervisedStatus;
 
@@ -87,13 +87,13 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
             name.setText(userName);
         }
 
-        if (userStatus == User.userStatus.NOTACTIVE) {
+        if (userStatus.equals(context.getResources().getString(R.string.user_not_active))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
             status.setText(String.valueOf(userStatus));
-        } else if (userStatus == User.userStatus.ACTIVE) {
+        } else if (userStatus.equals(context.getResources().getString(R.string.user_active))) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
             status.setText(String.valueOf(userStatus));
-        } else if (userStatus == null) {
+        } else if (userStatus.equals("")) {
             status.setText(context.getString(R.string.no_data));
         }
         holder.itemView.setTag(mSupervisedList.get(position));
@@ -130,7 +130,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         @BindView(R.id.row_activity_supervisor_tv_supervised_status)
         TextView supervisedStatus;
 
-        public SupervisedViewHolder(View view) {
+        SupervisedViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +144,8 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     String email = mUser.getUserEmail();
                     String zone = mUser.getUserZone();
                     String route = mUser.getUserRoute();
-                    User.userType type = mUser.getUserType();
-                    User.userStatus status = mUser.getUserStatus();
+                    String type = mUser.getUserType();
+                    String status = mUser.getUserStatus();
 
                     Bundle bundle = new Bundle();
                     bundle.putString(ExtrasHelper.EXTRA_USER_ID, id);
@@ -153,8 +153,8 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                     bundle.putString(ExtrasHelper.EXTRA_USER_EMAIL, email);
                     bundle.putString(ExtrasHelper.EXTRA_USER_ZONE, zone);
                     bundle.putString(ExtrasHelper.EXTRA_USER_ROUTE, route);
-                    bundle.putString(ExtrasHelper.EXTRA_USER_TYPE, String.valueOf(type));
-                    bundle.putString(ExtrasHelper.EXTRA_USER_STATUS, String.valueOf(status));
+                    bundle.putString(ExtrasHelper.EXTRA_USER_TYPE, type);
+                    bundle.putString(ExtrasHelper.EXTRA_USER_STATUS, status);
 
                     Intent intent = new Intent(context, DetailActivitySupervisor.class);
                     intent.putExtras(bundle);

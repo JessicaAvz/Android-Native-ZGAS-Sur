@@ -80,7 +80,7 @@ public class UserPreferences {
             Gson gson = new Gson();
             String loginString = gson.toJson(login);
 
-            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, context.MODE_PRIVATE);
+            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(LOGIN_DATA, loginString);
             editor.apply();

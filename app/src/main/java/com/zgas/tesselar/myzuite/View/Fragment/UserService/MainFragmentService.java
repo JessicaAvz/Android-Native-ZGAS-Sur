@@ -54,10 +54,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
     @BindView(R.id.fragment_main_service_refresh_layout)
     RecyclerRefreshLayout mRecyclerRefreshLayout;
     private LinearLayoutManager layoutManager;
-    private OrdersAdapter mServiceAdapter;
-    private View mRootView;
     private UserPreferences mUserPreferences;
-    private User mUser;
     private Unbinder unbinder;
 
     public MainFragmentService() {
@@ -69,11 +66,11 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_main_service, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_main_service, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserObject();
+        User mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
@@ -136,7 +133,7 @@ public class MainFragmentService extends Fragment implements GetServiceTask.Serv
 
     @Override
     public void getServicesSuccessResponse(List<Order> serviceList) {
-        mServiceAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) serviceList);
+        OrdersAdapter mServiceAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) serviceList);
         mRecyclerServices.setHasFixedSize(true);
         mRecyclerServices.setItemViewCacheSize(20);
         mRecyclerServices.setDrawingCacheEnabled(true);

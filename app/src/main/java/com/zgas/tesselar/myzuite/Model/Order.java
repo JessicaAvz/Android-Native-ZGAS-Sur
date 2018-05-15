@@ -1,13 +1,18 @@
 package com.zgas.tesselar.myzuite.Model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Order model
  *
  * @author jarvizu on 28/08/2017
  * @version 2018.0.9
+ * @see RealmObject
+ * @see io.realm.Realm
  */
-public class Order {
-
+public class Order extends RealmObject {
+    @PrimaryKey
     private String orderId;
     private String orderUserId;
     private String orderTimeAssignment;
@@ -24,14 +29,14 @@ public class Order {
     private String orderPaymentMethod;
     private String orderClientName;
     private String orderClientPhone;
-    private caseStatus orderStatus;
-    private caseTypes orderType;
-    private casePriority orderPriority;
+    private String orderStatus;
+    private String orderType;
+    private String orderPriority;
 
     public Order() {
     }
 
-    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderClientPhone, caseStatus orderStatus, caseTypes orderType, casePriority orderPriority) {
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderClientPhone, String orderStatus, String orderType, String orderPriority) {
         this.orderId = orderId;
         this.orderUserId = orderUserId;
         this.orderTimeAssignment = orderTimeAssignment;
@@ -53,7 +58,7 @@ public class Order {
         this.orderPriority = orderPriority;
     }
 
-    public enum casePriority {
+    /*public enum casePriority {
         HIGH("High"),
         MEDIUM("Medium"),
         LOW("Low");
@@ -71,9 +76,9 @@ public class Order {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
-    public enum caseStatus {
+    /*public enum caseStatus {
         NEW("New"),
         ASSIGNED("Asignado"),
         SEEN("Visto"),
@@ -97,9 +102,9 @@ public class Order {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
-    public enum caseTypes {
+    /*public enum caseTypes {
         CUT("Corte"),
         ORDER("Pedido"),
         MEASURED("Medido"),
@@ -118,7 +123,7 @@ public class Order {
         public String toString() {
             return this.name;
         }
-    }
+    }*/
 
     public String getOrderId() {
         return orderId;
@@ -160,22 +165,6 @@ public class Order {
         this.orderTimeDeparture = orderTimeDeparture;
     }
 
-    public caseStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(caseStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public casePriority getOrderPriority() {
-        return orderPriority;
-    }
-
-    public void setOrderPriority(casePriority orderPriority) {
-        this.orderPriority = orderPriority;
-    }
-
     public String getOrderAccountName() {
         return orderAccountName;
     }
@@ -190,14 +179,6 @@ public class Order {
 
     public void setOrderAddress(String orderAddress) {
         this.orderAddress = orderAddress;
-    }
-
-    public caseTypes getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(caseTypes orderType) {
-        this.orderType = orderType;
     }
 
     public String getOrderTimeScheduled() {
@@ -270,5 +251,29 @@ public class Order {
 
     public void setOrderClientPhone(String orderClientPhone) {
         this.orderClientPhone = orderClientPhone;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getOrderPriority() {
+        return orderPriority;
+    }
+
+    public void setOrderPriority(String orderPriority) {
+        this.orderPriority = orderPriority;
     }
 }

@@ -54,11 +54,8 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     RecyclerView mRecyclerOrders;
     @BindView(R.id.fragment_main_operator_refresh_layout)
     RecyclerRefreshLayout mRecyclerRefreshLayout;
-    private OrdersAdapter mOrderAdapter;
-    private View mRootView;
     private UserPreferences mUserPreferences;
     LinearLayoutManager layoutManager;
-    private User mUser;
     private Unbinder unbinder;
 
     public MainFragmentOperator() {
@@ -69,11 +66,10 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserObject();
         initUi();
         return mRootView;
     }
@@ -128,7 +124,7 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
 
     @Override
     public void getCasesSuccessResponse(List<Order> orderList) {
-        mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) orderList);
+        OrdersAdapter mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) orderList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);

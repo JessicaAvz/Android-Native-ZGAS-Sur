@@ -51,10 +51,7 @@ public class HelpFragmentLeak extends Fragment implements
     @BindView(R.id.fragment_help_leakage_sp_options)
     Spinner mSpinnerOptions;
     String cancelationReason;
-    private View mRootView;
     private UserPreferences mUserPreferences;
-    private User mUser;
-    private JSONObject params;
     private Dialog dialog;
     private Unbinder unbinder;
 
@@ -66,11 +63,11 @@ public class HelpFragmentLeak extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_help_leak, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_help_leak, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
-        mUser = mUserPreferences.getUserObject();
+        User mUser = mUserPreferences.getUserObject();
         Log.d(DEBUG_TAG, "Usuario logeado id: " + mUser.getUserId());
         Log.d(DEBUG_TAG, "Usuario logeado nombre: " + mUser.getUserName());
         Log.d(DEBUG_TAG, "Usuario logeado tipo: " + mUser.getUserType());
@@ -99,7 +96,7 @@ public class HelpFragmentLeak extends Fragment implements
     }
 
     private void callAsyncTask() {
-        params = new JSONObject();
+        JSONObject params = new JSONObject();
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
