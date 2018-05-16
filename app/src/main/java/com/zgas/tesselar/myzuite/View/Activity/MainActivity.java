@@ -32,8 +32,6 @@ import com.zgas.tesselar.myzuite.View.Fragment.UserLeakage.MainFragmentLeak;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.ExtraOrderFragmentOperator;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.HelpFragmentOperator;
 import com.zgas.tesselar.myzuite.View.Fragment.UserOperator.MainFragmentOperator;
-import com.zgas.tesselar.myzuite.View.Fragment.UserService.HelpFragmentService;
-import com.zgas.tesselar.myzuite.View.Fragment.UserService.MainFragmentService;
 
 import org.json.JSONObject;
 
@@ -66,8 +64,6 @@ import io.realm.Realm;
  * @see MainFragmentOperator
  * @see HelpFragmentOperator
  * @see ExtraOrderFragmentOperator
- * @see MainFragmentService
- * @see HelpFragmentService
  * @see CustomViewPager
  * @see PagerAdapter
  * @see SupervisorAdapter
@@ -130,11 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiOperator();
-            } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_service))) {
-                Log.d(DEBUG_TAG, "User service " + getResources().getString(R.string.on_create));
-                setContentView(R.layout.activity_main);
-                ButterKnife.bind(this);
-                initUiService();
             } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_supervisor))) {
                 Log.d(DEBUG_TAG, "User supervisor " + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_supervisor);
@@ -175,19 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPagerAdapter.addFragment(mHelpFragmentOperator);
         customViewPager.setAdapter(mPagerAdapter);
         initBottomNavigationOperator();
-    }
-
-    private void initUiService() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
-        customViewPager.setPagingEnabled(false);
-        MainFragmentService mMainFragmentService = new MainFragmentService();
-        HelpFragmentService mHelpFragmentService = new HelpFragmentService();
-        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        mPagerAdapter.addFragment(mMainFragmentService);
-        mPagerAdapter.addFragment(mHelpFragmentService);
-        customViewPager.setAdapter(mPagerAdapter);
-        initBottomNavigationService();
     }
 
     private void initUiSupervisor() {
@@ -264,66 +242,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     customViewPager.setCurrentItem(1);
                 } else if (position == 2) {
                     customViewPager.setCurrentItem(2);
-                }
-                return true;
-            }
-        });
-        ahBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
-            @Override
-            public void onPositionChange(int y) {
-                Log.d(DEBUG_TAG, "BottomNavigation Position: " + y);
-            }
-        });
-    }
-
-    private void initBottomNavigationService() {
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_main_fragment_service), icon_gas_cylinder_menu, pink_500);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getResources().getString(R.string.prompt_help_fragment), icon_help, pink_500);
-
-        ahBottomNavigation.addItem(item1);
-        ahBottomNavigation.addItem(item2);
-
-        ahBottomNavigation.setDefaultBackgroundColor(white);
-        ahBottomNavigation.setBehaviorTranslationEnabled(false);
-        ahBottomNavigation.setBehaviorTranslationEnabled(false);
-        ahBottomNavigation.setAccentColor(pink_500);
-        ahBottomNavigation.setInactiveColor(pink_50);
-        ahBottomNavigation.setForceTint(true);
-        ahBottomNavigation.setTranslucentNavigationEnabled(true);
-        ahBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-        ahBottomNavigation.setCurrentItem(0);
-        customViewPager.setCurrentItem(0);
-        customViewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                animateFab(position);
-                switch (position) {
-                    case 0:
-                        getSupportActionBar().setTitle(R.string.prompt_main_fragment_service);
-                        break;
-                    case 1:
-                        getSupportActionBar().setTitle(R.string.prompt_help_fragment);
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        ahBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                if (position == 0) {
-                    customViewPager.setCurrentItem(0);
-                } else if (position == 1) {
-                    customViewPager.setCurrentItem(1);
                 }
                 return true;
             }

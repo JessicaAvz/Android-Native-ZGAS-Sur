@@ -58,16 +58,6 @@
     <string name="prompt_detail_supervisor_user_type">Tipo de usuario</string>
     <string name="prompt_detail_supervisor_user_status">Estatus del usuario</string>
 
-    <!-- Activity detail service -->
-    <string name="prompt_detail_service_client_id">Número de cliente</string>
-    <string name="prompt_detail_service_client_name">Nombre del cliente</string>
-    <string name="prompt_detail_service_address">Dirección del servicio</string>
-    <string name="prompt_detail_service_hour_set">Hora programada para el servicio</string>
-    <string name="prompt_detail_service_hour_seen">Hora de visualización del servicio</string>
-    <string name="prompt_detail_service_hour_made">Hora del servicio</string>
-    <string name="prompt_detail_service_hour_arrived">Hora de entrega</string>
-    <string name="prompt_detail_service_status">Estatus del servicio</string>
-
     <!-- Activity supervisor  -->
     <string name="prompt_supervised_name">Nombre del supervisado</string>
     <string name="prompt_supervised_status">Estatus del supervisado </string>

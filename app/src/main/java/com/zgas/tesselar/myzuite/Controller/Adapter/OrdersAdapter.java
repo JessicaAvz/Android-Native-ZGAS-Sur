@@ -24,7 +24,6 @@ import com.zgas.tesselar.myzuite.Service.PutReviewOrderTask;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperator;
-import com.zgas.tesselar.myzuite.View.Activity.UserService.DetailActivityService;
 
 import org.json.JSONObject;
 
@@ -98,7 +97,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
      * @param position   The position of the item within the data set.
      * @see OrderViewHolder
      * @see DetailActivityOperator
-     * @see DetailActivityService
      * @see Intent
      * @see Bundle
      */
@@ -187,16 +185,9 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
                 bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
 
                 intent = new Intent();
-                if (serviceType.equals(context.getResources().getString(R.string.order_type_measured)) && recordType.equals(context.getResources().getString(R.string.order_type_order))) {
-                    intent = new Intent(context, DetailActivityService.class);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                } else if (recordType.equals(context.getResources().getString(R.string.order_type_order))) {
-                    intent = new Intent(context, DetailActivityOperator.class);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                }
-
+                intent = new Intent(context, DetailActivityOperator.class);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
 
