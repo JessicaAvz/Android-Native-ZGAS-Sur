@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
  */
 public class OrdersAdapter extends RecyclerSwipeAdapter {
 
-    private static final String DEBUG_TAG = "OrdersAdapter";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     private Context context;

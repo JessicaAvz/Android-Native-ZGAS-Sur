@@ -30,6 +30,7 @@
     <string name="prompt_detail_operator_ticket">Folio del ticket</string>
     <string name="prompt_detail_operator_total">Total</string>
     <string name="prompt_detail_operator_payment">Tipo de pago</string>
+    <string name="prompt_detail_operator">Detalle del pedido</string>
 
     <!-- Activity detail leakage -->
     <string name="prompt_detail_leakage_client_id">Número de cliente</string>
@@ -46,6 +47,7 @@
     <string name="prompt_detail_leakage_tank">Cantidad de litros</string>
     <string name="prompt_detail_leakage_ticket">Folio del ticket</string>
     <string name="prompt_detail_leakage_total">Total</string>
+    <string name="prompt_detail_leakage">Detalle de la fuga</string>
 
     <!-- Activity detail user -->
     <string name="prompt_detail_supervisor_user_id">Número de usuario</string>
@@ -180,14 +182,17 @@
     <string name="cylinder_45_kg">45 kgs.</string>
     <string name="cylinder_quantity_hint"># cilindros...</string>
 
+    <!-- User status -->
     <string name="user_active">Activo</string>
     <string name="user_not_active">No activo</string>
 
+    <!-- Usertype -->
     <string name="user_type_operator">Operador</string>
     <string name="user_type_service">Servicio Medido</string>
     <string name="user_type_supervisor">Supervisor</string>
     <string name="user_type_technician">Técnico de Fugas</string>
 
+    <!-- Order status -->
     <string name="order_status_new">New</string>
     <string name="order_status_assigned">Asignado</string>
     <string name="order_status_seen">Visto</string>
@@ -198,14 +203,20 @@
     <string name="order_status_closed">Closed</string>
     <string name="order_status_canceled">Cancelado</string>
 
+    <!-- Priorities-->
     <string name="order_priority_high">High</string>
     <string name="order_priority_medium">Medium</string>
     <string name="order_priority_low">Low</string>
 
+    <!-- Order types -->
     <string name="order_type_cut">Corte</string>
     <string name="order_type_measured">Medido</string>
     <string name="order_type_order">Pedido</string>
     <string name="order_type_reconnection">Re-conexión</string>
+
+    <!--Order service types -->
+    <string name="service_static">Estacionario</string>
+    <string name="service_cylinder">Cilindro</string>
 
 </resources>
 

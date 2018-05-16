@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "GetOrdersTask";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String CASES_ARRAY = "Orders";
     private static final String METHOD = "GET";
     private static final String USER_ID = "Id";

@@ -47,7 +47,7 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         LoginTask.LoginTaskListener, GetUserInfoTask.UserInfoListener {
 
-    private static final String DEBUG_TAG = "LoginActivity";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String EMAIL_TAG = "email";
     private static final String PASS_TAG = "password";
     private static final String ADMIN_TOKEN = "access_token";

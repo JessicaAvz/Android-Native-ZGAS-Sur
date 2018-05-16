@@ -34,16 +34,7 @@ import butterknife.ButterKnife;
  */
 public class DetailActivitySupervisor extends AppCompatActivity {
 
-    private static final String DEBUG_TAG = "DetailActSuperv";
-
-    private Bundle mBundle;
-    private String mStrUserId;
-    private String mStrUserName;
-    private String mStrUserEmail;
-    private String mStrUserRoute;
-    private String mStrUserZone;
-    private String mStrUserStatus;
-    private String mStrUserType;
+    private final String DEBUG_TAG = getClass().getSimpleName();
 
     @BindView(R.id.activity_detail_supervisor_tv_user_id)
     TextView mUserId;
@@ -65,9 +56,6 @@ public class DetailActivitySupervisor extends AppCompatActivity {
     @BindColor(R.color.red)
     int red;
 
-    private UserPreferences mUserPreferences;
-    private User mUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +63,8 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(this);
-        mUser = mUserPreferences.getUserObject();
+        UserPreferences mUserPreferences = new UserPreferences(this);
+        User mUser = mUserPreferences.getUserObject();
         initUi();
     }
 
@@ -84,14 +72,14 @@ public class DetailActivitySupervisor extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mBundle = getIntent().getExtras();
-        mStrUserId = mBundle.getString(ExtrasHelper.EXTRA_USER_ID);
-        mStrUserName = mBundle.getString(ExtrasHelper.EXTRA_USER_NAME);
-        mStrUserEmail = mBundle.getString(ExtrasHelper.EXTRA_USER_EMAIL);
-        mStrUserRoute = mBundle.getString(ExtrasHelper.EXTRA_USER_ROUTE);
-        mStrUserZone = mBundle.getString(ExtrasHelper.EXTRA_USER_ZONE);
-        mStrUserStatus = mBundle.getString(ExtrasHelper.EXTRA_USER_STATUS);
-        mStrUserType = mBundle.getString(ExtrasHelper.EXTRA_USER_TYPE);
+        Bundle mBundle = getIntent().getExtras();
+        String mStrUserId = mBundle.getString(ExtrasHelper.EXTRA_USER_ID);
+        String mStrUserName = mBundle.getString(ExtrasHelper.EXTRA_USER_NAME);
+        String mStrUserEmail = mBundle.getString(ExtrasHelper.EXTRA_USER_EMAIL);
+        String mStrUserRoute = mBundle.getString(ExtrasHelper.EXTRA_USER_ROUTE);
+        String mStrUserZone = mBundle.getString(ExtrasHelper.EXTRA_USER_ZONE);
+        String mStrUserStatus = mBundle.getString(ExtrasHelper.EXTRA_USER_STATUS);
+        String mStrUserType = mBundle.getString(ExtrasHelper.EXTRA_USER_TYPE);
 
         getSupportActionBar().setTitle("Detalles de " + mStrUserName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

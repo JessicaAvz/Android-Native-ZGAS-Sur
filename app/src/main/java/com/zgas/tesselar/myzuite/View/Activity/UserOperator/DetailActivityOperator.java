@@ -58,30 +58,21 @@ import butterknife.OnClick;
 public class DetailActivityOperator extends AppCompatActivity implements
         PutStatusOrderTask.StatusOrderTaskListener {
 
-    private static final String DEBUG_TAG = "DetailActivityOperator";
+    private final String DEBUG_TAG = getClass().getSimpleName();
 
-    private Bundle bundle;
     private String mStrCaseId;
-    private String mStrCaseUserName;
     private String mStrCaseAddress;
     private String mStrCaseStatus;
-    private String mStrCaseType;
-    private String mStrCasePriority;
-    private String mStrCaseTimeIn;
     private String mStrCaseTimeSeen;
-    private String mStrCaseTimeArrived;
-    private String mStrCaseTimeProgrammed;
-    private String mStrCasePaymentMethod;
-    private String mStrCaseRecordType;
     private String mStrCaseServiceType;
 
-    private String strTicket;
-    private String strQuantity;
-    private String strCylinder10;
-    private String strCylinder20;
-    private String strCylinder30;
-    private String strCylinder45;
-    private String strCancellationReason;
+    private String mStrTicket;
+    private String mStrQuantity;
+    private String mStrCylinder10;
+    private String mStrCylinder20;
+    private String mStrCylinder30;
+    private String mStrCylinder45;
+    private String mStrCancellationReason;
 
     @BindView(R.id.activity_detail_operator_tv_client_name)
     TextView mUserName;
@@ -132,11 +123,8 @@ public class DetailActivityOperator extends AppCompatActivity implements
     @BindColor(R.color.grey_300)
     int grey_300;
 
-    private UserPreferences userPreferences;
-    private User user;
     private boolean isClicked = false;
     private JSONObject params;
-    private String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +133,8 @@ public class DetailActivityOperator extends AppCompatActivity implements
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        userPreferences = new UserPreferences(this);
-        user = userPreferences.getUserObject();
+        UserPreferences userPreferences = new UserPreferences(this);
+        User user = userPreferences.getUserObject();
         initUi();
         checkButtons();
     }
@@ -183,31 +171,26 @@ public class DetailActivityOperator extends AppCompatActivity implements
     private void initUi() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-        date = dateFormat.format(calendar.getTime());
-        if (mStrCaseTimeSeen == null) {
-            Order order = new Order();
-            order.setOrderTimeSeen(date);
-            mStrCaseTimeSeen = date;
-        }
+        String date = dateFormat.format(calendar.getTime());
 
-        bundle = getIntent().getExtras();
+        Bundle bundle = getIntent().getExtras();
         mStrCaseId = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
-        mStrCaseUserName = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
+        String mStrCaseUserName = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
         mStrCaseAddress = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
         mStrCaseStatus = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
-        mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
-        mStrCasePriority = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
-        mStrCaseTimeIn = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
-        mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
-        mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
-        mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
-        mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
+        String mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
+        String mStrCasePriority = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
+        String mStrCaseTimeIn = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
+        String mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
+        String mStrCaseTimeProgrammed = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED);
+        String mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
+        String mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
         mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Detalle del pedido " + mStrCaseId);
+        getSupportActionBar().setTitle(getApplicationContext().getResources().getString(R.string.prompt_detail_operator) + " " + mStrCaseId);
 
         if (mStrCaseUserName == null || mStrCaseUserName.equals("")) {
             mUserName.setText(getResources().getString(R.string.no_data));
@@ -267,7 +250,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_in_progress));
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_in_progress));
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
@@ -284,20 +267,20 @@ public class DetailActivityOperator extends AppCompatActivity implements
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_finished));
-            if (mStrCaseServiceType.equals("Cilindro")) {
-                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, strCylinder10);
-                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20, strCylinder20);
-                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30, strCylinder30);
-                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45, strCylinder45);
+            if (mStrCaseServiceType.equals(this.getResources().getString(R.string.service_static))) {
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, mStrCylinder10);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20, mStrCylinder20);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30, mStrCylinder30);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45, mStrCylinder45);
                 Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
                         "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
                         "Cylinder 10: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10) +
                         "Cylinder 20: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20) +
                         "Cylinder 30: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30) +
                         "Cylinder 45: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45));
-            } else if (mStrCaseServiceType.equals("Estacionario")) {
-                params.put(ExtrasHelper.ORDER_JSON_OBJECT_TICKET, strTicket);
-                params.put(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY, strQuantity);
+            } else if (mStrCaseServiceType.equals(this.getResources().getString(R.string.service_cylinder))) {
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_TICKET, mStrTicket);
+                params.put(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY, mStrQuantity);
                 Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) +
                         "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
                         "Ticket: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_TICKET) +
@@ -317,7 +300,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_canceled));
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, mStrCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
@@ -371,10 +354,10 @@ public class DetailActivityOperator extends AppCompatActivity implements
             mBtnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    strCylinder10 = et10Kilograms.getText().toString();
-                    strCylinder20 = et20Kilograms.getText().toString();
-                    strCylinder30 = et30Kilograms.getText().toString();
-                    strCylinder45 = et45Kilograms.getText().toString();
+                    mStrCylinder10 = et10Kilograms.getText().toString();
+                    mStrCylinder20 = et20Kilograms.getText().toString();
+                    mStrCylinder30 = et30Kilograms.getText().toString();
+                    mStrCylinder45 = et45Kilograms.getText().toString();
                     callAsyncTaskFinished();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
@@ -405,10 +388,10 @@ public class DetailActivityOperator extends AppCompatActivity implements
                     if (isEmpty(etQuantity) || isEmpty(etTicket)) {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_finish_incorrect), Toast.LENGTH_LONG).show();
                     } else {
-                        strQuantity = etQuantity.getText().toString();
-                        strTicket = etTicket.getText().toString();
-                        Log.d(DEBUG_TAG, "Cantidad surtida " + strQuantity);
-                        Log.d(DEBUG_TAG, "Folio del ticket " + strTicket);
+                        mStrQuantity = etQuantity.getText().toString();
+                        mStrTicket = etTicket.getText().toString();
+                        Log.d(DEBUG_TAG, "Cantidad surtida " + mStrQuantity);
+                        Log.d(DEBUG_TAG, "Folio del ticket " + mStrTicket);
                         etQuantity.getText().clear();
                         etTicket.getText().clear();
                         callAsyncTaskFinished();
@@ -449,7 +432,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
                 if (mSpinnerOptions.getSelectedItem() == null) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    strCancellationReason = mSpinnerOptions.getSelectedItem().toString();
+                    mStrCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_correct), Toast.LENGTH_LONG).show();
                     callAsyncTaskCancelled();

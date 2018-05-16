@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
  */
 public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.SupervisedViewHolder> {
 
-    private static final String DEBUG_TAG = "SupervisorAdapter";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private Context context;
     private ArrayList<User> mSupervisedList;
 

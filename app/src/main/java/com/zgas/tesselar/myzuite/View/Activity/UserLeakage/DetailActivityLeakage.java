@@ -1,7 +1,6 @@
 package com.zgas.tesselar.myzuite.View.Activity.UserLeakage;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,24 +54,10 @@ import butterknife.OnClick;
 public class DetailActivityLeakage extends AppCompatActivity implements
         PutStatusLeakTask.StatusLeakTaskListener {
 
-    private static final String DEBUG_TAG = "DetailActivityLeakage";
-    private Bundle mBundle;
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private String mStrLeakId;
-    private String mStrLeakClientName;
     private String mStrLeakStatus;
-    private String mStrLeakType;
-    private String mStrLeakPriority;
-    private String mStrLeakOperator;
     private String mStrLeakSubject;
-    private String mStrLeakFolioSalesNote;
-    private String mStrLeakTimeSeen;
-    private String mStrLeakTimeDeparture;
-    private String mStrLeakTimeArrived;
-    private String mStrLeakTimeScheduled;
-    private String mStrLeakTimeTechnician;
-    private String mStrCylinderCapacity;
-    private String mStrCylinderColor;
-    private String mStrChannel;
     private String mStrLeakAddress;
     private String strCancellationReason;
 
@@ -126,10 +111,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     @BindColor(R.color.grey_300)
     int grey_300;
 
-    private UserPreferences mUserPreferences;
-    private User mUser;
     private boolean isClicked = false;
-    private Context context;
     private JSONObject params;
 
     @Override
@@ -139,9 +121,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.pull_in_right, R.anim.no_change);
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
-        mUserPreferences = new UserPreferences(this);
-        mUser = mUserPreferences.getUserObject();
-        context = this;
+        UserPreferences mUserPreferences = new UserPreferences(this);
+        User mUser = mUserPreferences.getUserObject();
         initUi();
         checkButtons();
     }
@@ -158,30 +139,29 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     private void initUi() {
         setSupportActionBar(toolbar);
 
-        mBundle = getIntent().getExtras();
+        Bundle mBundle = getIntent().getExtras();
         mStrLeakId = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID);
-        mStrLeakClientName = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS);
-        mStrLeakSubject = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT);
-        mStrLeakAddress = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS);
+        String mStrLeakClientName = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS);
+        String mStrLeakSubject = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT);
+        String mStrLeakAddress = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS);
         mStrLeakStatus = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS);
-        mStrLeakType = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SERVICE_TYPE);
-        mStrLeakPriority = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY);
-        mStrLeakTimeSeen = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SEEN);
-        mStrLeakTimeArrived = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END);
-        mStrLeakTimeScheduled = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED);
-        mStrLeakTimeDeparture = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE);
-        mStrLeakOperator = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_OPERATOR);
-        mStrLeakFolioSalesNote = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE);
-        mStrLeakTimeTechnician = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN);
-        mStrCylinderCapacity = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY);
-        mStrCylinderColor = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR);
-        mStrChannel = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL);
-        mLeakChannel = findViewById(R.id.activity_detail_leakage_tv_channel);
+        String mStrLeakType = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SERVICE_TYPE);
+        String mStrLeakPriority = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY);
+        String mStrLeakTimeSeen = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SEEN);
+        String mStrLeakTimeArrived = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END);
+        String mStrLeakTimeScheduled = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED);
+        String mStrLeakTimeDeparture = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE);
+        String mStrLeakOperator = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_OPERATOR);
+        String mStrLeakFolioSalesNote = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE);
+        String mStrLeakTimeTechnician = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN);
+        String mStrCylinderCapacity = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY);
+        String mStrCylinderColor = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR);
+        String mStrChannel = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL);
         mLeakChannel.setText(mStrChannel);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Detalle de la fuga " + mStrLeakId);
+        getSupportActionBar().setTitle(R.string.prompt_detail_leakage + " " + mStrLeakId);
 
         mUserName.setText(mStrLeakClientName);
         mLeakAddress.setText(mStrLeakAddress);
@@ -258,7 +238,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_in_progress));
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_in_progress));
 
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
@@ -276,7 +256,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         JSONObject params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_finished));
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_finished));
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS, resolution);
             params.put(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS, channel);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS) +
@@ -297,7 +277,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, String.valueOf(R.string.order_status_canceled));
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_canceled));
             //params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
@@ -371,42 +351,42 @@ public class DetailActivityLeakage extends AppCompatActivity implements
                 switch (i) {
                     case 1: //Cilindro con gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(context, R.array.leakage_prompts_cilynder_gas,
+                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_cilynder_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);
                         break;
                     case 2: //Cilindro sin gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(context, R.array.leakage_prompts_cilynder_no_gas,
+                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_cilynder_no_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);
                         break;
                     case 3: //Estacionario con gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(context, R.array.leakage_prompts_stationary_gas,
+                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);
                         break;
                     case 4: //Estacionario sin gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(context, R.array.leakage_prompts_stationary_no_gas,
+                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_no_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);
                         break;
                     case 5: //Servicio medido con gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(context, R.array.leakage_prompts_service_gas,
+                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_service_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);
                         break;
                     case 6: //Servicio medido sin gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(context, R.array.leakage_prompts_service_no_gas,
+                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_service_no_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);
@@ -496,11 +476,10 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
     @Override
     public void statusSuccessResponse(Leak leak) {
-        Log.d(DEBUG_TAG, "Si jala");
         isClicked = true;
         checkButtons();
 
-        String status = leak.getLeakStatus().toString();
+        String status = leak.getLeakStatus();
 
         if (status.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mLeakStatus.setTextColor(amber);
@@ -518,6 +497,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements
             mFabWaze.setVisibility(View.GONE);
         }
 
-        mLeakStatus.setText(leak.getLeakStatus().toString());
+        mLeakStatus.setText(leak.getLeakStatus());
     }
 }

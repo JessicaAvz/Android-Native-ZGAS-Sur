@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class GetServiceTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "GetServiceTask";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String SERVICES_ARRAY = "MeasuredOrders";
     private static final String METHOD = "GET";
     private static final String USER_ID = "Id";

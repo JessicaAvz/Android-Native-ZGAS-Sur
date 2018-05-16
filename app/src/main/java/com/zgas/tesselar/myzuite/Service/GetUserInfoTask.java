@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class GetUserInfoTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "GetUserInfoTask";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String PARAMS_EMAIL = "email";
     private static final String METHOD = "GET";
     private static final String JSON_OBJECT_ERROR = "errorCode";

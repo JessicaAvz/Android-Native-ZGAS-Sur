@@ -47,13 +47,12 @@ import butterknife.Unbinder;
 public class HelpFragmentOperator extends Fragment implements
         PutIncidenceTask.PutIncidenceListener {
 
-    private static final String DEBUG_TAG = "HelpFragmentOperator";
+    private final String DEBUG_TAG = getClass().getSimpleName();
 
     @BindView(R.id.fragment_help_operator_sp_options)
     Spinner mSpinnerOptions;
     private String cancelationReason;
     @BindView(R.id.fragment_help_operator_btn_send_problem)
-    Button mSendProblem;
     private UserPreferences mUserPreferences;
     private Dialog dialog;
     private Unbinder unbinder;

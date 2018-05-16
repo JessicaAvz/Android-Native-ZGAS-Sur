@@ -20,7 +20,7 @@ import java.util.Formatter;
 
 public class GetNewTokenTask {
 
-    public static String DEBUG_TAG = "GetNewTokenTask";
+    public String DEBUG_TAG = getClass().getSimpleName();
     private UserPreferences userPreferences;
 
     public GetNewTokenTask(Context context) {

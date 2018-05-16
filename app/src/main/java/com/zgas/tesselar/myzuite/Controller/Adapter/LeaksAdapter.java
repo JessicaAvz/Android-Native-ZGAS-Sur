@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
  */
 public class LeaksAdapter extends RecyclerSwipeAdapter {
 
-    private static final String DEBUG_TAG = "LeaksAdapter";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     private Context context;

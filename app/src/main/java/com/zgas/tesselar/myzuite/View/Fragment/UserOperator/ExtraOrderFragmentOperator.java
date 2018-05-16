@@ -44,14 +44,13 @@ import butterknife.Unbinder;
 public class ExtraOrderFragmentOperator extends Fragment implements
         PutNewOrderTask.NewOrderTaskListener {
 
-    private static final String DEBUG_TAG = "ExtraOrderFragmentOperator";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     @BindView(R.id.fragment_order_operator_et_username)
     EditText mUserName;
     @BindView(R.id.fragment_order_operator_et_phone)
     EditText mPhoneNumber;
     private String userName;
     private String userPhone;
-    private Button mMakeOrder;
     private UserPreferences mUserPreferences;
     private Dialog dialog;
     private Unbinder unbinder;

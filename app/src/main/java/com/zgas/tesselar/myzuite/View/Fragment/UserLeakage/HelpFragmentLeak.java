@@ -47,10 +47,10 @@ import butterknife.Unbinder;
 public class HelpFragmentLeak extends Fragment implements
         PutIncidenceTask.PutIncidenceListener {
 
-    private static final String DEBUG_TAG = "HelpFragmentLeak";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     @BindView(R.id.fragment_help_leakage_sp_options)
     Spinner mSpinnerOptions;
-    String cancelationReason;
+    private String cancelationReason;
     private UserPreferences mUserPreferences;
     private Dialog dialog;
     private Unbinder unbinder;

@@ -33,7 +33,7 @@ import java.util.Formatter;
  */
 public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "PutStatusOrderTask";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String METHOD = "PUT";
     private static final String JSON_OBJECT_ERROR = "StatusCode";
 

@@ -45,7 +45,7 @@ import butterknife.Unbinder;
  */
 public class MainFragmentLeak extends Fragment implements GetLeakagesTask.LeakagesTaskListener {
 
-    private static final String DEBUG_TAG = "MainFragmentLeak";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final int REFRESH_DELAY = 1000;
 
     @BindView(R.id.fragment_main_leak_recycler_view)

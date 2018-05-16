@@ -35,7 +35,7 @@ import java.net.URL;
  */
 public class ConnectionController {
 
-    private static final String DEBUG_TAG = "ConnectionController";
+    private final String DEBUG_TAG = getClass().getSimpleName();
 
     private URL url;
     private String method;

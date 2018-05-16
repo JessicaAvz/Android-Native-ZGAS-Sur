@@ -33,7 +33,7 @@ import java.util.Formatter;
  */
 public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
-    private static final String DEBUG_TAG = "LoginTask";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String METHOD = "POST";
     private static final String JSON_OBJECT_ERROR = "error";
 

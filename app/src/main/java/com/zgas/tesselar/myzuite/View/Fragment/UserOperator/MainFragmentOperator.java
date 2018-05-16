@@ -45,7 +45,7 @@ import butterknife.Unbinder;
  */
 public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
 
-    private static final String DEBUG_TAG = "MainFragmentOperator";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String USER_ID = "Id";
     private static final String ADMIN_TOKEN = "access_token";
     private static final int REFRESH_DELAY = 1000;

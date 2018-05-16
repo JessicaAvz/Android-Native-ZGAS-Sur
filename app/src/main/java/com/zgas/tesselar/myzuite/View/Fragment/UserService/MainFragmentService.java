@@ -44,7 +44,7 @@ import butterknife.Unbinder;
  */
 public class MainFragmentService extends Fragment implements GetServiceTask.ServiceTaskListener {
 
-    private static final String DEBUG_TAG = "MainFragmentService";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String USER_ID = "Id";
     private static final String ADMIN_TOKEN = "access_token";
     private static final int REFRESH_DELAY = 1000;

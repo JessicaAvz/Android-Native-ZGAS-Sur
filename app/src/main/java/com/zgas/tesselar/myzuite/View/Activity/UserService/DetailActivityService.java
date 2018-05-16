@@ -55,7 +55,7 @@ import butterknife.OnClick;
 public class DetailActivityService extends AppCompatActivity implements
         PutStatusOrderTask.StatusOrderTaskListener {
 
-    private static final String DEBUG_TAG = "DetailActivityService";
+    private final String DEBUG_TAG = getClass().getSimpleName();
 
     private Bundle bundle;
     private String mStrCaseId;

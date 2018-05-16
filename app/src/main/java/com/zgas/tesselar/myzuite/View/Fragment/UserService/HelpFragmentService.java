@@ -47,7 +47,7 @@ import butterknife.Unbinder;
 public class HelpFragmentService extends Fragment implements
         PutIncidenceTask.PutIncidenceListener {
 
-    private static final String DEBUG_TAG = "HelpFragmentService";
+    private final String DEBUG_TAG = getClass().getSimpleName();
     @BindView(R.id.fragment_help_service_sp_options)
     Spinner mSpinnerOptions;
     private UserPreferences mUserPreferences;

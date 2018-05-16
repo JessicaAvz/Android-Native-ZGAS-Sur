@@ -77,7 +77,7 @@ import io.realm.Realm;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetUserInfoTask.UserInfoListener {
 
-    private static final String DEBUG_TAG = "MainActivity";
+    private final String DEBUG_TAG = getClass().getSimpleName();
 
     @Nullable
     @BindView(R.id.activity_main_cv_bottom_navigation)
@@ -122,33 +122,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Realm.init(this);
         userPreferences = new UserPreferences(this);
         User user = userPreferences.getUserObject();
-        Log.d(DEBUG_TAG, user.getUserType());
         /*If a user is logged in, it will check it's type so the app will show the correct
         user interface.*/
         if (userPreferences.isLoggedIn()) {
             if (user.getUserType().equals(this.getResources().getString(R.string.user_type_operator))) {
-                Log.d(DEBUG_TAG, "User operator" + getResources().getString(R.string.on_create));
+                Log.d(DEBUG_TAG, "User operator " + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiOperator();
             } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_service))) {
-                Log.d(DEBUG_TAG, "User service" + getResources().getString(R.string.on_create));
+                Log.d(DEBUG_TAG, "User service " + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiService();
             } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_supervisor))) {
-                Log.d(DEBUG_TAG, "User supervisor" + getResources().getString(R.string.on_create));
+                Log.d(DEBUG_TAG, "User supervisor " + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_supervisor);
                 ButterKnife.bind(this);
                 getSupervisedCallAsyncTask();
                 initUiSupervisor();
             } else if (user.getUserType().equals(this.getResources().getString(R.string.user_type_technician))) {
-                Log.d(DEBUG_TAG, "User leakages" + getResources().getString(R.string.on_create));
+                Log.d(DEBUG_TAG, "User leakages " + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiLeakage();
             } else {
-                Log.d(DEBUG_TAG, "User operator default" + getResources().getString(R.string.on_create));
+                Log.d(DEBUG_TAG, "Default " + getResources().getString(R.string.on_create));
                 setContentView(R.layout.activity_main);
                 ButterKnife.bind(this);
                 initUiOperator();
