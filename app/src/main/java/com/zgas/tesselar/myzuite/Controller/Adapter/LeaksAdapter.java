@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.zgas.tesselar.myzuite.Model.Leak;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutReviewLeakTask;
@@ -41,10 +40,10 @@ import butterknife.ButterKnife;
  * @see ButterKnife
  * @see RecyclerSwipeAdapter
  */
-public class LeaksAdapter extends RecyclerSwipeAdapter {
+public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHolder> {
 
     private final String DEBUG_TAG = getClass().getSimpleName();
-    protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
+    //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     private Context context;
     private ArrayList<Leak> mLeaksList;
@@ -100,7 +99,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
      * @see Bundle
      */
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(LeaksViewHolder viewHolder, final int position) {
         final LeaksViewHolder holder = (LeaksViewHolder) viewHolder;
         mLeak = mLeaksList.get(position);
         String leakId = mLeak.getLeakId();
@@ -291,12 +290,12 @@ public class LeaksAdapter extends RecyclerSwipeAdapter {
         @BindView(R.id.row_main_fragment_tv_notice)
         TextView mLeakNotice;
 
-        LeaksViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        LeaksViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
             mLeakNotice.setVisibility(View.GONE);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();

@@ -30,7 +30,7 @@
     <string name="prompt_detail_operator_ticket">Folio del ticket</string>
     <string name="prompt_detail_operator_total">Total</string>
     <string name="prompt_detail_operator_payment">Tipo de pago</string>
-    <string name="prompt_detail_operator">Detalle del pedido</string>
+    <string name="prompt_detail_operator">Detalle </string>
 
     <!-- Activity detail leakage -->
     <string name="prompt_detail_leakage_client_id">Número de cliente</string>
@@ -47,7 +47,7 @@
     <string name="prompt_detail_leakage_tank">Cantidad de litros</string>
     <string name="prompt_detail_leakage_ticket">Folio del ticket</string>
     <string name="prompt_detail_leakage_total">Total</string>
-    <string name="prompt_detail_leakage">Detalle de la fuga</string>
+    <string name="prompt_detail_leakage">Detalle</string>
 
     <!-- Activity detail user -->
     <string name="prompt_detail_supervisor_user_id">Número de usuario</string>

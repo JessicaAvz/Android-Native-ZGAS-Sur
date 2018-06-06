@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutReviewOrderTask;
@@ -29,7 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -42,10 +40,10 @@ import butterknife.ButterKnife;
  * @see ButterKnife
  * @see RecyclerSwipeAdapter
  */
-public class OrdersAdapter extends RecyclerSwipeAdapter {
+public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewHolder> {
 
     private final String DEBUG_TAG = getClass().getSimpleName();
-    protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
+    //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     private Context context;
     private ArrayList<Order> mOrderList;
@@ -55,6 +53,14 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
     private Order mOrder;
     private Spinner mSpinnerOptions;
     private Dialog dialog;
+
+    private String caseId;
+    private String caseAddress;
+    private String caseNotice;
+    private String caseStatus;
+    private String caseType;
+    private String orderHourIn;
+    private String serviceType;
 
     /**
      * Constructor for the OrdersAdapter class.
@@ -80,7 +86,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         View v = li.inflate(R.layout.row_main_fragment_operator_my_orders, parent, false);
-        return new OrdersAdapter.OrderViewHolder(v);
+        return new OrderViewHolder(v);
     }
 
     /**
@@ -101,32 +107,34 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
      * @see Bundle
      */
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        final OrderViewHolder holder = (OrderViewHolder) viewHolder;
+    public void onBindViewHolder(final OrderViewHolder viewHolder, final int position) {
         mOrder = mOrderList.get(position);
-        String caseId = mOrder.getOrderId();
-        String caseAddress = mOrder.getOrderAddress();
-        String caseNotice = mOrder.getOrderNotice();
-        String caseStatus = mOrder.getOrderStatus();
-        String caseType = mOrder.getOrderType();
-        String orderHourIn = mOrder.getOrderTimeAssignment();
-        String serviceType = mOrder.getOrderServiceType();
+        caseId = mOrder.getOrderId();
+        caseAddress = mOrder.getOrderAddress();
+        caseNotice = mOrder.getOrderNotice();
+        caseStatus = mOrder.getOrderStatus();
+        caseType = mOrder.getOrderType();
+        orderHourIn = mOrder.getOrderTimeAssignment();
+        serviceType = mOrder.getOrderServiceType();
 
-        final TextView id = holder.mOrderId;
-        TextView address = holder.mOrderAddress;
-        TextView hourIn = holder.mOrderTimeIn;
-        TextView type = holder.mOrderType;
-        TextView notice = holder.mOrderNotice;
+        Log.d(DEBUG_TAG, String.valueOf(position));
+        Log.d(DEBUG_TAG, caseId);
+        Log.d(DEBUG_TAG, caseAddress);
+        Log.d(DEBUG_TAG, caseNotice);
+        Log.d(DEBUG_TAG, caseStatus);
+
+        TextView id = viewHolder.mOrderId;
+        TextView address = viewHolder.mOrderAddress;
+        TextView hourIn = viewHolder.mOrderTimeIn;
+        TextView type = viewHolder.mOrderType;
+        TextView notice = viewHolder.mOrderNotice;
+        TextView status = viewHolder.mOrderStatus;
 
         if (caseNotice.equals("Sin aviso")) {
             notice.setVisibility(View.GONE);
         } else {
             notice.setText("Avisar al cliente: " + caseNotice);
         }
-
-        id.setText(caseId);
-        address.setText(caseAddress);
-
 
         id.setText("Pedido número: " + String.valueOf(caseId));
         address.setText("Dirección: " + caseAddress);
@@ -138,7 +146,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             hourIn.setText("Hora del pedido: " + orderHourIn);
         }
 
-        TextView status = holder.mOrderStatus;
         if (caseStatus.equals(context.getResources().getString(R.string.order_status_canceled))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
         } else if (caseStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
@@ -149,14 +156,14 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             status.setTextColor(context.getResources().getColor(R.color.blue));
         }
         status.setText(caseStatus.toString());
-        holder.itemView.setTag(mOrderList.get(position));
 
-        holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+        viewHolder.mSwipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrder.getOrderId());
-                final String id = mOrder.getOrderId();
+                Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrderList.get(position).getOrderId());
+                mOrder = mOrderList.get(position);
+                String id = mOrder.getOrderId();
                 String address = mOrder.getOrderAddress();
                 String status = mOrder.getOrderStatus();
                 String timeAssignment = mOrder.getOrderTimeAssignment();
@@ -191,7 +198,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
             }
         });
 
-        holder.mOrderReview.setOnClickListener(new View.OnClickListener() {
+        viewHolder.mOrderReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog = new Dialog(context);
@@ -219,7 +226,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
 
                             try {
                                 params.put(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID, userPreferences.getUserObject().getUserId());
-                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, mOrder.getOrderId());
+                                params.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, mOrderList.get(position).getOrderId());
                                 params.put(ExtrasHelper.REVIEW_JSON_OBJECT_REVIEW, mSpinnerOptions.getSelectedItem().toString());
 
                                 Log.d(DEBUG_TAG, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID).toString());
@@ -292,28 +299,28 @@ public class OrdersAdapter extends RecyclerSwipeAdapter {
      */
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.row_main_fragment_swipe_orders)
-        SwipeLayout swipeLayout;
-        @BindView(R.id.row_visit_recycler_tv_review_visit)
+        SwipeLayout mSwipeLayout;
         TextView mOrderReview;
-        @BindView(R.id.row_main_fragment_tv_order_id)
         TextView mOrderId;
-        @BindView(R.id.row_main_fragment_tv_order_status)
         TextView mOrderStatus;
-        @BindView(R.id.row_main_fragment_tv_order_address)
         TextView mOrderAddress;
-        @BindView(R.id.row_main_fragment_tv_order_in)
         TextView mOrderTimeIn;
-        @BindView(R.id.row_main_fragment_tv_order_type)
         TextView mOrderType;
-        @BindView(R.id.row_main_fragment_tv_notice)
         TextView mOrderNotice;
 
-        OrderViewHolder(final View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        OrderViewHolder(final View itemView) {
+            super(itemView);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            mSwipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
+            mOrderReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
+            mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
+            mOrderStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
+            mOrderAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
+            mOrderTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
+            mOrderType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
+            mOrderNotice = itemView.findViewById(R.id.row_main_fragment_tv_notice);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int requestCode = getAdapterPosition();
