@@ -188,9 +188,8 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                         aOrder.setOrderStatus(String.valueOf(R.string.order_status_accepted));
                     } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_retired))) {
                         aOrder.setOrderStatus(String.valueOf(R.string.order_status_retired));
-                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_closed))) {
-                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_closed));
                     }
+
                     Log.d(DEBUG_TAG, "Status del caso : " + aOrder.getOrderStatus());
 
                     if (aOrder.getOrderPriority().equals(String.valueOf(R.string.order_priority_high))) {

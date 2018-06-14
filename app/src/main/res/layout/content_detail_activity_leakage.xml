@@ -210,14 +210,16 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:clickable="true"
-            android:visibility="gone"
             app:backgroundTint="@color/light_green"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/activity_detail_leakage_fab_in_progress"
+            app:layout_constraintStart_toEndOf="@+id/activity_detail_leakage_fab_in_progress"
             app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_tv_color"
             app:srcCompat="@drawable/icon_end" />
 
@@ -237,6 +239,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_tv_color"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/icon_gas_tank" />
 
         <android.support.design.widget.FloatingActionButton
@@ -244,13 +247,14 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:clickable="true"
-            android:visibility="gone"
             app:backgroundTint="@color/red"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/activity_detail_leakage_fab_in_progress"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/activity_detail_leakage_fab_in_progress"
+            app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/icon_close" />
 
         <android.support.design.widget.FloatingActionButton

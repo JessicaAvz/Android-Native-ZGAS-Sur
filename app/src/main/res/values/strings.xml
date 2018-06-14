@@ -183,14 +183,13 @@
     <string name="user_type_technician">Técnico de Fugas</string>
 
     <!-- Order status -->
-    <string name="order_status_new">New</string>
+    <string name="order_status_new">Nuevo</string>
     <string name="order_status_assigned">Asignado</string>
     <string name="order_status_seen">Visto</string>
     <string name="order_status_accepted">Aceptado</string>
     <string name="order_status_in_progress">En curso</string>
     <string name="order_status_retired">Cilindro retirado</string>
     <string name="order_status_finished">Entregado</string>
-    <string name="order_status_closed">Closed</string>
     <string name="order_status_canceled">Cancelado</string>
 
     <!-- Priorities-->

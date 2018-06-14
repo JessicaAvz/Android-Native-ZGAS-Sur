@@ -1,5 +1,6 @@
 package com.zgas.tesselar.myzuite.Service;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private JSONObject params;
     private UserPreferences userPreferences;
     private boolean isError = false;
+    private ProgressDialog progressDialog;
 
     /**
      * Constructor for the PutReviewOrderTask. Additionally, we have an UserPreferences class reference
@@ -54,6 +56,10 @@ public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
+    }
+
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_message), false);
     }
 
     @Override
@@ -92,6 +98,7 @@ public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
+        progressDialog.dismiss();
         Log.d(DEBUG_TAG, jsonObject.toString());
         Order order = null;
 
@@ -107,6 +114,7 @@ public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, params.get(ExtrasHelper.ORDER_JSON_OBJECT_ID));
                 jsonObject.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME, params.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME));
                 jsonObject.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE, params.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE));
+                jsonObject.put(ExtrasHelper.MY_ZUITE, true);
                 Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString());
                 Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME).toString());
                 Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE).toString());

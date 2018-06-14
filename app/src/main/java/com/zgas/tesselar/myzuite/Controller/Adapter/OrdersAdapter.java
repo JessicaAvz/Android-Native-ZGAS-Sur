@@ -117,12 +117,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
         orderHourIn = mOrder.getOrderTimeAssignment();
         serviceType = mOrder.getOrderServiceType();
 
-        Log.d(DEBUG_TAG, String.valueOf(position));
-        Log.d(DEBUG_TAG, caseId);
-        Log.d(DEBUG_TAG, caseAddress);
-        Log.d(DEBUG_TAG, caseNotice);
-        Log.d(DEBUG_TAG, caseStatus);
-
         TextView id = viewHolder.mOrderId;
         TextView address = viewHolder.mOrderAddress;
         TextView hourIn = viewHolder.mOrderTimeIn;
@@ -130,7 +124,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
         TextView notice = viewHolder.mOrderNotice;
         TextView status = viewHolder.mOrderStatus;
 
-        if (caseNotice.equals("Sin aviso")) {
+        if (caseNotice.equals("Sin aviso") || caseNotice.equals("") || caseNotice.equals(null)) {
             notice.setVisibility(View.GONE);
         } else {
             notice.setText("Avisar al cliente: " + caseNotice);

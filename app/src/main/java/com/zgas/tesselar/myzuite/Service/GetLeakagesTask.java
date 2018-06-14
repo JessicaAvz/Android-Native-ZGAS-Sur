@@ -192,8 +192,6 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
                         leak.setLeakStatus(context.getResources().getString(R.string.order_status_accepted));
                     } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_retired))) {
                         leak.setLeakStatus(context.getResources().getString(R.string.order_status_retired));
-                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_closed))) {
-                        leak.setLeakStatus(context.getResources().getString(R.string.order_status_closed));
                     }
                     Log.d(DEBUG_TAG, "Status del caso: " + leak.getLeakStatus());
 

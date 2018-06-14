@@ -136,7 +136,6 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
             status.setTextColor(context.getResources().getColor(R.color.blue));
         }
         status.setText(leakStatus);
-        holder.itemView.setTag(mLeaksList.get(position));
 
         holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override

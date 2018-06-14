@@ -55,6 +55,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         PutStatusLeakTask.StatusLeakTaskListener {
 
     private final String DEBUG_TAG = getClass().getSimpleName();
+
     private String mStrLeakId;
     private String mStrLeakStatus;
     private String mStrLeakSubject;
@@ -161,13 +162,49 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(R.string.prompt_detail_leakage + " " + mStrLeakId);
+        getSupportActionBar().setTitle(this.getResources().getString(R.string.prompt_detail_leakage) + " " + mStrLeakId);
 
-        mUserName.setText(mStrLeakClientName);
-        mLeakAddress.setText(mStrLeakAddress);
-        mLeakStatus.setText(mStrLeakStatus);
-        mLeakCylinderColor.setText(mStrCylinderColor);
-        mLeakCylinderCapacity.setText(mStrCylinderCapacity);
+        if (mStrCylinderCapacity == null || mStrCylinderCapacity.equals("")) {
+            mLeakCylinderCapacity.setText(getResources().getString(R.string.no_data));
+        } else {
+            mLeakCylinderCapacity.setText(mStrCylinderCapacity);
+        }
+
+        if (mStrCylinderColor == null || mStrCylinderColor.equals("")) {
+            mLeakCylinderColor.setText(getResources().getString(R.string.no_data));
+        } else {
+            mLeakCylinderColor.setText(mStrCylinderColor);
+        }
+
+        if (mStrLeakAddress == null || mStrLeakAddress.equals("")) {
+            mLeakAddress.setText(getResources().getString(R.string.no_data));
+        } else {
+            mLeakAddress.setText(mStrLeakAddress);
+        }
+
+        if (mStrLeakClientName == null || mStrLeakClientName.equals("")) {
+            mUserName.setText(getResources().getString(R.string.no_data));
+        } else {
+            mUserName.setText(mStrLeakClientName);
+        }
+
+        if (mStrLeakStatus == null || mStrLeakStatus.equals("")) {
+            mLeakStatus.setText(getResources().getString(R.string.no_data));
+        } else {
+            if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_new))) {
+                mLeakStatus.setTextColor(getResources().getColor(R.color.blue));
+                mLeakStatus.setText(mStrLeakStatus);
+            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
+                mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
+                mLeakStatus.setText(mStrLeakStatus);
+            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_canceled))) {
+                mLeakStatus.setTextColor(getResources().getColor(R.color.red));
+                mLeakStatus.setText(mStrLeakStatus);
+            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_finished))) {
+                mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
+                mLeakStatus.setText(mStrLeakStatus);
+            }
+        }
 
         if (mStrLeakTimeTechnician == null || mStrLeakTimeTechnician.equals("")) {
             mLeakTimeIn.setText(getResources().getString(R.string.no_data));
@@ -192,7 +229,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         } else {
             mLeakTimeScheduled.setText(mStrLeakTimeScheduled);
         }
-        mLeakStatus.setTextColor(blue);
     }
 
     @Override
@@ -256,7 +292,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         JSONObject params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_finished));
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_finished));
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS, resolution);
             params.put(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS, channel);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS) +
@@ -277,7 +313,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_canceled));
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_canceled));
             //params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
@@ -373,20 +409,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements
                     case 4: //Estacionario sin gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
                         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_no_gas,
-                                android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mSpinnerLeakResolution.setAdapter(adapter);
-                        break;
-                    case 5: //Servicio medido con gas
-                        mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_service_gas,
-                                android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mSpinnerLeakResolution.setAdapter(adapter);
-                        break;
-                    case 6: //Servicio medido sin gas
-                        mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_service_no_gas,
                                 android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSpinnerLeakResolution.setAdapter(adapter);

@@ -105,29 +105,26 @@ public class PutStatusOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         Log.d(DEBUG_TAG, jsonObject.toString());
-        Order order = null;
-
+        Order order = new Order();
         try {
             if (jsonObject == null) {
                 statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString().equals(null)) {
+            } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString() == null) {
                 statusOrderTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.has(ExtrasHelper.ORDER_JSON_OBJECT_ID)) {
-                order = new Order();
+            } else if (jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_ID).toString() != null) {
                 jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, params.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS));
                 order.setOrderStatus(jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString());
                 Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS_UPDATE).toString());
                 Log.d(DEBUG_TAG, order.getOrderStatus());
                 isError = false;
+                statusOrderTaskListener.statusSuccessResponse(order);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            if (statusOrderTaskListener != null) {
-                statusOrderTaskListener.statusSuccessResponse(order);
-            }
+
         }
     }
 

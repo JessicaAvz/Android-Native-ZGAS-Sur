@@ -89,6 +89,7 @@ public class ExtraOrderFragmentOperator extends Fragment implements
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mUserPreferences.getUserObject().getUserId());
             params.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME, userName);
             params.put(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_PHONE, userPhone);
+            params.put(ExtrasHelper.MY_ZUITE, true);
 
             Log.d(DEBUG_TAG, "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID)
                     + " Razón: " + params.getString(ExtrasHelper.ORDER_JSON_EXTRA_ORDER_NAME)

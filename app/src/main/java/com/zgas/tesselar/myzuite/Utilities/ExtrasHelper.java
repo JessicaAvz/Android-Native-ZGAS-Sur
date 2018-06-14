@@ -11,6 +11,7 @@ package com.zgas.tesselar.myzuite.Utilities;
 public class ExtrasHelper {
 
     public static final String CALL = "tel:12345678910";
+    public static final String MY_ZUITE = "myZuite";
 
     //Login Object
     public static final String LOGIN_JSON_OBJECT_TOKEN = "access_token";
