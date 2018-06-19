@@ -71,7 +71,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
     private String mStrCylinder20;
     private String mStrCylinder30;
     private String mStrCylinder45;
-    private String mStrCancellationReason;
+    private String mStrFailureReason;
 
     @BindView(R.id.activity_detail_operator_tv_client_name)
     TextView mUserName;
@@ -102,8 +102,8 @@ public class DetailActivityOperator extends AppCompatActivity implements
     @BindView(R.id.activity_detail_operator_fab_finished)
     FloatingActionButton mFabFinished;
     @Nullable
-    @BindView(R.id.activity_detail_operator_fab_cancel)
-    FloatingActionButton mFabCanceled;
+    @BindView(R.id.activity_detail_operator_fab_failure)
+    FloatingActionButton mFabFailed;
     @Nullable
     @BindView(R.id.activity_detail_operator_fab_waze)
     FloatingActionButton mFabWaze;
@@ -130,22 +130,22 @@ public class DetailActivityOperator extends AppCompatActivity implements
     private void checkButtons() {
         if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mFabFinished.show();
-            mFabCanceled.show();
+            mFabFailed.show();
             mFabWaze.show();
             mFabInProgress.hide();
-        } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_canceled))) {
+        } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_failed))) {
             mFabFinished.hide();
-            mFabCanceled.hide();
+            mFabFailed.hide();
             mFabWaze.hide();
             mFabInProgress.hide();
         } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_finished))) {
             mFabFinished.hide();
-            mFabCanceled.hide();
+            mFabFailed.hide();
             mFabWaze.hide();
             mFabInProgress.hide();
         } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_new))) {
             mFabFinished.hide();
-            mFabCanceled.hide();
+            mFabFailed.hide();
             mFabWaze.hide();
             mFabInProgress.show();
         }
@@ -161,9 +161,9 @@ public class DetailActivityOperator extends AppCompatActivity implements
         finishDialog();
     }
 
-    @OnClick(R.id.activity_detail_operator_fab_cancel)
-    public void onClickCanceled() {
-        cancelDialog();
+    @OnClick(R.id.activity_detail_operator_fab_failure)
+    public void onClickFailed() {
+        failureDialog();
     }
 
     @OnClick(R.id.activity_detail_operator_fab_waze)
@@ -190,18 +190,17 @@ public class DetailActivityOperator extends AppCompatActivity implements
         String mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
         mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
 
-        Log.d(DEBUG_TAG, mStrCaseId);
-        Log.d(DEBUG_TAG, mStrCaseUserName);
-        Log.d(DEBUG_TAG, mStrCaseAddress);
-        Log.d(DEBUG_TAG, mStrCaseStatus);
-        Log.d(DEBUG_TAG, mStrCaseType);
-        Log.d(DEBUG_TAG, mStrCasePriority);
-        Log.d(DEBUG_TAG, mStrCaseTimeIn);
-        //Log.d(DEBUG_TAG, mStrCaseTimeArrived);
-        Log.d(DEBUG_TAG, mStrCaseTimeProgrammed);
-        Log.d(DEBUG_TAG, mStrCasePaymentMethod);
-        Log.d(DEBUG_TAG, mStrCaseRecordType);
-        Log.d(DEBUG_TAG, mStrCaseServiceType);
+        Log.d(DEBUG_TAG, "Id del caso: " + mStrCaseId);
+        Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
+        Log.d(DEBUG_TAG, "Dirección: " + mStrCaseAddress);
+        Log.d(DEBUG_TAG, "Estatus: " + mStrCaseStatus);
+        Log.d(DEBUG_TAG, "Tipo de caso: " + mStrCaseType);
+        Log.d(DEBUG_TAG, "Prioridad: " + mStrCasePriority);
+        Log.d(DEBUG_TAG, "Hora de entrada: " + mStrCaseTimeIn);
+        Log.d(DEBUG_TAG, "Hora programada: " + mStrCaseTimeProgrammed);
+        Log.d(DEBUG_TAG, "Método de pago: " + mStrCasePaymentMethod);
+        Log.d(DEBUG_TAG, "Tipo de récord: " + mStrCaseRecordType);
+        Log.d(DEBUG_TAG, "Tipo de servicio: " + mStrCaseServiceType);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -226,7 +225,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
             if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
                 mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
                 mCaseStatus.setText(mStrCaseStatus);
-            } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_canceled))) {
+            } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_failed))) {
                 mCaseStatus.setTextColor(getResources().getColor(R.color.red));
                 mCaseStatus.setText(mStrCaseStatus);
             } else if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_finished))) {
@@ -269,7 +268,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
         }
 
         mFabFinished.setVisibility(View.GONE);
-        mFabCanceled.setVisibility(View.GONE);
+        mFabFailed.setVisibility(View.GONE);
         mFabWaze.setVisibility(View.GONE);
     }
 
@@ -291,8 +290,13 @@ public class DetailActivityOperator extends AppCompatActivity implements
 
     private void callAsyncTaskFinished() {
         JSONObject params = new JSONObject();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
+        String date = dateFormat.format(calendar.getTime());
+
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
+            params.put(ExtrasHelper.ORDER_JSON_TIME_FINISHED, date);
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, this.getResources().getString((R.string.order_status_finished)));
             if (mStrCaseServiceType.equals(this.getResources().getString(R.string.service_cylinder))) {
                 params.put(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10, mStrCylinder10);
@@ -304,7 +308,8 @@ public class DetailActivityOperator extends AppCompatActivity implements
                         "Cylinder 10: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_10) +
                         "Cylinder 20: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_20) +
                         "Cylinder 30: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_30) +
-                        "Cylinder 45: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45));
+                        "Cylinder 45: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_CYLINDER_45) +
+                        "Date: " + params.getString(ExtrasHelper.ORDER_JSON_TIME_FINISHED));
             } else if (mStrCaseServiceType.equals(this.getResources().getString(R.string.service_static))) {
                 params.put(ExtrasHelper.ORDER_JSON_OBJECT_TICKET, mStrTicket);
                 params.put(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY, mStrQuantity);
@@ -312,7 +317,8 @@ public class DetailActivityOperator extends AppCompatActivity implements
                         "Id: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID) +
                         "Ticket: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_TICKET) +
                         "Quantity: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_QUANTITY) +
-                        "Address: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS));
+                        "Address: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS) +
+                        "Date: " + params.getString(ExtrasHelper.ORDER_JSON_TIME_FINISHED));
             }
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
             putStatusOrderTask.setStatusOrderTaskListener(this);
@@ -323,12 +329,12 @@ public class DetailActivityOperator extends AppCompatActivity implements
         }
     }
 
-    private void callAsyncTaskCancelled() {
+    private void callAsyncTaskFailed() {
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.ORDER_JSON_OBJECT_ID, mStrCaseId);
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_canceled));
-            params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, mStrCancellationReason);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_failed));
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_FAILURE_REASON, mStrFailureReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS) + " ID: " + params.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID));
 
             PutStatusOrderTask putStatusOrderTask = new PutStatusOrderTask(this, params);
@@ -438,35 +444,35 @@ public class DetailActivityOperator extends AppCompatActivity implements
         dialog.show();
     }
 
-    private void cancelDialog() {
+    private void failureDialog() {
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_cancel_case_operator);
+        dialog.setContentView(R.layout.dialog_failure_case_operator);
         dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
 
         Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
-        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_cancel_case_sp_option);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_failure_case_sp_option);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.failure_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
 
-        Button mBtnAccept = dialog.findViewById(R.id.dialog_cancel_case_btn_accept);
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_failure_case_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mSpinnerOptions.getSelectedItem() == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_cancel_incorrect), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.order_failure_incorrect), Toast.LENGTH_LONG).show();
                 } else {
-                    mStrCancellationReason = mSpinnerOptions.getSelectedItem().toString();
+                    mStrFailureReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
-                    callAsyncTaskCancelled();
+                    callAsyncTaskFailed();
                     dialog.dismiss();
                 }
             }
         });
 
-        Button mBtnCancel = dialog.findViewById(R.id.dialog_cancel_case_btn_cancel);
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_failure_case_btn_cancel);
         mBtnCancel.setOnClickListener(new View.OnClickListener()
 
         {
@@ -501,7 +507,7 @@ public class DetailActivityOperator extends AppCompatActivity implements
                 .OnNegativeClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        mFabCanceled.hide();
+                        mFabFailed.hide();
                         mFabFinished.hide();
                         mFabInProgress.show();
                     }
@@ -530,22 +536,24 @@ public class DetailActivityOperator extends AppCompatActivity implements
             mCaseStatus.setTextColor(getResources().getColor(R.color.amber));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.VISIBLE);
-            mFabCanceled.setVisibility(View.VISIBLE);
+            mFabFailed.setVisibility(View.VISIBLE);
             mFabWaze.setVisibility(View.VISIBLE);
+            Toast.makeText(this, getResources().getString(R.string.order_in_progress), Toast.LENGTH_SHORT).show();
         } else if (status.equals(this.getResources().getString(R.string.order_status_finished))) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.light_green));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
+            mFabFailed.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (status.equals(this.getResources().getString(R.string.order_status_canceled))) {
+            Toast.makeText(this, getResources().getString(R.string.order_finish_correct), Toast.LENGTH_SHORT).show();
+        } else if (status.equals(this.getResources().getString(R.string.order_status_failed))) {
             mCaseStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
+            mFabFailed.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
+            Toast.makeText(this, getResources().getString(R.string.order_failure_correct), Toast.LENGTH_SHORT).show();
         }
-
         mCaseStatus.setText(order.getOrderStatus().toString());
     }
 }

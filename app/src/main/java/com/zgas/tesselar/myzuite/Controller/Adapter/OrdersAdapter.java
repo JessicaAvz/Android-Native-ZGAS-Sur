@@ -140,7 +140,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
             hourIn.setText("Hora del pedido: " + orderHourIn);
         }
 
-        if (caseStatus.equals(context.getResources().getString(R.string.order_status_canceled))) {
+        if (caseStatus.equals(context.getResources().getString(R.string.order_status_failed))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
         } else if (caseStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
@@ -150,6 +150,10 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
             status.setTextColor(context.getResources().getColor(R.color.blue));
         }
         status.setText(caseStatus.toString());
+
+        if (caseStatus.equals(context.getResources().getString(R.string.order_status_reviewing))) {
+            viewHolder.mSwipeLayout.setSwipeEnabled(false);
+        }
 
         viewHolder.mSwipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,25 +234,26 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
                                 PutReviewOrderTask.OrderReviewTaskListener listener = new PutReviewOrderTask.OrderReviewTaskListener() {
                                     @Override
                                     public void reviewOrderErrorResponse(String error) {
-                                        Log.d(DEBUG_TAG, "Daniel Come caca");
+                                        viewHolder.mSwipeLayout.close(true);
+                                        Toast.makeText(context, context.getResources().getString(R.string.order_review_incorrect), Toast.LENGTH_LONG).show();
                                     }
 
                                     @Override
                                     public void reviewOrderSuccessResponse(Order order) {
-                                        Log.d(DEBUG_TAG, "Jessica Come kk");
+                                        viewHolder.mSwipeLayout.close(true);
+                                        Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
                                     }
                                 };
 
-                                PutReviewOrderTask t = new PutReviewOrderTask(context, params);
-                                t.setOrderReviewTaskListener(listener);
-                                t.execute();
+                                PutReviewOrderTask putReviewOrderTask = new PutReviewOrderTask(context, params);
+                                putReviewOrderTask.setOrderReviewTaskListener(listener);
+                                putReviewOrderTask.execute();
 
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                             mSpinnerOptions.setSelection(0);
-                            Toast.makeText(context, context.getResources().getString(R.string.order_review_correct), Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                     }
@@ -267,6 +272,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
             }
         });
     }
+
 
     /**
      * Returns the total number of items in the data set held by the adapter.

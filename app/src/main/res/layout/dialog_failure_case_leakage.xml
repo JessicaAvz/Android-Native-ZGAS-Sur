@@ -31,26 +31,26 @@
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="@string/dialog_cancel_title"
+        android:text="@string/dialog_failure_title"
         android:textColor="@color/grey_800"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/dialog_cancel_case_leakage_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_cancel_case_leakage_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="@string/dialog_cancel_body"
+        android:text="@string/dialog_failure_body"
         android:textColor="@color/grey_600"
         android:textSize="15sp" />
 
     <Spinner
-        android:id="@+id/dialog_cancel_case_leakage_sp_option"
+        android:id="@+id/dialog_failure_case_leakage_sp_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView2"
+        android:layout_below="@id/dialog_cancel_case_leakage_body"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="24dp" />
@@ -58,7 +58,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dialog_cancel_case_leakage_sp_option"
+        android:layout_below="@id/dialog_failure_case_leakage_sp_option"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -67,7 +67,7 @@
         android:padding="10dp">
 
         <Button
-            android:id="@+id/dialog_cancel_case_leakage_btn_cancel"
+            android:id="@+id/dialog_failure_case_leakage_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -79,7 +79,7 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/dialog_cancel_case_leakage_btn_accept"
+            android:id="@+id/dialog_failure_case_leakage_btn_accept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

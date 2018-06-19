@@ -190,6 +190,9 @@ public class ConnectionController {
         return jsonObject;
     }
 
+    /*
+     * Set isRefreshing flag for token refreshing
+     */
     public void setRefreshing(boolean isRefreshing) {
         this.isRefreshing = isRefreshing;
     }

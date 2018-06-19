@@ -28,11 +28,9 @@ public class GetNewTokenTask {
     }
 
     public void getNewToken() {
-        Log.d(DEBUG_TAG, "WEY, estamos funcionando! yeeeeeeeiIiIiiiiiIII");
         try {
             Formatter formatter_admin = new Formatter();
             String format_admin = formatter_admin.format(UrlHelper.LOGIN_URL, UrlHelper.GRANT_TYPE, UrlHelper.CLIENT_ID, UrlHelper.CLIENT_SECRET, UrlHelper.ADMIN_EMAIL, UrlHelper.ADMIN_PASS).toString();
-            //Log.d(DEBUG_TAG, format_admin);
             URL url_admin = new URL(format_admin);
             ConnectionController connection_admin = new ConnectionController(null, url_admin, "POST");
             connection_admin.setRefreshing(true);

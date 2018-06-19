@@ -58,6 +58,10 @@ public class PutNewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     * progress dialog to show user that the backup is processing.
+     */
+    @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_message), false);
     }

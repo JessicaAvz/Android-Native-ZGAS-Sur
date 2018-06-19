@@ -266,7 +266,7 @@
         app:srcCompat="@drawable/icon_gas_tank" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_detail_operator_fab_cancel"
+        android:id="@+id/activity_detail_operator_fab_failure"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="32dp"

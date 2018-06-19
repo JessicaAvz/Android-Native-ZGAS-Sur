@@ -32,6 +32,9 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,7 +96,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     FloatingActionButton mFabFinished;
     @Nullable
     @BindView(R.id.activity_detail_leakage_fab_cancel)
-    FloatingActionButton mFabCanceled;
+    FloatingActionButton mFabFailed;
     @Nullable
     @BindView(R.id.activity_detail_leakage_fab_waze)
     FloatingActionButton mFabWaze;
@@ -129,11 +132,26 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     }
 
     private void checkButtons() {
-        if (isClicked == true || mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
+        if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
             mFabFinished.show();
-            mFabCanceled.show();
+            mFabFailed.show();
             mFabWaze.show();
             mFabInProgress.hide();
+        } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_failed))) {
+            mFabFinished.hide();
+            mFabFailed.hide();
+            mFabWaze.hide();
+            mFabInProgress.hide();
+        } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_finished))) {
+            mFabFinished.hide();
+            mFabFailed.hide();
+            mFabWaze.hide();
+            mFabInProgress.hide();
+        } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_new))) {
+            mFabFinished.hide();
+            mFabFailed.hide();
+            mFabWaze.hide();
+            mFabInProgress.show();
         }
     }
 
@@ -197,7 +215,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
             } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
                 mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
                 mLeakStatus.setText(mStrLeakStatus);
-            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_canceled))) {
+            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_failed))) {
                 mLeakStatus.setTextColor(getResources().getColor(R.color.red));
                 mLeakStatus.setText(mStrLeakStatus);
             } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_finished))) {
@@ -290,15 +308,21 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
     private void callAsyncTaskFinished() {
         JSONObject params = new JSONObject();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
+        String date = dateFormat.format(calendar.getTime());
+
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
+            params.put(ExtrasHelper.ORDER_JSON_TIME_FINISHED, date);
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_finished));
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS, resolution);
             params.put(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS, channel);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS) +
                     "Id: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID) +
                     "Cylinder 10: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS) +
-                    "Cylinder 20: " + params.getString(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS));
+                    "Cylinder 20: " + params.getString(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS) +
+                    "Date: " + params.getString(ExtrasHelper.ORDER_JSON_TIME_FINISHED));
 
             PutStatusLeakTask putStatusLeakTask = new PutStatusLeakTask(this, params);
             putStatusLeakTask.setStatusLeakTaskListener(this);
@@ -313,8 +337,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         params = new JSONObject();
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_canceled));
-            //params.put(ExtrasHelper.ORDER_JSON_OBJECT_CANCELATION_REASON, strCancellationReason);
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_failed));
+            //params.put(ExtrasHelper.ORDER_JSON_OBJECT_FAILURE_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
 
@@ -334,12 +358,12 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     }
 
     private void inProgressDialog() {
-        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
+        Log.d(DEBUG_TAG, "In progress dialog " + getResources().getString(R.string.on_create));
 
         new FancyAlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.dialog_in_progress_title))
+                .setTitle(getResources().getString(R.string.dialog_in_progress_title_leak))
                 .setBackgroundColor(amber)
-                .setMessage(getResources().getString(R.string.dialog_in_progress_body))
+                .setMessage(getResources().getString(R.string.dialog_in_progress_body_leak))
                 .setNegativeBtnText(getResources().getString(R.string.cancel))
                 .setPositiveBtnBackground(amber)
                 .setPositiveBtnText(getResources().getString(R.string.dialog_in_progress_accept))
@@ -356,7 +380,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
                 .OnNegativeClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        mFabCanceled.hide();
+                        mFabFailed.hide();
                         mFabFinished.hide();
                         mFabInProgress.show();
                     }
@@ -372,7 +396,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         dialog.setCancelable(false);
 
         final Spinner mSpinnerLeakChannel = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_option);
-        final Spinner mSpinnerLeakResolution = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_third_option);
+        final Spinner mSpinnerLeakResolution = dialog.findViewById(R.id.dialog_finish_case_leakage_sp_second_option);
         mSpinnerLeakResolution.setVisibility(View.GONE);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leakage_prompts,
@@ -383,35 +407,35 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         mSpinnerLeakChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayAdapter<CharSequence> adapter;
+                ArrayAdapter<CharSequence> innerAdapter;
                 switch (i) {
                     case 1: //Cilindro con gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_cilynder_gas,
+                        innerAdapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.leakage_prompts_cilynder_gas,
                                 android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mSpinnerLeakResolution.setAdapter(adapter);
+                        innerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mSpinnerLeakResolution.setAdapter(innerAdapter);
                         break;
                     case 2: //Cilindro sin gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_cilynder_no_gas,
+                        innerAdapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.leakage_prompts_cilynder_no_gas,
                                 android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mSpinnerLeakResolution.setAdapter(adapter);
+                        innerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mSpinnerLeakResolution.setAdapter(innerAdapter);
                         break;
                     case 3: //Estacionario con gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_gas,
+                        innerAdapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.leakage_prompts_stationary_gas,
                                 android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mSpinnerLeakResolution.setAdapter(adapter);
+                        innerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mSpinnerLeakResolution.setAdapter(innerAdapter);
                         break;
                     case 4: //Estacionario sin gas
                         mSpinnerLeakResolution.setVisibility(View.VISIBLE);
-                        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.leakage_prompts_stationary_no_gas,
+                        innerAdapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.leakage_prompts_stationary_no_gas,
                                 android.R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mSpinnerLeakResolution.setAdapter(adapter);
+                        innerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mSpinnerLeakResolution.setAdapter(innerAdapter);
                         break;
                 }
             }
@@ -435,7 +459,6 @@ public class DetailActivityLeakage extends AppCompatActivity implements
                     Log.d(DEBUG_TAG, resolution);
                     Log.d(DEBUG_TAG, channel);
                     callAsyncTaskFinished();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.leak_finish_correct), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
             }
@@ -454,33 +477,38 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
     private void cancelDialog() {
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_cancel_case_leakage);
+        dialog.setContentView(R.layout.dialog_failure_case_leakage);
         dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
         Log.d(DEBUG_TAG, "Cancel dialog " + getResources().getString(R.string.on_create));
         dialog.setCancelable(false);
 
-        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_cancel_case_leakage_sp_option);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cancelation_prompts, android.R.layout.simple_spinner_item);
+        TextView mTextTitle = dialog.findViewById(R.id.dialog_cancel_case_leakage_title);
+        mTextTitle.setText(getResources().getString(R.string.dialog_failure_title_leak));
+
+        TextView mTextBody = dialog.findViewById(R.id.dialog_cancel_case_leakage_body);
+        mTextBody.setText(getResources().getString(R.string.dialog_failure_body_leak));
+
+        final Spinner mSpinnerOptions = dialog.findViewById(R.id.dialog_failure_case_leakage_sp_option);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.failure_prompts, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerOptions.setAdapter(new NothingSelectedSpinnerAdapter(adapter, R.layout.contact_spinner_row_nothing_selected, this));
 
-        Button mBtnAccept = dialog.findViewById(R.id.dialog_cancel_case_leakage_btn_accept);
+        Button mBtnAccept = dialog.findViewById(R.id.dialog_failure_case_leakage_btn_accept);
         mBtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mSpinnerOptions.getSelectedItem() == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.leak_cancel_incorrect), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.leak_failure_incorrect), Toast.LENGTH_LONG).show();
                 } else {
                     strCancellationReason = mSpinnerOptions.getSelectedItem().toString();
                     mSpinnerOptions.setSelection(0);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.leak_cancel_correct), Toast.LENGTH_LONG).show();
                     callAsyncTaskCancelled();
                     dialog.dismiss();
                 }
             }
         });
 
-        Button mBtnCancel = dialog.findViewById(R.id.dialog_cancel_case_leakage_btn_cancel);
+        Button mBtnCancel = dialog.findViewById(R.id.dialog_failure_case_leakage_btn_cancel);
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -504,21 +532,27 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         String status = leak.getLeakStatus();
 
         if (status.equals(this.getResources().getString(R.string.order_status_in_progress))) {
-            mLeakStatus.setTextColor(amber);
+            mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.VISIBLE);
+            mFabFailed.setVisibility(View.VISIBLE);
+            mFabWaze.setVisibility(View.VISIBLE);
+            Toast.makeText(this, getResources().getString(R.string.leak_in_progress), Toast.LENGTH_SHORT).show();
         } else if (status.equals(this.getResources().getString(R.string.order_status_finished))) {
-            mLeakStatus.setTextColor(light_green);
+            mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
+            mFabFailed.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
-        } else if (status.equals(this.getResources().getString(R.string.order_status_canceled))) {
-            mLeakStatus.setTextColor(red);
+            Toast.makeText(this, getResources().getString(R.string.leak_finish_correct), Toast.LENGTH_SHORT).show();
+        } else if (status.equals(this.getResources().getString(R.string.order_status_failed))) {
+            mLeakStatus.setTextColor(getResources().getColor(R.color.red));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
-            mFabCanceled.setVisibility(View.GONE);
+            mFabFailed.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
+            Toast.makeText(this, getResources().getString(R.string.leak_failure_correct), Toast.LENGTH_SHORT).show();
         }
-
         mLeakStatus.setText(leak.getLeakStatus());
     }
 }

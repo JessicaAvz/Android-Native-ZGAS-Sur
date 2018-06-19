@@ -65,6 +65,10 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     * progress dialog to show user that the backup is processing.
+     */
+    @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
@@ -180,8 +184,8 @@ public class GetLeakagesTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                     if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_in_progress))) {
                         leak.setLeakStatus(context.getResources().getString(R.string.order_status_in_progress));
-                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_canceled))) {
-                        leak.setLeakStatus(context.getResources().getString(R.string.order_status_canceled));
+                    } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_failed))) {
+                        leak.setLeakStatus(context.getResources().getString(R.string.order_status_failed));
                     } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_finished))) {
                         leak.setLeakStatus(context.getResources().getString(R.string.order_status_finished));
                     } else if (leak.getLeakStatus().equals(context.getResources().getString(R.string.order_status_new))) {

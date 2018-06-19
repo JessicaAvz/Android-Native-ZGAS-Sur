@@ -28,6 +28,8 @@
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/dialog_new_order_title"
         android:textColor="@color/grey_800"
         android:textSize="20sp" />
@@ -39,6 +41,8 @@
         android:layout_below="@+id/dialog_new_order_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/dialog_new_order_body"
         android:textAlignment="center"
         android:textColor="@color/grey_600"
@@ -53,7 +57,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp">
 
         <Button
             android:id="@+id/dialog_new_order_btn_accept"

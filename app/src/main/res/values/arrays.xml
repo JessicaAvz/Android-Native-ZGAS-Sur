@@ -11,7 +11,7 @@
         <item>Herramienta no adecuada</item>
     </string-array>
 
-    <string-array name="cancelation_prompts">
+    <string-array name="failure_prompts">
         <item>El cliente no dejó dinero</item>
         <item>El cliente no estaba en casa</item>
         <item>No hay toma de llenado</item>

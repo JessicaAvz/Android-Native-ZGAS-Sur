@@ -70,16 +70,20 @@
     <string name="dialog_finish_title_leak">Finalizar reporte</string>
     <string name="dialog_finish_body_leak">¿Cuál fue la conclusión del reporte?</string>
 
-    <!-- Cancel dialog -->
-    <string name="dialog_cancel_title">Cancelar pedido</string>
-    <string name="dialog_cancel_body">¿Por qué desea cancelar el pedido?</string>
-    <string name="dialog_cancel_hint">Descrición...</string>
-    <string name="dialog_cancel_accept">Aceptar</string>
-    <string name="dialog_cancel_cancel">Cancelar</string>
+    <!-- Failure dialog -->
+    <string name="dialog_failure_title">Falla en el pedido</string>
+    <string name="dialog_failure_title_leak">Falla en el reporte</string>
+    <string name="dialog_failure_body">¿Por qué razón falló el pedido?</string>
+    <string name="dialog_failure_body_leak">¿Por qué razón falló el reporte?</string>
+    <string name="dialog_failure_hint">Descrición...</string>
+    <string name="dialog_failure_accept">Aceptar</string>
+    <string name="dialog_failure_cancel">Cancelar</string>
 
     <!-- Progress dialog -->
     <string name="dialog_in_progress_title">Pedido en curso</string>
+    <string name="dialog_in_progress_title_leak">Reporte en curso</string>
     <string name="dialog_in_progress_body">¿Desea iniciar el curso del pedido?</string>
+    <string name="dialog_in_progress_body_leak">¿Desea iniciar el curso del reporte?</string>
     <string name="dialog_in_progress_accept">Aceptar</string>
 
     <!-- Extra order dialog -->
@@ -121,34 +125,31 @@
     <string name="title_activity_detail_service">DetailActivityService</string>
 
     <!-- Finalization, cancellation, in progress strings-->
+    <string name="order_in_progress">El pedido está en curso.</string>
     <string name="order_finish_report">Realizar reporte</string>
     <string name="order_finish_report_correct">Reporte realizado exitosamente.</string>
-    <string name="leak_finish_incorrect">Por favor, seleccione una opción para finalizar el reporte.</string>
-    <string name="leak_finish_correct">Pedido finalizado correctamente.</string>
-    <string name="leak_cancel_incorrect">Por favor, seleccione una opción para reportar una incidencia.</string>
-    <string name="leak_cancel_correct">Pedido cancelado correctamente.</string>
-    <string name="order_new_incorrect">Por favor, llene todos los campos para hacer un pedido.</string>
-    <string name="order_finish_incorrect">Por favor, llene todos los campos para finalizar el pedido.</string>
-    <string name="order_finish_correct">Pedido finalizado correctamente.</string>
-    <string name="order_cancel_incorrect">Por favor, seleccione una opción para cancelar el pedido.</string>
-    <string name="order_review_correct">Revisión reportada correctamente.</string>
-    <string name="order_review_incorrect">Por favor, seleccione una opción para reportar una revisión.</string>
-    <string name="order_cancel_correct">Pedido cancelado correctamente.</string>
-    <string name="service_finish_incorrect">Por favor, llene todos los campos para finalizar el pedido.</string>
-    <string name="service_finish_correct">Pedido finalizado correctamente.</string>
-    <string name="service_cancel_incorrect">Por favor, seleccione una opción para reportar una incidencia.</string>
-    <string name="service_cancel_correct">Pedido cancelado correctamente.</string>
+    <string name="leak_in_progress">El reporte está en curso.</string>
+    <string name="leak_finish_incorrect">Por favor, seleccione una opción.</string>
+    <string name="leak_finish_correct">Reporte finalizado.</string>
+    <string name="leak_failure_incorrect">Por favor, seleccione una opción.</string>
+    <string name="leak_failure_correct">Reporte fallido.</string>
+    <string name="order_new_incorrect">Por favor, llene todos los campos.</string>
+    <string name="order_finish_incorrect">Por favor, llene todos los campos.</string>
+    <string name="order_finish_correct">Pedido finalizado.</string>
+    <string name="order_failure_incorrect">Por favor, seleccione una opción.</string>
+    <string name="order_review_correct">Revisión reportada.</string>
+    <string name="order_review_incorrect">Por favor, seleccione una opción.</string>
+    <string name="order_failure_correct">Falla reportada.</string>
 
     <!-- Responses -->
     <string name="error">Error</string>
     <string name="no_data">Sin datos.</string>
     <string name="server_error">Error en el servidor.</string>
-    <string name="post">POST</string>
     <string name="login_error">Error con el inicio de sesión, por favor verifique sus datos.</string>
     <string name="wait_message">Por favor, espere...</string>
-    <string name="wait_cases_message">Recuperando los pedidos...</string>
-    <string name="wait_leakages_message">Recuperando los reportes...</string>
-    <string name="wait_users_message">Recuperando los usuarios...</string>
+    <string name="wait_cases_message">Recuperando los datos...</string>
+    <string name="wait_leakages_message">Recuperando los datos...</string>
+    <string name="wait_users_message">Recuperando los datos...</string>
     <string name="connection_error">Error de conexión, por favor intente más tarde.</string>
     <string name="user_data_error">Error al obtener los datos del usuario.</string>
     <string name="cases_data_error">Error al obtener los casos.</string>
@@ -160,6 +161,7 @@
 
     <!-- Review order -->
     <string name="dialog_review_order">Revisión del pedido</string>
+    <string name="dialog_review_order_leak">Revisión del reporte</string>
     <string name="dialog_review_order_prompt">Seleccione la opción de revisión</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
@@ -190,12 +192,13 @@
     <string name="order_status_in_progress">En curso</string>
     <string name="order_status_retired">Cilindro retirado</string>
     <string name="order_status_finished">Entregado</string>
-    <string name="order_status_canceled">Cancelado</string>
+    <string name="order_status_failed">Fallido</string>
+    <string name="order_status_reviewing">En revisión</string>
 
     <!-- Priorities-->
-    <string name="order_priority_high">High</string>
-    <string name="order_priority_medium">Medium</string>
-    <string name="order_priority_low">Low</string>
+    <string name="order_priority_high">Alta</string>
+    <string name="order_priority_medium">Media</string>
+    <string name="order_priority_low">Baja</string>
 
     <!-- Order types -->
     <string name="order_type_cut">Corte</string>

@@ -126,7 +126,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
         }
 
         TextView status = holder.mLeakStatus;
-        if (leakStatus.equals(context.getResources().getString(R.string.order_status_canceled))) {
+        if (leakStatus.equals(context.getResources().getString(R.string.order_status_failed))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
         } else if (leakStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
@@ -192,6 +192,9 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
                 dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog_Animation;
 
                 dialog.setCancelable(false);
+
+                TextView mTitleText = dialog.findViewById(R.id.dialog_review_case_title);
+                mTitleText.setText(R.string.dialog_review_order_leak);
 
                 mSpinnerOptions = dialog.findViewById(R.id.dialog_review_case_spinner);
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.order_prompts_review,

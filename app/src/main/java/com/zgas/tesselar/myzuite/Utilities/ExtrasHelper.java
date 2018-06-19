@@ -35,11 +35,13 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_TIME_SCHEDULED = "ScheduledDate";
     public static final String ORDER_JSON_OBJECT_STATUS = "Status";
     public static final String ORDER_JSON_OBJECT_STATUS_UPDATE = "StatusUpdate";
-    public static final String ORDER_JSON_OBJECT_CANCELATION_REASON = "cancelationReason";
+    public static final String ORDER_JSON_OBJECT_FAILURE_REASON = "cancelationReason";
     public static final String ORDER_JSON_OBJECT_STATUS_CODE = "StatusCode";
     public static final String ORDER_JSON_OBJECT_PRIORITY = "Priority";
     public static final String ORDER_JSON_OBJECT_USER_NAME = "AccountName";
     public static final String ORDER_JSON_OBJECT_NOTICE = "Notice";
+    public static final String ORDER_JSON_TIME_FINISHED = "deliveredDT";
+
     /*Tipo de servicio: estacionario, cilindro...*/
     public static final String ORDER_JSON_OBJECT_SERVICE_TYPE = "ServiceType";
     public static final String ORDER_JSON_OBJECT_ADDRESS = "Address";
@@ -58,7 +60,6 @@ public class ExtrasHelper {
     /*Extra order*/
     public static final String ORDER_JSON_EXTRA_ORDER_NAME = "name";
     public static final String ORDER_JSON_EXTRA_ORDER_PHONE = "phone";
-
 
     //UserObject
     public static final String EXTRA_USER_ID = "Id";

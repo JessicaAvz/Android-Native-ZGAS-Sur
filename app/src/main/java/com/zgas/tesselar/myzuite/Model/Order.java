@@ -28,7 +28,6 @@ public class Order extends RealmObject {
     private String orderNotice;
     private String orderPaymentMethod;
     private String orderClientName;
-    private String orderClientPhone;
     private String orderStatus;
     private String orderType;
     private String orderPriority;
@@ -36,7 +35,7 @@ public class Order extends RealmObject {
     public Order() {
     }
 
-    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderClientPhone, String orderStatus, String orderType, String orderPriority) {
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderStatus, String orderType, String orderPriority) {
         this.orderId = orderId;
         this.orderUserId = orderUserId;
         this.orderTimeAssignment = orderTimeAssignment;
@@ -52,78 +51,10 @@ public class Order extends RealmObject {
         this.orderNotice = orderNotice;
         this.orderPaymentMethod = orderPaymentMethod;
         this.orderClientName = orderClientName;
-        this.orderClientPhone = orderClientPhone;
         this.orderStatus = orderStatus;
         this.orderType = orderType;
         this.orderPriority = orderPriority;
     }
-
-    /*public enum casePriority {
-        HIGH("High"),
-        MEDIUM("Medium"),
-        LOW("Low");
-
-        private final String name;
-
-        private casePriority(String s) {
-            name = s;
-        }
-
-        public boolean equalsName(String otherName) {
-            return name.equals(otherName);
-        }
-
-        public String toString() {
-            return this.name;
-        }
-    }*/
-
-    /*public enum caseStatus {
-        NEW("New"),
-        ASSIGNED("Asignado"),
-        SEEN("Visto"),
-        ACCEPTED("Aceptado"),
-        INPROGRESS("En curso"),
-        RETIRED("Cilindro retirado"),
-        FINISHED("Entregado"),
-        CLOSED("Closed"),
-        CANCELLED("Cancelado");
-
-        private final String name;
-
-        private caseStatus(String s) {
-            name = s;
-        }
-
-        public boolean equalsName(String otherName) {
-            return name.equals(otherName);
-        }
-
-        public String toString() {
-            return this.name;
-        }
-    }*/
-
-    /*public enum caseTypes {
-        CUT("Corte"),
-        ORDER("Pedido"),
-        MEASURED("Medido"),
-        RECONNECTION("Re-conexión");
-
-        private final String name;
-
-        private caseTypes(String s) {
-            name = s;
-        }
-
-        public boolean equalsName(String otherName) {
-            return name.equals(otherName);
-        }
-
-        public String toString() {
-            return this.name;
-        }
-    }*/
 
     public String getOrderId() {
         return orderId;
@@ -243,14 +174,6 @@ public class Order extends RealmObject {
 
     public void setOrderClientName(String orderClientName) {
         this.orderClientName = orderClientName;
-    }
-
-    public String getOrderClientPhone() {
-        return orderClientPhone;
-    }
-
-    public void setOrderClientPhone(String orderClientPhone) {
-        this.orderClientPhone = orderClientPhone;
     }
 
     public String getOrderStatus() {

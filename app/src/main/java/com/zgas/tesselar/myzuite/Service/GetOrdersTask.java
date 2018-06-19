@@ -64,6 +64,10 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
         userPreferences = new UserPreferences(context);
     }
 
+    /**
+     * progress dialog to show user that the backup is processing.
+     */
+    @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_cases_message), false);
     }
@@ -160,6 +164,8 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Tipo de pago: " + aOrder.getOrderPaymentMethod());
                     aOrder.setOrderNotice(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_NOTICE));
                     Log.d(DEBUG_TAG, "Aviso: " + aOrder.getOrderNotice());
+                    aOrder.setOderTimeEnd(jsonObject.getString(ExtrasHelper.ORDER_JSON_TIME_FINISHED));
+                    Log.d(DEBUG_TAG, "Hora de entreda: " + aOrder.getOderTimeEnd());
 
                     aOrder.setOrderType(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString());
                     aOrder.setOrderStatus(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString());
@@ -176,8 +182,8 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
                     if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_in_progress))) {
                         aOrder.setOrderStatus(String.valueOf(R.string.order_status_in_progress));
-                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_canceled))) {
-                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_canceled));
+                    } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_failed))) {
+                        aOrder.setOrderStatus(String.valueOf(R.string.order_status_failed));
                     } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_finished))) {
                         aOrder.setOrderStatus(String.valueOf(R.string.order_status_finished));
                     } else if (aOrder.getOrderStatus().equals(String.valueOf(R.string.order_status_new))) {

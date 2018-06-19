@@ -44,7 +44,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import io.realm.Realm;
 
 /**
  * Class that manages all the main fragments to be used by the application, it also separates them
@@ -115,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Realm.init(this);
         userPreferences = new UserPreferences(this);
         User user = userPreferences.getUserObject();
         /*If a user is logged in, it will check it's type so the app will show the correct

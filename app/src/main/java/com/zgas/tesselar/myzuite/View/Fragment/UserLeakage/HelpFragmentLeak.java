@@ -88,7 +88,7 @@ public class HelpFragmentLeak extends Fragment implements
 
     private void selectOption() {
         if (mSpinnerOptions.getSelectedItem() == null) {
-            Toast.makeText(getContext(), getResources().getString(R.string.service_cancel_incorrect), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.leak_failure_incorrect), Toast.LENGTH_LONG).show();
         } else {
             cancelationReason = mSpinnerOptions.getSelectedItem().toString();
             callAsyncTask();

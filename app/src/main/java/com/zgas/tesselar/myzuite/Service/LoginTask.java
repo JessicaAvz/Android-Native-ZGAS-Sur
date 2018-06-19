@@ -1,5 +1,6 @@
 package com.zgas.tesselar.myzuite.Service;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private LoginTaskListener loginTaskListener;
     private UserPreferences userPreferences;
     private boolean isError = false;
+    private ProgressDialog progressDialog;
 
     /**
      * Constructor for the LoginTask. Additionally, we have an UserPreferences class reference
@@ -55,6 +57,15 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
         this.params = params;
         userPreferences = new UserPreferences(context);
     }
+
+    /**
+     * progress dialog to show user that the backup is processing.
+     */
+    @Override
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_message), false);
+    }
+
 
     /**
      * This methods performs the connection between our URL and our service, passing the method we'll
@@ -123,6 +134,7 @@ public class LoginTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
+        progressDialog.dismiss();
         Log.d(DEBUG_TAG, jsonObject.toString());
         Login login = null;
 

@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (mUserPreferences.isLoggedIn()) {
             Intent mainIntent = new Intent(this, MainActivity.class);
             startActivity(mainIntent);
+            this.finish();
         } else {
             setContentView(R.layout.activity_login);
             ButterKnife.bind(this);

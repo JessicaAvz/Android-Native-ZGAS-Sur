@@ -1,5 +1,6 @@
 package com.zgas.tesselar.myzuite.Service;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class PutReviewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private PutReviewOrderTask.OrderReviewTaskListener orderReviewTaskListener;
     private JSONObject params;
     private UserPreferences userPreferences;
+    private ProgressDialog progressDialog;
     private boolean isError = false;
 
     /**
@@ -54,6 +56,14 @@ public class PutReviewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
+    }
+
+    /**
+     * progress dialog to show user that the backup is processing.
+     */
+    @Override
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(context, null, context.getResources().getString(R.string.wait_message), false);
     }
 
     /**
@@ -99,6 +109,7 @@ public class PutReviewOrderTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
+        progressDialog.dismiss();
         Log.d(DEBUG_TAG, jsonObject.toString());
         Order order = null;
 
