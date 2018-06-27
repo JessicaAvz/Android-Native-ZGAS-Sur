@@ -29,7 +29,7 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_ID = "Id";
     /*Hora en la que se asigna el pedido en SF*/
     public static final String ORDER_JSON_OBJECT_TIME_ASSIGNMENT = "DateTimeAssignment";
-    public static final String ORDER_JSON_OBJECT_TIME_SEEN = "CaseTimeSeen";
+    public static final String ORDER_JSON_OBJECT_TIME_SEEN = "SeenDate";
     public static final String ORDER_JSON_OBJECT_TIME_ARRIVAL = "CaseTimeArrival";
     /*Hora en que se programa el pedido. Si el cliente no especifica una hora, es al mismo tiempo que DateTimeAssignment*/
     public static final String ORDER_JSON_OBJECT_TIME_SCHEDULED = "ScheduledDate";
@@ -41,6 +41,7 @@ public class ExtrasHelper {
     public static final String ORDER_JSON_OBJECT_USER_NAME = "AccountName";
     public static final String ORDER_JSON_OBJECT_NOTICE = "Notice";
     public static final String ORDER_JSON_TIME_FINISHED = "deliveredDT";
+    public static final String ORDER_JSON_TREATMENT = "Treatment";
 
     /*Tipo de servicio: estacionario, cilindro...*/
     public static final String ORDER_JSON_OBJECT_SERVICE_TYPE = "ServiceType";
@@ -82,7 +83,7 @@ public class ExtrasHelper {
     public static final String LEAK_JSON_OBJECT_DATE_TECHNICIAN = "DateTimeTechnician";
     public static final String LEAK_JSON_OBJECT_DATE_SCHEDULED = "DateTimeScheduled";
     public static final String LEAK_JSON_OBJECT_DATE_END = "DateTimeEnd";
-    public static final String LEAK_JSON_OBJECT_SEEN = "TimeSeen";
+    public static final String LEAK_JSON_OBJECT_SEEN = "SeenDate";
     public static final String LEAK_JSON_OBJECT_DATE_DEPARTURE = "DateTimeDeparture";
     public static final String LEAK_JSON_OBJECT_CYLINDER_CAPACITY = "CylinderCapacity";
     public static final String LEAK_JSON_OBJECT_COLOR = "Color";

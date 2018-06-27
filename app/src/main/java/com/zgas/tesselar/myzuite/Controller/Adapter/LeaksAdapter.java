@@ -3,6 +3,7 @@ package com.zgas.tesselar.myzuite.Controller.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,15 +20,19 @@ import android.widget.Toast;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.zgas.tesselar.myzuite.Model.Leak;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutReviewLeakTask;
+import com.zgas.tesselar.myzuite.Service.PutSeenTimeTask;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Activity.UserLeakage.DetailActivityLeakage;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +60,8 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
     private Leak mLeak;
     private UserPreferences userPreferences;
 
+    private String timeSeen;
+
     /**
      * Constructor for the LeaksAdapter class.
      *
@@ -64,6 +72,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
     public LeaksAdapter(Context context, ArrayList<Leak> mLeaksList) {
         this.context = context;
         this.mLeaksList = mLeaksList;
+        userPreferences = new UserPreferences(context);
     }
 
     /**
@@ -99,8 +108,7 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
      * @see Bundle
      */
     @Override
-    public void onBindViewHolder(LeaksViewHolder viewHolder, final int position) {
-        final LeaksViewHolder holder = (LeaksViewHolder) viewHolder;
+    public void onBindViewHolder(final LeaksViewHolder viewHolder, final int position) {
         mLeak = mLeaksList.get(position);
         String leakId = mLeak.getLeakId();
         String leakAddress = mLeak.getLeakAddress();
@@ -108,28 +116,43 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
         String leakType = mLeak.getLeakType();
         String leakHourIn = mLeak.getLeakTimeAssignment();
         String serviceType = mLeak.getLeakServiceType();
+        timeSeen = mLeak.getLeakTimeSeen();
 
-        TextView id = holder.mLeakId;
-        id.setText(leakId);
-        TextView address = holder.mLeakAddress;
-        address.setText(leakAddress);
-        TextView hourIn = holder.mLeakTimeIn;
-        TextView type = holder.mLeakType;
+        TextView id = viewHolder.mLeakId;
+        TextView address = viewHolder.mLeakAddress;
+        TextView hourIn = viewHolder.mLeakTimeIn;
+        TextView type = viewHolder.mLeakType;
+        TextView statusText = viewHolder.mOrderStatusText;
+        TextView status = viewHolder.mLeakStatus;
+        TextView notice = viewHolder.mLeakNotice;
+        ImageView seenDot = viewHolder.mOrderSeenDot;
+
+        if (timeSeen == null || timeSeen.equals("") || timeSeen.equals("null")) {
+            seenDot.setVisibility(View.VISIBLE);
+            id.setTypeface(null, Typeface.BOLD);
+            address.setTypeface(null, Typeface.BOLD);
+            hourIn.setTypeface(null, Typeface.BOLD);
+            type.setTypeface(null, Typeface.BOLD);
+            notice.setTypeface(null, Typeface.BOLD);
+            status.setTypeface(null, Typeface.BOLD);
+            statusText.setTypeface(null, Typeface.BOLD);
+        }
 
         id.setText("Reporte número: " + String.valueOf(leakId));
         address.setText("Dirección: " + leakAddress);
         type.setText("Tipo: " + leakType);
-        if (leakHourIn == null || leakHourIn.equals("")) {
+        if (leakHourIn == null || leakHourIn.equals("") || leakHourIn.equals("null")) {
             hourIn.setText("Hora del reporte: " + context.getResources().getString(R.string.no_data));
         } else {
             hourIn.setText("Hora del reporte: " + leakHourIn);
         }
 
-        TextView status = holder.mLeakStatus;
         if (leakStatus.equals(context.getResources().getString(R.string.order_status_failed))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
-        } else if (leakStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
+            viewHolder.mSwipeLayout.setSwipeEnabled(false);
+        } else if (leakStatus.equals(context.getResources().getString(R.string.order_status_closed))) {
             status.setTextColor(context.getResources().getColor(R.color.light_green));
+            viewHolder.mSwipeLayout.setSwipeEnabled(false);
         } else if (leakStatus.equals(context.getResources().getString(R.string.order_status_in_progress))) {
             status.setTextColor(context.getResources().getColor(R.color.amber));
         } else {
@@ -137,54 +160,107 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
         }
         status.setText(leakStatus);
 
-        holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+        viewHolder.mSwipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Leak mLeak = mLeaksList.get(position);
-                String id = mLeak.getLeakId();
-                String timeAssignment = mLeak.getLeakTimeAssignment();
-                String timeDeparture = mLeak.getLeakTimeDeparture();
-                String timeScheduled = mLeak.getLeakTimeScheduled();
-                String timeEnd = mLeak.getLeakTimeEnd();
-                String timeSeen = mLeak.getLeakTimeSeen();
-                String serviceType = mLeak.getLeakServiceType();
-                String userName = mLeak.getLeakAccountName();
+                final Bundle bundle = new Bundle();
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
+                final String date = dateFormat.format(calendar.getTime());
+
+                final Leak mLeak = mLeaksList.get(position);
+                final String id = mLeak.getLeakId();
+                final String timeAssignment = mLeak.getLeakTimeAssignment();
+                final String timeDeparture = mLeak.getLeakTimeDeparture();
+                final String timeScheduled = mLeak.getLeakTimeScheduled();
+                final String timeEnd = mLeak.getLeakTimeEnd();
+                final String serviceType = mLeak.getLeakServiceType();
+                final String userName = mLeak.getLeakAccountName();
                 String contactName = mLeak.getLeakContactName();
-                String address = mLeak.getLeakAddress();
-                String subject = mLeak.getLeakSubject();
-                String cylinderCapacity = mLeak.getLeakCylinderCapacity();
-                String cylinderColor = mLeak.getLeakCylinderColor();
-                String leakChannel = mLeak.getLeakChannel();
-                String folioSalesNote = mLeak.getLeakFolioSalesNote();
-                String status = mLeak.getLeakStatus().toString();
-                String priority = mLeak.getLeakPriority().toString();
+                final String address = mLeak.getLeakAddress();
+                final String subject = mLeak.getLeakSubject();
+                final String cylinderCapacity = mLeak.getLeakCylinderCapacity();
+                final String cylinderColor = mLeak.getLeakCylinderColor();
+                final String leakChannel = mLeak.getLeakChannel();
+                final String folioSalesNote = mLeak.getLeakFolioSalesNote();
+                final String status = mLeak.getLeakStatus();
+                final String priority = mLeak.getLeakPriority();
+                timeSeen = mLeak.getLeakTimeSeen();
 
-                Bundle bundle = new Bundle();
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_ID, id);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS, userName);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT, subject);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, status);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY, priority);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE, folioSalesNote);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN, timeAssignment);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED, timeScheduled);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END, timeEnd);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE, timeDeparture);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SEEN, timeSeen);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY, cylinderCapacity);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR, cylinderColor);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL, leakChannel);
-                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS, address);
+                if (timeSeen == null || timeSeen.equals("") || timeSeen.equals("null")) {
+                    params = new JSONObject();
+                    userPreferences = new UserPreferences(context);
+                    try {
+                        PutSeenTimeTask.SeenTimeTaskListener listener = new PutSeenTimeTask.SeenTimeTaskListener() {
+                            @Override
+                            public void seenTimeErrorResponse(String error) {
+                                viewHolder.mSwipeLayout.close(true);
+                                Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                            }
 
-                intent = new Intent();
-                intent = new Intent(context, DetailActivityLeakage.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                            @Override
+                            public void seenTimeSuccessResponse(Order order) {
+                                viewHolder.mSwipeLayout.close(true);
+                                mLeak.setLeakTimeSeen(date);
+                                timeSeen = mLeak.getLeakTimeSeen();
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_ID, id);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS, userName);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT, subject);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, status);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY, priority);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE, folioSalesNote);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN, timeAssignment);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED, timeScheduled);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END, timeEnd);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE, timeDeparture);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SEEN, timeSeen);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY, cylinderCapacity);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR, cylinderColor);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL, leakChannel);
+                                bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS, address);
 
+                                intent = new Intent();
+                                intent = new Intent(context, DetailActivityLeakage.class);
+                                intent.putExtras(bundle);
+                                context.startActivity(intent);
+                            }
+                        };
+                        params.put(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID, userPreferences.getUserObject().getUserId());
+                        params.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, id);
+                        params.put(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, date);
+
+                        PutSeenTimeTask putSeenTimeTask = new PutSeenTimeTask(context, params);
+                        putSeenTimeTask.setSeenTimeTaskListener(listener);
+                        putSeenTimeTask.execute();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_ID, id);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_WHO_REPORTS, userName);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SUBJECT, subject);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, status);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_PRIORITY, priority);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SALES_NOTE, folioSalesNote);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_TECHNICIAN, timeAssignment);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_SCHEDULED, timeScheduled);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_END, timeEnd);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_DATE_DEPARTURE, timeDeparture);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_SEEN, timeSeen);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_CYLINDER_CAPACITY, cylinderCapacity);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_COLOR, cylinderColor);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_CHANNEL, leakChannel);
+                    bundle.putString(ExtrasHelper.LEAK_JSON_OBJECT_ADDRESS, address);
+
+                    intent = new Intent();
+                    intent = new Intent(context, DetailActivityLeakage.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
             }
         });
 
-        holder.mLeakReview.setOnClickListener(new View.OnClickListener() {
+        viewHolder.mLeakReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog = new Dialog(context);
@@ -276,13 +352,15 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
      */
     public class LeaksViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.row_main_fragment_swipe_orders)
-        SwipeLayout swipeLayout;
+        SwipeLayout mSwipeLayout;
         @BindView(R.id.row_visit_recycler_tv_review_visit)
         TextView mLeakReview;
         @BindView(R.id.row_main_fragment_tv_order_id)
         TextView mLeakId;
         @BindView(R.id.row_main_fragment_tv_order_status)
         TextView mLeakStatus;
+        @BindView(R.id.row_main_fragment_prompt_order_status)
+        TextView mOrderStatusText;
         @BindView(R.id.row_main_fragment_tv_order_address)
         TextView mLeakAddress;
         @BindView(R.id.row_main_fragment_tv_order_in)
@@ -291,6 +369,8 @@ public class LeaksAdapter extends RecyclerSwipeAdapter<LeaksAdapter.LeaksViewHol
         TextView mLeakType;
         @BindView(R.id.row_main_fragment_tv_notice)
         TextView mLeakNotice;
+        @BindView(R.id.row_main_fragment_seen_dot)
+        ImageView mOrderSeenDot;
 
         LeaksViewHolder(View itemView) {
             super(itemView);

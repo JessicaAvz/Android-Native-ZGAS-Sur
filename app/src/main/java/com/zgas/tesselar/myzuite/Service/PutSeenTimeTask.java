@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.zgas.tesselar.myzuite.Controller.ConnectionController;
-import com.zgas.tesselar.myzuite.Model.Leak;
+import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UrlHelper;
@@ -21,38 +21,27 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Formatter;
 
-/**
- * Class that communicates with the service and will push the result to the User model list.
- *
- * @author jarvizu on 27/01/2018.
- * @version 2018.0.9
- * @see AsyncTask
- * @see Leak
- * @see JSONObject
- * @see UserPreferences
- * @see StatusLeakTaskListener
- */
-public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
+public class PutSeenTimeTask extends AsyncTask<URL, JSONObject, JSONObject> {
 
     private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String METHOD = "PUT";
     private static final String JSON_OBJECT_ERROR = "StatusCode";
 
+    private PutSeenTimeTask.SeenTimeTaskListener seenTimeTaskListener;
     private Context context;
-    private StatusLeakTaskListener statusLeakTaskListener;
     private JSONObject params;
     private UserPreferences userPreferences;
-    private boolean isError = false;
     private ProgressDialog progressDialog;
+    private boolean isError = false;
 
     /**
-     * Constructor for the PutStatusLeakTask. Additionally, we have an UserPreferences class reference
+     * Constructor for the PutSeenTimeTask. Additionally, we have an UserPreferences class reference
      * so we can obtain the user data.
      *
      * @param context Current context of the application
      * @param params  Parameters that will be sent to the service.
      */
-    public PutStatusLeakTask(Context context, JSONObject params) {
+    public PutSeenTimeTask(Context context, JSONObject params) {
         this.context = context;
         this.params = params;
         userPreferences = new UserPreferences(context);
@@ -79,7 +68,7 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
         try {
             String adminToken = userPreferences.getAdminToken();
             Formatter formatter = new Formatter();
-            String format = formatter.format(UrlHelper.PUT_LEAK_STATUS_URL, params.get(ExtrasHelper.LEAK_JSON_OBJECT_ID)).toString();
+            String format = formatter.format(UrlHelper.PUT_TIME_SEEN_URL).toString();
             Log.d(DEBUG_TAG, format);
             URL url = new URL(format);
             ConnectionController connectionController = new ConnectionController(adminToken, url, METHOD, params, context);
@@ -90,7 +79,7 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
                 cancel(true);
             }
 
-        } catch (MalformedURLException | FileNotFoundException | JSONException | SocketTimeoutException e) {
+        } catch (MalformedURLException | FileNotFoundException | SocketTimeoutException e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -100,8 +89,8 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
      * Method that will show the task result on the user interface. It will receive the jsonObject
      * obtained on doInBackground method, and it will check if the jsonObject has an error or is
      * correct.
-     * If an error occurs, the StatusLeakListener will manage it.
-     * Else, the json data will be mapped with our Leak object and a pop up will be shown
+     * If an error occurs, the OrderReviewTaskListener will manage it.
+     * Else, the json data will be mapped with our Order object and a pop up will be shown
      * on the user interface.
      *
      * @param jsonObject The user object that will be received.
@@ -111,29 +100,41 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
         Log.d(DEBUG_TAG, jsonObject.toString());
-        Leak leak = new Leak();
+        Order order = null;
+
+        if (seenTimeTaskListener == null) {
+            Log.d(DEBUG_TAG, "Listener nulo");
+        } else {
+            Log.d(DEBUG_TAG, "Listener no nulo");
+        }
+
         try {
             if (jsonObject == null) {
-                statusLeakTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
+                seenTimeTaskListener.seenTimeErrorResponse(context.getResources().getString(R.string.cases_status_error));
                 isError = true;
-            } else if (jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_ID).toString().equals(null)) {
-                statusLeakTaskListener.statusErrorResponse(context.getResources().getString(R.string.cases_status_error));
-                isError = true;
-            } else if (jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_ID).toString() != null) {
-                jsonObject.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, params.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS));
-                leak.setLeakStatus(jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS).toString());
-                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.LEAK_JSON_OBJECT_STATUS_UPDATE).toString());
-                Log.d(DEBUG_TAG, leak.getLeakStatus());
+            } else if (jsonObject.has(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID)) {
+                order = new Order();
+                jsonObject.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID));
+                jsonObject.put(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID, params.get(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID));
+                jsonObject.put(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, params.get(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN));
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID).toString());
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID).toString());
+                Log.d(DEBUG_TAG, jsonObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN).toString());
+
                 isError = false;
-                if (statusLeakTaskListener != null) {
-                    statusLeakTaskListener.statusSuccessResponse(leak);
-                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-
+            if (seenTimeTaskListener != null) {
+                seenTimeTaskListener.seenTimeSuccessResponse(order);
+            }
         }
+
+    }
+
+    public void setSeenTimeTaskListener(SeenTimeTaskListener seenTimeTaskListener) {
+        this.seenTimeTaskListener = seenTimeTaskListener;
     }
 
     /**
@@ -142,19 +143,15 @@ public class PutStatusLeakTask extends AsyncTask<URL, JSONObject, JSONObject> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        statusLeakTaskListener.statusErrorResponse(context.getResources().getString(R.string.connection_error));
-    }
-
-    public void setStatusLeakTaskListener(StatusLeakTaskListener statusLeakTaskListener) {
-        this.statusLeakTaskListener = statusLeakTaskListener;
     }
 
     /**
      * Interface for managing the different outputs of the AsyncTask
      */
-    public interface StatusLeakTaskListener {
-        void statusErrorResponse(String error);
+    public interface SeenTimeTaskListener {
+        void seenTimeErrorResponse(String error);
 
-        void statusSuccessResponse(Leak leak);
+        void seenTimeSuccessResponse(Order order);
     }
 }
+

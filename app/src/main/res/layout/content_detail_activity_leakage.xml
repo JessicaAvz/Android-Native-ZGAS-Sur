@@ -234,6 +234,7 @@
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:tint="@color/white"
+            android:visibility="gone"
             app:backgroundTint="@color/amber"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -289,7 +290,7 @@
             android:text="@string/prompt_detail_leakage_cylinder_capacity"
             android:textColor="@color/grey_500"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/activity_detail_leakage_prompt_channel"
+            app:layout_constraintStart_toStartOf="@+id/activity_detail_leakage_tv_leak_type"
             app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_tv_channel" />
 
         <TextView
@@ -332,7 +333,7 @@
             app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_prompt_color" />
 
         <TextView
-            android:id="@+id/activity_detail_leakage_prompt_channel"
+            android:id="@+id/activity_detail_leakage_tv_leak_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -354,7 +355,7 @@
             android:textColor="@color/grey_800"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/activity_detail_leakage_tv_status"
-            app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_prompt_channel" />
+            app:layout_constraintTop_toBottomOf="@+id/activity_detail_leakage_tv_leak_type" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

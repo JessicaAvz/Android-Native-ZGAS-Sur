@@ -22,7 +22,6 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.List;
 
 /**
  * Class that communicates with the service and will push the result to the Order model list.
@@ -50,6 +49,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     private OrderTaskListener orderTaskListener;
     private ProgressDialog progressDialog;
     private boolean isError = false;
+    private Order aOrder;
 
     /**
      * Constructor for the GetOrdersTask. Additionally, we have an UserPreferences class reference
@@ -124,7 +124,7 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         progressDialog.dismiss();
-        List<Order> casesList = new ArrayList<>();
+        ArrayList<Order> casesList = new ArrayList<>();
         JSONArray casesArray;
 
         try {
@@ -137,19 +137,19 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     isError = true;
                 }
             } else if (jsonObject.has(CASES_ARRAY)) {
-                Log.d(DEBUG_TAG, "HOLA, SI SIRVE");
                 casesArray = jsonObject.getJSONArray(CASES_ARRAY);
 
                 for (int i = 0; i < casesArray.length(); i++) {
                     JSONObject caseObject = casesArray.getJSONObject(i);
-                    Order aOrder = new Order();
+                    aOrder = new Order();
                     aOrder.setOrderId(caseObject.get(JSON_OBJECT_ID).toString());
                     Log.d(DEBUG_TAG, "Id del caso: " + aOrder.getOrderId());
                     aOrder.setOrderUserId(userPreferences.getUserObject().getUserId());
                     Log.d(DEBUG_TAG, "Id del operador: " + aOrder.getOrderUserId());
                     aOrder.setOrderTimeScheduled(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED));
                     Log.d(DEBUG_TAG, "Hora programada: " + aOrder.getOrderTimeScheduled());
-                    //aOrder.setOrderTimeSeen(caseObject.getString(CASE_TIME_SEEN));
+                    aOrder.setOrderTimeSeen(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN));
+                    Log.d(DEBUG_TAG, "Hora de visuailzación: " + aOrder.getOrderTimeSeen());
                     aOrder.setOrderTimeAssignment(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
                     Log.d(DEBUG_TAG, "Hora de asignación: " + caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT));
                     aOrder.setOrderAccountName(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME));
@@ -164,8 +164,8 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
                     Log.d(DEBUG_TAG, "Tipo de pago: " + aOrder.getOrderPaymentMethod());
                     aOrder.setOrderNotice(caseObject.getString(ExtrasHelper.ORDER_JSON_OBJECT_NOTICE));
                     Log.d(DEBUG_TAG, "Aviso: " + aOrder.getOrderNotice());
-                    aOrder.setOderTimeEnd(jsonObject.getString(ExtrasHelper.ORDER_JSON_TIME_FINISHED));
-                    Log.d(DEBUG_TAG, "Hora de entreda: " + aOrder.getOderTimeEnd());
+                    aOrder.setOrderTreatment(caseObject.getString(ExtrasHelper.ORDER_JSON_TREATMENT));
+                    Log.d(DEBUG_TAG, "Tratamiento: " + aOrder.getOrderTreatment());
 
                     aOrder.setOrderType(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_TYPE).toString());
                     aOrder.setOrderStatus(caseObject.get(ExtrasHelper.ORDER_JSON_OBJECT_STATUS).toString());
@@ -240,6 +240,6 @@ public class GetOrdersTask extends AsyncTask<URL, JSONObject, JSONObject> {
     public interface OrderTaskListener {
         void getCasesErrorResponse(String error);
 
-        void getCasesSuccessResponse(List<Order> orderList);
+        void getCasesSuccessResponse(ArrayList<Order> orderList);
     }
 }

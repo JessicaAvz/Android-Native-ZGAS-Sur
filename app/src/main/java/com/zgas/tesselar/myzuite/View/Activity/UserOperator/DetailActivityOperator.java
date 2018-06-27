@@ -64,7 +64,6 @@ public class DetailActivityOperator extends AppCompatActivity implements
     private String mStrCaseStatus;
     private String mStrCaseTimeSeen;
     private String mStrCaseServiceType;
-
     private String mStrTicket;
     private String mStrQuantity;
     private String mStrCylinder10;
@@ -89,6 +88,10 @@ public class DetailActivityOperator extends AppCompatActivity implements
     TextView mCaseTimeProgrammed;
     @BindView(R.id.activity_detal_operator_tv_payment)
     TextView mCasePaymentMethod;
+    @BindView(R.id.activity_detail_operator_tv_treatment)
+    TextView mCaseTreatment;
+    @BindView(R.id.activity_detail_operator_tv_type)
+    TextView mCaseType;
     @Nullable
     @BindView(R.id.dialog_finish_case_stationary_tv_quantity)
     EditText etQuantity;
@@ -172,16 +175,11 @@ public class DetailActivityOperator extends AppCompatActivity implements
     }
 
     private void initUi() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-        String date = dateFormat.format(calendar.getTime());
-
         Bundle bundle = getIntent().getExtras();
         mStrCaseId = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ID);
         String mStrCaseUserName = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME);
         mStrCaseAddress = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS);
         mStrCaseStatus = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS);
-        String mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
         String mStrCasePriority = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY);
         String mStrCaseTimeIn = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT);
         String mStrCaseTimeArrived = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL);
@@ -189,37 +187,40 @@ public class DetailActivityOperator extends AppCompatActivity implements
         String mStrCasePaymentMethod = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD);
         String mStrCaseRecordType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE);
         mStrCaseServiceType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE);
-
-        Log.d(DEBUG_TAG, "Id del caso: " + mStrCaseId);
-        Log.d(DEBUG_TAG, "Nombre del cliente: " + mStrCaseUserName);
-        Log.d(DEBUG_TAG, "Dirección: " + mStrCaseAddress);
-        Log.d(DEBUG_TAG, "Estatus: " + mStrCaseStatus);
-        Log.d(DEBUG_TAG, "Tipo de caso: " + mStrCaseType);
-        Log.d(DEBUG_TAG, "Prioridad: " + mStrCasePriority);
-        Log.d(DEBUG_TAG, "Hora de entrada: " + mStrCaseTimeIn);
-        Log.d(DEBUG_TAG, "Hora programada: " + mStrCaseTimeProgrammed);
-        Log.d(DEBUG_TAG, "Método de pago: " + mStrCasePaymentMethod);
-        Log.d(DEBUG_TAG, "Tipo de récord: " + mStrCaseRecordType);
-        Log.d(DEBUG_TAG, "Tipo de servicio: " + mStrCaseServiceType);
+        String mStrCaseTimeSeen = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN);
+        String mStrCaseTreatment = bundle.getString(ExtrasHelper.ORDER_JSON_TREATMENT);
+        String mStrCaseType = bundle.getString(ExtrasHelper.ORDER_JSON_OBJECT_TYPE);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getApplicationContext().getResources().getString(R.string.prompt_detail_operator) + " " + mStrCaseId);
 
-        if (mStrCaseUserName == null || mStrCaseUserName.equals("")) {
+        if (mStrCaseTreatment == null || mStrCaseTreatment.equals("") || mStrCaseTreatment.equals("null")) {
+            mCaseTreatment.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseTreatment.setText(mStrCaseTreatment);
+        }
+
+        if (mStrCaseType == null || mStrCaseType.equals("") || mStrCaseType.equals("null")) {
+            mCaseType.setText(getResources().getString(R.string.no_data));
+        } else {
+            mCaseType.setText(mStrCaseType);
+        }
+
+        if (mStrCaseUserName == null || mStrCaseUserName.equals("") || mStrCaseUserName.equals("null")) {
             mUserName.setText(getResources().getString(R.string.no_data));
         } else {
             mUserName.setText(mStrCaseUserName);
         }
 
-        if (mStrCaseAddress == null || mStrCaseAddress.equals("")) {
+        if (mStrCaseAddress == null || mStrCaseAddress.equals("") || mStrCaseAddress.equals("null")) {
             mCaseAddress.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseAddress.setText(mStrCaseAddress);
         }
 
-        if (mStrCaseStatus == null || mStrCaseStatus.equals("")) {
+        if (mStrCaseStatus == null || mStrCaseStatus.equals("") || mStrCaseStatus.equals("null")) {
             mCaseStatus.setText(getResources().getString(R.string.no_data));
         } else {
             if (mStrCaseStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
@@ -237,39 +238,35 @@ public class DetailActivityOperator extends AppCompatActivity implements
             }
         }
 
-        if (mStrCaseTimeIn == null || mStrCaseTimeIn.equals("")) {
+        if (mStrCaseTimeIn == null || mStrCaseTimeIn.equals("") || mStrCaseTimeIn.equals("null")) {
             mCaseTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeIn.setText(mStrCaseTimeIn);
         }
 
-        if (mStrCaseTimeSeen == null || mStrCaseTimeSeen.equals("")) {
+        if (mStrCaseTimeSeen == null || mStrCaseTimeSeen.equals("") || mStrCaseTimeSeen.equals("null")) {
             mCaseTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeSeen.setText(mStrCaseTimeSeen);
         }
 
-        if (mStrCaseTimeArrived == null || mStrCaseTimeArrived.equals("")) {
+        if (mStrCaseTimeArrived == null || mStrCaseTimeArrived.equals("") || mStrCaseTimeArrived.equals("null")) {
             mCaseTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeArrived.setText(mStrCaseTimeArrived);
         }
 
-        if (mStrCaseTimeProgrammed == null || mStrCaseTimeProgrammed.equals("")) {
+        if (mStrCaseTimeProgrammed == null || mStrCaseTimeProgrammed.equals("") || mStrCaseTimeProgrammed.equals("null")) {
             mCaseTimeProgrammed.setText(getResources().getString(R.string.no_data));
         } else {
             mCaseTimeProgrammed.setText(mStrCaseTimeProgrammed);
         }
 
-        if (mStrCasePaymentMethod == null || mStrCasePaymentMethod.equals("")) {
+        if (mStrCasePaymentMethod == null || mStrCasePaymentMethod.equals("") || mStrCasePaymentMethod.equals("null")) {
             mCasePaymentMethod.setText(getResources().getString(R.string.no_data));
         } else {
             mCasePaymentMethod.setText(mStrCasePaymentMethod);
         }
-
-        mFabFinished.setVisibility(View.GONE);
-        mFabFailed.setVisibility(View.GONE);
-        mFabWaze.setVisibility(View.GONE);
     }
 
     private void callAsyncTaskInProgress() {
@@ -513,8 +510,6 @@ public class DetailActivityOperator extends AppCompatActivity implements
                     }
                 })
                 .build();
-
-
     }
 
     private boolean isEmpty(EditText etText) {
@@ -553,6 +548,11 @@ public class DetailActivityOperator extends AppCompatActivity implements
             mFabFailed.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
             Toast.makeText(this, getResources().getString(R.string.order_failure_correct), Toast.LENGTH_SHORT).show();
+        } else if (status.equals(this.getResources().getString(R.string.order_status_reviewing))) {
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabFailed.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
         }
         mCaseStatus.setText(order.getOrderStatus().toString());
     }

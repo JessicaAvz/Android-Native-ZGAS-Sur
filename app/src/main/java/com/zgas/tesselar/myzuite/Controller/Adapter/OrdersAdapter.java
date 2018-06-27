@@ -3,6 +3,7 @@ package com.zgas.tesselar.myzuite.Controller.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,14 +22,19 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.zgas.tesselar.myzuite.Model.Order;
 import com.zgas.tesselar.myzuite.R;
 import com.zgas.tesselar.myzuite.Service.PutReviewOrderTask;
+import com.zgas.tesselar.myzuite.Service.PutSeenTimeTask;
 import com.zgas.tesselar.myzuite.Utilities.ExtrasHelper;
 import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import com.zgas.tesselar.myzuite.View.Activity.UserOperator.DetailActivityOperator;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -44,7 +51,6 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
 
     private final String DEBUG_TAG = getClass().getSimpleName();
     //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
-
     private Context context;
     private ArrayList<Order> mOrderList;
     private Intent intent;
@@ -54,13 +60,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
     private Spinner mSpinnerOptions;
     private Dialog dialog;
 
-    private String caseId;
-    private String caseAddress;
-    private String caseNotice;
-    private String caseStatus;
-    private String caseType;
-    private String orderHourIn;
-    private String serviceType;
+    private String caseTimeSeen;
 
     /**
      * Constructor for the OrdersAdapter class.
@@ -72,6 +72,7 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
     public OrdersAdapter(Context context, ArrayList<Order> mOrderList) {
         this.context = context;
         this.mOrderList = mOrderList;
+        userPreferences = new UserPreferences(context);
     }
 
     /**
@@ -109,13 +110,14 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
     @Override
     public void onBindViewHolder(final OrderViewHolder viewHolder, final int position) {
         mOrder = mOrderList.get(position);
-        caseId = mOrder.getOrderId();
-        caseAddress = mOrder.getOrderAddress();
-        caseNotice = mOrder.getOrderNotice();
-        caseStatus = mOrder.getOrderStatus();
-        caseType = mOrder.getOrderType();
-        orderHourIn = mOrder.getOrderTimeAssignment();
-        serviceType = mOrder.getOrderServiceType();
+        String caseId = mOrder.getOrderId();
+        String caseAddress = mOrder.getOrderAddress();
+        String caseNotice = mOrder.getOrderNotice();
+        String caseStatus = mOrder.getOrderStatus();
+        String caseType = mOrder.getOrderType();
+        String caseOrderHourIn = mOrder.getOrderTimeAssignment();
+        String caseServiceType = mOrder.getOrderServiceType();
+        caseTimeSeen = mOrder.getOrderTimeSeen();
 
         TextView id = viewHolder.mOrderId;
         TextView address = viewHolder.mOrderAddress;
@@ -123,6 +125,19 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
         TextView type = viewHolder.mOrderType;
         TextView notice = viewHolder.mOrderNotice;
         TextView status = viewHolder.mOrderStatus;
+        TextView statusText = viewHolder.mOrderStatusText;
+        ImageView seenDot = viewHolder.mOrderSeenDot;
+
+        if (caseTimeSeen == null || caseTimeSeen.equals("") || caseTimeSeen.equals("null")) {
+            seenDot.setVisibility(View.VISIBLE);
+            id.setTypeface(null, Typeface.BOLD);
+            address.setTypeface(null, Typeface.BOLD);
+            hourIn.setTypeface(null, Typeface.BOLD);
+            type.setTypeface(null, Typeface.BOLD);
+            notice.setTypeface(null, Typeface.BOLD);
+            status.setTypeface(null, Typeface.BOLD);
+            statusText.setTypeface(null, Typeface.BOLD);
+        }
 
         if (caseNotice.equals("Sin aviso") || caseNotice.equals("") || caseNotice.equals(null)) {
             notice.setVisibility(View.GONE);
@@ -132,17 +147,19 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
 
         id.setText("Pedido número: " + String.valueOf(caseId));
         address.setText("Dirección: " + caseAddress);
-        type.setText("Tipo: " + caseType + " - " + serviceType);
+        type.setText("Tipo: " + caseType + " - " + caseServiceType);
 
-        if (orderHourIn == null || orderHourIn.equals("")) {
+        if (caseOrderHourIn == null || caseOrderHourIn.equals("") || caseOrderHourIn.equals("null")) {
             hourIn.setText("Hora del pedido: " + context.getResources().getString(R.string.no_data));
         } else {
-            hourIn.setText("Hora del pedido: " + orderHourIn);
+            hourIn.setText("Hora del pedido: " + caseOrderHourIn);
         }
 
         if (caseStatus.equals(context.getResources().getString(R.string.order_status_failed))) {
             status.setTextColor(context.getResources().getColor(R.color.red));
+            viewHolder.mSwipeLayout.setSwipeEnabled(false);
         } else if (caseStatus.equals(context.getResources().getString(R.string.order_status_finished))) {
+            viewHolder.mSwipeLayout.setSwipeEnabled(false);
             status.setTextColor(context.getResources().getColor(R.color.light_green));
         } else if (caseStatus.equals(context.getResources().getString(R.string.order_status_in_progress))) {
             status.setTextColor(context.getResources().getColor(R.color.amber));
@@ -158,41 +175,96 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
         viewHolder.mSwipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Bundle bundle = new Bundle();
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
+                final String date = dateFormat.format(calendar.getTime());
 
                 Log.d(DEBUG_TAG, "onClick en el pedido: " + mOrderList.get(position).getOrderId());
                 mOrder = mOrderList.get(position);
-                String id = mOrder.getOrderId();
-                String address = mOrder.getOrderAddress();
-                String status = mOrder.getOrderStatus();
-                String timeAssignment = mOrder.getOrderTimeAssignment();
-                String timeSeen = mOrder.getOrderTimeSeen();
-                String timeArrival = mOrder.getOrderTimeDeparture();
-                String timeScheduled = mOrder.getOrderTimeScheduled();
-                String priority = mOrder.getOrderPriority();
-                String userName = mOrder.getOrderAccountName();
-                String paymentMethod = mOrder.getOrderPaymentMethod();
-                String serviceType = mOrder.getOrderServiceType();
-                String recordType = mOrder.getOrderType();
+                final String id = mOrder.getOrderId();
+                final String address = mOrder.getOrderAddress();
+                final String status = mOrder.getOrderStatus();
+                final String timeAssignment = mOrder.getOrderTimeAssignment();
+                final String timeArrival = mOrder.getOrderTimeDeparture();
+                final String timeScheduled = mOrder.getOrderTimeScheduled();
+                final String priority = mOrder.getOrderPriority();
+                final String userName = mOrder.getOrderAccountName();
+                final String paymentMethod = mOrder.getOrderPaymentMethod();
+                final String serviceType = mOrder.getOrderServiceType();
+                final String recordType = mOrder.getOrderType();
+                final String treatmentType = mOrder.getOrderTreatment();
+                caseTimeSeen = mOrder.getOrderTimeSeen();
 
-                Bundle bundle = new Bundle();
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, status);
-                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT, timeAssignment);
-                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, timeSeen);
-                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL, timeArrival);
-                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY, priority);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME, userName);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
-                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                if (caseTimeSeen == null || caseTimeSeen.equals("") || caseTimeSeen.equals("null")) {
+                    params = new JSONObject();
+                    userPreferences = new UserPreferences(context);
+                    try {
+                        PutSeenTimeTask.SeenTimeTaskListener listener = new PutSeenTimeTask.SeenTimeTaskListener() {
+                            @Override
+                            public void seenTimeErrorResponse(String error) {
+                                viewHolder.mSwipeLayout.close(true);
+                                Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                            }
 
-                intent = new Intent();
-                intent = new Intent(context, DetailActivityOperator.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                            @Override
+                            public void seenTimeSuccessResponse(Order order) {
+                                viewHolder.mSwipeLayout.close(true);
+                                mOrder.setOrderTimeSeen(date);
+                                caseTimeSeen = mOrder.getOrderTimeSeen();
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, status);
+                                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT, timeAssignment);
+                                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, caseTimeSeen);
+                                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL, timeArrival);
+                                bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY, priority);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME, userName);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                                bundle.putString(ExtrasHelper.ORDER_JSON_TREATMENT, treatmentType);
+
+                                intent = new Intent();
+                                intent = new Intent(context, DetailActivityOperator.class);
+                                intent.putExtras(bundle);
+                                context.startActivity(intent);
+                            }
+                        };
+
+                        params.put(ExtrasHelper.REVIEW_JSON_OBJECT_OPERATOR_ID, userPreferences.getUserObject().getUserId());
+                        params.put(ExtrasHelper.REVIEW_JSON_OBJECT_ORDER_ID, id);
+                        params.put(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, date);
+
+                        PutSeenTimeTask putSeenTimeTask = new PutSeenTimeTask(context, params);
+                        putSeenTimeTask.setSeenTimeTaskListener(listener);
+                        putSeenTimeTask.execute();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ID, id);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ADDRESS, address);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_STATUS, status);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ASSIGNMENT, timeAssignment);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SEEN, caseTimeSeen);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_ARRIVAL, timeArrival);
+                    bundle.putSerializable(ExtrasHelper.ORDER_JSON_OBJECT_TIME_SCHEDULED, timeScheduled);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PRIORITY, priority);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_ACCOUNT_NAME, userName);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_PAYMENT_METHOD, paymentMethod);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_RECORD_TYPE, recordType);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_OBJECT_SERVICE_TYPE, serviceType);
+                    bundle.putString(ExtrasHelper.ORDER_JSON_TREATMENT, treatmentType);
+
+                    intent = new Intent();
+                    intent = new Intent(context, DetailActivityOperator.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -299,26 +371,30 @@ public class OrdersAdapter extends RecyclerSwipeAdapter<OrdersAdapter.OrderViewH
      */
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.row_main_fragment_swipe_orders)
         SwipeLayout mSwipeLayout;
+        @BindView(R.id.row_visit_recycler_tv_review_visit)
         TextView mOrderReview;
+        @BindView(R.id.row_main_fragment_tv_order_id)
         TextView mOrderId;
+        @BindView(R.id.row_main_fragment_tv_order_status)
         TextView mOrderStatus;
+        @BindView(R.id.row_main_fragment_prompt_order_status)
+        TextView mOrderStatusText;
+        @BindView(R.id.row_main_fragment_tv_order_address)
         TextView mOrderAddress;
+        @BindView(R.id.row_main_fragment_tv_order_in)
         TextView mOrderTimeIn;
+        @BindView(R.id.row_main_fragment_tv_order_type)
         TextView mOrderType;
+        @BindView(R.id.row_main_fragment_tv_notice)
         TextView mOrderNotice;
+        @BindView(R.id.row_main_fragment_seen_dot)
+        ImageView mOrderSeenDot;
 
         OrderViewHolder(final View itemView) {
             super(itemView);
-
-            mSwipeLayout = itemView.findViewById(R.id.row_main_fragment_swipe_orders);
-            mOrderReview = itemView.findViewById(R.id.row_visit_recycler_tv_review_visit);
-            mOrderId = itemView.findViewById(R.id.row_main_fragment_tv_order_id);
-            mOrderStatus = itemView.findViewById(R.id.row_main_fragment_tv_order_status);
-            mOrderAddress = itemView.findViewById(R.id.row_main_fragment_tv_order_address);
-            mOrderTimeIn = itemView.findViewById(R.id.row_main_fragment_tv_order_in);
-            mOrderType = itemView.findViewById(R.id.row_main_fragment_tv_order_type);
-            mOrderNotice = itemView.findViewById(R.id.row_main_fragment_tv_notice);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -30,6 +30,8 @@
     <string name="prompt_detail_operator_ticket">Folio del ticket</string>
     <string name="prompt_detail_operator_total">Total</string>
     <string name="prompt_detail_operator_payment">Tipo de pago</string>
+    <string name="promtp_detail_order_type">Tipo de caso</string>
+    <string name="prompt_detail_treatment_type">Tratamiento</string>
     <string name="prompt_detail_operator">Detalle </string>
 
     <!-- Activity detail leakage -->
@@ -194,6 +196,7 @@
     <string name="order_status_finished">Entregado</string>
     <string name="order_status_failed">Fallido</string>
     <string name="order_status_reviewing">En revisión</string>
+    <string name="order_status_closed">Cerrado</string>
 
     <!-- Priorities-->
     <string name="order_priority_high">Alta</string>

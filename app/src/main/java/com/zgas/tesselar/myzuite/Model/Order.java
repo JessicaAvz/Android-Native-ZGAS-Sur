@@ -31,11 +31,12 @@ public class Order extends RealmObject {
     private String orderStatus;
     private String orderType;
     private String orderPriority;
+    private String orderTreatment;
 
     public Order() {
     }
 
-    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderStatus, String orderType, String orderPriority) {
+    public Order(String orderId, String orderUserId, String orderTimeAssignment, String orderTimeSeen, String orderTimeDeparture, String oderTimeEnd, String orderTimeScheduled, String orderServiceType, String orderAccountName, String orderContactName, String orderAddress, String orderSubject, String orderNotice, String orderPaymentMethod, String orderClientName, String orderStatus, String orderType, String orderPriority, String orderTreatment) {
         this.orderId = orderId;
         this.orderUserId = orderUserId;
         this.orderTimeAssignment = orderTimeAssignment;
@@ -54,6 +55,7 @@ public class Order extends RealmObject {
         this.orderStatus = orderStatus;
         this.orderType = orderType;
         this.orderPriority = orderPriority;
+        this.orderTreatment = orderTreatment;
     }
 
     public String getOrderId() {
@@ -198,5 +200,13 @@ public class Order extends RealmObject {
 
     public void setOrderPriority(String orderPriority) {
         this.orderPriority = orderPriority;
+    }
+
+    public String getOrderTreatment() {
+        return orderTreatment;
+    }
+
+    public void setOrderTreatment(String orderTreatment) {
+        this.orderTreatment = orderTreatment;
     }
 }

@@ -22,7 +22,6 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +42,9 @@ import butterknife.Unbinder;
  * @see OrdersAdapter
  * @see ButterKnife
  */
-public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {
+
+public class MainFragmentOperator extends Fragment implements GetOrdersTask.OrderTaskListener {/*
+        , OrdersAdapter.OrdersAdapterListener {*/
 
     private final String DEBUG_TAG = getClass().getSimpleName();
     private static final String USER_ID = "Id";
@@ -57,6 +58,8 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
     private UserPreferences mUserPreferences;
     LinearLayoutManager layoutManager;
     private Unbinder unbinder;
+    private ArrayList<Order> globalOrderList;
+    private OrdersAdapter mOrderAdapter;
 
     public MainFragmentOperator() {
         // Required empty public constructor
@@ -64,12 +67,12 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         View mRootView = inflater.inflate(R.layout.fragment_main_operator, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-        Log.d(DEBUG_TAG, getResources().getString(R.string.on_create));
         mUserPreferences = new UserPreferences(getContext());
+
         initUi();
         return mRootView;
     }
@@ -107,7 +110,6 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
             JSONObject params = new JSONObject();
             params.put(USER_ID, mUserPreferences.getUserObject().getUserId());
             params.put(ADMIN_TOKEN, mUserPreferences.getAdminToken());
-            Log.d(DEBUG_TAG, "Parámetros: " + "Id de usuario: " + params.getString(USER_ID) + " Token de admin: " + params.getString(ADMIN_TOKEN));
             GetOrdersTask getOrdersTask = new GetOrdersTask(getContext(), params);
             getOrdersTask.setOrderTaskListener(this);
             getOrdersTask.execute();
@@ -118,18 +120,19 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
 
     @Override
     public void getCasesErrorResponse(String error) {
-        Log.d(DEBUG_TAG, error);
         Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void getCasesSuccessResponse(List<Order> orderList) {
-        OrdersAdapter mOrderAdapter = new OrdersAdapter(getContext(), (ArrayList<Order>) orderList);
+    public void getCasesSuccessResponse(ArrayList<Order> orderList) {
+        this.globalOrderList = orderList;
+        mOrderAdapter = new OrdersAdapter(getContext(), globalOrderList);
         mRecyclerOrders.setHasFixedSize(true);
         mRecyclerOrders.setItemViewCacheSize(20);
         mRecyclerOrders.setDrawingCacheEnabled(true);
         mRecyclerOrders.setLayoutManager(layoutManager);
         mRecyclerOrders.setAdapter(mOrderAdapter);
+        //mOrderAdapter.setOrdersAdapterListener(this);
     }
 
     @Override
@@ -137,4 +140,13 @@ public class MainFragmentOperator extends Fragment implements GetOrdersTask.Orde
         super.onDestroyView();
         unbinder.unbind();
     }
+/*
+    @Override
+    public void setSeenTime(Order order) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
+        String date = dateFormat.format(calendar.getTime());
+        order.setOrderTimeSeen(date);
+        Log.d(DEBUG_TAG, "PORFAVORFUNCIONA: " + order.getOrderId() + "" + order.getOrderTimeSeen());
+    }*/
 }

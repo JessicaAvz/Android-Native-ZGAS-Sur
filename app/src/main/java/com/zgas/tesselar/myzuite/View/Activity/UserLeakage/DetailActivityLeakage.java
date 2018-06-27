@@ -33,7 +33,6 @@ import com.zgas.tesselar.myzuite.Utilities.UserPreferences;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -88,6 +87,8 @@ public class DetailActivityLeakage extends AppCompatActivity implements
     TextView mLeakCylinderColor;
     @BindView(R.id.activity_detail_leakage_tv_channel)
     TextView mLeakChannel;
+    @BindView(R.id.activity_detail_leakage_tv_leak_type)
+    TextView mLeakType;
     @Nullable
     @BindView(R.id.activity_detail_leakage_fab_in_progress)
     FloatingActionButton mFabInProgress;
@@ -157,6 +158,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
     private void initUi() {
         setSupportActionBar(toolbar);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
 
         Bundle mBundle = getIntent().getExtras();
         mStrLeakId = mBundle.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID);
@@ -182,67 +184,72 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(this.getResources().getString(R.string.prompt_detail_leakage) + " " + mStrLeakId);
 
-        if (mStrCylinderCapacity == null || mStrCylinderCapacity.equals("")) {
+        if (mStrCylinderCapacity == null || mStrCylinderCapacity.equals("") || mStrCylinderCapacity.equals("null")) {
             mLeakCylinderCapacity.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakCylinderCapacity.setText(mStrCylinderCapacity);
         }
 
-        if (mStrCylinderColor == null || mStrCylinderColor.equals("")) {
+        if (mStrLeakType == null || mStrLeakType.equals("") || mStrLeakType.equals("null")) {
+            mLeakCylinderCapacity.setText(getResources().getString(R.string.no_data));
+        } else {
+            mLeakType.setText(mStrLeakType);
+        }
+
+        if (mStrCylinderColor == null || mStrCylinderColor.equals("") || mStrCylinderColor.equals("null")) {
             mLeakCylinderColor.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakCylinderColor.setText(mStrCylinderColor);
         }
 
-        if (mStrLeakAddress == null || mStrLeakAddress.equals("")) {
+        if (mStrLeakAddress == null || mStrLeakAddress.equals("") || mStrLeakAddress.equals("null")) {
             mLeakAddress.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakAddress.setText(mStrLeakAddress);
         }
 
-        if (mStrLeakClientName == null || mStrLeakClientName.equals("")) {
+        if (mStrLeakClientName == null || mStrLeakClientName.equals("") || mStrLeakClientName.equals("null")) {
             mUserName.setText(getResources().getString(R.string.no_data));
         } else {
             mUserName.setText(mStrLeakClientName);
         }
 
-        if (mStrLeakStatus == null || mStrLeakStatus.equals("")) {
+        if (mStrLeakStatus == null || mStrLeakStatus.equals("") || mStrLeakStatus.equals("null")) {
             mLeakStatus.setText(getResources().getString(R.string.no_data));
         } else {
             if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_new))) {
                 mLeakStatus.setTextColor(getResources().getColor(R.color.blue));
-                mLeakStatus.setText(mStrLeakStatus);
             } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_in_progress))) {
                 mLeakStatus.setTextColor(getResources().getColor(R.color.amber));
-                mLeakStatus.setText(mStrLeakStatus);
             } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_failed))) {
                 mLeakStatus.setTextColor(getResources().getColor(R.color.red));
-                mLeakStatus.setText(mStrLeakStatus);
-            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_finished))) {
+            } else if (mStrLeakStatus.equals(this.getResources().getString(R.string.order_status_closed))) {
                 mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
-                mLeakStatus.setText(mStrLeakStatus);
+            } else {
+                mLeakStatus.setTextColor(getResources().getColor(R.color.blue));
             }
+            mLeakStatus.setText(mStrLeakStatus);
         }
 
-        if (mStrLeakTimeTechnician == null || mStrLeakTimeTechnician.equals("")) {
+        if (mStrLeakTimeTechnician == null || mStrLeakTimeTechnician.equals("") || mStrLeakTimeTechnician.equals("null")) {
             mLeakTimeIn.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeIn.setText(mStrLeakTimeTechnician);
         }
 
-        if (mStrLeakTimeSeen == null || mStrLeakTimeSeen.equals("")) {
+        if (mStrLeakTimeSeen == null || mStrLeakTimeSeen.equals("") || mStrLeakTimeSeen.equals("null")) {
             mLeakTimeSeen.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeSeen.setText(mStrLeakTimeSeen);
         }
 
-        if (mStrLeakTimeArrived == null || mStrLeakTimeArrived.equals("")) {
+        if (mStrLeakTimeArrived == null || mStrLeakTimeArrived.equals("") || mStrLeakTimeArrived.equals("null")) {
             mLeakTimeArrived.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeArrived.setText(mStrLeakTimeArrived);
         }
 
-        if (mStrLeakTimeScheduled == null || mStrLeakTimeScheduled.equals("")) {
+        if (mStrLeakTimeScheduled == null || mStrLeakTimeScheduled.equals("") || mStrLeakTimeScheduled.equals("null")) {
             mLeakTimeScheduled.setText(getResources().getString(R.string.no_data));
         } else {
             mLeakTimeScheduled.setText(mStrLeakTimeScheduled);
@@ -308,21 +315,11 @@ public class DetailActivityLeakage extends AppCompatActivity implements
 
     private void callAsyncTaskFinished() {
         JSONObject params = new JSONObject();
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy h:mm a");
-        String date = dateFormat.format(calendar.getTime());
-
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
-            params.put(ExtrasHelper.ORDER_JSON_TIME_FINISHED, date);
-            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_finished));
+            params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, this.getResources().getString(R.string.order_status_closed));
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS, resolution);
             params.put(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS, channel);
-            Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS) +
-                    "Id: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID) +
-                    "Cylinder 10: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_RESOLUTION_STATUS) +
-                    "Cylinder 20: " + params.getString(ExtrasHelper.LEAJ_JSON_OBJECT_CHANNEL_STATUS) +
-                    "Date: " + params.getString(ExtrasHelper.ORDER_JSON_TIME_FINISHED));
 
             PutStatusLeakTask putStatusLeakTask = new PutStatusLeakTask(this, params);
             putStatusLeakTask.setStatusLeakTaskListener(this);
@@ -338,7 +335,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
         try {
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_ID, mStrLeakId);
             params.put(ExtrasHelper.LEAK_JSON_OBJECT_STATUS, getResources().getString(R.string.order_status_failed));
-            //params.put(ExtrasHelper.ORDER_JSON_OBJECT_FAILURE_REASON, strCancellationReason);
+            params.put(ExtrasHelper.ORDER_JSON_OBJECT_FAILURE_REASON, strCancellationReason);
             Log.d(DEBUG_TAG, "Status: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_STATUS)
                     + " ID: " + params.getString(ExtrasHelper.LEAK_JSON_OBJECT_ID));
 
@@ -538,7 +535,7 @@ public class DetailActivityLeakage extends AppCompatActivity implements
             mFabFailed.setVisibility(View.VISIBLE);
             mFabWaze.setVisibility(View.VISIBLE);
             Toast.makeText(this, getResources().getString(R.string.leak_in_progress), Toast.LENGTH_SHORT).show();
-        } else if (status.equals(this.getResources().getString(R.string.order_status_finished))) {
+        } else if (status.equals(this.getResources().getString(R.string.order_status_closed))) {
             mLeakStatus.setTextColor(getResources().getColor(R.color.light_green));
             mFabInProgress.setVisibility(View.GONE);
             mFabFinished.setVisibility(View.GONE);
@@ -552,7 +549,13 @@ public class DetailActivityLeakage extends AppCompatActivity implements
             mFabFailed.setVisibility(View.GONE);
             mFabWaze.setVisibility(View.GONE);
             Toast.makeText(this, getResources().getString(R.string.leak_failure_correct), Toast.LENGTH_SHORT).show();
+        } else if (status.equals(this.getResources().getString(R.string.order_status_reviewing))) {
+            mFabInProgress.setVisibility(View.GONE);
+            mFabFinished.setVisibility(View.GONE);
+            mFabFailed.setVisibility(View.GONE);
+            mFabWaze.setVisibility(View.GONE);
         }
         mLeakStatus.setText(leak.getLeakStatus());
+        mLeakTimeArrived.setText(leak.getLeakTimeEnd());
     }
 }
